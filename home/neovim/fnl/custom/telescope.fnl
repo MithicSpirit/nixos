@@ -52,18 +52,18 @@
 (telescope.load_extension :zf-native)
 (telescope.load_extension :file_browser)
 
-(vim.keymaps.set "<leader> " #(builtin.find_files))
-(vim.keymaps.set "<leader>," #(builtin.buffers))
-(vim.keymaps.set
+(vim.keymap.set "<leader> " #(builtin.find_files))
+(vim.keymap.set "<leader>," #(builtin.buffers))
+(vim.keymap.set
   "<leader><"
   #(builtin.find_files
      {:find_command
       ["fd" "--type=f" "--color=never" "--hidden" "--no-ignore"]}))
-(vim.keymaps.set "<leader>/" #(builtin.live_grep))
-(vim.keymaps.set "<leader><C-p>" #(builtin.register))
-(vim.keymaps.set "<leader>h" #(builtin.help_tags))
-(vim.keymaps.set "<leader>'" #(builtin.marks))
+(vim.keymap.set "<leader>/" #(builtin.live_grep))
+(vim.keymap.set "<leader><C-p>" #(builtin.register))
+(vim.keymap.set "<leader>h" #(builtin.help_tags))
+(vim.keymap.set "<leader>'" #(builtin.marks))
 
-(vim.keymaps.set "<leader>." #(telescope.extensions.file_browser.file_browser))
-(vim.keymaps.set "<leader>>" #(telescope.extensions.file_browser.file_browser
+(vim.keymap.set "<leader>." #(telescope.extensions.file_browser.file_browser))
+(vim.keymap.set "<leader>>" #(telescope.extensions.file_browser.file_browser
                                 {:path "%:p:h"}))

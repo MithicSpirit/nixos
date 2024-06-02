@@ -20,13 +20,13 @@
         type = "fennel";
         config = ''
           (set vim.g.surround_no_insert_mappings 0)
-          (vim.keymaps.set :i "<C-s>" "<Plug>Isurround")
+          (vim.keymap.set :i "<C-s>" "<Plug>Isurround")
         '';
       }
       #{
       #  plugin = vim-characterize;
       #  config = ''
-      #    vim.keymaps.set("n", "g<C-a>", "<Plug>(characterize)")
+      #    vim.keymap.set("n", "g<C-a>", "<Plug>(characterize)")
       #  '';
       #}
       vim-commentary
@@ -56,10 +56,10 @@
         type = "fennel";
         config = ''
           (tset vim.g :sneak#use_ic_scs 1)
-          (vim.keymaps.set "" "f" "<Plug>Sneak_f")
-          (vim.keymaps.set "" "F" "<Plug>Sneak_F")
-          (vim.keymaps.set "" "t" "<Plug>Sneak_t")
-          (vim.keymaps.set "" "F" "<Plug>Sneak_T")
+          (vim.keymap.set "" "f" "<Plug>Sneak_f")
+          (vim.keymap.set "" "F" "<Plug>Sneak_F")
+          (vim.keymap.set "" "t" "<Plug>Sneak_t")
+          (vim.keymap.set "" "F" "<Plug>Sneak_T")
         '';
       }
       {
@@ -68,7 +68,7 @@
         config = ''
           (set vim.g.undotree_SetFocusWhenToggle 1)
           (set vim.g.undotree_ShortIndicators 1)
-          (vim.keymaps.set :n "<leader>u" "<Cmd>UndotreeToggle<CR>")
+          (vim.keymap.set :n "<leader>u" "<Cmd>UndotreeToggle<CR>")
         '';
       }
       # TODO: nvim-parinfer

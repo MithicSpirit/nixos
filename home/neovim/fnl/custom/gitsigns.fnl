@@ -1,4 +1,4 @@
-(vim.keymaps.set "n" "<leader>G" "<Cmd>Git<CR>")
+(vim.keymap.set "n" "<leader>G" "<Cmd>Git<CR>")
 
 ((. (require :gitsigns) :setup)
  {:signs
