@@ -17,7 +17,7 @@
       cornelis
       standard-library
       cubical
-      agda-prelude
+      # agda-prelude
       _1lab
     ];
 }
