@@ -10,7 +10,7 @@
       disable_ligatures = "cursor";
       cursor_blink_interval = 0;
       mouse_hide_wait = 0;
-      paste_actions = "config,confirm-if-large";
+      paste_actions = "confirm,confirm-if-large";
       focus_follows_mouse = true;
       window_alert_on_bell = false;
       # TODO: bell_path or linux_bell_theme? if default is not good

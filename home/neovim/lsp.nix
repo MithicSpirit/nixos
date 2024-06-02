@@ -2,7 +2,8 @@
   programs.neovim = {
     plugins = with pkgs.vimPlugins; [{
       plugin = nvim-lspconfig;
-      config = "require 'custom.lsp'";
+      type = "fennel";
+      config = "(require :custom.lsp)";
     }];
     extraPackages = with pkgs; [
       fennel-ls

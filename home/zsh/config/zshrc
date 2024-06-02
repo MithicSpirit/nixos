@@ -64,7 +64,7 @@ ZSH_HIGHLIGHT_STYLES[bracket-level-1]='fg=12'
 ZSH_HIGHLIGHT_STYLES[bracket-level-2]='fg=magenta'
 ZSH_HIGHLIGHT_STYLES[bracket-level-3]='fg=green'
 ZSH_HIGHLIGHT_STYLES[bracket-level-4]='fg=blue'
-unset ZSH_HIGHLIGHT_STYLES[bracket-level-5]
+unset 'ZSH_HIGHLIGHT_STYLES[bracket-level-5]'
 
 GLOBALIAS_IGNORE+=('f' 'ff' 'j' 'jj')
 
