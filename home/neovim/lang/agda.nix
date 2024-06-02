@@ -11,12 +11,13 @@
     vim-textobj-user
     nvim-hs-vim
   ];
-  home.packages = with pkgs.agdaPackages; [
-    pkgs.agda
-    pkgs.cornelis
-    standard-library
-    cubical
-    agda-prelude
-    _1lab
-  ];
+  home.packages = with pkgs.unstable;
+    with agdaPackages; [
+      agda
+      cornelis
+      standard-library
+      cubical
+      agda-prelude
+      _1lab
+    ];
 }
