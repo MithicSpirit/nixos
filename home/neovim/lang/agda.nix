@@ -4,7 +4,7 @@
       plugin = cornelis;
       type = "fennel";
       config = ''
-        (tset vim.g.cornelis_use_global_binary 1)
+        (set vim.g.cornelis_use_global_binary 1)
         (require :custom.cornelis)
       '';
     }

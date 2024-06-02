@@ -88,6 +88,7 @@
       require "custom.autocmd"
       require "custom.misc"
       -- vim.cmd.colorscheme("custom")
+      require "custom.plugins"
     '';
     # TODO: colorscheme ^
 
