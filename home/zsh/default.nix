@@ -1,5 +1,8 @@
 { config, pkgs, ... }:
-let ZDOTDIR = "${config.xdg.configHome}/zsh";
+let
+  ZDOTDIR = "${config.xdg.configHome}/zsh";
+  session-vars =
+    "${config.home.profileDirectory}/etc/profile.d/hm-session-vars.sh";
 in {
 
   home.file."${ZDOTDIR}/.zshrc" = {
@@ -16,6 +19,16 @@ in {
       HISTFILE='${config.xdg.cacheHome}/zsh/history'
       source "$CONFDIR/zshrc"
     '';
+  };
+
+  home.file."${ZDOTDIR}/.zshenv" = {
+    enable = true;
+    text = "source ${session-vars}";
+  };
+
+  home.file.".zshenv" = { # TODO: symlink to above
+    enable = true;
+    text = "source ${session-vars}";
   };
 
   home.packages = with pkgs; [
