@@ -13,9 +13,7 @@
         notification_limit = 3;
         indicate_hidden = true;
         idle_threshold = 60;
-        format = ''
-          %p<b>%s</b> (<i>%a</i>)
-          %b'';
+        format = "%p<b>%s</b> (<i>%a</i>)\\n%b";
         title = "Dunst";
         class = "dunst";
 
@@ -50,9 +48,7 @@
       notify-send = {
         appname = "notify-send";
         urgency = "normal";
-        format = ''
-          %p<b>%s</b>
-          %b'';
+        format = "%p<b>%s</b>\\n%b";
       };
       signal = {
         appname = "Signal*";
