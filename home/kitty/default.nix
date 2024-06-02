@@ -1,4 +1,7 @@
 { pkgs, ... }: {
+
+  home.sessionVariables.TERMINAL = "kitty";
+
   programs.kitty = {
     enable = true;
 
@@ -59,4 +62,5 @@
       "kitty_mod+alt+backspace" = "clear_terminal reset active";
     };
   };
+
 }

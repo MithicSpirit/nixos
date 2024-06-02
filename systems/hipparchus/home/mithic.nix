@@ -29,6 +29,14 @@
 
   nixpkgs.overlays = overlays;
 
+  wayland.windowManager.sway.extraConfig = ''
+    output eDP-2 {
+      mode 2560x1600@165Hz
+      scale 2.0
+      adaptive_sync on
+    }
+  '';
+
   home = {
     username = "mithic";
     homeDirectory = "/home/${config.home.username}";
