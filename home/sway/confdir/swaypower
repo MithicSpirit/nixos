@@ -1,0 +1,21 @@
+#!/usr/bin/env sh
+
+case "$(bemenu -p 'Power' -cl 7 -W 0.2 <<__EOF__
+1. Lock
+2. Reload
+3. Exit
+4. Suspend
+5. Hibernate
+6. Reboot
+7. Power Off
+__EOF__
+)" in
+	*"Lock") loginctl lock-session ;;
+	*"Reload") swaymsg reload ;;
+	*"Suspend") sleep 3 && systemctl hybrid-sleep ;;
+	*"Hibernate") sleep 3 && systemctl suspend-then-hibernate ;;
+	*"Exit") swaymsg exit ;;
+	*"Reboot") systemctl reboot ;;
+	*"Power Off") systemctl poweroff ;;
+	*) exit 1 ;;
+esac

@@ -1,0 +1,107 @@
+#!/hint/zsh
+
+## Built-in configuration tools:
+# The following lines were added by compinstall
+
+zstyle ':completion:*' completer _oldlist _expand _complete _ignored _match _prefix
+zstyle ':completion:*' list-colors ''
+zstyle ':completion:*' matcher-list 'm:{[:lower:]}={[:upper:]}' 'r:|[._-/]=** r:|=**' 'm:{[:lower:][:upper:]}={[:upper:][:lower:]}' 'l:|=* r:|=*'
+zstyle ':completion:*' menu select=0
+zstyle ':completion:*' original false
+zstyle ':completion:*' select-prompt '%SScrolling active: current selection at %p%s'
+zstyle ':completion:*' verbose true
+
+autoload -Uz compinit
+compinit
+# End of lines added by compinstall
+
+# Plugins
+MODULES=(
+	"zsh/complist"
+	"zsh/mapfile"
+	"zsh/mathfunc"
+	"zsh/parameter"
+	"zsh/regex"
+	"zsh/termcap"
+	"zsh/terminfo"
+	"zsh/zle"
+	"zsh/zleparameter"
+)
+for i in $MODULES; do zmodload $i; done
+[[ $COLORTERM = *(24bit|truecolor)* ]] || zmodload zsh/nearcolor
+
+safesource() {
+	[[ -r  "$1" ]] && source "$1"
+}
+
+# Enable Powerlevel10k instant prompt. Should stay close to the top of zshrc.
+safesource "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
+
+PLUGINS=(
+	"$CONFDIR/globalias.zsh"
+	"$CONFDIR/fg-keybind.zsh"
+	"$CONFDIR/aliases.zsh"
+	"$CONFDIR/options.zsh"
+	"$SYSTEMPLUGINS"
+	"$CONFDIR/p10k-themes/automatic.zsh"
+)
+for i in $PLUGINS; do safesource "$i"; done
+
+# Plugin Config
+ZSH_AUTOSUGGEST_STRATEGY=(history completion)
+ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=white'
+ZSH_AUTOSUGGEST_ACCEPT_WIDGETS=("${(@)ZSH_AUTOSUGGEST_ACCEPT_WIDGETS:#forward-char}")
+ZSH_AUTOSUGGEST_PARTIAL_ACCEPT_WIDGETS+=(forward-char)
+
+ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets)
+ZSH_HIGHLIGHT_STYLES[double-quoted-argument-unclosed]='fg=9'
+ZSH_HIGHLIGHT_STYLES[single-quoted-argument-unclosed]='fg=9'
+ZSH_HIGHLIGHT_STYLES[back-quoted-argument-unclosed]='fg=9'
+ZSH_HIGHLIGHT_STYLES[dollar-quoted-argument-unclosed]='fg=9'
+ZSH_HIGHLIGHT_STYLES[redirection]='fg=magenta'
+ZSH_HIGHLIGHT_STYLES[bracket-error]='fg=red,bold'
+ZSH_HIGHLIGHT_STYLES[bracket-level-1]='fg=12'
+ZSH_HIGHLIGHT_STYLES[bracket-level-2]='fg=magenta'
+ZSH_HIGHLIGHT_STYLES[bracket-level-3]='fg=green'
+ZSH_HIGHLIGHT_STYLES[bracket-level-4]='fg=blue'
+unset ZSH_HIGHLIGHT_STYLES[bracket-level-5]
+
+GLOBALIAS_IGNORE+=('f' 'ff' 'j' 'jj')
+
+# Keybinds
+__autoload_bindkey () {
+	local new_func="${@[-1]}"
+	autoload "$new_func"
+	zle -N "$new_func"
+	bindkey "$@"
+}
+bindkey -e
+bindkey "^Z" fg
+bindkey "^D" delete-char
+bindkey "^P" history-substring-search-up
+bindkey "^N" history-substring-search-down
+bindkey "^H" backward-kill-word
+bindkey "^[p" up-line-or-history
+bindkey "^[n" down-line-or-history
+__autoload_bindkey "^[e" edit-command-line
+bindkey -M menuselect "^P" up-line-or-history
+bindkey -M menuselect "^N" down-line-or-history
+bindkey -M menuselect "^F" forward-char
+bindkey -M menuselect "^B" backward-char
+
+
+# Misc
+autoload -Uz bashcompinit && bashcompinit
+WORDCHARS="_-.~=!#$%^()<>&|"
+ZLE_RPROMPT_INDENT=0  # Remove unnecessary padding
+PROMPT_EOL_MARK="$(printf '%%{\033[0m\033[7m\033[1m%%}%%#%%{\033[0m%%}')"
+  # ^ reset color before printing prompt_sp
+# unset LINES COLUMNS  # Can fix some bugs
+# command -v fasd &>/dev/null &&
+# 	eval "$(fasd --init zsh-hook zsh-ccomp zsh-ccomp-install zsh-wcomp zsh-wcomp-install)"
+command -v zoxide &>/dev/null &&
+	eval "$(zoxide init --cmd j zsh)"
+__escape_aliases  # See globalias
+export TTY
+
+true  # prevent above error codes from affecting prompt

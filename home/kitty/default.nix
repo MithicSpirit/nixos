@@ -1,0 +1,62 @@
+{ pkgs, ... }: {
+  programs.kitty = {
+    enable = true;
+
+    shellIntegration.mode = "no-cursor";
+
+    settings = {
+      update_check_interval = 0;
+
+      disable_ligatures = "cursor";
+      cursor_blink_interval = 0;
+      mouse_hide_wait = 0;
+      paste_actions = "config,confirm-if-large";
+      focus_follows_mouse = true;
+      window_alert_on_bell = false;
+      # TODO: bell_path or linux_bell_theme? if default is not good
+      close_on_child_death = true;
+      allow_remote_control = "socket";
+      listen_on = "unix:@kitty";
+      notify_on_cmd_finish = "invisible 0 notify";
+      clear_all_shortcuts = true;
+    };
+
+    theme = "Nord"; # TODO
+    font = {
+      package = pkgs.iosevka-mithic;
+      name = "Iosevka Mithic";
+      size = 12;
+    };
+
+    keybindings = {
+      # clipboard
+      "kitty_mod+c" = "copy_to_clipboard";
+      "kitty_mod+v" = "paste_from_clipboard";
+      "kitty_mod+f" = "paste_from_selection";
+      # navigation
+      "kitty_mod+h" = "scroll_line_up";
+      "kitty_mod+l" = "scroll_line_down";
+      "kitty_mod+alt+h" = "scroll_page_up";
+      "kitty_mod+alt+l" = "scroll_line_down";
+      "kitty_mod+k" = "scroll_to_prompt -1";
+      "kitty_mod+j" = "scroll_to_prompt 1";
+      "kitty_mod+alt+k" = "scroll_home";
+      "kitty_mod+alt+j" = "scroll_end";
+      # scrollback
+      "kitty_mod+esc" = "show_last_command_output";
+      "kitty_mod+alt+esc" = "show_scrollback";
+      # font size
+      "kitty_mod+equal" = "change_font_size all +2.0";
+      "kitty_mod+plus" = "change_font_size all +2.0";
+      "kitty_mod+minus" = "change_font_size all -2.0";
+      "kitty_mod+underscore" = "change_font_size all -2.0";
+      "kitty_mod+0" = "change_font_size all 0";
+      # actions
+      "kitty_mod+e" = "open_url_with_hints";
+      # misc
+      "kitty_mod+u" = "kitten unicode_input";
+      "kitty_mod+backspace" = "clear_terminal to_cursor active";
+      "kitty_mod+alt+backspace" = "clear_terminal reset active";
+    };
+  };
+}

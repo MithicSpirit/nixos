@@ -1,0 +1,45 @@
+#!/usr/bin/env zsh
+
+[[ "$#" -gt 0 ]]
+EMPTY="$?"
+
+notify() { [[ "$EMPTY" -eq 0 ]] && notify-send -a "Menu Browser" "$@" }
+
+_copy() { printf '%s' "$*" | exec wl-copy }
+_mpv() { exec mpv --quiet --pause "$@" }
+
+# TODO: better handle missing browsers
+typeset -A options_=(
+	['0.  New window']='librewolf --new-window'
+	['1.  Current window']='librewolf'
+	['2.  Copy to clipboard']='_copy'
+	['3.  xdg-open']='xdg-open'
+	['4.  mpv']='_mpv'
+	['5.  Qutebrowser']='qutebrowser'
+	['6.  Tor Browser']='torbrowser-launcher'
+	['7.  Chromium']='chromium'
+	['8.  Chromium (Incognito)']='chromium --incognito'
+	['9.  Firefox']='firefox'
+	['10. Brave']='brave-nightly'
+	['11. Librewolf']='librewolf'
+	['12. Nyxt']='nyxt'
+	['13. Vieb']='vieb'
+)
+
+notify_id="$(notify -p "URL" "$*")"
+
+sel="$(sort -n <<<"${(@kF)options_}" |
+	bemenu -p 'Browser' -cl "${#options_}" -W 0.3)"
+
+if [[ -n "$sel" ]] && result="${options_[$sel]}" && [[ -n "$result" ]]; then
+	notify -t 4000 -e "--replace-id=$notify_id" 'Opening' "$result $*"
+	echo "\n-- $(date) --\n-> \$ $0 $@\n<- \$ $result $*" \
+		>>/tmp/menu-browser.log
+	printf '%s' "$result $*"
+	"${=result}" "$@" &>>/tmp/menu-browser.log &!
+else
+	notify -t 2000 -e "--replace-id=$notify_id" 'Cancelled'
+	echo "\n-- $(date) --\n-> \$ $0 $@\n<- Cancelled" \
+		>>/tmp/menu-browser.log
+	exit 1
+fi

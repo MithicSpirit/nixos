@@ -1,0 +1,191 @@
+[buildPlans.IosevkaMithic]
+family = 'Iosevka Mithic'
+spacing = 'fontconfig-mono'
+serifs = 'sans'
+buildTextureFeature = true
+noCvSs = false
+noLigation = false
+exportGlyphNames = true
+
+  [buildPlans.IosevkaMithic.variants]
+  inherits = 'ss05'
+
+    [buildPlans.IosevkaMithic.variants.design]
+    apl-form = 'enable'
+    capital-d = 'standard-serifless'
+    capital-g = 'toothed-serifless-hooked'
+    capital-k = 'straight-serifless'
+    capital-m = 'hanging-serifless'
+    capital-q = 'crossing'
+    a = 'double-storey-serifless'
+    f = 'flat-hook-serifless-crossbar-at-x-height'
+    g = 'double-storey'
+    k = 'straight-serifless'
+    r = 'serifed'
+    t = 'flat-hook'
+    long-s = 'flat-hook-tailed-middle-serifed'
+    eszet = 'sulzbacher-tailed-middle-serifed'
+    lower-delta = 'flat-top'
+    capital-gamma = 'top-right-serifed'
+    lower-iota = 'tailed'
+    lower-lambda = 'straight'
+    lower-mu = 'toothed-serifless'
+    lower-chi = 'semi-chancery-straight'
+    zero = 'slashed-split'
+    four = 'closed-serifless'
+    five = 'upright-flat-serifless'
+    tilde = 'low'
+    asterisk = 'penta-low'
+    underscore = 'high'
+    pilcrow = 'high'
+    caret = 'low'
+    brace = 'straight'
+    number-sign = 'upright'
+    ampersand = 'closed'
+    at = 'fourfold'
+    dollar = 'open'
+    cent = 'open'
+    punctuation-dot = 'square'
+    diacritic-dot = 'square'
+    partial-derivative = 'curly-bar'
+    micro-sign = 'toothed-serifless'
+    lig-ltgteq = 'flat'
+    lig-neq = 'slightly-slanted'
+    lig-equal-chain = 'with-notch'
+    lig-hyphen-chain = 'with-notch'
+    lig-plus-chain = 'with-notch'
+    lig-double-arrow-bar = 'with-notch'
+    lig-single-arrow-bar = 'with-notch'
+
+    [buildPlans.IosevkaMithic.variants.italic]
+    a = 'single-storey-earless-corner-serifless'
+    b = 'toothless-corner-serifless'
+    d = 'toothless-corner-serifless'
+    e = 'rounded'
+    f = 'flat-hook-extended-crossbar-at-x-height'
+    g = 'single-storey-earless-corner'
+    i = 'serifed-flat-tailed'
+    k = 'cursive-serifless'
+    l = 'serifed-flat-tailed'
+    m = 'earless-corner-double-arch-serifless'
+    n = 'earless-corner-straight-serifless'
+    p = 'earless-corner-serifless'
+    q = 'earless-corner-straight-serifless'
+    r = 'serifless'
+    t = 'bent-hook'
+    u = 'toothless-corner-serifless'
+    v = 'cursive-serifless'
+    y = 'cursive-serifless'
+    lower-delta = 'rounded'
+    lower-iota = 'tailed-serifed'
+    lower-lambda = 'straight-turn'
+    lower-mu = 'toothless-corner-serifless'
+    lower-xi = 'rounded'
+    zero = 'dotted'
+    one = 'no-base'
+    six = 'straight-bar'
+    nine = 'straight-bar'
+    underscore = 'above-baseline'
+    ampersand = 'upper-open'
+    at = 'threefold'
+    percent = 'dots'
+    bar = 'force-upright'
+    punctuation-dot = 'round'
+    diacritic-dot = 'round'
+    micro-sign = 'toothless-corner-serifless'
+
+  [buildPlans.IosevkaMithic.ligations]
+  enables = [
+    'center-ops',
+    'center-op-trigger-plus-minus-l',
+    'center-op-trigger-plus-minus-r',
+    'center-op-trigger-equal-l',
+    'center-op-trigger-equal-r',
+    'center-op-trigger-bar-l',
+    'center-op-trigger-bar-r',
+    'center-op-trigger-angle-inside',
+    'center-op-trigger-angle-outside',
+    'center-op-influence-colon',
+    'arrow-l',
+    'arrow-r',
+    'arrow-lr',
+    'trig',
+    'eqeq',
+    'lteq',
+    'gteq',
+    'exeq',
+    'ltgt-diamond-tag',
+    'brst',
+    'kern-dotty',
+    'kern-bars',
+    'llgg',
+    'llggeq',
+    'html-comment',
+    'tilde-tilde-tilde',
+    'minus-minus',
+    'minus-minus-minus',
+    'plus-plus',
+    'plus-plus-plus',
+    'underscore-underscore',
+    'underscore-underscore-underscore',
+    'hash-hash',
+    'hash-hash-hash',
+  ]
+
+[buildPlans.IosevkaMithic.weights.thin]
+shape = 100
+menu = 100
+css = 100
+
+[buildPlans.IosevkaMithic.weights.extralight]
+shape = 200
+menu = 200
+css = 200
+
+[buildPlans.IosevkaMithic.weights.light]
+shape = 300
+menu = 300
+css = 300
+
+[buildPlans.IosevkaMithic.weights.regular]
+shape = 450
+menu = 400
+css = 400
+
+[buildPlans.IosevkaMithic.weights.book]
+shape = 450
+menu = 450
+css = 450
+
+[buildPlans.IosevkaMithic.weights.medium]
+shape = 525
+menu = 500
+css = 500
+
+[buildPlans.IosevkaMithic.weights.semibold]
+shape = 600
+menu = 600
+css = 600
+
+[buildPlans.IosevkaMithic.weights.bold]
+shape = 700
+menu = 700
+css = 700
+
+[buildPlans.IosevkaMithic.weights.extrabold]
+shape = 800
+menu = 800
+css = 800
+
+[buildPlans.IosevkaMithic.weights.heavy]
+shape = 900
+menu = 900
+css = 900
+
+[buildPlans.IosevkaMithic.widths.normal]
+shape = 576
+menu = 5
+css = 'normal'
+
+[collectPlans.IosevkaMithic]
+from = ['IosevkaMithic']

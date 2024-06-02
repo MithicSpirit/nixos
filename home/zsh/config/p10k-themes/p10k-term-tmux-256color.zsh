@@ -1,0 +1,1 @@
+p10k-term-linux.zsh

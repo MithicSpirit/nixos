@@ -1,0 +1,86 @@
+set {
+    $mod Mod4
+    $down j
+    $left h
+    $up k
+    $right l
+}
+font 'pango:Iosevka Mithic 11'
+
+output * {
+    subpixel none
+    background $wallpaper fill #2e3440
+}
+output eDP-1 {
+    mode 2240x1400@60Hz
+    scale 1.2
+    # mode 1920x1200@60Hz
+}
+
+input * {
+    xkb_layout us,gr,il
+    xkb_variant ,,phonetic
+    xkb_options grp:win_space_toggle,compose:rctrl,lv3:ralt_switch
+    accel_profile flat
+    tool_mode * absolute
+}
+input type:touchpad {
+    click_method button_areas
+    dwt enabled
+    tap enabled
+    tap_button_map lrm
+    natural_scroll enabled
+}
+input type:touch events disabled
+
+seat * xcursor_theme breeze_cursors 24
+
+workspace_layout tabbed
+xwayland force
+
+floating_modifier $mod normal
+focus_follows_mouse yes
+focus_wrapping yes
+
+bar {
+    font "Iosevka Mithic 10"
+    gaps 0
+    mode dock
+    output *
+    position top
+    # TODO: status_command
+    strip_workspace_numbers yes
+    workspace_buttons yes
+    # TODO: colorscheme
+}
+
+client.focused #88c0d0 #3b4252 #88c0d0 #ebcb8b #88c0d0
+client.focused_inactive #2e3440 #2e3440 #88c0d0 #ebcb8b #2e3440
+client.focused_tab_title #3b4252 #3b4252 #eceff4 #ebcb8b #3b4252
+client.unfocused #2e3440 #2e3440 #eceff4 #ebcb8b #2e3440
+client.urgent #d08770 #2e3440 #d08770 #ebcb8b #2e3440
+
+set $border 2
+default_border normal $border
+default_floating_border normal $border
+titlebar_border_thickness $border
+titlebar_padding 5 $border
+
+for_window [all] title_format "%title (%app_id)"
+for_window [shell="xwayland"] title_format "%title [%class]"
+
+gaps inner 4
+gaps outer 2
+smart_borders on
+smart_gaps on
+
+include $confdir/bindings
+include $confdir/autospawn
+include $confdir/overrides
+# include $confdir/swayfx
+exec_always $confdir/swayconf
+exec $confdir/swaytile >>/tmp/swaytile.log 2>>/tmp/swaytile.log
+
+include /etc/sway/config.d/*
+
+# vi: set ft=swayconfig
