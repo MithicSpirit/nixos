@@ -11,11 +11,6 @@ output * {
     subpixel none
     background $wallpaper fill #2e3440
 }
-output eDP-1 {
-    mode 2240x1400@60Hz
-    scale 1.2
-    # mode 1920x1200@60Hz
-}
 
 input * {
     xkb_layout us,gr,il

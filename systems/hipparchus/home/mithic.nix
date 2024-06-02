@@ -32,7 +32,7 @@
   wayland.windowManager.sway.extraConfig = ''
     output eDP-2 {
       mode 2560x1600@165Hz
-      scale 2.0
+      scale 1.3
       adaptive_sync on
     }
   '';
@@ -46,6 +46,7 @@
     packages = with pkgs; [
       rmtrash
       fasd
+      btop # TODO: module
       mediainfo
       ugrep
       yt-dlp
