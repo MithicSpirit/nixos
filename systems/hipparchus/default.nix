@@ -139,13 +139,20 @@
   ]) ++ (with builtins; # get all packages from unixtools
     filter (p: typeOf p == "set") (attrValues pkgs.unixtools));
 
+  programs.zsh = {
+    enable = true;
+    enableLsColors = true;
+    enableCompletion = true;
+  };
   environment.pathsToLink = [ "/share/zsh" ]; # fix zsh completions
+
   environment.enableDebugInfo = true;
 
   users.users."mithic" = {
     description = "MithicSpirit";
     extraGroups = [ "wheel" "video" "gamemode" ];
     isNormalUser = true;
+    shell = pkgs.zsh;
     initialPassword = "";
     createHome = true;
     homeMode = "750";

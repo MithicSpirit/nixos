@@ -9,11 +9,11 @@ in {
     enable = true;
     text = ''
       SYSTEMPLUGINS=( # keep in sync with pkgs below
-        '${pkgs.zsh-autosuggestions}/zsh-autosuggestions.zsh'
-        '${pkgs.zsh-completions}/zsh-completions.plugin.zsh'
-        '${pkgs.zsh-history-substring-search}/zsh-history-substring-search.zsh'
-        '${pkgs.zsh-powerlevel10k}/powerlevel10k.zsh-theme'
-        '${pkgs.zsh-syntax-highlighting}/zsh-syntax-highlighting.zsh'
+        '${pkgs.zsh-autosuggestions}/share/zsh-autosuggestions/zsh-autosuggestions.zsh'
+        '${pkgs.zsh-completions}/share/zsh-completions/zsh-completions.plugin.zsh'
+        '${pkgs.zsh-history-substring-search}/share/zsh-history-substring-search/zsh-history-substring-search.zsh'
+        '${pkgs.zsh-powerlevel10k}/share/zsh-powerlevel10k/powerlevel10k.zsh-theme'
+        '${pkgs.zsh-syntax-highlighting}/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh'
       )
       CONFDIR='${./config}'
       HISTFILE='${config.xdg.cacheHome}/zsh/history'
