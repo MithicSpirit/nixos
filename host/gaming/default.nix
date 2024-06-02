@@ -1,5 +1,7 @@
 { pkgs, ... }: {
-  environment.systemPackages = with pkgs; [ path-of-building ];
+
+  # TODO: mangohud
+  environment.systemPackages = with pkgs; [ path-of-building protonup-qt ];
 
   programs.gamemode = {
     enable = true;
@@ -15,4 +17,5 @@
       };
     };
   };
+
 }
