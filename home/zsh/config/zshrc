@@ -42,7 +42,7 @@ PLUGINS=(
 	"$CONFDIR/fg-keybind.zsh"
 	"$CONFDIR/aliases.zsh"
 	"$CONFDIR/options.zsh"
-	"$SYSTEMPLUGINS"
+	$SYSTEMPLUGINS
 	"$CONFDIR/p10k-themes/automatic.zsh"
 )
 for i in $PLUGINS; do safesource "$i"; done

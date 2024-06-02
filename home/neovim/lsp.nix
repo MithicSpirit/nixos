@@ -11,7 +11,7 @@
       clang-tools
       haskell-language-server
       ruff
-      basedpyright
+      unstable.basedpyright
       texlab
       ltex-ls
     ];

@@ -2,6 +2,7 @@
   imports = [ ./treesitter.nix ./lsp.nix ./telescope.nix ./lang ];
 
   programs.neovim = {
+    enable = true;
     defaultEditor = true;
 
     # TODO: get a statusline (NOT lualine please for the love of god please)
@@ -21,12 +22,12 @@
           vim.keymaps.set("i", "<C-s>", "<Plug>Isurround")
         '';
       }
-      {
-        plugin = vim-characterize;
-        config = ''
-          vim.keymaps.set("n", "g<C-a>", "<Plug>(characterize)")
-        '';
-      }
+      #{
+      #  plugin = vim-characterize;
+      #  config = ''
+      #    vim.keymaps.set("n", "g<C-a>", "<Plug>(characterize)")
+      #  '';
+      #}
       vim-commentary
       # misc
       colorizer
