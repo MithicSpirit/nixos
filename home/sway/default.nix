@@ -164,7 +164,7 @@ in {
   home.packages = with pkgs; [
     swaybg
     sway-contrib.grimshot
-    acpilight
+    brightnessctl
     playerctl
   ];
 }

@@ -140,12 +140,11 @@ bindsym --no-repeat --inhibited --to-code {
     Shift+XF86AudioRaiseVolume exec pactl set-sink-volume @DEFAULT_SINK@ +10%
     Shift+XF86AudioLowerVolume exec pactl set-sink-volume @DEFAULT_SINK@ -10%
 
-    # xbacklight is actually acpilight, so it works on Wayland
     --locked {
-        XF86MonBrightnessUp exec xbacklight +2
-        XF86MonBrightnessDown exec xbacklight -2
-        Shift+XF86MonBrightnessUp exec xbacklight +10
-        Shift+XF86MonBrightnessDown exec xbacklight -10
+        XF86MonBrightnessUp exec brightnessctl -e set 2%+
+        XF86MonBrightnessDown exec brightnessctl -e set 2%-
+        Shift+XF86MonBrightnessUp exec brightnessctl -e set 10%+
+        Shift+XF86MonBrightnessDown exec brightnessctl -e set 10%-
     }
 
     Mod1+Control+Shift+Mod4+Insert mode passthrough
