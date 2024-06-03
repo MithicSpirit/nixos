@@ -27,6 +27,7 @@
     memtest86.enable = true;
   };
   boot.loader.efi.canTouchEfiVariables = true;
+  boot.kernelPackages = pkgs.linuxPackages_latest;
   # TODO: boot.kernelParams loglevel=3, no quiet (check /proc/cmdline)
   boot.kernel.sysctl = {
     "vm.swappiness" = 10;
