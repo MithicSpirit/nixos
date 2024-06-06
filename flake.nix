@@ -23,6 +23,7 @@
     let
 
       forAllSystems = nixpkgs.lib.genAttrs [
+        # limitations primarily because of disko
         "x86_64-linux"
         "i686-linux"
         "aarch64-linux"

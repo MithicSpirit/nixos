@@ -1,34 +1,32 @@
 { config, pkgs, ... }:
-let
-  ZDOTDIR = "${config.xdg.configHome}/zsh";
-  session-vars =
-    "${config.home.profileDirectory}/etc/profile.d/hm-session-vars.sh";
+let ZDOTDIR = "${config.xdg.configHome}/zsh";
 in {
 
-  home.file."${ZDOTDIR}/.zshrc" = {
-    enable = true;
-    text = ''
-      SYSTEMPLUGINS=( # keep in sync with pkgs below
-        '${pkgs.zsh-autosuggestions}/share/zsh-autosuggestions/zsh-autosuggestions.zsh'
-        '${pkgs.zsh-completions}/share/zsh-completions/zsh-completions.plugin.zsh'
-        '${pkgs.zsh-history-substring-search}/share/zsh-history-substring-search/zsh-history-substring-search.zsh'
-        '${pkgs.zsh-powerlevel10k}/share/zsh-powerlevel10k/powerlevel10k.zsh-theme'
-        '${pkgs.zsh-syntax-highlighting}/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh'
-      )
-      CONFDIR='${./config}'
-      HISTFILE='${config.xdg.cacheHome}/zsh/history'
-      source "$CONFDIR/zshrc"
-    '';
-  };
+  home.file = let
+    profile-symlink = {
+      enable = true;
+      source = config.lib.file.mkOutOfStoreSymlink
+        "${config.home.homeDirectory}/.profile";
+    };
+  in {
+    "${ZDOTDIR}/.zshenv" = profile-symlink;
+    ".zshenv" = profile-symlink;
 
-  home.file."${ZDOTDIR}/.zshenv" = {
-    enable = true;
-    text = "source ${session-vars}";
-  };
-
-  home.file.".zshenv" = { # TODO: symlink to above
-    enable = true;
-    text = "source ${session-vars}";
+    "${ZDOTDIR}/.zshrc" = {
+      enable = true;
+      text = ''
+        SYSTEMPLUGINS=( # keep in sync with pkgs below
+          '${pkgs.zsh-autosuggestions}/share/zsh-autosuggestions/zsh-autosuggestions.zsh'
+          '${pkgs.zsh-completions}/share/zsh-completions/zsh-completions.plugin.zsh'
+          '${pkgs.zsh-history-substring-search}/share/zsh-history-substring-search/zsh-history-substring-search.zsh'
+          '${pkgs.zsh-powerlevel10k}/share/zsh-powerlevel10k/powerlevel10k.zsh-theme'
+          '${pkgs.zsh-syntax-highlighting}/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh'
+        )
+        CONFDIR='${./config}'
+        HISTFILE='${config.xdg.cacheHome}/zsh/history'
+        source "$CONFDIR/zshrc"
+      '';
+    };
   };
 
   home.packages = with pkgs; [

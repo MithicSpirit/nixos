@@ -37,6 +37,11 @@
     }
   '';
 
+  home.file.".profile" = {
+    enable = true;
+    text = ". ${config.home.profileDirectory}/etc/profile.d/hm-session-vars.sh";
+  };
+
   home = {
     username = "mithic";
     homeDirectory = "/home/${config.home.username}";

@@ -29,7 +29,6 @@ in {
 
   qt = {
     enable = true;
-    # qt.platformTheme?
     platformTheme.name = "gtk3";
     style.name = "breeze";
   };

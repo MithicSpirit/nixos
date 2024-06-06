@@ -71,6 +71,7 @@
         syntax-theme = "ansi";
         right-arrow = "->";
         line-numbers-left-format = "{nm:^4}|";
+        width = 80;
         # colormoved support
         map-styles = {
           "bold purple" = ''syntax "#380f2e"'';
