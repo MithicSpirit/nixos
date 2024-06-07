@@ -37,15 +37,10 @@
     }
   '';
 
+  systemd.user.sessionVariables = config.home.sessionVariables;
   home.file.".profile" = {
     enable = true;
-    text = ''
-      . ${config.home.profileDirectory}/etc/profile.d/hm-session-vars.sh
-      if [ -z "$__DBUS_ENVIRON_UPDATED" ]; then
-        export __DBUS_ENVIRON_UPDATED=1
-        dbus-update-activation-environment --systemd --all
-      fi
-    '';
+    text = ". ${config.home.profileDirectory}/etc/profile.d/hm-session-vars.sh";
   };
 
   home = {
