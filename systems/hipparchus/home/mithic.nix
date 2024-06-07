@@ -38,6 +38,7 @@
   '';
 
   systemd.user.sessionVariables = config.home.sessionVariables;
+  pam.sessionVariables = config.home.sessionVariables;
   home.file.".profile" = {
     enable = true;
     text = ". ${config.home.profileDirectory}/etc/profile.d/hm-session-vars.sh";
