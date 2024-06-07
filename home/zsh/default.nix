@@ -1,5 +1,7 @@
 { config, pkgs, ... }:
-let ZDOTDIR = "${config.xdg.configHome}/zsh";
+let
+  ZDOTDIR = "${config.xdg.configHome}/zsh";
+  zsh_histfile = "${config.xdg.cacheHome}/zsh/history";
 in {
 
   home.file = let
@@ -11,6 +13,10 @@ in {
   in {
     "${ZDOTDIR}/.zshenv" = profile-symlink;
     ".zshenv" = profile-symlink;
+    "${zsh_histfile}/.keep" = {
+      enable = true;
+      text = "";
+    };
 
     "${ZDOTDIR}/.zshrc" = {
       enable = true;
@@ -23,7 +29,7 @@ in {
           '${pkgs.zsh-syntax-highlighting}/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh'
         )
         CONFDIR='${./config}'
-        HISTFILE='${config.xdg.cacheHome}/zsh/history'
+        HISTFILE='${zsh_histfile}'
         source "$CONFDIR/zshrc"
       '';
     };
