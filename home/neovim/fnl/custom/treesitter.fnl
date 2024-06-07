@@ -1,9 +1,5 @@
 ((. (require :nvim-treesitter.configs) :setup)
- {:ensure_installed
-  [:vim :vimdoc :lua :fennel :query :comment :markdown :markdown_inline]
-  :sync_install false
-  :auto_install true
-  :ignore_install []
+ {:auto_install false  ; handled by nix
   :highlight
   {:enable true
    :additional_vim_regex_highlighting true
