@@ -35,7 +35,6 @@
     # TODO: "vm.max_map_count" = 1048576;
     # TODO: "kernel.pid_max" = 4194304;
   };
-  boot.plymouth.enable = true; # TODO: other config settings
 
   i18n.defaultLocale = "en_US.UTF-8";
   time.timeZone = "US/Eastern";
@@ -168,7 +167,7 @@
     };
     users."mithic" = import ./home/mithic.nix;
   };
-  systemd.services."user@1000" = {
+  systemd.services.${config.users.users."mithic".uid} = {
     environment = builtins.mapAttrs (_: toString)
       config.home-manager.users."mithic".home.sessionVariables;
     overrideStrategy = "asDropin";
