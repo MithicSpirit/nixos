@@ -172,6 +172,8 @@
       inherit root;
       inherit overlays;
     };
+    useUserPackages = true;
+    useGlobalPkgs = true;
     users."mithic" = import ./home/mithic.nix;
   };
   systemd.services."user@${toString config.users.users."mithic".uid}" = {

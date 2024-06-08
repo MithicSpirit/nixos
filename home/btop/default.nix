@@ -12,7 +12,6 @@
     show_gpu_info = "Auto";
     gpu_mirror_graph = true;
     show_uptime = false;
-    temp_scale = "kelvin";
     clock_format = " /user@/host (/uptime) | %H:%M:%S | %a, %b %d, %Y ";
     disks_filter = "";
     swap_disk = false; # TODO?

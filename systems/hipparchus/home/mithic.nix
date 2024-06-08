@@ -28,8 +28,6 @@
 
   programs.home-manager.enable = true;
 
-  nixpkgs.overlays = overlays;
-
   wayland.windowManager.sway.extraConfig = ''
     output eDP-2 {
       mode 2560x1600@165Hz
