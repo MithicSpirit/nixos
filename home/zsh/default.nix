@@ -13,7 +13,7 @@ in {
   in {
     ".zshenv" = symlink ".profile";
     "${ZDOTDIR}/.zshenv" = symlink ".profile";
-    "${ZDOTDIR}.zlogin" = symlink ".login";
+    "${ZDOTDIR}/.zlogin" = symlink ".login";
 
     "${zsh_histdir}/.keep" = {
       enable = true;
