@@ -99,6 +99,9 @@ in {
       text-caps-lock-color = "d08770";
       text-ver-color = "8fbcbb";
       text-wrong-color = "bf616a";
+
+      # swaylock-effects
+      effects-blur = "6x4"; # TODO: effects-scale?
     };
   };
 
