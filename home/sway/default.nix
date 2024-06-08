@@ -122,36 +122,27 @@ in {
       }
       {
         timeout = lock + 15;
-        command = "swaymsg 'output * power off'";
-        resumeCommand = "swaymsg 'output * power on'";
+        command = ''swaymsg "output * power off"'';
+        resumeCommand = ''swaymsg "output * power on"'';
       }
     ];
     events = [
       {
         event = "before-sleep";
-        command = ''
-          loginctl lock-session
-          swaymsg "output * power off"
-          sleep 0.1
-        '';
+        command =
+          ''loginctl lock-session; swaymsg "output * power off"; sleep 0.1'';
       }
       {
         event = "after-resume";
-        command = ''
-          sleep 0.2
-          swaymsg "output * power on"
-        '';
+        command = ''sleep 0.2; swaymsg "output * power on"'';
       }
       {
         event = "lock";
-        command = ''
-          swaylock -f
-          sleep 0.1
-        '';
+        command = "swaylock -f; sleep 0.1";
       }
       {
         event = "unlock";
-        command = "pkill -USR1 '^swaylock$'";
+        command = ''pkill -USR1 "^swaylock$"'';
       }
     ];
   };
