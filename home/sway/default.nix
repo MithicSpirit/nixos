@@ -56,6 +56,26 @@ in {
     };
   };
 
+  home.file.".login" = {
+    enable = true;
+    executable = true;
+    text = ''
+      #!/usr/bin/env sh
+
+      if [ -z "$WAYLAND_DISPLAY" ] && [ -z "$DISPLAY" ] && [ "$XDG_VTNR" -eq 1 ]; then
+              resway() {
+                      while ! sway >>/tmp/sway.log 2>&1
+                      do
+                              notify-send -w 'Sway restart' &
+                      done
+              }
+              exec resway
+      fi
+
+      # vi: ft=sh
+    '';
+  };
+
   programs.swaylock = {
     enable = true;
     package = pkgs.swaylock-effects;

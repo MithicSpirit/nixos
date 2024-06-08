@@ -45,6 +45,7 @@
   };
 
   i18n.defaultLocale = "en_US.UTF-8";
+  i18n.supportedLocales = [ "all" ];
   time.timeZone = "US/Eastern";
 
   services.fwupd.enable = true;
