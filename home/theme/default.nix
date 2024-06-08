@@ -4,7 +4,7 @@ in {
   # TODO: check whether names are correct
 
   home.pointerCursor = {
-    package = kdep.breeze;
+    package = pkgs.libsForQt5.breeze-qt5;
     name = "breeze_cursors";
     gtk.enable = true;
     x11.enable = true;
