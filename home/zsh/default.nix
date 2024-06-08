@@ -11,9 +11,9 @@ in {
         "${config.home.homeDirectory}/${file}";
     };
   in {
-    "${ZDOTDIR}/.zshenv" = symlink ".profile";
     ".zshenv" = symlink ".profile";
-    ".zlogin" = symlink ".login";
+    "${ZDOTDIR}/.zshenv" = symlink ".profile";
+    "${ZDOTDIR}.zlogin" = symlink ".login";
 
     "${zsh_histdir}/.keep" = {
       enable = true;
