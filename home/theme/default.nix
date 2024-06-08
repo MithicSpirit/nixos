@@ -4,8 +4,8 @@ in {
   # TODO: check whether names are correct
 
   home.pointerCursor = {
-    package = kdep.breeze-icons;
-    name = "breeze-dark";
+    package = kdep.breeze;
+    name = "breeze_cursors";
     gtk.enable = true;
     x11.enable = true;
   };
