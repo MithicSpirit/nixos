@@ -18,6 +18,7 @@
     /${root}/host/keyd
     /${root}/host/bluetooth
     /${root}/host/tlp
+    /${root}/host/sway
   ];
 
   nixpkgs.overlays = overlays;
@@ -86,8 +87,6 @@
   #   algorithm = "zstd";
   #   memoryPercent = 25;
   # };
-
-  hardware.opengl.enable = true;
 
   services.flatpak.enable = true;
   xdg.portal = {

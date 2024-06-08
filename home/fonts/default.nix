@@ -1,4 +1,5 @@
-{ ... }: {
+{ pkgs, ... }: {
+
   fonts.fontconfig = {
     enable = true;
     defaultFonts = {
@@ -8,4 +9,15 @@
       emoji = [ "Twemoji" "Iosevka Mithic" ];
     };
   };
+
+  home.packages = with pkgs; [
+    iosevka-mithic
+    overpass
+    lmodern
+    lmmath
+    noto-fonts
+    noto-fonts-cjk-sans
+    twemoji-color-font
+  ];
+
 }

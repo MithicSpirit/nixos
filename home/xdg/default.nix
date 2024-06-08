@@ -16,7 +16,7 @@ in {
       templates = "${config.xdg.dataHome}/templates";
 
       documents = "${home}/documents";
-      download = "${documents}/download";
+      download = "${documents}/downloads";
       pictures = "${documents}/pictures";
       videos = "${documents}/videos";
       music = "${documents}/music";

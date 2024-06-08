@@ -87,14 +87,6 @@
       ungoogled-chromium
       tor-browser
 
-      iosevka-mithic
-      overpass
-      lmodern
-      lmmath
-      noto-fonts
-      noto-fonts-cjk-sans
-      twemoji-color-font
-
       libqalculate
       qalculate-gtk
 
