@@ -3,7 +3,6 @@
   imports = [
     /${root}/home/bat
     /${root}/home/bemenu
-    /${root}/home/fonts
     /${root}/home/git
     /${root}/home/gpg
     /${root}/home/kitty
