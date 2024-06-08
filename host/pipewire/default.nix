@@ -15,5 +15,5 @@
 
   security.rtkit.enable = true;
 
-  environment.systemPackages = with pkgs; [ pavucontrol ];
+  environment.systemPackages = with pkgs; [ libpulseaudio pavucontrol ];
 }

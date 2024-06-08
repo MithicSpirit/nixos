@@ -23,6 +23,7 @@
     /${root}/home/less
     /${root}/home/zsh
     /${root}/home/language
+    /${root}/home/btop
   ];
 
   programs.home-manager.enable = true;
@@ -58,7 +59,6 @@
     packages = with pkgs; [
       rmtrash
       fasd
-      btop # TODO: module
       mediainfo
       ugrep
       yt-dlp
