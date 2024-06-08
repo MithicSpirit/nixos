@@ -5,14 +5,16 @@ let
 in {
 
   home.file = let
-    profile-symlink = {
+    symlink = file: {
       enable = true;
       source = config.lib.file.mkOutOfStoreSymlink
-        "${config.home.homeDirectory}/.profile";
+        "${config.home.homeDirectory}/${file}";
     };
   in {
-    "${ZDOTDIR}/.zshenv" = profile-symlink;
-    ".zshenv" = profile-symlink;
+    "${ZDOTDIR}/.zshenv" = symlink ".profile";
+    ".zshenv" = symlink ".profile";
+    ".zlogin" = symlink ".login";
+
     "${zsh_histdir}/.keep" = {
       enable = true;
       text = "";
