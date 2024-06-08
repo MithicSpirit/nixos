@@ -7,7 +7,7 @@ in {
   # TODO: device-specific output config
   wayland.windowManager.sway = {
     enable = true;
-    package = pkgs.swayfx;
+    # package = pkgs.swayfx;
     config = null;
     extraConfig = ''
       set $confdir ${./confdir}

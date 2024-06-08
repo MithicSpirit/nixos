@@ -72,7 +72,7 @@ smart_gaps on
 include $confdir/bindings
 include $confdir/autospawn
 include $confdir/overrides
-include $confdir/swayfx
+# include $confdir/swayfx
 exec_always $confdir/swayconf
 exec $confdir/swaytile >>/tmp/swaytile.log 2>>/tmp/swaytile.log
 
