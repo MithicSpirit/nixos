@@ -7,6 +7,7 @@
     inputs.home-manager.nixosModules.default
     inputs.disko.nixosModules.default
     ./disko.nix
+    /${root}/host/secure-boot
     /${root}/host/man
     /${root}/host/ssh
     /${root}/host/pipewire
@@ -27,6 +28,8 @@
     memtest86.enable = true;
   };
   boot.loader.efi.canTouchEfiVariables = true;
+  boot.initrd.systemd.enable = true;
+
   boot.kernelPackages = pkgs.linuxPackages_latest;
   # TODO: boot.kernelParams loglevel=3, no quiet (check /proc/cmdline)
   boot.kernel.sysctl = {
