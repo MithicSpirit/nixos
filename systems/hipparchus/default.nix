@@ -169,7 +169,7 @@
     };
     users."mithic" = import ./home/mithic.nix;
   };
-  systemd.services."user@${config.users.users."mithic".uid}" = {
+  systemd.services."user@${toString config.users.users."mithic".uid}" = {
     environment = builtins.mapAttrs (_: toString)
       config.home-manager.users."mithic".home.sessionVariables;
     overrideStrategy = "asDropin";
