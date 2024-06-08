@@ -7,8 +7,6 @@ for_window {
     [class="awakened-poe-trade"] floating enable
     [app_id="qalculate-gtk"] floating enable
     [app_id="xdg-desktop-portal"] floating enable
-    # autofullscreen
-    [class="^steam_app_"] fullscreen enable
 
     # autostart
     [app_id="btop-spawn"] move window to workspace 1

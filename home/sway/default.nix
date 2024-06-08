@@ -102,7 +102,7 @@ in {
       text-wrong-color = "bf616a";
 
       # swaylock-effects
-      effects-blur = "6x4"; # TODO: effects-scale?
+      effect-blur = "6x4"; # TODO: effects-scale?
     };
   };
 

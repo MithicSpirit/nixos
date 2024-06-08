@@ -22,6 +22,10 @@
   ];
 
   nixpkgs.overlays = overlays;
+  nixpkgs.config = {
+    allowUnfree = false; # TODO: make global?
+    rocmSupport = true;
+  };
 
   boot.loader.systemd-boot = {
     enable = true;
