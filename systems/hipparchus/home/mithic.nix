@@ -24,6 +24,7 @@
     /${root}/home/zsh
     /${root}/home/language
     /${root}/home/btop
+    /${root}/home/gaming
   ];
 
   programs.home-manager.enable = true;
@@ -33,7 +34,7 @@
   wayland.windowManager.sway.extraConfig = ''
     output eDP-2 {
       mode 2560x1600@165Hz
-      scale 1.3
+      scale 1.25
       adaptive_sync on
     }
   '';
