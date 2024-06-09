@@ -4,5 +4,6 @@
     defaultEditor = true;
 
     plugins = [ pkgs.mithic-nvim ];
+    extraLuaConfig = "require 'mithic'";
   };
 }
