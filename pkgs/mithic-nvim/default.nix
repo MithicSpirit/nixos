@@ -21,68 +21,71 @@
 
 }).overrideAttrs (old: {
   nativeBuildInputs = old.nativeBuildInputs ++ [ fennel ];
+  vimPlugins = (with pkgs.vimPlugins; [
+
+    colorizer
+
+    gitsigns-nvim
+    indent-blankline-nvim # ibl
+    hop-nvim
+    #trouble-nvim
+    vim-sneak
+    undotree
+    #nvim-parinfer
+    #firenvim
+    vimtex
+    idris2-nvim
+
+    # tpope
+    vim-sleuth
+    vim-eunuch
+    vim-rsi
+    vim-fugitive
+    vim-repeat
+    vim-surround
+    vim-commentary # TODO: nvim 0.10
+
+    # telescope
+    telescope-nvim
+    telescope-zf-native-nvim
+    telescope-file-browser-nvim
+
+    # lsp
+    nvim-lspconfig
+
+    # lean
+    lean-nvim
+    plenary-nvim
+
+    # coq
+    Coqtail
+
+    # agda
+    cornelis
+    vim-textobj-user
+    nvim-hs-vim
+    # treesitter
+    nvim-treesitter
+
+  ]) ++ (with builtins;
+    filter isAttrs (attrValues pkgs.vimPlugins.nvim-treesitter-parsers));
+
   propagatedBuildInputs =
     (if old ? propagatedBuildInputs then old.propagatedBuildInputs else [ ])
-    ++ (with pkgs.vimPlugins; [
-
-      colorizer
-
-      gitsigns-nvim
-      indent-blankline-nvim # ibl
-      hop-nvim
-      #trouble-nvim
-      vim-sneak
-      undotree
-      #nvim-parinfer
-      #firenvim
-      vimtex
-      idris2-nvim
-
-      # tpope
-      vim-sleuth
-      vim-eunuch
-      vim-rsi
-      vim-fugitive
-      vim-repeat
-      vim-surround
-      vim-commentary # TODO: nvim 0.10
-
-      # telescope
-      telescope-nvim
-      telescope-zf-native-nvim
-      telescope-file-browser-nvim
-      pkgs.fd
-
-      # lsp
-      nvim-lspconfig
-      pkgs.fennel-ls
-      pkgs.zls
-      pkgs.rustup
-      pkgs.clang-tools
-      pkgs.haskell-language-server
-      pkgs.ruff
-      # pkgs.basedpyright
-      pkgs.texlab
-      pkgs.ltex-ls
-
-      # lean
-      lean-nvim
-      plenary-nvim
-      pkgs.elan
-
-      # coq
-      Coqtail
-      pkgs.coq
-
-      # agda
+    ++ (with pkgs; [
+      fd # telescope
+      elan # lean
+      coq
       cornelis
-      vim-textobj-user
-      nvim-hs-vim
-      pkgs.cornelis
-
-      # treesitter
-      nvim-treesitter
-
-    ]) ++ (with builtins;
-      filter isAttrs (attrValues pkgs.vimPlugins.nvim-treesitter-parsers));
+      # lsp
+      fennel-ls
+      zls
+      rustup
+      clang-tools
+      haskell-language-server
+      ruff
+      #basedpyright
+      texlab
+      ltex-ls
+    ]);
 })

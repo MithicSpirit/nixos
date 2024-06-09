@@ -3,7 +3,7 @@
     enable = true;
     defaultEditor = true;
 
-    plugins = [ pkgs.mithic-nvim ];
+    plugins = let me = pkgs.mithic-nvim; in [ me ] ++ me.vimPlugins;
     extraLuaConfig = "require 'mithic'";
   };
 }
