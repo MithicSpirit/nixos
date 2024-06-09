@@ -54,7 +54,3 @@
 (vim.api.nvim_create_user_command :Cdfile
   #(vim.api.nvim_set_current_dir (vim.fn.expand "%:p:h"))
   {:desc "cd to the parent of the current file" :force false})
-
-(vim.api.nvim_create_user_command :Checkhealth
-  (fn [] (vim.cmd "Lazy! load all") (vim.cmd.checkhealth))
-  {:desc "Load all plugins and check health" :force false})
