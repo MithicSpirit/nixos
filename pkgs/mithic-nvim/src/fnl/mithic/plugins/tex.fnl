@@ -24,8 +24,8 @@
 
 (set vim.g.vimtex_format_enabled 1)
 
-(let [ag (vim.api.nvim_create_augroup :custom-vimtex {})
-      ns (vim.api.nvim_create_namespace :custom-vimtex)]
+(let [ag (vim.api.nvim_create_augroup :mithic-vimtex {})
+      ns (vim.api.nvim_create_namespace :mithic-vimtex)]
   (vim.api.nvim_create_autocmd
     :FileType
     {:pattern :tex

@@ -1,0 +1,5 @@
+(require :mithic.opts)
+(require :mithic.maps)
+(require :mithic.misc)
+(require :mithic.autocmd)
+(require :mithic.plugins)

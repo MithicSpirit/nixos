@@ -18,7 +18,7 @@
      :prompt_path true
      :mappings
      {:i
-      {"<A-Cr>" fb-actions.custom_rifle
+      {"<A-Cr>" fb-actions.mithic_rifle
        "<Bs>" fb-actions.backspace
        "<C-Cr>" fb-actions.change_cwd
        "<C-h>" fb-actions.toggle_hidden
@@ -28,17 +28,17 @@
        "<A-y>" false "<C-e>" false "<C-f>" false "<C-g>" false
        "<C-o>" false "<C-s>" false}
       :n
-      {"<A-Cr>" fb-actions.custom_rifle
+      {"<A-Cr>" fb-actions.mithic_rifle
        "<Bs>" fb-actions.backspace
        "<C-Cr>" fb-actions.change_cwd
        "<C-h>" fb-actions.toggle_hidden
        "<C-w>" fb-actions.goto_cwd
        "<S-Cr>" fb-actions.create_from_prompt
        "<localleader>R" fb-actions.move
-       "<localleader>d" fb-actions.custom_dragon_drop
+       "<localleader>d" fb-actions.mithic_dragon_drop
        "<localleader>o" fb-actions.create
        "<localleader>r" fb-actions.rename
-       "<localleader>x" fb-actions.custom_trash
+       "<localleader>x" fb-actions.mithic_trash
        "<localleader>y" fb-actions.copy
        "u" fb-actions.goto_parent_dir
        "~" fb-actions.goto_home_dir}}

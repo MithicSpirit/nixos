@@ -28,11 +28,10 @@
     let
 
       forAllSystems = nixpkgs.lib.genAttrs [
-        # limitations primarily because of disko
         "x86_64-linux"
-        "i686-linux"
-        "aarch64-linux"
-        "riscv64-linux"
+        # "i686-linux"
+        # "aarch64-linux"
+        # "riscv64-linux"
         # "aarch64-darwin"
         # "armv7l-linux"
         # "armv6l-linux"

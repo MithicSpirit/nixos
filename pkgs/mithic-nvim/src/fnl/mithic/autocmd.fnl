@@ -1,4 +1,4 @@
-(local augroup (vim.api.nvim_create_augroup :custom {}))
+(local augroup (vim.api.nvim_create_augroup :mithic {}))
 
 ;; FileType options
 ; C-like

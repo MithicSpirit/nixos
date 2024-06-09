@@ -4,7 +4,7 @@ local actions = require('telescope.actions')
 local action_state = require('telescope.actions.state')
 local plenary_job = require('plenary.job')
 
-function fb_actions.custom_dragon_drop(prompt_bufnr)
+function fb_actions.mithic_dragon_drop(prompt_bufnr)
 	local quiet = action_state.get_current_picker(prompt_bufnr).finder.quiet
 	local selections = fb_utils.get_selected_files(prompt_bufnr, true)
 	if vim.tbl_isempty(selections) then
@@ -27,7 +27,7 @@ function fb_actions.custom_dragon_drop(prompt_bufnr)
 	}):start()
 end
 
-function fb_actions.custom_rifle(prompt_bufnr)
+function fb_actions.mithic_rifle(prompt_bufnr)
 	local quiet = action_state.get_current_picker(prompt_bufnr).finder.quiet
 	local selections = fb_utils.get_selected_files(prompt_bufnr, true)
 	if vim.tbl_isempty(selections) then
@@ -49,6 +49,6 @@ function fb_actions.custom_rifle(prompt_bufnr)
 	actions.close(prompt_bufnr)
 end
 
-fb_actions.custom_trash = require(... .. '.trash')
+fb_actions.mithic_trash = require(... .. '.trash')
 
 return fb_actions

@@ -1,4 +1,4 @@
-{ config, pkgs, root, overlays, ... }: {
+{ config, pkgs, root, ... }: {
 
   imports = [
     /${root}/home/bat

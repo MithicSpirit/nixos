@@ -1,4 +1,6 @@
-(local augroup (vim.api.nvim_create_augroup :custom-cornelis {}))
+(local augroup (vim.api.nvim_create_augroup :mithic-cornelis {}))
+
+(set vim.g.cornelis_use_global_binary 1)
 
 (vim.api.nvim_create_autocmd :FileType
   {:pattern :agda

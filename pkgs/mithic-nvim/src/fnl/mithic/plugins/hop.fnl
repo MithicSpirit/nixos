@@ -18,4 +18,4 @@
              {"b" [:hint_words :BEFORE_CURSOR]}
              {"/" [:hint_patterns :AFTER_CURSOR]}
              {"?" [:hint_patterns :BEFORE_CURSOR]})]
-  (vim.keymap.set "" (.. "gs" k) (hop (unpack v))))
+  (vim.keymap.set "" (.. "gs" k) (hop (_G.unpack v))))

@@ -7,6 +7,7 @@
     theme_background = false;
     presets = "";
     vim_keys = true;
+    rounded_corners = false;
     update_time = 2000;
     cpu_graph_lower = "Auto";
     show_gpu_info = "Auto";

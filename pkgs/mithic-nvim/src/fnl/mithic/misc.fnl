@@ -10,7 +10,7 @@
        (vim.keymap.set :n "M" "mfj" opts)
        (vim.keymap.set :n "i" "R" opts)
        (vim.keymap.set :n "o" "%" opts))
-  :group (vim.api.nvim_create_augroup :custom-netrw {})})
+  :group (vim.api.nvim_create_augroup :mithic-netrw {})})
 
 
 ;; Neovide
@@ -41,7 +41,7 @@
 (update-listchars-leadmultispace)
 (vim.api.nvim_create_autocmd [:OptionSet :BufWinEnter]
   {:callback update-listchars-leadmultispace
-   :group (vim.api.nvim_create_augroup :custom-lc-lms {})})
+   :group (vim.api.nvim_create_augroup :mithic-lc-lms {})})
 
 
 ;; Whitespace cleanup
@@ -53,7 +53,7 @@
       (vim.cmd "%substitute/\\n\\+\\%$//e")
       (pcall #(vim.api.nvim_win_set_cursor 0 c))
       nil)
-   :group (vim.api.nvim_create_augroup :custom-whitespace {})})
+   :group (vim.api.nvim_create_augroup :mithic-whitespace {})})
 
 
 ;; Jump to last position
@@ -68,7 +68,7 @@
               (vim.cmd "normal! g'\""))
          :buffer 0
          :once true})
-   :group (vim.api.nvim_create_augroup :custom-lastpos {})})
+   :group (vim.api.nvim_create_augroup :mithic-lastpos {})})
 
 
 ;; New scratch buffer

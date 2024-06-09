@@ -1,13 +1,13 @@
 default: format check
 
 format:
-    nix fmt -- --width=80 .
+    nix fmt -- --width=80 --verify .
 
 check:
     nix flake check --all-systems
     nix run .#deadnix -- --fail
 
-undead: && check
+undead: && format check
     nix run .#deadnix -- --edit
 
 update: && format check
