@@ -1,12 +1,17 @@
-{ ... }: {
+{ config, pkgs, ... }: {
+
+  programs.gpg = {
+    enable = true;
+    homedir = "${config.xdg.dataHome}/gnupg";
+    mutableKeys = false;
+  };
 
   services.gpg-agent = {
     enable = true;
-
     enableSshSupport = true;
-    enableZshIntegration = true;
 
     grabKeyboardAndMouse = true;
+    pinentryPackage = pkgs.pinentry-bemenu;
 
     defaultCacheTtl = 15 * 60;
     defaultCacheTtlSsh = 30 * 60;
@@ -18,4 +23,5 @@
       allow-emacs-pinentry
     '';
   };
+
 }

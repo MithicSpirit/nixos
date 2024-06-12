@@ -6,6 +6,7 @@ in {
   home.pointerCursor = {
     package = pkgs.libsForQt5.breeze-qt5;
     name = "breeze_cursors";
+    size = 32;
     gtk.enable = true;
     x11.enable = true;
   };
@@ -13,7 +14,7 @@ in {
   gtk = {
     enable = true;
     font = {
-      package = pkgs.iosevka-mithic;
+      package = pkgs.overpass;
       name = "Overpass";
       size = 12;
     };
