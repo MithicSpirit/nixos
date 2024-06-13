@@ -3,7 +3,7 @@
   services.cliphist = {
     enable = true;
     allowImages = true;
-    extraOptions = [ "-max-items 1500" ];
+    extraOptions = [ "-max-items" "1500" ];
   };
 
 }

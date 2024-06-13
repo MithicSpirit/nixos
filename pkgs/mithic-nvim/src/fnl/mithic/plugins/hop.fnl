@@ -1,8 +1,13 @@
-(fn hop [typ dir opts]
+(local hop (require :hop))
+
+(hop.setup {:jump_on_sole_occurrence false})
+
+(fn do-hop [typ dir opts]
   #(let [cole vim.o.conceallevel]
      (set vim.opt.conceallevel 0)
      ((. (require :hop) typ)
-      (vim.tbl_deep_extend :force
+      (vim.tbl_deep_extend
+        :force
         {:direction (. (require :hop.hint) :HintDirection dir)}
         (or opts {})))
      (set vim.opt.conceallevel cole)))
@@ -18,4 +23,4 @@
              {"b" [:hint_words :BEFORE_CURSOR]}
              {"/" [:hint_patterns :AFTER_CURSOR]}
              {"?" [:hint_patterns :BEFORE_CURSOR]})]
-  (vim.keymap.set "" (.. "gs" k) (hop (_G.unpack v))))
+  (vim.keymap.set "" (.. "gs" k) (do-hop (_G.unpack v))))

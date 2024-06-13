@@ -5,7 +5,8 @@ in {
   # TODO: wait for proper support to be merged (#287399, #167388)
   environment.systemPackages = [ logiops ];
 
-  systemd.services.logid = let dep = ["multi-user.target"]; in {
+  systemd.services.logid = let dep = [ "multi-user.target" ];
+  in {
     description = "Unofficial HID++ Logitech configuration daemon";
     wantedBy = dep;
     after = dep;

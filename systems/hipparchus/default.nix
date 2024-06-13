@@ -63,25 +63,23 @@
     enable = true; # default, but just to be safe
     earlySetup = true;
     keyMap = "us";
-    colors = [
-      # nord theme
-      # TODO: use import common
-      "292E38"
-      "BF616A"
-      "A3BE8C"
-      "EBCB8B"
-      "81A1C1"
-      "B48EAD"
-      "88C0D0"
-      "F2F5FA"
-      "64718B"
-      "C76B74"
-      "ADC698"
-      "F3D599"
-      "8CA9C6"
-      "BC9AB5"
-      "93BEBE"
-      "ECEFF4"
+    colors = with (import /${root}/common/colorscheme.nix).raw; [
+      base00
+      base01
+      base02
+      base03
+      base04
+      base05
+      base06
+      base07
+      base08
+      base09
+      base10
+      base11
+      base12
+      base13
+      base14
+      base15
     ];
   };
 

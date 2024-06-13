@@ -26,6 +26,8 @@
         font = "Iosevka Mithic 11";
         corner_radius = 4;
         frame_color = colors.accent;
+        frame_width = 2;
+        separator_height = 2;
       };
 
       urgency_low = {

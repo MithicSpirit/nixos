@@ -64,6 +64,7 @@
     ignores = [ "/compile_commands.json" "/venv/**" "/.venv/**" "flycheck_*" ];
 
     delta = {
+
       enable = true;
       options = {
         navigate = true;
@@ -72,24 +73,21 @@
         right-arrow = "->";
         line-numbers-left-format = "{nm:^4}|";
         width = 80;
+
         # colormoved support
-        map-styles = with builtins; let
-          table = {
-            "bold purple" = ''syntax "#380f2e"'';
-            "bold blue" = ''syntax "#2c1349"'';
-            "bold cyan" = ''syntax "#0d3a36"'';
-            "bold yellow" = ''syntax "#273414"'';
-          };
-        in foldl' (acc: elem:
-          let new = "${elem} => ${table.${elem}}";
-          in if acc == "" then new else "${acc}, ${new}") "" (attrNames table);
-        # map-styles = ''
-        #   bold purple => syntax "#380f2e", \
-        #   bold blue => syntax "#2c1349", \
-        #   bold cyan => syntax "#0d3a36", \
-        #   bold yellow => syntax "#273414"
-        # '';
-        # TODO: ^ check if works
+        map-styles = with builtins;
+          let
+            table = {
+              "bold purple" = ''syntax "#380f2e"'';
+              "bold blue" = ''syntax "#2c1349"'';
+              "bold cyan" = ''syntax "#0d3a36"'';
+              "bold yellow" = ''syntax "#273414"'';
+            };
+          in foldl' (acc: elem:
+            let new = "${elem} => ${table.${elem}}";
+            in if acc == "" then new else "${acc}, ${new}") ""
+          (attrNames table);
+
       };
     };
   };

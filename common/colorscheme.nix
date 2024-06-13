@@ -1,23 +1,65 @@
 let
-  palette = {
-    floor = "2e3440";
-    bg = "3b4252";
-    shadow = "43c5e";
-    fake = "4c566a";
-    lower = "d8dee9";
-    middle = "e5e9f0";
-    fg = "eceff4";
-    highlight = "8fbcbb";
-    accent = "88c0d0";
-    colored = "81a1c1";
-    extra = "5e81ac";
-    bad = "bf616a";
-    advanced = "d08770";
-    warning = "ebcb8b";
-    good = "a3be8c";
-    strange = "b48ead";
+  nord = {
+    nord00 = "2e3440";
+    nord01 = "3b4252";
+    nord02 = "434c5e";
+    nord03 = "4c566a";
+    nord04 = "d8dee9";
+    nord05 = "e5e9f0";
+    nord06 = "eceff4";
+    nord07 = "8fbcbb";
+    nord08 = "88c0d0";
+    nord09 = "81a1c1";
+    nord10 = "5e81ac";
+    nord11 = "bf616a";
+    nord12 = "d08770";
+    nord13 = "ebcb8b";
+    nord13' = "ebcb8b"; # TODO
+    nord14 = "a3be8c";
+    nord14' = "a3be8c"; # TODO
+    nord15 = "b48ead";
+    nord15' = "b48ead"; # TODO
+  };
+  palette = with nord; {
+    # base16 colors
+    base00 = nord00;
+    base00' = nord01;
+    base01 = nord11;
+    base02 = nord14;
+    base03 = nord13;
+    base04 = nord10;
+    base05 = nord15;
+    base06 = nord08;
+    base07 = nord06;
+    base07' = nord05;
+    base08 = nord02; # TODO: 2,3
+    base09 = nord12;
+    base10 = nord14';
+    base11 = nord13';
+    base12 = nord09;
+    base13 = nord15';
+    base14 = nord07;
+    base15 = nord04;
+
+    # named colors
+    floor = nord00;
+    bg = nord01;
+    shadow = nord02;
+    fake = nord03;
+    lower = nord04;
+    middle = nord05;
+    fg = nord06;
+    highlight = nord07;
+    accent = nord08;
+    colored = nord09;
+    extra = nord10;
+    bad = nord11;
+    advanced = nord12;
+    warning = nord13;
+    good = nord14;
+    strange = nord15;
   };
 in {
-  numbers = palette;
+  raw = palette;
   hash = builtins.mapAttrs (_: raw: "#${raw}") palette;
 }
