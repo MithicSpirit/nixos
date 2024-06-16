@@ -24,7 +24,7 @@ in {
     };
     theme = {
       package = kdep.breeze-gtk;
-      name = "Breeze Dark";
+      name = "Breeze-Dark";
     };
   };
 
