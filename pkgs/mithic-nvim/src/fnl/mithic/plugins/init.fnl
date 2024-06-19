@@ -1,3 +1,4 @@
+(require (.. ... :.colorizer))
 (require (.. ... :.gitsigns))
 (require (.. ... :.ibl))
 (require (.. ... :.hop))

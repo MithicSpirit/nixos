@@ -6,6 +6,7 @@
     /${root}/home/git
     /${root}/home/gpg
     /${root}/home/kitty
+    # /${root}/home/librewolf
     /${root}/home/mpv
     /${root}/home/neovim
     /${root}/home/newsboat
@@ -55,35 +56,34 @@
     # TODO: ranger and rifle replacement(s?)
 
     packages = with pkgs; [
-      rmtrash
-      fasd
       mediainfo
+      rmtrash
       ugrep
-      yt-dlp
 
+      du-dust
+      duf
       eza
       fd
-      ripgrep
-      duf
-      du-dust
+      just
       procs
+      ripgrep
       sd
 
-      pcmanfm
-      xdragon
       gnome.gnome-characters
+      pcmanfm
+      swayimg
       thunderbird
       vlc
-      swayimg
       wev
+      xdragon
       xorg.xev
       xorg.xprop
       xournalpp
 
-      librewolf
       firefox
-      ungoogled-chromium
+      librewolf
       tor-browser
+      ungoogled-chromium
 
       libqalculate
       qalculate-gtk

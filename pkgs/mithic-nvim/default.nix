@@ -24,7 +24,6 @@
   vimPlugins = (with pkgs.vimPlugins; [
 
     colorizer
-
     gitsigns-nvim
     indent-blankline-nvim # ibl
     hop-nvim

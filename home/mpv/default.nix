@@ -1,4 +1,5 @@
 { config, pkgs, ... }: {
+
   programs.mpv = {
     enable = true;
 
@@ -66,4 +67,7 @@
     # Use OSD when a segment is skipped or muted
     skip_notice = true
   '';
+
+  home.packages = [ pkgs.yt-dlp ];
+
 }

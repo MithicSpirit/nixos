@@ -2,8 +2,8 @@
 
   home.language = {
     base = "en_US.UTF-8";
-    time = "en_DK.UTF-8";
-    measurement = "en_GB.UTF-8";
+    time = "en_CA.UTF-8";
+    measurement = "i18n.UTF-8";
   };
 
 }

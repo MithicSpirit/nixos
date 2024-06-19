@@ -14,6 +14,7 @@ in {
     serviceConfig = {
       Type = "simple";
       ExecStart = "${logiops}/bin/logid";
+      ExecStartPre = "${pkgs.kmod}/bin/modprobe hid_logitech_hidpp || :";
     };
   };
 
