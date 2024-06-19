@@ -116,6 +116,7 @@
     moreutils
     busybox
     util-linux
+    comma
     which
     dash
     curl
