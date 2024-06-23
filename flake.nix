@@ -3,8 +3,7 @@
 
   inputs = {
 
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.05";
-    nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
 
     hardware.url = "github:NixOS/nixos-hardware";
 
@@ -14,7 +13,7 @@
     };
 
     home-manager = {
-      url = "github:nix-community/home-manager/release-24.05";
+      url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
@@ -64,8 +63,7 @@
           inherit (disko.packages.${system}) disko disko-install;
         });
 
-      formatter =
-        forAllSystems (system: packages.${system}.unstable.nixfmt-classic);
+      formatter = forAllSystems (system: packages.${system}.nixfmt-classic);
 
       nixosConfigurations = {
 

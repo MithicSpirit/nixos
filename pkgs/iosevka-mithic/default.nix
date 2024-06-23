@@ -3,7 +3,7 @@
 , ttfautohint-nox, python3, fontforge, }:
 buildNpmPackage rec {
   pname = "iosevka-mithic";
-  version = "29.2.1";
+  version = "30.3.0";
   patcher-version = "3.2.1";
 
   iosevka = fetchFromGitHub {
