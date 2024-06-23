@@ -25,6 +25,7 @@
     /${root}/home/language
     /${root}/home/btop
     /${root}/home/gaming
+    /${root}/home/dev
   ];
 
   programs.home-manager.enable = true;
@@ -64,20 +65,17 @@
       duf
       eza
       fd
-      just
       procs
       ripgrep
       sd
 
+      gimp
       gnome.gnome-characters
       pcmanfm
       swayimg
       thunderbird
       vlc
-      wev
       xdragon
-      xorg.xev
-      xorg.xprop
       xournalpp
 
       firefox
@@ -87,9 +85,6 @@
 
       libqalculate
       qalculate-gtk
-
-      texliveFull
-      tectonic
     ];
     enableDebugInfo = true;
   };

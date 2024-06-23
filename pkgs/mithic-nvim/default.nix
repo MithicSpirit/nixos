@@ -21,6 +21,7 @@
 
 }).overrideAttrs (old: {
   nativeBuildInputs = old.nativeBuildInputs ++ [ fennel ];
+
   vimPlugins = (with pkgs.vimPlugins; [
 
     colorizer
@@ -69,22 +70,20 @@
   ]) ++ (with builtins;
     filter isAttrs (attrValues pkgs.vimPlugins.nvim-treesitter-parsers));
 
-  propagatedBuildInputs =
-    (if old ? propagatedBuildInputs then old.propagatedBuildInputs else [ ])
-    ++ (with pkgs; [
-      fd # telescope
-      elan # lean
-      coq
-      cornelis
-      # lsp
-      fennel-ls
-      zls
-      rustup
-      clang-tools
-      haskell-language-server
-      ruff
-      #basedpyright
-      texlab
-      ltex-ls
-    ]);
+  extraPackages = with pkgs; [
+    fd # telescope
+    lean # lean
+    coq
+    cornelis
+    # lsp
+    fennel-ls
+    zls
+    rust-analyzer
+    clang-tools
+    haskell-language-server
+    ruff
+    basedpyright
+    texlab
+    ltex-ls
+  ];
 })

@@ -1,9 +1,14 @@
-{ pkgs, ... }: {
+{ pkgs, ... }:
+let me = pkgs.mithic-nvim;
+in {
+
   programs.neovim = {
     enable = true;
     defaultEditor = true;
 
-    plugins = let me = pkgs.mithic-nvim; in [ me ] ++ me.vimPlugins;
+    plugins = [ me ] ++ me.vimPlugins;
     extraLuaConfig = "require 'mithic'";
+    extraPackages = me.extraPackages;
   };
+
 }

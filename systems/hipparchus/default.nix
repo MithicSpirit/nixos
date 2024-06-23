@@ -1,6 +1,7 @@
 { config, pkgs, inputs, root, overlays, ... }: {
 
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
+  nix.package = pkgs.nixVersions.latest;
 
   imports = [
     ./hardware-configuration.nix # FIXME: update
