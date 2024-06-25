@@ -1,4 +1,4 @@
-{ config, ... }: {
+{ config, pkgs, ... }: {
 
   programs.gpg = {
     enable = true;
@@ -12,7 +12,7 @@
     enableSshSupport = true;
 
     grabKeyboardAndMouse = true;
-    # pinentryPackage = pkgs.pinentry-curses;
+    pinentryPackage = pkgs.pinentry-qt;
 
     defaultCacheTtl = 15 * 60;
     defaultCacheTtlSsh = 30 * 60;
