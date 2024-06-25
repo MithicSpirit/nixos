@@ -52,13 +52,5 @@
         };
       };
     };
-    nodev = {
-
-      "/tmp" = {
-        fsType = "tmpfs";
-        mountOptions = [ "nosuid" "size=8G" ];
-      };
-
-    };
   };
 }

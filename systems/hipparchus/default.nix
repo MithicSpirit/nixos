@@ -50,6 +50,7 @@
 
   services.smartd.enable = true;
   services.fstrim.enable = true;
+  boot.tmp.useTmpfs = true;
 
   networking.hostName = "hipparchus";
   networking.networkmanager = {
