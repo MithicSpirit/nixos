@@ -4,7 +4,7 @@
   nix.package = pkgs.nixVersions.latest;
 
   imports = [
-    ./hardware-configuration.nix # FIXME: update
+    ./hardware-configuration.nix
     inputs.home-manager.nixosModules.default
     inputs.disko.nixosModules.default
     ./disko.nix
@@ -37,12 +37,9 @@
   boot.initrd.systemd.enable = true;
 
   boot.kernelPackages = pkgs.linuxPackages_latest;
-  # TODO: boot.kernelParams loglevel=3, no quiet (check /proc/cmdline)
   boot.kernel.sysctl = {
     "vm.swappiness" = 10;
     "kernel.sysrq" = 244;
-    # TODO: "vm.max_map_count" = 1048576;
-    # TODO: "kernel.pid_max" = 4194304;
   };
 
   i18n.defaultLocale = "en_US.UTF-8";

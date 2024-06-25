@@ -7,6 +7,7 @@
         content = {
           type = "gpt";
           partitions = {
+
             ESP = {
               type = "EF00";
               size = "1G";
@@ -16,6 +17,7 @@
                 mountpoint = "/boot";
               };
             };
+
             luks = {
               size = "100%";
               content = {
@@ -29,26 +31,34 @@
                   subvolumes = {
                     "/nixroot" = {
                       mountpoint = "/";
-                      mountOptions = [ "compress-force=zstd:2" "noatime" ];
+                      mountOptions = [ "compress-force=zstd:3" "noatime" ];
                     };
                     "/home" = {
                       mountpoint = "/home";
-                      mountOptions = [ "compress=zstd:2" ];
+                      mountOptions = [ "compress=zstd:2" "nosuid" ];
                     };
                     "/swap" = {
                       mountpoint = "/swap";
                       mountOptions =
                         [ "nodatacow" "noatime" "noexec" "lazytime" ];
-                      # TODO: resumeDevice? if needed
                       swap.swapfile.size = "48G";
                     };
                   };
                 };
               };
             };
+
           };
         };
       };
+    };
+    nodev = {
+
+      "/tmp" = {
+        fsType = "tmpfs";
+        mountOptions = [ "nosuid" "size=8G" ];
+      };
+
     };
   };
 }

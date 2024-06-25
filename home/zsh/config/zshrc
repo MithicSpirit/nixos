@@ -102,6 +102,6 @@ PROMPT_EOL_MARK="$(printf '%%{\033[0m\033[7m\033[1m%%}%%#%%{\033[0m%%}')"
 command -v zoxide &>/dev/null &&
 	eval "$(zoxide init --cmd j zsh)"
 __escape_aliases  # See globalias
-export TTY
+export TTY GPG_TTY="$TTY"
 
 true  # prevent above error codes from affecting prompt
