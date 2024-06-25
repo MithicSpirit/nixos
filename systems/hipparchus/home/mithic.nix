@@ -26,6 +26,7 @@
     /${root}/home/btop
     /${root}/home/gaming
     /${root}/home/dev
+    /${root}/home/ssh
   ];
 
   programs.home-manager.enable = true;

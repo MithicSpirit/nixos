@@ -4,22 +4,22 @@
     enable = true;
     homedir = "${config.xdg.dataHome}/gnupg";
     mutableKeys = false;
-    settings = { pinentry-mode = "loopback"; };
   };
 
-  services.gpg-agent = {
+  services.gpg-agent = let hours = h: h * 60 * 60;
+  in {
     enable = true;
     enableSshSupport = true;
 
     grabKeyboardAndMouse = true;
     pinentryPackage = pkgs.pinentry-qt;
 
-    defaultCacheTtl = 15 * 60;
-    defaultCacheTtlSsh = 30 * 60;
-    maxCacheTtl = 60 * 60;
-    maxCacheTtlSsh = 2 * 60 * 60;
+    defaultCacheTtl = hours 1;
+    defaultCacheTtlSsh = hours 1;
+    maxCacheTtl = hours 3;
+    maxCacheTtlSsh = hours 3;
     extraConfig = ''
-      pinentry-timeout ${builtins.toString (6 * 60 * 60)}
+      pinentry-timeout ${builtins.toString (hours 24)}
       no-allow-external-cache
       allow-emacs-pinentry
       allow-loopback-pinentry

@@ -10,7 +10,7 @@
     ./disko.nix
     /${root}/host/secure-boot
     /${root}/host/man
-    /${root}/host/ssh
+    /${root}/host/sshd
     /${root}/host/pipewire
     /${root}/host/dnscrypt
     /${root}/host/logitech
@@ -99,6 +99,8 @@
 
   services.printing.enable = true;
   programs.dconf.enable = true;
+  services.gvfs.enable = true;
+  services.udisks2.enable = true;
 
   services.locate = {
     enable = true;
