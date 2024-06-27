@@ -47,7 +47,8 @@
       :generic {:enable true :highlight_results true :match_filename false}}}}
    :pickers
    {:find_files {:find_command ["fd" "--type=f" "--color=never" "--hidden"
-                                "--no-require-git" "--exclude=.git"]}}})
+                                "--no-require-git" "--exclude=.git"]}
+    :live_grep {:additional_args ["--fixed-strings"]}}})
 
 (telescope.load_extension :zf-native)
 (telescope.load_extension :file_browser)

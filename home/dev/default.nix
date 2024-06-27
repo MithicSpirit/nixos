@@ -7,6 +7,7 @@
 
     # python
     python3
+    python3Packages.ipython
     ruff
     uv
     mypy
@@ -36,6 +37,7 @@
     gdb
     gh
     scc
+    rlwrap # idris2 repl improvement
   ];
 
 }

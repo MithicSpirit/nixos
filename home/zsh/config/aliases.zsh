@@ -35,11 +35,14 @@ alias \
 	ffupload="ffsend upload -vd 20 -e 7d" \
 	h="history 1" \
 	idr="rlwrap -n idris2" \
+	idrc="idris2 --total" \
+	ipy="ipython" \
 	matrix="cmatrix -ab" \
 	md="mkdir -p" \
 	open="xdg-open" \
 	paste="wl-paste" \
 	pip="python -m pip" \
+	py="python" \
 	sc="systemctl" \
 	scu="systemctl --user" \
 	sl="sl -ae -50" \
