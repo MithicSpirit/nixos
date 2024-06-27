@@ -1,4 +1,5 @@
 { pkgs, lib, ... }: {
+
   home.packages = with pkgs; [
     # c/++
     gcc
@@ -9,18 +10,17 @@
     ruff
     uv
     mypy
+    basedpyright
 
     # rust
-    rustc
-    cargo
-    rustfmt
+    rustup
 
     # haskell
     ghc
-    # cabal
+    cabal-install
 
     # proof assistants
-    lean4
+    elan
     agda
     coq
     idris
@@ -37,4 +37,5 @@
     gh
     scc
   ];
+
 }

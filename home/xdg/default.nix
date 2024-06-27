@@ -1,5 +1,8 @@
 { config, ... }:
-let home = config.home.homeDirectory;
+let
+  home = config.home.homeDirectory;
+  dataDir = f: "${config.xdg.dataHome}/${f}";
+  configDir = f: "${config.xdg.configHome}/${f}";
 in {
 
   xdg = {
@@ -9,19 +12,19 @@ in {
     configHome = "${home}/.local/etc";
     dataHome = "${home}/.local/share";
     stateHome = "${home}/.local/state";
-    userDirs = let documents = config.xdg.userDirs.documents;
+    userDirs = let parent = "${home}/files";
     in {
       enable = true;
       createDirectories = true;
       templates = "${config.xdg.dataHome}/templates";
 
-      documents = "${home}/documents";
-      download = "${documents}/downloads";
-      pictures = "${documents}/pictures";
-      videos = "${documents}/videos";
-      music = "${documents}/music";
-      desktop = "${documents}/desktop";
-      publicShare = "${documents}/public";
+      documents = "${parent}/documents";
+      download = "${parent}/downloads";
+      pictures = "${parent}/pictures";
+      videos = "${parent}/videos";
+      music = "${parent}/music";
+      desktop = "${parent}/desktop";
+      publicShare = "${parent}/public";
     };
 
     mime.enable = true;
@@ -36,5 +39,13 @@ in {
   };
 
   home.preferXdgDirectories = true;
+
+  home.sessionVariables = {
+    RUSTUP_HOME = dataDir "rustup";
+    ELAN_HOME = dataDir "elan";
+  };
+
+  gtk.gtk2.configLocation = configDir "gtk-2.0/gtkrc";
+  xresources.path = configDir "Xresources";
 
 }

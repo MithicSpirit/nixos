@@ -76,7 +76,8 @@
     coq
     cornelis
     # lsp
-    fennel-ls
+    lua-language-server
+    # TODO: fennel-language-server
     zls
     rust-analyzer
     clang-tools
