@@ -6,12 +6,13 @@
  ;   {:settings {:fennel {:workspace
  ;                          {:library (vim.api.nvim_list_runtime_paths)}
  ;                        :diagnostics {:globals [:vim]}}}}
- :fennel_ls {}
+ :fennel_ls {:settings {:fennel-ls {:extra-globals :vim}}}
 
- :zls {}
- :rust_analyzer {}
  :clangd {}
  :hls {}
+ :nil_ls {}
+ :rust_analyzer {}
+ :zls {}
 
  :ruff {}
  :basedpyright {}

@@ -27,6 +27,7 @@
     /${root}/home/gaming
     /${root}/home/dev
     /${root}/home/ssh
+    /${root}/home/desktop
   ];
 
   programs.home-manager.enable = true;
@@ -70,12 +71,8 @@
       ripgrep
       sd
 
-      gimp
-      gnome.gnome-characters
       pcmanfm
       swayimg
-      thunderbird
-      vlc
       xdragon
       xournalpp
 

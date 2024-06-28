@@ -1,4 +1,5 @@
-{ pkgs, buildVimPlugin ? pkgs.vimUtils.buildVimPlugin, fennel ? pkgs.fennel }:
+{ pkgs, buildVimPlugin ? pkgs.vimUtils.buildVimPlugin, fennel ? pkgs.fennel
+, python3 ? pkgs.python3 }:
 # TODO: get a statusline (NOT lualine please for the love of god please)
 # TODO: theme
 (buildVimPlugin {
@@ -9,18 +10,12 @@
   src = ./src;
 
   buildPhase = ''
-    for i in $(find fnl -type f); do
-      dir="lua/$(realpath -s --relative-to ./fnl $(dirname "$i"))"
-      name="$(basename "$i" .fnl)"
-      mkdir -p "$dir"
-      fennel --globals vim,_G --correlate --compile "$i" > "$dir/$name.lua"
-      rm "$i"
-    done
-    find fnl -type d -empty -delete
+    python3 build.py
+    cd out
   '';
 
 }).overrideAttrs (old: {
-  nativeBuildInputs = old.nativeBuildInputs ++ [ fennel ];
+  nativeBuildInputs = old.nativeBuildInputs ++ [ fennel python3 ];
 
   vimPlugins = (with pkgs.vimPlugins; [
 
@@ -72,16 +67,17 @@
 
   extraPackages = with pkgs; [
     fd # telescope
-    lean # lean
+    lean4 # lean
     coq
     cornelis
     # lsp
     lua-language-server
     fennel-ls
-    zls
-    rust-analyzer
     clang-tools
     haskell-language-server
+    nil
+    rust-analyzer
+    zls
     ruff
     basedpyright
     texlab
