@@ -77,7 +77,7 @@
     cornelis
     # lsp
     lua-language-server
-    # TODO: fennel-language-server
+    fennel-ls
     zls
     rust-analyzer
     clang-tools

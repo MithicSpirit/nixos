@@ -2,15 +2,13 @@
    {:settings {:Lua {:workspace
                        {:library (vim.api.nvim_list_runtime_paths)}
                      :diagnostics {:globals [:vim]}}}}
- :fennel_language_server
-   {:settings {:fennel {:workspace
-                          {:library (vim.api.nvim_list_runtime_paths)}
-                        :diagnostics {:globals [:vim]}}}}
+ ; :fennel_language_server
+ ;   {:settings {:fennel {:workspace
+ ;                          {:library (vim.api.nvim_list_runtime_paths)}
+ ;                        :diagnostics {:globals [:vim]}}}}
+ :fennel_ls {}
 
-
- :zls
-   {:settings {:zig {:zls {:enableAutofix false}}}}
-
+ :zls {}
  :rust_analyzer {}
  :clangd {}
  :hls {}
@@ -23,8 +21,10 @@
    {:settings {:texlab {:chktex {:onOpenAndSave true :onEdit true}
                         :latexFormatter :texlab}}}
 
+
  :ltex
-   {:settings
+   {:filetypes [:tex :bib :text :markdown]
+    :settings
      {:ltex
        {:latex
          {:environments {:numcases :ignore

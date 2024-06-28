@@ -1,5 +1,7 @@
 { pkgs, lib, ... }: {
 
+  imports = [ ./rust.nix ];
+
   home.packages = with pkgs; [
     # c/++
     gcc
@@ -13,15 +15,12 @@
     mypy
     basedpyright
 
-    # rust
-    rustup
-
     # haskell
     ghc
     cabal-install
 
     # proof assistants
-    elan
+    lean4
     agda
     coq
     idris
