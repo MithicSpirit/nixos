@@ -102,6 +102,7 @@
   programs.dconf.enable = true;
   services.gvfs.enable = true;
   services.udisks2.enable = true;
+  programs.kdeconnect.enable = true; # open firewall
 
   services.locate = {
     enable = true;
