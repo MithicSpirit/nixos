@@ -13,9 +13,9 @@ for_window {
     #[app_id="org.kde.korganizer"] move window to workspace 2
     #[app_id="org.kde.kmail2"] move window to workspace 3
     [app_id="thunderbird"] move window to workspace 2
-    [class="Signal"] move window to workspace 3
+    [app_id="signal"] move window to workspace 3
     [app_id="discord"] move window to workspace 4
-    [class="discord"] move window to workspace 4
-    [class="Element"] move window to workspace 5
+    [app_id="ArmCord"] move window to workspace 4
+    [app_id="im.riot.Riot"] move window to workspace 5
 }
 # vi: set ft=swayconfig

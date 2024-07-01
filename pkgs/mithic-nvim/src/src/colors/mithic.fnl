@@ -20,7 +20,7 @@
          :13 "#ebcb8b"
          :14 "#a3be8c"
          :15 "#b48ead"}]
-    {:border [nord.01 :Blue]
+    {:lift [nord.01 :Blue]
      :selection [nord.02 :Blue]
      :marker [nord.03 :Blue]
      :fake [nord.04 :Blue]
@@ -98,11 +98,6 @@
 (hi :IncSearch :Visual)
 (hi :Substitute :Visual)
 
-(hi :NonText {:fg :marker})
-(hi :EndOfBuffer :NonText)
-(hi :SnippetTabstop :NonText)
-(hi :Whitespace :NonText)
-
 (hi :LineNr {:fg :comment})
 (hi :LineNrAbove :LineNr)
 (hi :LineNrBelow :LineNr)
@@ -110,11 +105,11 @@
 
 (hi
   :StatusLine
-  {:bg :border :ctermbg :NONE :ctermfg :border :cterm {:reverse true}})
+  {:bg :lift :ctermbg :NONE :ctermfg :lift :cterm {:reverse true}})
 (hi :MsgSeparator :StatusLine)
 ; TODO: (hi :StatusLineNC)
 
-(hi :WinSeparator {:fg :border})
+(hi :WinSeparator {:fg :lift})
 (hi :FloatBorder :WinSeparator)
 
 (hi :Conceal {:fg :fake})
@@ -125,6 +120,10 @@
 (hi :SignColumn :Conceal) ; TODO
 (hi :CursorLineSign :SignColumn)
 (hi :Ignore :Conceal)
+(hi :NonText :Conceal)
+(hi :EndOfBuffer :NonText)
+(hi :SnippetTabstop :NonText)
+(hi :Whitespace :NonText)
 
 (hi :ErrorMsg {:fg :bad})
 (hi :WarningMsg {:fg :warn})

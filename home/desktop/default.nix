@@ -7,10 +7,10 @@
     vlc
 
     # communication
-    armcord
-    element-desktop
-    signal-desktop
     thunderbird
+    # armcord
+    # element-desktop
+    # signal-desktop
   ];
 
 }

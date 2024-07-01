@@ -19,6 +19,7 @@
 
   vimPlugins = (with pkgs.vimPlugins; [
 
+    mini-nvim
     colorizer
     gitsigns-nvim
     indent-blankline-nvim # ibl

@@ -1,3 +1,4 @@
+(require (.. ... :.mini))
 (require (.. ... :.colorizer))
 (require (.. ... :.gitsigns))
 (require (.. ... :.ibl))
