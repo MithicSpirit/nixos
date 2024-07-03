@@ -1,19 +1,11 @@
 { pkgs, lib, ... }: {
 
-  imports = [ ./rust.nix ];
+  imports = [ ./rust.nix ./python.nix ];
 
   home.packages = with pkgs; [
     # c/++
     gcc
     (lib.setPrio (gcc.meta.priority + 1) clang)
-
-    # python
-    python3
-    python3Packages.ipython
-    ruff
-    uv
-    mypy
-    basedpyright
 
     # haskell
     ghc

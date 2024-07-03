@@ -56,12 +56,13 @@
     username = "mithic";
     homeDirectory = "/home/${config.home.username}";
 
-    # TODO: ranger and rifle replacement(s?)
+    # TODO: ranger and rifle replacement(s?) yazi?
 
     packages = with pkgs; [
       mediainfo
       rmtrash
       ugrep
+      yazi
 
       du-dust
       duf
