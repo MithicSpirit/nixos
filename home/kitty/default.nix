@@ -28,6 +28,7 @@
       cursor_text_color = "background";
       foreground = colors.base07;
       background = colors.base00;
+      background_opacity = "0.93";
       selection_foreground = "none";
       selection_background = colors.fake;
       color0 = colors.base00';

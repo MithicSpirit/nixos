@@ -1,23 +1,23 @@
 default: format check
 
-format:
+format: _gitadd
     nix fmt -- --width=80 --verify .
 
-check:
+check: _gitadd
     nix flake check --all-systems
     nix run .#deadnix -- --fail
 
-undead: && default
+undead: _gitadd && default
     nix run .#deadnix -- --edit
 
-update: && default
+update: _gitadd && default
     nix flake update
 
-boot: _sudo _gitadd default
-    sudo nixos-rebuild boot --flake ".#$(hostname)"
-
-test: _sudo _gitadd default
+test: _sudo _gitadd
     sudo nixos-rebuild test --flake ".#$(hostname)"
+
+boot: _sudo _gitadd
+    sudo nixos-rebuild boot --flake ".#$(hostname)"
 
 
 _sudo:

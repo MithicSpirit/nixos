@@ -73,6 +73,7 @@
       sd
 
       pcmanfm
+      qalcmenu
       swayimg
       xdragon
       xournalpp
