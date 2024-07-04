@@ -6,7 +6,6 @@
 (vim.keymap.set "" "<leader>" "<Nop>")
 (vim.keymap.set "" "<localleader>" "<Nop>")
 
-(vim.keymap.set :n "Y" :y$)
 (vim.keymap.set :n "x" "\"_x")
 (vim.keymap.set :n "~~" "g~l")
 (vim.keymap.set :n "<Esc>" (cmd :nohlsearch :mode))
@@ -41,12 +40,7 @@
 (vim.keymap.set :n "N" "Nzz")
 (vim.keymap.set :n "<leader>." (cmd "edit ."))
 
-(vim.keymap.set [:i :t] "<C-Bs>" "<C-h>" {:remap true})
-(vim.keymap.set :i "<C-h>" "<C-g>u<C-w><C-g>u")
-
-(vim.keymap.set :n "<leader>ld" vim.diagnostic.open_float)
-(vim.keymap.set "" "[d" vim.diagnostic.goto_prev)
-(vim.keymap.set "" "]d" vim.diagnostic.goto_next)
+(vim.keymap.set [:i :t] "<C-Bs>" "<C-w>" {:remap true})
 
 (vim.keymap.set "" "s" "<Nop>")
 (vim.keymap.set "" "S" "<Nop>")

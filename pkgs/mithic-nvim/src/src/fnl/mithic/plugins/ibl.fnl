@@ -1,5 +1,6 @@
 ;; clear lc.lms and prevent automatic resetting
 (vim.api.nvim_create_augroup :mithic-lc-lms {:clear true})
+(vim.opt_local.listchars:remove [:lead :leadmultispace])
 (vim.opt_global.listchars:remove [:lead :leadmultispace])
 
 ((. (require :ibl) :setup)

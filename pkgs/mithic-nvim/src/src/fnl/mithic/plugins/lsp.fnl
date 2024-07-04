@@ -6,8 +6,8 @@
 (tset (require :lspconfig.ui.windows) :default_options :border _G.border)
 
 (each [k v (pairs
-             {"f" :definition
-              "F" :declaration
+             {"d" :definition
+              "D" :declaration
               "t" :signature_help
               "T" :type_definition
               "h" :typehierarchy

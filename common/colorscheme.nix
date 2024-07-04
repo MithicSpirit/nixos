@@ -1,7 +1,7 @@
 let
   nord = {
     nord00 = "2e3440";
-    nord00' = "2e3440"; # TODO
+    nord00' = "292e38";
     nord01 = "3b4252";
     nord02 = "434c5e";
     nord03 = "4c566a";
@@ -10,16 +10,19 @@ let
     nord06 = "eceff4";
     nord07 = "8fbcbb";
     nord08 = "88c0d0";
+    nord08' = "99cedd";
     nord09 = "81a1c1";
+    nord09' = "9ab3ce";
     nord10 = "5e81ac";
     nord11 = "bf616a";
-    nord11' = "bf616a"; # TODO
+    nord11' = "cb8d92";
     nord12 = "d08770";
     nord13 = "ebcb8b";
+    nord13' = "eed5aa";
     nord14 = "a3be8c";
-    nord14' = "a3be8c"; # TODO
+    nord14' = "b2cc9c";
     nord15 = "b48ead";
-    nord15' = "b48ead"; # TODO
+    nord15' = "c0a5bb";
   };
   palette = with nord; {
     # base16 colors
@@ -33,13 +36,13 @@ let
     base06 = nord08;
     base07 = nord06;
     base07' = nord05;
-    base08 = nord02; # TODO: 1-3
+    base08 = nord02;
     base09 = nord11';
     base10 = nord14';
-    base11 = nord12;
-    base12 = nord10;
+    base11 = nord13';
+    base12 = nord09';
     base13 = nord15';
-    base14 = nord07;
+    base14 = nord08';
     base15 = nord04;
 
     # named colors

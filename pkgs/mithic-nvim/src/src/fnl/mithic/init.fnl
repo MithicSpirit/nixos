@@ -1,5 +1,6 @@
 (require :mithic.opts)
 (require :mithic.maps)
 (require :mithic.misc)
+(vim.cmd.colorscheme :mithic)
 (require :mithic.autocmd)
 (require :mithic.plugins)

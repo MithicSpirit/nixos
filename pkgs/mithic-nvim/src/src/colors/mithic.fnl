@@ -20,27 +20,31 @@
          :13 "#ebcb8b"
          :14 "#a3be8c"
          :15 "#b48ead"}]
-    {:lift [nord.01 :Blue]
-     :selection [nord.02 :Blue]
-     :marker [nord.03 :Blue]
-     :fake [nord.04 :Blue]
-     :highlight [nord.07 :Cyan]
+    {:lift [nord.01 :NONE]
+     :marker [nord.02 :Blue]
+     :selection [nord.03 :NONE]
+     :fake [nord.04 :DarkBlue]
      :accent [nord.08 :DarkCyan]
      :bad [nord.11 :DarkRed]
-     :advanced [nord.12 :Yellow]
+     :advanced [nord.12 :Red]
      :warn [nord.13 :DarkYellow]
      :good [nord.14 :DarkGreen]
      :strange [nord.15 :DarkMagenta]
-     :comment [nord.04 :DarkBlue]
-     :name [nord.05 :White]
-     :syntax [nord.06 :Gray]
+     :comment [nord.04 :Blue]
+     :name [nord.05 :LightGray]
+     :syntax [nord.06 :White]
      :type [nord.07 :Cyan]
      :function [nord.08 :DarkCyan]
-     :special [nord.09 :DarkBlue]
-     :pragma [nord.10 :Blue]
+     :special [nord.09 :Blue]
+     :pragma [nord.10 :DarkBlue]
      :string [nord.14 :DarkGreen]
      :number [nord.15 :DarkMagenta]
-     }))
+     :red [nord.11 :DarkRed]
+     :green [nord.14 :DarkGreen]
+     :yellow [nord.13 :DarkYellow]
+     :blue [nord.09 :DarkBlue]
+     :magenta [nord.15 :DarkMagenta]
+     :cyan [nord.08 :DarkCyan]}))
 
 (fn mk-get [n]
   (fn [name]
@@ -73,8 +77,10 @@
           (or overrides {})))))
 
 ; TODO: FloatTitle FloatFooter, Pmenu*, TabLine*, Title, WildMenu, WinBar*,
-; User1..9, Menu, Scrollbar, Tooltip, QuickFixLine
+; Menu, Scrollbar, Tooltip, QuickFixLine
 
+
+;; UI
 (hi :Normal)
 (hi :MsgArea :Normal)
 (hi :NormalFloat :Normal)
@@ -83,34 +89,47 @@
 (hi :Cursor)
 (hi :lCursor :Cursor)
 (hi :CursorIM :Cursor)
-(hi :TermCursor :Cursor) ; TODO
-(hi :TermCursorNC) ; TODO
+(hi :TermCursor {:fg :accent :bg :NONE :reverse true})
+(hi :TermCursorNC)
 
-(hi
-  :Visual
-  {:bg :selection :ctermbg :NONE :ctermfg :selection :cterm {:reverse true}})
+(hi :ColorColumn
+    {:bg :marker :ctermbg :NONE :ctermfg :marker :cterm {:reverse true}})
+(hi :CursorLine {:bg :lift})
+(hi :CursorColumn :CursorLine)
+
+(hi :Visual {:bg :selection :cterm {:reverse true}})
 (hi :VisualNOS :Visual)
-(hi :ColorColumn :Visual)
-(hi :CursorColumn :Visual)
-(hi :CursorLine :Visual)
 (hi :Search :Visual)
-(hi :CurSearch :Visual)
-(hi :IncSearch :Visual)
-(hi :Substitute :Visual)
+(hi :CurSearch :Search)
+(hi :IncSearch :Search)
+(hi :Substitute :Search)
 
 (hi :LineNr {:fg :comment})
 (hi :LineNrAbove :LineNr)
 (hi :LineNrBelow :LineNr)
 (hi :CursorLineNr {:fg :accent :bold true})
 
-(hi
-  :StatusLine
-  {:bg :lift :ctermbg :NONE :ctermfg :lift :cterm {:reverse true}})
+(hi :StatusLine {:fg :NONE :bg :lift})
 (hi :MsgSeparator :StatusLine)
-; TODO: (hi :StatusLineNC)
+(hi :StatusLineNC {:fg :fake :bg :lift})
+(let [rev (fn [name] {:fg name :bg :NONE :reverse true})]
+  (hi :User1 (rev :blue)) ; normal
+  (hi :User2 (rev :green)) ; insert
+  (hi :User3 (rev :yellow)) ; visual
+  (hi :User4 (rev :red)) ; replace
+  (hi :User5 (rev :magenta)) ; command
+  (hi :User6 (rev :cyan)) ; other
+  )
+(hi :User7 {:fg :NONE :bg :marker :ctermbg :NONE :bold true}) ; file
 
-(hi :WinSeparator {:fg :lift})
+(hi :WinSeparator {:fg :marker})
 (hi :FloatBorder :WinSeparator)
+
+(hi :NonText {:fg :marker})
+(hi :EndOfBuffer :NonText)
+(hi :SnippetTabstop :NonText)
+(hi :Whitespace :NonText)
+(hi :Ignore :NonText)
 
 (hi :Conceal {:fg :fake})
 (hi :SpecialKey :Conceal)
@@ -119,11 +138,6 @@
 (hi :CursorLineFold :FoldColumn)
 (hi :SignColumn :Conceal) ; TODO
 (hi :CursorLineSign :SignColumn)
-(hi :Ignore :Conceal)
-(hi :NonText :Conceal)
-(hi :EndOfBuffer :NonText)
-(hi :SnippetTabstop :NonText)
-(hi :Whitespace :NonText)
 
 (hi :ErrorMsg {:fg :bad})
 (hi :WarningMsg {:fg :warn})
@@ -140,11 +154,12 @@
 (hi :MatchParen {:bold true :fg :accent})
 
 
-
+;; Syntax
 (hi :Comment {:fg :comment :italic true})
 
-(hi :Identifier)
+(hi :Identifier {:fg :name})
 (hi :Constant :Identifier)
+(hi "@variable" :Identifier)
 
 (hi :String {:fg :good})
 (hi :Character :String)
@@ -192,21 +207,33 @@
 (hi :DiffChange :Changed)
 (hi :Removed {:fg :bad})
 (hi :DiffDelete :Removed)
-(hi :DiffText {:bg :selection :ctermbg :NONE})
+(hi :DiffText {:bg :selection})
 
 
 (hi :DiagnosticError {:fg :bad})
 (hi :DiagnosticWarn {:fg :warn})
-(hi :DiagnosticInfo {:fg :accent})
-(hi :DiagnosticHint {:fg :highlight})
+(hi :DiagnosticInfo {:fg :comment})
+(hi :DiagnosticHint {:fg :accent})
 (hi :DiagnosticOk {:fg :good})
 (hi :DiagnosticUnderlineError {:sp :bad :underline true})
 (hi :DiagnosticUnderlineWarn {:sp :warn :underline true})
-(hi :DiagnosticUnderlineInfo {:sp :accent :underline true})
-(hi :DiagnosticUnderlineHint {:sp :highlight :underline true})
+(hi :DiagnosticUnderlineInfo {:sp :comment :underline true})
+(hi :DiagnosticUnderlineHint {:sp :accent :underline true})
 (hi :DiagnosticUnderlineOk {:sp :good :underline true})
 (hi :DiagnosticDeprecated {:strikethrough true})
 
-(hi "@variable")
+
+;; Plugins
+(hi :MiniStatuslineModeNormal  :User1)
+(hi :MiniStatuslineModeInsert  :User2)
+(hi :MiniStatuslineModeVisual  :User3)
+(hi :MiniStatuslineModeReplace :User4)
+(hi :MiniStatuslineModeCommand :User5)
+(hi :MiniStatuslineModeOther   :User6)
+(hi :MiniStatuslineFilename    :User7)
+(hi :MiniStatuslineFileinfo    :Statusline)
+(hi :MiniStatuslineDevinfo     :MiniStatuslineFileinfo)
+(hi :MiniStatuslineInactive    :StatuslineNC)
+
 
 (when (vim.fn.exists :syntax_on) (vim.cmd.syntax :reset))

@@ -1,6 +1,3 @@
-(set vim.opt.backup false)
-; (set vim.opt.swapfile false)
-
 (set vim.opt.showmode false)
 (set vim.opt.mouse :nv)
 (set vim.opt.mousemodel :extend)
@@ -8,7 +5,6 @@
 
 (set vim.opt.conceallevel (if vim.o.termguicolors 2 0)) ; before resetting
 (set vim.opt.guifont "Iosevka Mithic:h12:#e-antialias:#h-full")
-(set vim.opt.termguicolors false)
 (set vim.opt.linespace 0)
 (set vim.opt.timeout false)
 (set vim.opt.cursorline true)

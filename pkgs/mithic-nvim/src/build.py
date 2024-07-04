@@ -1,9 +1,11 @@
 #!/usr/bin/env python
-from enum import Enum, member
-from pathlib import Path
 import os
 import shutil
-import subprocess
+import subprocess  # noqa: S404
+import sys
+from collections import abc
+from enum import Enum, member
+from pathlib import Path
 
 
 class Installer(Enum):
@@ -17,10 +19,22 @@ class Installer(Enum):
     @staticmethod
     def fennel(src: Path, dst: Path) -> None:
         with dst.open(mode="x") as output:
-            subprocess.run(
-                ["fennel", "--globals", "vim,_G", "--correlate", "--compile", src],
-                stdout=output,
-            ).check_returncode()
+            try:
+                subprocess.run(
+                    [  # noqa: S607
+                        "fennel",
+                        "--globals",
+                        "vim,_G",
+                        "--correlate",
+                        "--compile",
+                        src,
+                    ],
+                    stdout=output,
+                    check=True,
+                )
+            except subprocess.CalledProcessError as e:
+                print(f"Compilation failed: {src}", file=sys.stderr)
+                sys.exit(e.returncode)
         shutil.copystat(src, dst, follow_symlinks=False)
 
     @member
@@ -57,7 +71,7 @@ def run(src: Path, dst: Path) -> None:
         install(source, target)
 
 
-def main():
+def main() -> None:
     root = Path(__file__).parent
     os.chdir(root)
 
