@@ -4,9 +4,10 @@
   nix.package = pkgs.nixVersions.latest;
 
   imports = [
-    ./hardware-configuration.nix
-    inputs.home-manager.nixosModules.default
+    inputs.hardware.nixosModules.framework-16-7040-amd
     inputs.disko.nixosModules.default
+    inputs.home-manager.nixosModules.default
+    ./hardware-configuration.nix
     ./disko.nix
     /${root}/host/secure-boot
     /${root}/host/man
@@ -18,7 +19,7 @@
     /${root}/host/gaming
     /${root}/host/keyd
     /${root}/host/bluetooth
-    /${root}/host/tlp
+    /${root}/host/ppd # or tlp
     /${root}/host/sway
   ];
 
@@ -49,7 +50,6 @@
   services.fwupd.enable = true;
 
   services.smartd.enable = true;
-  services.fstrim.enable = true;
   boot.tmp.useTmpfs = true;
 
   networking.hostName = "hipparchus";

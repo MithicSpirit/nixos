@@ -27,4 +27,6 @@
     CPU_BOOST_ON_BAT = 0;
   };
 
+  services.power-profiles-daemon.enable = false; # incompatible
+
 }

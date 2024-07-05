@@ -8,7 +8,7 @@
   imports = [ (modulesPath + "/installer/scan/not-detected.nix") ];
 
   boot.initrd.availableKernelModules =
-    [ "nvme" "xhci_pci" "thunderbolt" "usb_storage" "usbhid" "sd_mod" ];
+    [ "nvme" "xhci_pci" "thunderbolt" "usb_storage" "usbhid" ];
   boot.initrd.kernelModules = [ ];
   boot.kernelModules = [ "kvm-amd" ];
   boot.extraModulePackages = [ ];
@@ -26,5 +26,4 @@
 
   # Don't change (without reinstalling the system)
   system.stateVersion = "24.05";
-  # FIXME: wait for a few days after release (june 3ish?)
 }
