@@ -19,7 +19,7 @@
     /${root}/host/gaming
     /${root}/host/keyd
     /${root}/host/bluetooth
-    /${root}/host/ppd # or tlp
+    /${root}/host/tlp # or ppd
     /${root}/host/sway
   ];
 
@@ -182,6 +182,13 @@
     environment = builtins.mapAttrs (_: toString)
       config.home-manager.users."mithic".home.sessionVariables;
     overrideStrategy = "asDropin";
+  };
+
+  services.tlp.settings = {
+    CPU_SCALING_MIN_FREQ_ON_AC = 3800000;
+    CPU_SCALING_MAX_FREQ_ON_AC = 5137000;
+    CPU_SCALING_MIN_FREQ_ON_BAT = 400000;
+    CPU_SCALING_MAX_FREQ_ON_BAT = 400000;
   };
 
 }

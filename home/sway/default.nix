@@ -80,7 +80,7 @@ in {
     enable = true;
     package = pkgs.swaylock-effects;
     settings = {
-      ignore-empty-password = true;
+      # ignore-empty-password = true; # annoying with fprintd
       show-failed-attempts = true;
       show-keyboard-layout = true;
       indicator-caps-lock = true;
