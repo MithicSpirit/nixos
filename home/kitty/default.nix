@@ -24,6 +24,9 @@
       notify_on_cmd_finish = "invisible 0 notify";
       clear_all_shortcuts = true;
 
+      scrollback_lines = 32768;
+      scrollback_pager_history_size = 131072;
+
       cursor = colors.middle;
       cursor_text_color = "background";
       foreground = colors.base07;
@@ -73,18 +76,17 @@
       # scrollback
       "kitty_mod+esc" = "show_last_command_output";
       "kitty_mod+alt+esc" = "show_scrollback";
+      "kitty_mod+backspace" = "clear_terminal to_cursor active";
+      "kitty_mod+alt+backspace" = "clear_terminal reset active";
       # font size
       "kitty_mod+equal" = "change_font_size all +2.0";
       "kitty_mod+plus" = "change_font_size all +2.0";
       "kitty_mod+minus" = "change_font_size all -2.0";
       "kitty_mod+underscore" = "change_font_size all -2.0";
       "kitty_mod+0" = "change_font_size all 0";
-      # actions
-      "kitty_mod+e" = "open_url_with_hints";
       # misc
+      "kitty_mod+e" = "open_url_with_hints";
       "kitty_mod+u" = "kitten unicode_input";
-      "kitty_mod+backspace" = "clear_terminal to_cursor active";
-      "kitty_mod+alt+backspace" = "clear_terminal reset active";
     };
   };
 

@@ -13,11 +13,11 @@ undead: _gitadd && default
 update: _gitadd && default
     nix flake update
 
-test: _sudo _gitadd
-    sudo nixos-rebuild test --flake ".#$(hostname)"
+rebuild operation: _sudo _gitadd
+    sudo nixos-rebuild {{operation}} --flake ".#$(hostname)"
 
-boot: _sudo _gitadd
-    sudo nixos-rebuild boot --flake ".#$(hostname)"
+test: (rebuild "test")
+boot: (rebuild "boot")
 
 
 _sudo:

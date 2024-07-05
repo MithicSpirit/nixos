@@ -35,7 +35,7 @@ let
     base05 = nord15;
     base06 = nord08;
     base07 = nord06;
-    base07' = nord05;
+    base07' = nord04;
     base08 = nord02;
     base09 = nord11';
     base10 = nord14';
@@ -43,7 +43,7 @@ let
     base12 = nord09';
     base13 = nord15';
     base14 = nord08';
-    base15 = nord04;
+    base15 = nord05;
 
     # named colors
     floor = nord00;
