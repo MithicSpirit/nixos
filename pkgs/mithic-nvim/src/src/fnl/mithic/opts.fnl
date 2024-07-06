@@ -11,6 +11,7 @@
 (set vim.opt.allowrevins true)
 (set vim.opt.tildeop true)
 (vim.opt.path:append "**")
+(set vim.opt.completeopt "menu,menuone,noinsert,noselect,popup")
 
 (set vim.opt.spelllang :en_us)
 

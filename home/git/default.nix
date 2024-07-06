@@ -12,7 +12,7 @@
       # branches and remotes
       branch = {
         autoSetupMerge = "simple";
-        sort = "-commiterdate";
+        sort = "-committerdate";
       };
       fetch = {
         all = true;
