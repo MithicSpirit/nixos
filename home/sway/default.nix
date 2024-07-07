@@ -190,4 +190,22 @@ in {
     brightnessctl
     playerctl
   ];
+
+  services.gammastep = {
+    enable = true;
+    enableVerboseLogging = true;
+    provider = "geoclue2";
+    tray = true;
+
+    temperature.day = 5500;
+    temperature.night = 3600;
+    settings.general = {
+      brightness-day = 1.0;
+      brightness-night = 1.0;
+
+      fade = true;
+      transitiion = true;
+    };
+  };
+
 }

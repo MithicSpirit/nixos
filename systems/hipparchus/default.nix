@@ -192,4 +192,6 @@
     CPU_SCALING_MAX_FREQ_ON_BAT = 1000 * mhz;
   };
 
+  services.geoclue2.enable = true;
+
 }

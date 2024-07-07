@@ -1,17 +1,12 @@
 exec {
     ## Daemons
     # TODO: check which are necessary
-    # dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP=sway
     # lxpolkit
     # /usr/lib/geoclue-2.0/demos/agent
-    # swayidle -w
-    # wl-paste --watch cliphist store
     # gammastep-indicator
-    # dunst
-    # kdeconnect-indicator
     # xsettingsd
     ## Apps
-    $TERMINAL --class btop-spawn --title btop -e btop
+    $TERMINAL --class btop --title btop -e btop
     thunderbird
     org.signal.Signal
     xyz.armcord.ArmCord # discord
