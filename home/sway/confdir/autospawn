@@ -13,8 +13,8 @@ exec {
     ## Apps
     $TERMINAL --class btop-spawn --title btop -e btop
     thunderbird
-    discord
-    signal-desktop
-    element-desktop
+    org.signal.Signal
+    xyz.armcord.ArmCord # discord
+    im.riot.Riot # element
 }
 # vi: set ft=swayconfig
