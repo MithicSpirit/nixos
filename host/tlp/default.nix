@@ -24,6 +24,9 @@
     CPU_ENERGY_PERF_POLICY_ON_BAT = "power";
     CPU_BOOST_ON_AC = 1;
     CPU_BOOST_ON_BAT = 0;
+
+    PCIE_ASP_ON_AC = "default";
+    PCIE_ASMP_ON_BAT = "powersupersave";
   };
 
   services.power-profiles-daemon.enable = false; # incompatible
