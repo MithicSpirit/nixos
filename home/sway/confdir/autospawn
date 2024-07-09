@@ -9,7 +9,7 @@ exec {
     $TERMINAL --class btop --title btop -e btop
     thunderbird
     org.signal.Signal
-    xyz.armcord.ArmCord # discord
+    dev.vencord.Vesktop # discord
     im.riot.Riot # element
 }
 # vi: set ft=swayconfig
