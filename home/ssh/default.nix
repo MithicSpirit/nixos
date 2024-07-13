@@ -6,8 +6,7 @@
     addKeysToAgent = "ask";
 
     matchBlocks = {
-      github = {
-        hostname = "github.com";
+      "github.com" = {
         user = "git";
       };
     };
