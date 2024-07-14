@@ -54,8 +54,6 @@
 (set vim.g.python_recommended_style 0)
 (set vim.g.rust_recommended_style 0)
 
-(set _G.border :single)
-
 (set vim.opt.listchars
    {:extends "$"
     :lead "|"

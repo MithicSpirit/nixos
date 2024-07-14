@@ -3,16 +3,17 @@
 , ttfautohint-nox, python3, fontforge, }:
 buildNpmPackage rec {
   pname = "iosevka-mithic";
-  version = "30.3.0";
+  version = "30.3.2";
   patcher-version = "3.2.1";
 
   iosevka = fetchFromGitHub {
     owner = "be5invis";
     repo = "iosevka";
     rev = "v${version}";
-    hash = "sha256-WWumGi6+jaQUGi1eArS9l3G8sOQL4ZetixVB5RWDPQ4=";
+    hash = "sha256-Ksd1REqCe+42hpIwikIeKNYIYaHc5hqxuny8lYRuQcY=";
     name = "iosevka";
   };
+  npmDepsHash = "sha256-8IyQK1eoVwq6E/HZkavLSRXiZst3LuyDIPc8D/yMD9E=";
 
   patcher = fetchzip {
     url =
@@ -24,8 +25,6 @@ buildNpmPackage rec {
 
   srcs = [ iosevka patcher ];
   sourceRoot = "./${iosevka.name}";
-
-  npmDepsHash = "sha256-Gm3R8lWmYbLOfyGW+f8CYXlodp11vMCMAhagILxLKFA=";
 
   nativeBuildInputs = [ unzip ttfautohint-nox python3 fontforge ]
     ++ lib.optionals stdenv.isDarwin [

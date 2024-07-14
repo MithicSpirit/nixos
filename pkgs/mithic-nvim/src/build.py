@@ -25,7 +25,7 @@ class Installer(Enum):
                         "fennel",
                         "--globals",
                         "vim,_G",
-                        "--correlate",
+                        # "--correlate",
                         "--compile",
                         src,
                     ],

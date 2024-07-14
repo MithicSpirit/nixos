@@ -16,9 +16,9 @@
    :style :minimal
    :relative :cursor}})
 
-(vim.keymap.set :n "<leader>gA" "<Cmd>Gitsigns stage_buffer<Cr>")
-(vim.keymap.set [:n :x] "<leader>ga" "<Cmd>Gitsigns stage_hunk<Cr>")
-(vim.keymap.set [:n :x] "<leader>gD" "<Cmd>Gitsigns reset_hunk<Cr>")
-(vim.keymap.set [:n :x] "<leader>gw" "<Cmd>Gitsigns preview_hunk<Cr>")
-(vim.keymap.set "" "]g" "<Cmd>Gitsigns next_hunk<Cr>")
-(vim.keymap.set "" "[g" "<Cmd>Gitsigns prev_hunk<Cr>")
+(vim.keymap.set :n "<leader>gA" (_G.cmd "Gitsigns stage_buffer"))
+(vim.keymap.set [:n :x] "<leader>ga" (_G.cmd "Gitsigns stage_hunk"))
+(vim.keymap.set [:n :x] "<leader>gD" (_G.cmd "Gitsigns reset_hunk"))
+(vim.keymap.set [:n :x] "<leader>gw" (_G.cmd "Gitsigns preview_hunk"))
+(vim.keymap.set "" "]g" (_G.cmd "Gitsigns next_hunk"))
+(vim.keymap.set "" "[g" (_G.cmd "Gitsigns prev_hunk"))

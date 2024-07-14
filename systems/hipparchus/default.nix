@@ -189,7 +189,7 @@
     CPU_SCALING_MIN_FREQ_ON_AC = 3800 * mhz;
     CPU_SCALING_MAX_FREQ_ON_AC = 5137 * mhz;
     CPU_SCALING_MIN_FREQ_ON_BAT = 400 * mhz;
-    CPU_SCALING_MAX_FREQ_ON_BAT = 1000 * mhz;
+    CPU_SCALING_MAX_FREQ_ON_BAT = 1500 * mhz;
   };
 
   services.geoclue2.enable = true;

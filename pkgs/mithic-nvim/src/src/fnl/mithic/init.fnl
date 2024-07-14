@@ -1,3 +1,4 @@
+(require :mithic.global)
 (require :mithic.opts)
 (require :mithic.maps)
 (require :mithic.misc)

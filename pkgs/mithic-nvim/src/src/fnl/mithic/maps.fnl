@@ -1,6 +1,3 @@
-(fn cmd [...]
-  (.. "<Cmd>" (table.concat [...] " | ") "<Cr>"))
-
 (set vim.g.mapleader " ")
 (set vim.g.maplocalleader "\\")
 (vim.keymap.set "" "<leader>" "<Nop>")
@@ -8,13 +5,13 @@
 
 (vim.keymap.set :n "x" "\"_x")
 (vim.keymap.set :n "~~" "g~l")
-(vim.keymap.set :n "<Esc>" (cmd :nohlsearch :mode))
-(vim.keymap.set :n "ZQ" (cmd :cquit))
+(vim.keymap.set :n "<Esc>" (_G.cmd :nohlsearch :mode))
+(vim.keymap.set :n "ZQ" (_G.cmd :cquit))
 
-(vim.keymap.set :n "<leader>s" (cmd :write))
-(vim.keymap.set :n "<leader>e" (cmd "!%:p"))
-(vim.keymap.set :n "<leader>E" (cmd :write "botright 13split +terminal\\ %:p"))
-(vim.keymap.set :n "<leader>t" (cmd "botright 19split +terminal" :startinsert))
+(vim.keymap.set :n "<leader>s" (_G.cmd :write))
+(vim.keymap.set :n "<leader>e" (_G.cmd "!%:p"))
+(vim.keymap.set :n "<leader>E" (_G.cmd :write "botright 13split +terminal\\ %:p"))
+(vim.keymap.set :n "<leader>t" (_G.cmd "botright 19split +terminal" :startinsert))
 
 (vim.keymap.set [:n :x] "<leader>y" "\"+y" {:remap true})
 (vim.keymap.set [:n :x] "<leader>Y" "\"+Y" {:remap true})
@@ -38,7 +35,7 @@
 (vim.keymap.set :n "<C-u>" "<C-u>zz")
 (vim.keymap.set :n "n" "nzz")
 (vim.keymap.set :n "N" "Nzz")
-(vim.keymap.set :n "<leader>." (cmd "edit ."))
+(vim.keymap.set :n "<leader>." (_G.cmd "edit ."))
 
 (vim.keymap.set [:i :t] "<C-Bs>" "<C-w>" {:remap true})
 
