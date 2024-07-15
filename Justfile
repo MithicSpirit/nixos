@@ -13,6 +13,7 @@ undead: gitadd && default
 update: gitadd && default
     nix flake update
 
+[confirm]
 gc: sudo
     sudo nix-collect-garbage -v --delete-older-than 14d
 
