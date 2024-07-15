@@ -3,7 +3,6 @@ import os
 import shutil
 import subprocess  # noqa: S404
 import sys
-from collections import abc
 from enum import Enum, member
 from pathlib import Path
 

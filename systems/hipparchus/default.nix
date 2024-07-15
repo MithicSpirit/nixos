@@ -194,4 +194,18 @@
 
   services.geoclue2.enable = true;
 
+  services.logind = let sth = "suspend-then-hibernate";
+  in {
+    powerKey = sth;
+    powerKeyLongPress = "poweroff";
+    lidSwitch = sth;
+    suspendKey = sth;
+    hibernateKeyLongPress = config.services.logind.suspendKey;
+  };
+
+  systemd.sleep.extraConfig = ''
+    HibernateDelaySec=1day
+    SuspendEstimationSec=0
+  '';
+
 }

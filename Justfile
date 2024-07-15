@@ -1,26 +1,32 @@
 default: format check
 
-format: _gitadd
+format: gitadd
     nix fmt -- --width=80 --verify .
 
-check: _gitadd
+check: gitadd
     nix flake check --all-systems
     nix run .#deadnix -- --fail
 
-undead: _gitadd && default
+undead: gitadd && default
     nix run .#deadnix -- --edit
 
-update: _gitadd && default
+update: gitadd && default
     nix flake update
 
-rebuild operation: _sudo _gitadd
+gc: sudo
+    sudo nix-collect-garbage -v --delete-older-than 14d
+
+rebuild operation: sudo gitadd
     sudo nixos-rebuild {{operation}} --flake ".#$(hostname)"
 
 test: (rebuild "test")
 boot: (rebuild "boot")
 
 
-_sudo:
+[private]
+sudo:
     sudo -v
-_gitadd:
+
+[private]
+gitadd:
     git add .
