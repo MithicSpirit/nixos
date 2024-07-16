@@ -118,9 +118,8 @@
   (hi :User3 (rev :yellow)) ; visual
   (hi :User4 (rev :red)) ; replace
   (hi :User5 (rev :magenta)) ; command
-  (hi :User6 (rev :cyan)) ; other
-  )
-(hi :User7 {:fg :NONE :bg :marker :ctermbg :NONE :bold true}) ; file
+  (hi :User6 (rev :cyan))) ; other
+(hi :User9 {:fg :NONE :bg :marker :ctermbg :NONE :bold true}) ; file
 
 (hi :WinSeparator {:fg :marker})
 (hi :FloatBorder :WinSeparator)
@@ -209,6 +208,8 @@
 (hi :DiffDelete :Removed)
 (hi :DiffText {:bg :selection})
 
+(hi :LspInlayHint :Conceal)
+(hi :LspCodeLens :Conceal)
 
 (hi :DiagnosticError {:fg :bad})
 (hi :DiagnosticWarn {:fg :warn})
@@ -230,10 +231,8 @@
 (hi :MiniStatuslineModeReplace :User4)
 (hi :MiniStatuslineModeCommand :User5)
 (hi :MiniStatuslineModeOther   :User6)
-(hi :MiniStatuslineFilename    :User7)
-(hi :MiniStatuslineFileinfo    :Statusline)
-(hi :MiniStatuslineDevinfo     :MiniStatuslineFileinfo)
-(hi :MiniStatuslineInactive    :StatuslineNC)
+
+(hi :GitSignsCurrentLineBlame :Conceal)
 
 
 (when (vim.fn.exists :syntax_on) (vim.cmd.syntax :reset))

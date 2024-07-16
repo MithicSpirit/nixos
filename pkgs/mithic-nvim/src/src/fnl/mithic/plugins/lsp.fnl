@@ -6,10 +6,8 @@
 (tset (require :lspconfig.ui.windows) :default_options :border _G.border)
 
 (each [k v (pairs
-             {"d" :definition
-              "D" :declaration
-              "t" :signature_help
-              "T" :type_definition
+             {"d" :signature_help
+              "t" :type_definition
               "h" :typehierarchy
               "i" :implementation
               "r" :rename
@@ -23,6 +21,14 @@
     (fn [event]
       (let [buf event.buf
             client (vim.lsp.get_client_by_id event.data.client_id)]
+
+        (when client.server_capabilities.definitionProvider
+          (vim.keymap.set :n "gd" vim.lsp.buf.definition))
+
+        (when client.server_capabilities.declarationProvider
+          (vim.keymap.set :n "gD" vim.lsp.buf.declaration))
+
         (when client.server_capabilities.inlayHintProvider
           (vim.lsp.inlay_hint.enable true {:bufnr buf})))
+
       false)}) ; return false to not delete autocmd

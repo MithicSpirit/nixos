@@ -3,7 +3,7 @@
 (set vim.opt.mousemodel :extend)
 (set vim.opt.mousescroll "ver:2,hor:4")
 
-(set vim.opt.conceallevel (if vim.o.termguicolors 2 0)) ; before resetting
+(set vim.opt.conceallevel (if _G.unicode 2 0))
 (set vim.opt.guifont "Iosevka Mithic:h12:#e-antialias:#h-full")
 (set vim.opt.linespace 0)
 (set vim.opt.timeout false)

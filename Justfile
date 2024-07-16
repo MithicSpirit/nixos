@@ -15,6 +15,7 @@ update: gitadd && default
 
 [confirm]
 gc: sudo
+    rm -f result
     sudo nix-collect-garbage -v --delete-older-than 14d
 
 rebuild operation: sudo gitadd
