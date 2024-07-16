@@ -89,7 +89,5 @@
     enableDebugInfo = true;
   };
 
-  home.sessionVariables.DRI_PRIME = 0;
-
   home.stateVersion = "24.05"; # WARNING: do not change
 }

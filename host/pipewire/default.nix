@@ -1,5 +1,5 @@
 { pkgs, ... }: {
-  sound.enable = true;
+
   services.pipewire = {
     enable = true;
     audio.enable = true;
@@ -16,4 +16,5 @@
   security.rtkit.enable = true;
 
   environment.systemPackages = with pkgs; [ libpulseaudio pavucontrol ];
+
 }
