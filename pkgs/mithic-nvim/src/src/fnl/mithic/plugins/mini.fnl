@@ -37,7 +37,7 @@
                      (s.combine_groups
                        [{:hl mode_hl :strings [mode]}
                         "%<" ; truncate point
-                        {:hl :User9 :strings ["%<" (fname)]}
+                        {:hl :User9 :strings [(fname)]}
                         {:hl :StatusLine :strings [loc]}
                         "   %=" ; center
                         {:hl :StatusLine :strings [finfo]}

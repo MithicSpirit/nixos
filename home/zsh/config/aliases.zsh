@@ -78,6 +78,7 @@ alias \
 	gddt="git difftool --cached" \
 	gf="git fetch --all" \
 	gg="git log" \
+	ggg="git log --oneline --graph" \
 	gid="git rev-parse HEAD" \
 	gl="git merge --ff-only @{u}" \
 	gld="git diff HEAD..@{u}" \

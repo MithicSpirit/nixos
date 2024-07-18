@@ -170,7 +170,7 @@ in {
       }
       {
         event = "lock";
-        command = "${swaylock} -f; sleep 0.1";
+        command = "${swaylock} -f; ${sleep} 0.1";
       }
       {
         event = "unlock";
