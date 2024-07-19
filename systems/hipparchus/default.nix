@@ -82,14 +82,6 @@
     ];
   };
 
-  # TODO: is zswap enough? investigate % mem zswapped
-  # zramSwap = {
-  #   enable = true;
-  #   priority = 1000;
-  #   algorithm = "zstd";
-  #   memoryPercent = 25;
-  # };
-
   services.flatpak.enable = true;
   fonts.fontDir.enable = true;
   xdg.portal = {
@@ -211,5 +203,20 @@
     HibernateDelaySec=1day
     SuspendEstimationSec=0
   '';
+
+  # weird framework 16 stuff. see arch and nixos wikis
+  environment.etc."libinput/50-framework.quirks".text = # ini
+    ''
+      [Framework Laptop 16 Keyboard Module]
+      MatchName=Framework Laptop 16 Keyboard Module*
+      MatchUdevType=keyboard
+      MatchDMIModalias=dmi:*svnFramework:pnLaptop16*
+      AttrKeyboardIntegration=internal
+    '';
+  services.udev.extraRules = # udev
+    ''
+      ACTION=="add", SUBSYSTEM=="usb", DRIVERS=="usb", ATTRS{idVendor}=="32ac", ATTRS{idProduct}=="0012", ATTR{power/wakeup}="disabled", ATTR{driver/1-1.1.1.4/power/wakeup}="disabled"
+      ACTION=="add", SUBSYSTEM=="usb", DRIVERS=="usb", ATTRS{idVendor}=="32ac", ATTRS{idProduct}=="0014", ATTR{power/wakeup}="disabled", ATTR{driver/1-1.1.1.4/power/wakeup}="disabled"
+    '';
 
 }

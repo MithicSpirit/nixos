@@ -21,7 +21,7 @@
       volume = "74";
       ao = "pipewire,pulse,jack,alsa";
 
-      ytdl-raw-options-append = "format-sort=+res:1080,mark-watched=true";
+      ytdl-raw-options-append = "format-sort=+res:1080";
 
       keep-open = "yes";
 

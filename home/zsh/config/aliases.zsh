@@ -88,7 +88,7 @@ alias \
 	gpf="git push --force-with-lease" \
 	gr="git remote -v" \
 	grm="git restore --staged" \
-	gst="git stash push -uk" \
+	gst="git stash push -u" \
 	gstp="git stash pop --index" \
 	gsw="git switch" \
 	gt="git status" \
