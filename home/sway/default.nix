@@ -84,7 +84,7 @@ in {
       show-failed-attempts = true;
       show-keyboard-layout = true;
       indicator-caps-lock = true;
-      image = builtins.toString wallpaper;
+      image = "${wallpaper}";
       scaling = "fill";
       font = "Iosevka Mithic";
       clock = true;
