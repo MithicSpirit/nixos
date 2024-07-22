@@ -7,14 +7,16 @@ in {
   # TODO: device-specific output config
   wayland.windowManager.sway = {
     enable = true;
-    # package = pkgs.swayfx;
     config = null;
     extraConfig = ''
-      set $confdir ${./confdir}
+      set $confdir ${./sway-config}
       set $wallpaper ${wallpaper}
       include $confdir/config
     '';
     xwayland = true;
+
+    # package = pkgs.swayfx;
+    # checkConfig = false; # must be disabled for swayfx
 
     systemd = {
       enable = true;
@@ -59,21 +61,20 @@ in {
   home.file.".login" = {
     enable = true;
     executable = true;
-    text = ''
-      #!/usr/bin/env sh
+    text = # sh
+      ''
+        #!/usr/bin/env sh
 
-      if [ -z "$WAYLAND_DISPLAY" ] && [ -z "$DISPLAY" ] && [ "$XDG_VTNR" -eq 1 ]; then
-              resway() {
-                      while ! sway >>/tmp/sway.log 2>&1
-                      do
-                              notify-send -w 'Sway restart' &
-                      done
-              }
-              exec resway
-      fi
-
-      # vi: ft=sh
-    '';
+        if [ -z "$WAYLAND_DISPLAY" ] && [ -z "$DISPLAY" ] && [ "$XDG_VTNR" -eq 1 ]; then
+                resway() {
+                        while ! sway >>/tmp/sway.log 2>&1
+                        do
+                                notify-send -w 'Sway restart' &
+                        done
+                }
+                exec resway
+        fi
+      '';
   };
 
   programs.swaylock = {
@@ -189,6 +190,7 @@ in {
     sway-contrib.grimshot
     brightnessctl
     playerctl
+    jq # swaytile
   ];
 
   services.gammastep = {

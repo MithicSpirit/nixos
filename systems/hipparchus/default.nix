@@ -176,14 +176,6 @@
     overrideStrategy = "asDropin";
   };
 
-  services.tlp.settings = let mhz = 1000;
-  in {
-    CPU_SCALING_MIN_FREQ_ON_AC = 3800 * mhz;
-    CPU_SCALING_MAX_FREQ_ON_AC = 5137 * mhz;
-    CPU_SCALING_MIN_FREQ_ON_BAT = 400 * mhz;
-    CPU_SCALING_MAX_FREQ_ON_BAT = 1500 * mhz;
-  };
-
   services.geoclue2.enable = true;
 
   services.logind = let self = config.services.logind;
