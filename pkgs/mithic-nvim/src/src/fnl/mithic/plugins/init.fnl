@@ -1,16 +1,21 @@
-(require (.. ... :.mini))
-(require (.. ... :.colorizer))
-(require (.. ... :.gitsigns))
-(require (.. ... :.ibl))
-(require (.. ... :.hop))
-(require (.. ... :.sneak))
-(require (.. ... :.undotree))
-(require (.. ... :.tex))
-(require (.. ... :.idris))
-(require (.. ... :.tpope))
-(require (.. ... :.telescope))
-(require (.. ... :.lsp))
-(require (.. ... :.lean))
-(require (.. ... :.coq))
-(require (.. ... :.agda))
-(require (.. ... :.treesitter))
+(local
+  mods
+  [:mini
+   :gitsigns
+   :ibl
+   :hop
+   :trouble
+   :sneak
+   :undotree
+   :tex
+   :idris
+   :tpope
+   :telescope
+   :lsp
+   :lean
+   :coq
+   :agda
+   :treesitter])
+
+(each [_ mod (pairs mods)]
+  (require (.. ... "." mod)))

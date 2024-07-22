@@ -232,6 +232,11 @@
 (hi :MiniStatuslineModeCommand :User5)
 (hi :MiniStatuslineModeOther   :User6)
 
+(hi :MiniHipatternsFixme :User4)
+(hi :MiniHipatternsHack  :User3)
+(hi :MiniHipatternsTodo  :User6)
+(hi :MiniHipatternsNote  :User1)
+
 (hi :GitSignsCurrentLineBlame :Conceal)
 
 

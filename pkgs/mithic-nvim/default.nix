@@ -20,14 +20,13 @@
   vimPlugins = (with pkgs.vimPlugins; [
 
     mini-nvim
-    colorizer
     gitsigns-nvim
     indent-blankline-nvim # ibl
     hop-nvim
-    #trouble-nvim
+    trouble-nvim
     vim-sneak
     undotree
-    #nvim-parinfer
+    nvim-parinfer
     #firenvim
     vimtex
     idris2-nvim
@@ -39,7 +38,6 @@
     vim-fugitive
     vim-repeat
     vim-surround
-    vim-commentary # TODO: nvim 0.10
 
     # telescope
     telescope-nvim
@@ -60,17 +58,20 @@
     cornelis
     vim-textobj-user
     nvim-hs-vim
+
     # treesitter
     nvim-treesitter
-
   ]) ++ (with builtins;
     filter isAttrs (attrValues pkgs.vimPlugins.nvim-treesitter-parsers));
 
   extraPackages = with pkgs; [
+
     fd # telescope
     lean4 # lean
+    idris2Packages.idris2Lsp
     coq
     cornelis
+
     # lsp
     lua-language-server
     fennel-ls
@@ -83,5 +84,6 @@
     basedpyright
     texlab
     ltex-ls
+
   ];
 })
