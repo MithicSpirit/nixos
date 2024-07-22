@@ -7,7 +7,7 @@
   pname = "mithic-nvim"; # mithic.nvim
   version = "";
 
-  src = ./src;
+  src = ./mithic.nvim;
 
   buildPhase = ''
     python3 build.py
