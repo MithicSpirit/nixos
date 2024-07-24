@@ -10,19 +10,19 @@
     START_CHARGE_THRESH_BAT1 = 75;
     STOP_CHARGE_THRESH_BAT1 = 80;
 
-    RADEOM_DPM_PERF_LEVEL_ON_AC = "high";
-    RADEOM_DPM_PERF_LEVEL_ON_BAT = "low";
-    RADEOM_DPM_STATE_ON_AC = "performance";
-    RADEOM_DPM_STATE_ON_BAT = "battery";
+    RADEON_DPM_PERF_LEVEL_ON_AC = "high";
+    RADEON_DPM_PERF_LEVEL_ON_BAT = "low";
+    RADEON_DPM_STATE_ON_AC = "performance";
+    RADEON_DPM_STATE_ON_BAT = "battery";
 
     PLATFORM_PROFILE_ON_AC = "performance";
     PLATFORM_PROFILE_ON_BAT = "low-power";
 
     CPU_SCALING_GOVERNOR_ON_AC = "powersave";
+    CPU_ENERGY_PERF_POLICY_ON_AC = "balance_performance";
     CPU_SCALING_GOVERNOR_ON_BAT = "powersave";
-    CPU_SCALING_MAX_FREQ_ON_BAT = 1500 * 1000;
-    CPU_ENERGY_PERF_POLICY_ON_AC = "performance";
     CPU_ENERGY_PERF_POLICY_ON_BAT = "power";
+    CPU_SCALING_MAX_FREQ_ON_BAT = 1500 * 1000;
     CPU_MIN_PERF_ON_AC = 40;
     CPU_MAX_PERF_ON_AC = 100;
     CPU_MIN_PERF_ON_BAT = 0;
@@ -33,7 +33,7 @@
     CPU_HWP_DYN_BOOST_ON_BAT = 0;
 
     PCIE_ASPM_ON_AC = "default";
-    PCIE_ASMP_ON_BAT = "powersupersave";
+    PCIE_ASPM_ON_BAT = "powersupersave";
   };
 
   services.power-profiles-daemon.enable = false; # incompatible

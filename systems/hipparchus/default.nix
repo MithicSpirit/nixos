@@ -201,6 +201,8 @@
     SuspendEstimationSec=0
   '';
 
+  services.upower.enable = true;
+
   # weird framework 16 stuff. see arch and nixos wikis
   environment.etc."libinput/50-framework.quirks".text = # ini
     ''
