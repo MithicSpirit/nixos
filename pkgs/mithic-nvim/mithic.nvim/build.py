@@ -19,7 +19,7 @@ class Installer(Enum):
     def fennel(src: Path, dst: Path) -> None:
         with dst.open(mode="x") as output:
             try:
-                subprocess.run(
+                _ = subprocess.run(
                     [  # noqa: S607
                         "fennel",
                         "--globals",

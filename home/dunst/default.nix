@@ -17,7 +17,7 @@
         title = "Dunst";
         class = "dunst";
 
-        dmenu = "${pkgs.bemenu} -p Dunst -cl 7 -W 0.5";
+        dmenu = "${pkgs.bemenu}/bin/bemenu -p Dunst -cl 7 -W 0.5";
         browser = "${../scripts/bin/menu-browser}";
         mouse_left_click = "context, close_current"; # TODO: should be list?
         mouse_middle_click = "close_all";

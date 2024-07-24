@@ -206,7 +206,7 @@ in {
       brightness-night = 1.0;
 
       fade = true;
-      transitiion = true;
+      transition = true;
     };
   };
 

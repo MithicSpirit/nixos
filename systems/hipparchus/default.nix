@@ -176,7 +176,12 @@
     overrideStrategy = "asDropin";
   };
 
-  services.geoclue2.enable = true;
+  services.geoclue2 = {
+    enable = true;
+    geoProviderUrl = "https://beacondb.net/v1/geolocate";
+    submitData = true;
+    submissionUrl = "https://beacondb.net/v2/geosubmit";
+  };
 
   services.logind = let self = config.services.logind;
   in {
