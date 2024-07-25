@@ -23,7 +23,13 @@
     };
   };
 
-  outputs = { nixpkgs, home-manager, disko, ... }@inputs:
+  outputs =
+    {
+      nixpkgs,
+      home-manager,
+      disko,
+      ...
+    }@inputs:
     let
 
       forAllSystems = nixpkgs.lib.genAttrs [
@@ -44,8 +50,9 @@
       overlays = import ./overlays { inherit inputs; };
       mergedOverlays = nixpkgs.lib.composeManyExtensions overlays;
 
-      packages = forAllSystems
-        (system: nixpkgs.legacyPackages.${system}.extend mergedOverlays);
+      packages = forAllSystems (
+        system: nixpkgs.legacyPackages.${system}.extend mergedOverlays
+      );
 
       args = {
         inherit inputs;
@@ -53,17 +60,21 @@
         inherit overlays;
       };
 
-    in {
+    in
+    {
 
       overlays.default = mergedOverlays;
 
       legacyPackages = packages;
-      packages = forAllSystems (system:
-        (import ./pkgs { nixpkgs = packages.${system}; }) // {
+      packages = forAllSystems (
+        system:
+        (import ./pkgs { nixpkgs = packages.${system}; })
+        // {
           inherit (disko.packages.${system}) disko disko-install;
-        });
+        }
+      );
 
-      formatter = forAllSystems (system: packages.${system}.nixfmt-classic);
+      formatter = forAllSystems (system: packages.${system}.nixfmt-rfc-style);
 
       nixosConfigurations = {
 

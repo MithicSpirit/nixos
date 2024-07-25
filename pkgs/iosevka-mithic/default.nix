@@ -1,6 +1,16 @@
 # TODO: investigate italic /slashes/ being slanted
-{ stdenv, lib, buildNpmPackage, fetchFromGitHub, fetchzip, darwin, unzip
-, ttfautohint-nox, python3, fontforge, }:
+{
+  stdenv,
+  lib,
+  buildNpmPackage,
+  fetchFromGitHub,
+  fetchzip,
+  darwin,
+  unzip,
+  ttfautohint-nox,
+  python3,
+  fontforge,
+}:
 buildNpmPackage rec {
   pname = "iosevka-mithic";
   version = "30.3.2";
@@ -16,17 +26,25 @@ buildNpmPackage rec {
   npmDepsHash = "sha256-8IyQK1eoVwq6E/HZkavLSRXiZst3LuyDIPc8D/yMD9E=";
 
   patcher = fetchzip {
-    url =
-      "https://github.com/ryanoasis/nerd-fonts/releases/download/v${patcher-version}/FontPatcher.zip";
+    url = "https://github.com/ryanoasis/nerd-fonts/releases/download/v${patcher-version}/FontPatcher.zip";
     hash = "sha256-3s0vcRiNA/pQrViYMwU2nnkLUNUcqXja/jTWO49x3BU=";
     stripRoot = false;
     name = "patcher";
   };
 
-  srcs = [ iosevka patcher ];
+  srcs = [
+    iosevka
+    patcher
+  ];
   sourceRoot = "./${iosevka.name}";
 
-  nativeBuildInputs = [ unzip ttfautohint-nox python3 fontforge ]
+  nativeBuildInputs =
+    [
+      unzip
+      ttfautohint-nox
+      python3
+      fontforge
+    ]
     ++ lib.optionals stdenv.isDarwin [
       darwin.cctools # libtool
     ];
@@ -81,11 +99,13 @@ buildNpmPackage rec {
     '';
     license = licenses.ofl;
     platforms = platforms.all;
-    maintainers = [{
-      name = "MithicSpirit";
-      email = "rpc01234@gmail.com";
-      github = "MithicSpirit";
-      githubId = 24192522;
-    }];
+    maintainers = [
+      {
+        name = "MithicSpirit";
+        email = "rpc01234@gmail.com";
+        github = "MithicSpirit";
+        githubId = 24192522;
+      }
+    ];
   };
 }

@@ -1,4 +1,8 @@
-{ stdenv, lib, fetchFromGitHub, }:
+{
+  stdenv,
+  lib,
+  fetchFromGitHub,
+}:
 stdenv.mkDerivation rec {
   pname = "firefox-ui-fix";
   version = "8.6.1";
@@ -28,11 +32,13 @@ stdenv.mkDerivation rec {
     '';
     license = licenses.mpl20;
     platforms = platforms.all;
-    maintainers = [{
-      name = "MithicSpirit";
-      email = "rpc01234@gmail.com";
-      github = "MithicSpirit";
-      githubId = 24192522;
-    }];
+    maintainers = [
+      {
+        name = "MithicSpirit";
+        email = "rpc01234@gmail.com";
+        github = "MithicSpirit";
+        githubId = 24192522;
+      }
+    ];
   };
 }

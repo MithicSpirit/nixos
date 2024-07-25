@@ -1,4 +1,5 @@
-{ config, ... }: {
+{ config, ... }:
+{
   programs.git = {
     enable = true;
 
@@ -59,9 +60,16 @@
     };
     signing.signByDefault = true;
     signing.key = null;
-    aliases = { hub = "!gh"; };
+    aliases = {
+      hub = "!gh";
+    };
 
-    ignores = [ "/compile_commands.json" "/venv/**" "/.venv/**" "flycheck_*" ];
+    ignores = [
+      "/compile_commands.json"
+      "/venv/**"
+      "/.venv/**"
+      "flycheck_*"
+    ];
 
     delta = {
 
@@ -75,7 +83,8 @@
         width = 80;
 
         # colormoved support
-        map-styles = with builtins;
+        map-styles =
+          with builtins;
           let
             table = {
               "bold purple" = ''syntax "#380f2e"'';
@@ -83,10 +92,14 @@
               "bold cyan" = ''syntax "#0d3a36"'';
               "bold yellow" = ''syntax "#273414"'';
             };
-          in foldl' (acc: elem:
-            let new = "${elem} => ${table.${elem}}";
-            in if acc == "" then new else "${acc}, ${new}") ""
-          (attrNames table);
+          in
+          foldl' (
+            acc: elem:
+            let
+              new = "${elem} => ${table.${elem}}";
+            in
+            if acc == "" then new else "${acc}, ${new}"
+          ) "" (attrNames table);
 
       };
     };

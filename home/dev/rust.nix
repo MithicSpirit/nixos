@@ -1,8 +1,14 @@
 { pkgs, ... }:
-let toml = (pkgs.formats.toml { }).generate;
-in {
+let
+  toml = (pkgs.formats.toml { }).generate;
+in
+{
 
-  home.packages = with pkgs; [ rustc cargo rustfmt ];
+  home.packages = with pkgs; [
+    rustc
+    cargo
+    rustfmt
+  ];
 
   xdg.configFile."rustfmt/rustfmt.toml".source = toml "rustfmt.toml" {
     edition = "2021";

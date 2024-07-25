@@ -3,7 +3,8 @@ let
   home = config.home.homeDirectory;
   dataDir = f: "${config.xdg.dataHome}/${f}";
   configDir = f: "${config.xdg.configHome}/${f}";
-in {
+in
+{
 
   xdg = {
     enable = true;
@@ -12,20 +13,23 @@ in {
     configHome = "${home}/.local/etc";
     dataHome = "${home}/.local/share";
     stateHome = "${home}/.local/state";
-    userDirs = let parent = "${home}/files";
-    in {
-      enable = true;
-      createDirectories = true;
-      templates = "${config.xdg.dataHome}/templates";
+    userDirs =
+      let
+        parent = "${home}/files";
+      in
+      {
+        enable = true;
+        createDirectories = true;
+        templates = "${config.xdg.dataHome}/templates";
 
-      documents = "${parent}/documents";
-      download = "${parent}/downloads";
-      pictures = "${parent}/pictures";
-      videos = "${parent}/videos";
-      music = "${parent}/music";
-      desktop = "${parent}/desktop";
-      publicShare = "${parent}/public";
-    };
+        documents = "${parent}/documents";
+        download = "${parent}/downloads";
+        pictures = "${parent}/pictures";
+        videos = "${parent}/videos";
+        music = "${parent}/music";
+        desktop = "${parent}/desktop";
+        publicShare = "${parent}/public";
+      };
 
     mime.enable = true;
     mimeApps = {

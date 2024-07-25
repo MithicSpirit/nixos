@@ -1,5 +1,14 @@
-{ lib, stdenvNoCC, fetchFromGitHub, installShellFiles, makeWrapper, util-linux
-, libqalculate, wl-clipboard, menu ? null }:
+{
+  lib,
+  stdenvNoCC,
+  fetchFromGitHub,
+  installShellFiles,
+  makeWrapper,
+  util-linux,
+  libqalculate,
+  wl-clipboard,
+  menu ? null,
+}:
 stdenvNoCC.mkDerivation rec {
 
   pname = "qalcmenu";
@@ -12,23 +21,31 @@ stdenvNoCC.mkDerivation rec {
     sha256 = "sha256-14/wB7x6VBVr6I4WxcwCBICCaIwL7FfNQBTUS490sqI=";
   };
 
-  nativeBuildInputs = [ installShellFiles makeWrapper ];
+  nativeBuildInputs = [
+    installShellFiles
+    makeWrapper
+  ];
 
-  installPhase = let
-    path = [ util-linux libqalculate wl-clipboard ]
-      ++ (if menu != null then [ menu ] else [ ]);
+  installPhase =
+    let
+      path = [
+        util-linux
+        libqalculate
+        wl-clipboard
+      ] ++ (if menu != null then [ menu ] else [ ]);
+    in
     # bash
-  in ''
-    runHook preInstall
+    ''
+      runHook preInstall
 
-    installManPage ./qalcmenu.1 ./=.1
+      installManPage ./qalcmenu.1 ./=.1
 
-    install -Dm755 -t "$out/bin" ./qalcmenu
-    wrapProgram "$out/bin/qalcmenu" --prefix PATH : "${lib.makeBinPath path}"
-    ln -sT qalcmenu "$out/bin/="
+      install -Dm755 -t "$out/bin" ./qalcmenu
+      wrapProgram "$out/bin/qalcmenu" --prefix PATH : "${lib.makeBinPath path}"
+      ln -sT qalcmenu "$out/bin/="
 
-    runHook postInstall
-  '';
+      runHook postInstall
+    '';
 
   meta = with lib; {
     homepage = "https://github.com/MithicSpirit/qalcmenu";
@@ -40,12 +57,14 @@ stdenvNoCC.mkDerivation rec {
     '';
     license = licenses.agpl3Plus;
     platforms = platforms.all;
-    maintainers = [{
-      name = "MithicSpirit";
-      email = "rpc01234@gmail.com";
-      github = "MithicSpirit";
-      githubId = 24192522;
-    }];
+    maintainers = [
+      {
+        name = "MithicSpirit";
+        email = "rpc01234@gmail.com";
+        github = "MithicSpirit";
+        githubId = 24192522;
+      }
+    ];
     mainProgram = "qalcmenu";
   };
 

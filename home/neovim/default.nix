@@ -1,6 +1,8 @@
 { pkgs, ... }:
-let me = pkgs.mithic-nvim;
-in {
+let
+  me = pkgs.mithic-nvim;
+in
+{
 
   programs.neovim = {
     enable = true;

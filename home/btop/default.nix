@@ -1,9 +1,9 @@
-{ config, ... }: {
+{ config, ... }:
+{
 
   programs.btop.enable = true;
   programs.btop.settings = {
-    color_theme =
-      "${config.programs.btop.package}/share/btop/themes/tokyo-night.theme";
+    color_theme = "${config.programs.btop.package}/share/btop/themes/tokyo-night.theme";
     theme_background = false;
     presets = "";
     vim_keys = true;

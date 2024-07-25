@@ -1,5 +1,7 @@
-let youtube = id: "https://www.youtube.com/feeds/videos.xml?channel_id=${id}";
-in [
+let
+  youtube = id: "https://www.youtube.com/feeds/videos.xml?channel_id=${id}";
+in
+[
   {
     title = "3Blue1Brown";
     url = youtube "UCYO_jab_esuFRV4b17AJtAw";
@@ -49,27 +51,42 @@ in [
   {
     title = "Luke Smith";
     url = youtube "UC2eYFnH61tmytImy1mTYvhA";
-    tags = [ "tech" "audio" ];
+    tags = [
+      "tech"
+      "audio"
+    ];
   }
   {
     title = "Mental Outlaw";
     url = youtube "UC7YOGHUfC1Tb6E4pudI9STA";
-    tags = [ "tech" "audio" ];
+    tags = [
+      "tech"
+      "audio"
+    ];
   }
   {
     title = "Brodie Robertson";
     url = youtube "UCld68syR8Wi-GY_n4CaoJGA";
-    tags = [ "tech" "audio" ];
+    tags = [
+      "tech"
+      "audio"
+    ];
   }
   {
     title = "Louis Rossmann";
     url = youtube "UCl2mFZoRqjw_ELax4Yisf6w";
-    tags = [ "tech" "audio" ];
+    tags = [
+      "tech"
+      "audio"
+    ];
   }
   {
     title = "The Linux Experiment";
     url = youtube "UC5UAwBUum7CPN5buc-_N1Fw";
-    tags = [ "tech" "audio" ];
+    tags = [
+      "tech"
+      "audio"
+    ];
   }
   {
     title = "Technology Connections";
@@ -79,7 +96,10 @@ in [
   {
     title = "Chris Titus Tech";
     url = youtube "UCg6gPGh8HU2U01vaFCAsvmQ";
-    tags = [ "tech" "audio" ];
+    tags = [
+      "tech"
+      "audio"
+    ];
   }
   {
     title = "Linus Tech Tips";

@@ -31,16 +31,26 @@
                   subvolumes = {
                     "/nixroot" = {
                       mountpoint = "/";
-                      mountOptions = [ "compress-force=zstd:3" "noatime" ];
+                      mountOptions = [
+                        "compress-force=zstd:3"
+                        "noatime"
+                      ];
                     };
                     "/home" = {
                       mountpoint = "/home";
-                      mountOptions = [ "compress=zstd:2" "nosuid" ];
+                      mountOptions = [
+                        "compress=zstd:2"
+                        "nosuid"
+                      ];
                     };
                     "/swap" = {
                       mountpoint = "/swap";
-                      mountOptions =
-                        [ "nodatacow" "noatime" "noexec" "lazytime" ];
+                      mountOptions = [
+                        "nodatacow"
+                        "noatime"
+                        "noexec"
+                        "lazytime"
+                      ];
                       swap.swapfile.size = "48G";
                     };
                   };

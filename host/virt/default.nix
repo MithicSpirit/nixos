@@ -1,4 +1,5 @@
-{ pkgs, ... }: {
+{ pkgs, ... }:
+{
   virtualisation = {
     docker = {
       enable = true;
@@ -13,5 +14,8 @@
     podman.enable = true;
   };
 
-  environment.systemPackages = with pkgs; [ qemu virt-manager ];
+  environment.systemPackages = with pkgs; [
+    qemu
+    virt-manager
+  ];
 }

@@ -1,4 +1,10 @@
-{ config, pkgs, root, ... }: {
+{
+  config,
+  pkgs,
+  root,
+  ...
+}:
+{
 
   imports = [
     /${root}/home/bat

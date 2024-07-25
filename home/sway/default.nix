@@ -1,6 +1,13 @@
-{ config, pkgs, root, ... }:
-let wallpaper = import /${root}/common/wallpaper;
-in {
+{
+  config,
+  pkgs,
+  root,
+  ...
+}:
+let
+  wallpaper = import /${root}/common/wallpaper;
+in
+{
 
   # TODO: bar
   # TODO: .login
@@ -127,62 +134,73 @@ in {
     };
   };
 
-  services.swayidle = let
-    lock = 600;
-    notify-send = "${pkgs.libnotify}/bin/notify-send";
-    loginctl = "${pkgs.systemd}/bin/loginctl";
-    sleep = "${pkgs.coreutils}/bin/sleep";
-    pkill = "${pkgs.procps}/bin/pkill";
-    dunstctl = "${config.services.dunst.package}/bin/dunstctl";
-    swaymsg = "${config.wayland.windowManager.sway.package}/bin/swaymsg";
-    swaylock = "${config.programs.swaylock.package}/bin/swaylock";
-  in {
-    enable = true;
-    extraArgs = [ "-w" "idlehint" "${builtins.toString (lock / 2)}" ];
-    timeouts = [
-      {
-        timeout = lock - 31;
-        command = "${notify-send} -et 30000";
-      }
-      {
-        timeout = lock - 1;
-        command = "${dunstctl} set-paused true";
-        resumeCommand = "${dunstctl} set-paused false";
-      }
-      {
-        timeout = lock;
-        command = "${loginctl} lock-session";
-      }
-      {
-        timeout = lock + 15;
-        command = ''${swaymsg} "output * power off"'';
-        resumeCommand = ''${swaymsg} "output * power on"'';
-      }
-    ];
-    events = [
-      {
-        event = "before-sleep";
-        command = ''
-          ${loginctl} lock-session; ${swaymsg} "output * power off"; ${sleep} 0.1'';
-      }
-      {
-        event = "after-resume";
-        command = ''${sleep} 0.2; ${swaymsg} "output * power on"'';
-      }
-      {
-        event = "lock";
-        command = "${swaylock} -f; ${sleep} 0.1";
-      }
-      {
-        event = "unlock";
-        command = ''${pkill} -USR1 "^swaylock$"'';
-      }
-    ];
-  };
+  services.swayidle =
+    let
+      lock = 600;
+      notify-send = "${pkgs.libnotify}/bin/notify-send";
+      loginctl = "${pkgs.systemd}/bin/loginctl";
+      sleep = "${pkgs.coreutils}/bin/sleep";
+      pkill = "${pkgs.procps}/bin/pkill";
+      dunstctl = "${config.services.dunst.package}/bin/dunstctl";
+      swaymsg = "${config.wayland.windowManager.sway.package}/bin/swaymsg";
+      swaylock = "${config.programs.swaylock.package}/bin/swaylock";
+    in
+    {
+      enable = true;
+      extraArgs = [
+        "-w"
+        "idlehint"
+        "${builtins.toString (lock / 2)}"
+      ];
+      timeouts = [
+        {
+          timeout = lock - 31;
+          command = "${notify-send} -et 30000";
+        }
+        {
+          timeout = lock - 1;
+          command = "${dunstctl} set-paused true";
+          resumeCommand = "${dunstctl} set-paused false";
+        }
+        {
+          timeout = lock;
+          command = "${loginctl} lock-session";
+        }
+        {
+          timeout = lock + 15;
+          command = ''${swaymsg} "output * power off"'';
+          resumeCommand = ''${swaymsg} "output * power on"'';
+        }
+      ];
+      events = [
+        {
+          event = "before-sleep";
+          command = ''${loginctl} lock-session; ${swaymsg} "output * power off"; ${sleep} 0.1'';
+        }
+        {
+          event = "after-resume";
+          command = ''${sleep} 0.2; ${swaymsg} "output * power on"'';
+        }
+        {
+          event = "lock";
+          command = "${swaylock} -f; ${sleep} 0.1";
+        }
+        {
+          event = "unlock";
+          command = ''${pkill} -USR1 "^swaylock$"'';
+        }
+      ];
+    };
 
   xdg.portal = {
-    config.sway.default = [ "wlr" "gtk" ];
-    extraPortals = with pkgs; [ xdg-desktop-portal-wlr xdg-desktop-portal-gtk ];
+    config.sway.default = [
+      "wlr"
+      "gtk"
+    ];
+    extraPortals = with pkgs; [
+      xdg-desktop-portal-wlr
+      xdg-desktop-portal-gtk
+    ];
   };
 
   home.packages = with pkgs; [

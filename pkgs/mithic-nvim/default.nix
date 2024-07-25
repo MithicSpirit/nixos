@@ -1,5 +1,9 @@
-{ pkgs, buildVimPlugin ? pkgs.vimUtils.buildVimPlugin, fennel ? pkgs.fennel
-, python3 ? pkgs.python3 }:
+{
+  pkgs,
+  buildVimPlugin ? pkgs.vimUtils.buildVimPlugin,
+  fennel ? pkgs.fennel,
+  python3 ? pkgs.python3,
+}:
 # TODO: get a statusline (NOT lualine please for the love of god please)
 # TODO: theme
 (buildVimPlugin {
@@ -14,76 +18,84 @@
     cd out
   '';
 
-}).overrideAttrs (old: {
-  nativeBuildInputs = old.nativeBuildInputs ++ [ fennel python3 ];
+}).overrideAttrs
+  (old: {
+    nativeBuildInputs = old.nativeBuildInputs ++ [
+      fennel
+      python3
+    ];
 
-  vimPlugins = (with pkgs.vimPlugins; [
+    vimPlugins =
+      (with pkgs.vimPlugins; [
 
-    mini-nvim
-    gitsigns-nvim
-    indent-blankline-nvim # ibl
-    hop-nvim
-    trouble-nvim
-    vim-sneak
-    undotree
-    nvim-parinfer
-    #firenvim
-    vimtex
-    idris2-nvim
+        mini-nvim
+        gitsigns-nvim
+        indent-blankline-nvim # ibl
+        hop-nvim
+        trouble-nvim
+        vim-sneak
+        undotree
+        nvim-parinfer
+        #firenvim
+        vimtex
+        idris2-nvim
 
-    # tpope
-    vim-sleuth
-    vim-eunuch
-    vim-rsi
-    vim-fugitive
-    vim-repeat
-    vim-surround
+        # tpope
+        vim-sleuth
+        vim-eunuch
+        vim-rsi
+        vim-fugitive
+        vim-repeat
+        vim-surround
 
-    # telescope
-    telescope-nvim
-    telescope-zf-native-nvim
-    telescope-file-browser-nvim
+        # telescope
+        telescope-nvim
+        telescope-zf-native-nvim
+        telescope-file-browser-nvim
 
-    # lsp
-    nvim-lspconfig
+        # lsp
+        nvim-lspconfig
 
-    # lean
-    lean-nvim
-    plenary-nvim
+        # lean
+        lean-nvim
+        plenary-nvim
 
-    # coq
-    Coqtail
+        # coq
+        Coqtail
 
-    # agda
-    cornelis
-    vim-textobj-user
-    nvim-hs-vim
+        # agda
+        cornelis
+        vim-textobj-user
+        nvim-hs-vim
 
-    # treesitter
-    nvim-treesitter
-  ]) ++ (with builtins;
-    filter isAttrs (attrValues pkgs.vimPlugins.nvim-treesitter-parsers));
+        # treesitter
+        nvim-treesitter
+      ])
+      ++ (
+        with builtins;
+        filter isAttrs (attrValues pkgs.vimPlugins.nvim-treesitter-parsers)
+      );
 
-  extraPackages = with pkgs; [
+    extraPackages = with pkgs; [
 
-    fd # telescope
-    lean4 # lean
-    idris2Packages.idris2Lsp
-    coq
-    cornelis
+      fd # telescope
+      lean4 # lean
+      idris2Packages.idris2Lsp
+      coq
+      cornelis
 
-    # lsp
-    lua-language-server
-    fennel-ls
-    clang-tools
-    haskell-language-server
-    nil
-    rust-analyzer
-    zls
-    ruff
-    basedpyright
-    texlab
-    ltex-ls
+      # lsp
+      lua-language-server
+      fennel-ls
+      clang-tools
+      haskell-language-server
+      nil
+      rust-analyzer
+      zls
+      ruff
+      basedpyright
+      texlab
+      ltex-ls
 
-  ];
-})
+    ];
+  })

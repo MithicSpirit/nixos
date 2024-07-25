@@ -1,6 +1,17 @@
-{ config, pkgs, inputs, root, overlays, ... }: {
+{
+  config,
+  pkgs,
+  inputs,
+  root,
+  overlays,
+  ...
+}:
+{
 
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
+  nix.settings.experimental-features = [
+    "nix-command"
+    "flakes"
+  ];
   nix.package = pkgs.nixVersions.latest;
 
   imports = [
@@ -105,41 +116,45 @@
 
   services.gpm.enable = true;
 
-  environment.systemPackages = (with pkgs; [
-    coreutils
-    moreutils
-    busybox
-    util-linux
-    comma
-    which
-    dash
-    curl
-    openssh
-    tmux
-    ed
-    vim
-    emacs
-    git
-    htop
-    findutils
-    rename
-    lsof
-    mtr
-    ldns
-    testdisk
-    tree
-    file
-    zip
-    unzip
-    unrar-wrapper
-    fastfetch
-    dotacat
-    cmatrix
-    neo-cowsay
-    bsdgames
-    sl
-  ]) ++ (with builtins; # get all packages from unixtools
-    filter (p: typeOf p == "set") (attrValues pkgs.unixtools));
+  environment.systemPackages =
+    (with pkgs; [
+      coreutils
+      moreutils
+      busybox
+      util-linux
+      comma
+      which
+      dash
+      curl
+      openssh
+      tmux
+      ed
+      vim
+      emacs
+      git
+      htop
+      findutils
+      rename
+      lsof
+      mtr
+      ldns
+      testdisk
+      tree
+      file
+      zip
+      unzip
+      unrar-wrapper
+      fastfetch
+      dotacat
+      cmatrix
+      neo-cowsay
+      bsdgames
+      sl
+    ])
+    ++ (
+      with builtins; # get all packages from unixtools
+      filter (p: typeOf p == "set") (attrValues pkgs.unixtools)
+    );
 
   programs.zsh = {
     enable = true;
@@ -152,7 +167,11 @@
 
   users.users."mithic" = {
     description = "MithicSpirit";
-    extraGroups = [ "wheel" "video" "gamemode" ];
+    extraGroups = [
+      "wheel"
+      "video"
+      "gamemode"
+    ];
     isNormalUser = true;
     shell = pkgs.zsh;
     initialPassword = "";
@@ -171,8 +190,9 @@
     users."mithic" = import ./home/mithic.nix;
   };
   systemd.services."user@${toString config.users.users."mithic".uid}" = {
-    environment = builtins.mapAttrs (_: toString)
-      config.home-manager.users."mithic".home.sessionVariables;
+    environment = builtins.mapAttrs (
+      _: toString
+    ) config.home-manager.users."mithic".home.sessionVariables;
     overrideStrategy = "asDropin";
   };
 
@@ -183,18 +203,21 @@
     submissionUrl = "https://beacondb.net/v2/geosubmit";
   };
 
-  services.logind = let self = config.services.logind;
-  in {
-    powerKey = "ignore";
-    powerKeyLongPress = "poweroff";
+  services.logind =
+    let
+      self = config.services.logind;
+    in
+    {
+      powerKey = "ignore";
+      powerKeyLongPress = "poweroff";
 
-    suspendKey = "suspend-then-hibernate";
-    hibernateKeyLongPress = self.suspendKey;
-    lidSwitch = self.suspendKey;
+      suspendKey = "suspend-then-hibernate";
+      hibernateKeyLongPress = self.suspendKey;
+      lidSwitch = self.suspendKey;
 
-    hibernateKey = "hibernate";
-    suspendKeyLongPress = self.hibernateKey;
-  };
+      hibernateKey = "hibernate";
+      suspendKeyLongPress = self.hibernateKey;
+    };
 
   systemd.sleep.extraConfig = ''
     HibernateDelaySec=1day

@@ -1,6 +1,8 @@
 { pkgs, ... }:
-let kdep = pkgs.kdePackages;
-in {
+let
+  kdep = pkgs.kdePackages;
+in
+{
   # TODO: check whether names are correct
 
   home.pointerCursor = {
@@ -37,10 +39,25 @@ in {
   fonts.fontconfig = {
     enable = true;
     defaultFonts = {
-      sansSerif = [ "Overpass" "Iosevka Mithic" "Noto Sans" "Noto Sans CJK" ];
-      serif = [ "Latin Modern Roman" "Iosevka Mithic" "Noto Serif" ];
-      monospace = [ "Iosevka Mithic" "Overpass Mono" ];
-      emoji = [ "Twemoji" "Iosevka Mithic" ];
+      sansSerif = [
+        "Overpass"
+        "Iosevka Mithic"
+        "Noto Sans"
+        "Noto Sans CJK"
+      ];
+      serif = [
+        "Latin Modern Roman"
+        "Iosevka Mithic"
+        "Noto Serif"
+      ];
+      monospace = [
+        "Iosevka Mithic"
+        "Overpass Mono"
+      ];
+      emoji = [
+        "Twemoji"
+        "Iosevka Mithic"
+      ];
     };
   };
 

@@ -1,4 +1,5 @@
-{ ... }: {
+{ ... }:
+{
 
   programs.bemenu = {
     enable = true;

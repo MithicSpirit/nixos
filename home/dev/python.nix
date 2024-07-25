@@ -1,6 +1,8 @@
 { pkgs, ... }:
-let toml = (pkgs.formats.toml { }).generate;
-in {
+let
+  toml = (pkgs.formats.toml { }).generate;
+in
+{
 
   home.packages = with pkgs; [
     python3

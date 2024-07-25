@@ -1,4 +1,10 @@
-{ pkgs, inputs, lib, ... }: {
+{
+  pkgs,
+  inputs,
+  lib,
+  ...
+}:
+{
 
   imports = [ inputs.lanzaboote.nixosModules.lanzaboote ];
 

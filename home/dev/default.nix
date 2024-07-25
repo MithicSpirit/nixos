@@ -1,6 +1,10 @@
-{ pkgs, lib, ... }: {
+{ pkgs, lib, ... }:
+{
 
-  imports = [ ./rust.nix ./python.nix ];
+  imports = [
+    ./rust.nix
+    ./python.nix
+  ];
 
   home.packages = with pkgs; [
     # c/++
