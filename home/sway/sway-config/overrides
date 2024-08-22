@@ -7,6 +7,8 @@ for_window {
     [class="awakened-poe-trade"] floating enable
     [app_id="qalculate-gtk"] floating enable
     [app_id="xdg-desktop-portal"] floating enable
+    # fullscreen
+    [app_id="btop"] fullscreen enable
 }
 
 # autostsart

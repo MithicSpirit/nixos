@@ -13,17 +13,17 @@
 }:
 buildNpmPackage rec {
   pname = "iosevka-mithic";
-  version = "30.3.2";
+  version = "31.3.0";
   patcher-version = "3.2.1";
 
   iosevka = fetchFromGitHub {
     owner = "be5invis";
     repo = "iosevka";
     rev = "v${version}";
-    hash = "sha256-Ksd1REqCe+42hpIwikIeKNYIYaHc5hqxuny8lYRuQcY=";
+    hash = "sha256-WrRxVrBJeyUwv0/DYTIHLi52+k2PilC7ay0tc5yq3Pw=";
     name = "iosevka";
   };
-  npmDepsHash = "sha256-8IyQK1eoVwq6E/HZkavLSRXiZst3LuyDIPc8D/yMD9E=";
+  npmDepsHash = "sha256-xw0GA1aIA/J5hfLQBSE+GJzXfbfWQI2k2pYdenlM9NY=";
 
   patcher = fetchzip {
     url = "https://github.com/ryanoasis/nerd-fonts/releases/download/v${patcher-version}/FontPatcher.zip";

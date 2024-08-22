@@ -12,7 +12,7 @@
     /${root}/home/git
     /${root}/home/gpg
     /${root}/home/kitty
-    # /${root}/home/librewolf
+    # /${root}/home/librewolf # TODO: waiting on #5684
     /${root}/home/mpv
     /${root}/home/neovim
     /${root}/home/newsboat
@@ -85,7 +85,7 @@
       xournalpp
 
       firefox
-      librewolf
+      # librewolf # TODO: broken; see #336490, #336304
       tor-browser
       ungoogled-chromium
 
