@@ -32,6 +32,7 @@
     /${root}/host/bluetooth
     /${root}/host/tlp # or ppd
     /${root}/host/sway
+    /${root}/host/amdgpu
   ];
 
   nixpkgs.overlays = overlays;
