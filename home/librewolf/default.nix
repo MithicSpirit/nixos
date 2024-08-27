@@ -1,27 +1,31 @@
 { config, pkgs, ... }:
 {
 
-  programs.firefox = {
+  programs.librewolf = {
     enable = true;
-    package = pkgs.librewolf;
-    profiles."mithic" = {
+    profiles."mithic" =
+      let
+        force = pkgs.lib.mkForce;
+      in
+      {
 
-      settings = { };
-      bookmarks = [ ];
-      extraConfig = "";
-      userChrome = "";
-      userContent = "";
+        # must be empty for stuff below to work
+        settings = force { };
+        extraConfig = force "";
+        bookmarks = force [ ];
+        userChrome = force "";
+        userContent = force "";
 
-    };
+      };
   };
 
   home.file =
     let
+      self = config.programs.librewolf;
       path =
-        if pkgs.stdenv.hostPlatform.isDarwin then
-          "TODO"
-        else
-          ".librewolf/${config.programs.firefox.profiles."mithic".path}";
+        self.configPath
+        ++ (if pkgs.stdenv.hostPlatform.isDarwin then "/Profiles/" else "/")
+        ++ self.profiles."mithic".path;
     in
     {
       "${path}/chrome".source = pkgs.firefox-ui-fix;

@@ -1,16 +1,16 @@
-default: format check
+default: gitadd standard
 
-format: gitadd
+format:
     nix fmt -- --width=80 --verify .
 
-check: gitadd
+check:
     nix flake check --all-systems
     nix run .#deadnix -- --fail
 
-undead: gitadd && default
+undead: gitadd && standard
     nix run .#deadnix -- --edit
 
-update: gitadd && default
+update: gitadd && standard
     nix flake update
 
 [confirm]
@@ -28,6 +28,9 @@ boot: (rebuild "boot")
 [private]
 sudo:
     sudo -v
+
+[private]
+standard: format check
 
 [private]
 gitadd:

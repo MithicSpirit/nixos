@@ -4,7 +4,7 @@
   home.packages = with pkgs; [
     # utils
     gimp
-    gnome.gnome-characters
+    gnome-characters
     vlc
 
     # communication

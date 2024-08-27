@@ -85,7 +85,7 @@
       xournalpp
 
       firefox
-      # librewolf # TODO: broken; see #336490, #336304
+      librewolf
       tor-browser
       ungoogled-chromium
 
