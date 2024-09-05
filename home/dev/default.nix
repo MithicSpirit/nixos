@@ -4,6 +4,7 @@
   imports = [
     ./rust.nix
     ./python.nix
+    ./tex.nix
   ];
 
   home.packages = with pkgs; [
@@ -22,10 +23,6 @@
     agda
     coq
     idris2
-
-    # (La)TeX
-    texliveFull
-    tectonic
 
     # tooling
     gnumake

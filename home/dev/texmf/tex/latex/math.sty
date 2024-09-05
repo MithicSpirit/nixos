@@ -1,0 +1,177 @@
+\RequirePackage[l2tabu,orthodox]{nag}
+
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{math}[Personal package for mathematics typesetting]
+
+\RequirePackage{iftex}
+\RequirePackage{xparse}
+
+\RequirePackage{amsmath}
+\RequirePackage{amsthm}
+\RequirePackage{amssymb}
+
+\RequirePackage{tikz}
+\RequirePackage{pgfplots}
+\RequirePackage{graphicx}
+\RequirePackage{xcolor}
+\RequirePackage{caption}
+\RequirePackage[shortlabels]{enumitem}
+
+\RequirePackage{mathtools}
+\ifluatex\RequirePackage{lualatex-math}\fi
+\RequirePackage{mathrsfs}
+\RequirePackage{stmaryrd}
+\RequirePackage{xfrac}
+\RequirePackage{siunitx}
+\RequirePackage{interval}
+% TODO: update definitions to be compatible, then
+% \RequirePackage[math-style=TeX,bold-style=TeX,sans-style=upright,nabla=upright, partial=italic]{unicode-math}
+% ^ also use \unimathsetup instead of long line
+
+\RequirePackage{hyperref}
+\RequirePackage[nameinlink]{cleveref}
+
+\pgfplotsset{compat=newest, tick scale binop=\times}
+\usepgfplotslibrary{colormaps}
+\usetikzlibrary{3d}
+\usetikzlibrary{perspective}
+\usetikzlibrary{arrows.meta}
+
+\sisetup{
+  retain-explicit-decimal-marker=true,
+  retain-zero-uncertainty,
+  uncertainty-mode=separate,
+  list-final-separator={,\text{ and }},
+  table-alignment-mode=format,
+}
+\DeclareSIUnit\clight{\text{\ensuremath{c}}}
+
+\intervalconfig{soft open fences}
+
+\theoremstyle{definition}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem*{theorem*}{Theorem}
+\crefname{theorem}{Theorem}{Theorems}
+\Crefname{theorem}{Theorem}{Theorems}
+
+\newcommand{\crefnewtheorem}[3]{%
+  \newtheorem{#1}[theorem]{#2}%
+  \newtheorem*{#1*}{#2}%
+  \crefname{#1}{#2}{#3}
+  \Crefname{#1}{#2}{#3}}
+
+\crefnewtheorem{corollary}{Corollary}{Corollaries}
+\crefnewtheorem{lemma}{Lemma}{Lemmas}
+\crefnewtheorem{definition}{Definition}{Definitions}
+\crefnewtheorem{proposition}{Proposition}{Propositions}
+\crefnewtheorem{law}{Law}{Laws}
+\crefnewtheorem{conjecture}{Conjecture}{Conjectures}
+
+\newtheorem{axiom}{Axiom}
+\newtheorem*{axiom*}{Axiom}
+\crefname{axiom}{Axiom}{Axioms}
+\Crefname{axiom}{Axiom}{Axioms}
+
+\newenvironment{proof*}[1][\proofname]%
+{\begin{proof}[#1]\renewcommand{\qedsymbol}{}}%
+{\end{proof}}
+
+\newcommand{\foreign}{\emph}
+\renewcommand{\foreignlanguage}[1]{\foreign}
+\newcommand{\etc}{\foreign{etc.}}
+\newcommand{\ie}{\foreign{i.e.\@}}
+\newcommand{\eg}{\foreign{e.g.\@}}
+\newcommand{\nb}{\foreign{N.B.\@}}
+\newcommand{\cf}{\foreign{cf.\@}}
+\newcommand{\afsoc}{\@ifstar{assume, for sake of contradiction}%
+  {Assume, for sake of contradiction}}
+
+\newcommand{\p}[1]{\mathrlap{\,\text{#1}}}
+\NewDocumentCommand{\cat}{m}{\ensuremath{\normalfont\textbf{#1}}}
+
+\newcommand{\trans}{^{\mathsf{T}}}
+\newcommand{\compl}{^{\mathsf{C}}}
+
+\DeclareMathOperator{\Span}{Span}
+\DeclareMathOperator{\Aut}{Aut}
+\DeclareMathOperator{\erf}{erf}
+
+\DeclareMathOperator{\rank}{rank}
+\DeclareMathOperator{\nullity}{null}
+
+\DeclareMathOperator{\id}{id}
+\DeclareMathOperator{\img}{img}
+\DeclareMathOperator{\inv}{inv}
+
+\DeclareMathOperator{\proj}{proj}
+\DeclareMathOperator{\rej}{rej}
+\DeclareMathOperator{\refl}{refl}
+
+\DeclareMathOperator*{\argmax}{arg\,max}
+\DeclareMathOperator*{\argmin}{arg\,min}
+
+\let\left@\left  % chktex 43
+\let\right@\right  % chktex 43
+\renewcommand{\left}{\mathopen{}\mathclose\bgroup\left@}  % chktex 43
+\renewcommand{\right}{\aftergroup\egroup\right@}  % chktex 43
+
+\let\phantom@nostar\phantom  % chktex 1
+\newcommand{\phantom@star}[1]{\phantom@nostar{{}#1{}}}
+\renewcommand{\phantom}{\@ifstar{\phantom@star}{\phantom@nostar}}
+\newcommand{\phantomeq}{\phantom*{=}}
+
+\let\qedhere@nostar\qedhere
+\renewcommand{\qedhere}{\@ifstar{\\&\notag\qedhere@nostar}{\qedhere@nostar}}
+
+\let\sqrt@nostar\sqrt  % chktex 1
+\newcommand{\sqrt@star}[1]{\sqrt@nostar{\textstyle{#1}}}
+\renewcommand{\sqrt}{\@ifstar{\sqrt@star}{\sqrt@nostar}}
+
+\newlength\nphant@wd
+\newcommand{\nphant@do}[1]{\settowidth{\nphant@wd}{#1}\hspace*{-\nphant@wd}}
+\newcommand{\nphant@math}[2]{\nphant@do{$\m@th#1#2$}}
+\DeclareRobustCommand{\nphantom}[1]{%
+  \ifmmode  % chktex 1
+    \mathpalette\nphant@math{#1}%
+  \else
+    \nphant@do{#1}%
+  \fi
+}
+
+\NewDocumentCommand{\dd}{ O{} O{} }{%
+  \operatorname{d}^{#1}_{#2}\hspace{-0.5ex}{}}
+\NewDocumentCommand{\Dd}{ O{} O{} }{%
+  \operatorname{D}^{#1}_{#2}\hspace{-0.5ex}{}}
+\NewDocumentCommand{\pdd}{ O{} O{} }{%
+  \operatorname{\partial}^{#1}_{#2}\hspace{-0.5ex}{}}
+\NewDocumentCommand{\dde}{ O{} O{} }{%
+  \operatorname{\delta}^{#1}_{#2}\hspace{-0.5ex}{}}
+\NewDocumentCommand{\Dde}{ O{} O{} }{%
+  \operatorname{\Delta}^{#1}_{#2}\hspace{-0.5ex}{}}
+\NewDocumentCommand{\Nde}{ O{} O{} }{%
+  \operatorname{\nabla}^{#1}_{#2}\hspace{-0.5ex}{}}
+
+\newcommand{\dv@nostar}[3][]{\frac{\dd[#1] #2}{\dd #3}}  % chktex 1
+\newcommand{\dv@star}[2][]{\dv@nostar[#1]{}{#2}}
+\newcommand{\dv}{\@ifstar{\dv@star}{\dv@nostar}}
+
+\newcommand{\pdv@nostar}[3][]{\frac{\pdd[#1] #2}{\pdd #3}}  % chktex 1
+\newcommand{\pdv@star}[2][]{\pdv@nostar[#1]{}{#2}}
+\newcommand{\pdv}{\@ifstar{\pdv@star}{\pdv@nostar}}
+
+\newenvironment{smat}{\smallmatrix}{\endsmallmatrix}
+\newenvironment{psmat}{\psmallmatrix}{\endpsmallmatrix}
+\newenvironment{bsmat}{\bsmallmatrix}{\endbsmallmatrix}
+\newenvironment{Bsmat}{\Bsmallmatrix}{\endBsmallmatrix}
+\newenvironment{vsmat}{\vsmallmatrix}{\endvsmallmatrix}
+\newenvironment{Vsmat}{\Vsmallmatrix}{\endVsmallmatrix}
+
+\RenewDocumentCommand{\implies}{s}{%
+  \IfBooleanTF{#1}{\Rightarrow}{\Longrightarrow}}
+\RenewDocumentCommand{\impliedby}{s}{%
+  \IfBooleanTF{#1}{\Leftarrow}{\Longleftarrow}}
+\RenewDocumentCommand{\iff}{s}{%
+  \IfBooleanTF{#1}{\Leftrightarrow}{\Longleftrightarrow}}
+
+\NewDocumentCommand{\registered}{}{\textsuperscript{\textregistered}}
