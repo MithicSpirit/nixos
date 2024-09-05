@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, config, ... }:
 let
   me = pkgs.mithic-nvim;
 in
@@ -9,7 +9,12 @@ in
     defaultEditor = true;
 
     plugins = [ me ] ++ me.vimPlugins;
-    extraLuaConfig = "require 'mithic'";
+    extraLuaConfig = # lua
+      ''
+        vim.g.vimtex_callback_progpath =
+          '${pkgs.lib.getExe config.programs.neovim.finalPackage}'
+        require 'mithic'
+      '';
     extraPackages = me.extraPackages;
   };
 

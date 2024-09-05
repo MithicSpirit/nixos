@@ -10,11 +10,13 @@
     lanzaboote = {
       url = "github:nix-community/lanzaboote/v0.4.1";
       inputs.nixpkgs.follows = "nixpkgs";
+      inputs.flake-compat.follows = "flake-compat";
       inputs.pre-commit-hooks-nix.follows = ""; # used for dev only
     };
 
     home-manager = {
-      url = "github:nix-community/home-manager";
+      # url = "github:nix-community/home-manager";
+      url = "github:MithicSpirit/home-manager/5684-merge";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
@@ -22,6 +24,16 @@
       url = "github:nix-community/disko";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    fw-fanctrl = {
+      url = "github:TamtamHero/fw-fanctrl/packaging/nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.flake-compat.follows = "flake-compat";
+    };
+
+    # dedupe
+    flake-compat.url = "github:edolstra/flake-compat";
+
   };
 
   outputs =

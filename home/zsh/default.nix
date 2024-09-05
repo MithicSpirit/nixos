@@ -56,6 +56,4 @@ in
     inherit ZDOTDIR;
   };
 
-  # TODO: setup command-not-found
-
 }

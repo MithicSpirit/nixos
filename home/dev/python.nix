@@ -8,6 +8,7 @@ in
     python3
     python3Packages.ipython
     ruff
+    uv
     mypy
     basedpyright
   ];

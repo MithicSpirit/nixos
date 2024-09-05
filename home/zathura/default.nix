@@ -22,8 +22,6 @@
       scroll-page-aware = true;
 
       synctex = true;
-      synctex-editor-command = "emacsclient +%{line} %{input}";
-
       dbus-service = true;
       dbus-raise-window = true;
 

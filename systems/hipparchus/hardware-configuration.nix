@@ -9,7 +9,6 @@
 }:
 
 {
-  # FIXME: get new hardware config
   imports = [ (modulesPath + "/installer/scan/not-detected.nix") ];
 
   boot.initrd.availableKernelModules = [

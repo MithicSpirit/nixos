@@ -12,7 +12,7 @@
     /${root}/home/git
     /${root}/home/gpg
     /${root}/home/kitty
-    # /${root}/home/librewolf # TODO: waiting on #5684
+    /${root}/home/librewolf # TODO: waiting on #5684
     /${root}/home/mpv
     /${root}/home/neovim
     /${root}/home/newsboat
@@ -37,6 +37,7 @@
   ];
 
   programs.home-manager.enable = true;
+  systemd.user.startServices = "sd-switch";
 
   wayland.windowManager.sway.extraConfig = ''
     output eDP-2 {
@@ -69,6 +70,7 @@
       rmtrash
       ugrep
       yazi
+      rclone
 
       du-dust
       duf
@@ -93,6 +95,29 @@
       qalculate-gtk
     ];
     enableDebugInfo = true;
+  };
+
+  systemd.user.timers."rclone-school" = {
+    Unit.Description = "Resynchronize school directory with rsync often";
+    Timer = {
+      OnActiveSec = "1m";
+      OnCalendar = "*-*-* *:00/15:00";
+      Persistent = true;
+    };
+    Install.WantedBy = [ "timers.target" ];
+  };
+
+  systemd.user.services."rclone-school" = {
+    Unit = {
+      Description = "Resynchronize school directory with rsync using standard script";
+      Wants = "network-online.target";
+      After = "network-online.target";
+    };
+    Service = {
+      Type = "oneshot";
+      ExecStart = "'${config.xdg.userDirs.documents}/school/rclone-sync' --dry-run";
+      # TODO: remove --dry-run
+    };
   };
 
   home.stateVersion = "24.05"; # WARNING: do not change

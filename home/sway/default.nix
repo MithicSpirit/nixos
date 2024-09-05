@@ -184,6 +184,7 @@ in
         {
           event = "lock";
           command = "${swaylock} -f; ${sleep} 0.1";
+          # TODO: sudo -K
         }
         {
           event = "unlock";

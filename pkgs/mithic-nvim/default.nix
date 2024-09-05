@@ -4,8 +4,6 @@
   fennel ? pkgs.fennel,
   python3 ? pkgs.python3,
 }:
-# TODO: get a statusline (NOT lualine please for the love of god please)
-# TODO: theme
 (buildVimPlugin {
 
   pname = "mithic-nvim"; # mithic.nvim
@@ -89,7 +87,8 @@
       fennel-ls
       clang-tools
       haskell-language-server
-      nil
+      # nil
+      nixd
       rust-analyzer
       zls
       ruff

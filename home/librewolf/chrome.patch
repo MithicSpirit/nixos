@@ -1,0 +1,119 @@
+diff --git a/user.js b/user.js
+index 2fe7376..040a6f4 100644
+--- a/user.js
++++ b/user.js
+@@ -79,27 +79,27 @@ user_pref("userChrome.rounding.square_tab",           false);
+ // user_pref("userChrome.autohide.tab",                        true);
+ // user_pref("userChrome.autohide.tab.opacity",                true);
+ // user_pref("userChrome.autohide.tab.blur",                   true);
+ // user_pref("userChrome.autohide.tabbar",                     true);
+ // user_pref("userChrome.autohide.navbar",                     true);
+ // user_pref("userChrome.autohide.bookmarkbar",                true);
+-// user_pref("userChrome.autohide.sidebar",                    true);
++user_pref("userChrome.autohide.sidebar",                    true);
+ // user_pref("userChrome.autohide.fill_urlbar",                true);
+ // user_pref("userChrome.autohide.back_button",                true);
+ // user_pref("userChrome.autohide.forward_button",             true);
+ // user_pref("userChrome.autohide.page_action",                true);
+ // user_pref("userChrome.autohide.toolbar_overlap",            true);
+ // user_pref("userChrome.autohide.toolbar_overlap.allow_layout_shift", true);
+ 
+ // user_pref("userChrome.hidden.tab_icon",                     true);
+ // user_pref("userChrome.hidden.tab_icon.always",              true);
+-// user_pref("userChrome.hidden.tabbar",                       true);
++user_pref("userChrome.hidden.tabbar",                       true);
+ // user_pref("userChrome.hidden.navbar",                       true);
+ // user_pref("userChrome.hidden.private_indicator",            true);
+-// user_pref("userChrome.hidden.titlebar_container",           true);
+-// user_pref("userChrome.hidden.sidebar_header",               true);
++user_pref("userChrome.hidden.titlebar_container",           true);
++user_pref("userChrome.hidden.sidebar_header",               true);
+ // user_pref("userChrome.hidden.sidebar_header.vertical_tab_only", true);
+ // user_pref("userChrome.hidden.urlbar_iconbox",               true);
+ // user_pref("userChrome.hidden.urlbar_iconbox.label_only",    true);
+ // user_pref("userChrome.hidden.bookmarkbar_icon",             true);
+ // user_pref("userChrome.hidden.bookmarkbar_label",            true);
+ // user_pref("userChrome.hidden.disabled_menu",                true);
+@@ -191,13 +191,13 @@ user_pref("userChrome.rounding.square_tab",           false);
+ // user_pref("userChrome.findbar.floating_on_top",             true);
+ 
+ // user_pref("userChrome.panel.remove_strip",                  true);
+ // user_pref("userChrome.panel.full_width_separator",          true);
+ // user_pref("userChrome.panel.full_width_padding",            true);
+ 
+-// user_pref("userChrome.sidebar.overlap",                     true);
++user_pref("userChrome.sidebar.overlap",                     true);
+ 
+ // user_pref("userChrome.icon.disabled",                       true);
+ // user_pref("userChrome.icon.account_image_to_right",         true);
+ // user_pref("userChrome.icon.account_label_to_right",         true);
+ // user_pref("userChrome.icon.menu.full",                      true);
+ // user_pref("userChrome.icon.global_menu.mac",                true);
+@@ -293,29 +293,29 @@ user_pref("browser.tabs.hoverPreview.enabled", true);
+ user_pref("browser.urlbar.clipboard.featureGate", true);
+ 
+ // Integrated calculator at urlbar
+ user_pref("browser.urlbar.suggest.calculator", true);
+ 
+ // Integrated unit convertor at urlbar
+-// user_pref("browser.urlbar.unitConversion.enabled", true);
++user_pref("browser.urlbar.unitConversion.enabled", true);
+ 
+ // Draw in Titlebar
+ // user_pref("browser.tabs.drawInTitlebar", true);
+ // user_pref("browser.tabs.inTitlebar",        1); // Nightly, 96 Above
+ 
+ // Searchbar, Removed from settings starting with FF v122
+ // user_pref("browser.search.widget.inNavBar",    true);
+ 
+ // Firefox view search
+ // https://blog.nightly.mozilla.org/2023/12/14/better-searching-in-firefox-to-close-out-2023-these-weeks-in-firefox-issue-151/
+-// user_pref("browser.firefox-view.search.enabled",       true);
+-// user_pref("browser.firefox-view.virtual-list.enabled", true);
++user_pref("browser.firefox-view.search.enabled",       true);
++user_pref("browser.firefox-view.virtual-list.enabled", true);
+ 
+ // Firefox screenshot
+ // https://blog.nightly.mozilla.org/2024/01/22/happy-new-year-these-weeks-in-firefox-issue-152/
+-// user_pref("screenshots.browser.component.enabled", true);
++user_pref("screenshots.browser.component.enabled", true);
+ 
+ // ** Scrolling Settings *******************************************************
+ // == Only Sharpen Scrolling ===================================================
+ //         Pref                                             Value      Original
+ /*
+ user_pref("mousewheel.min_line_scroll_amount",                 10); //        5
+diff --git a/userChrome.css b/userChrome.css
+index c084b35..ba992ed 100644
+--- a/userChrome.css
++++ b/userChrome.css
+@@ -2,22 +2,25 @@
+ @import url("css/leptonChrome.css");
+ 
+ 
+ /** Add your custom styles below **********************************************/
+ 
+ /* Enable option to edit bookmark URLs under Add Bookmark (blue star) menu */
+-/*
+ .editBMPanel_locationRow {
+   display: initial !important;
+ }
+-*/
+ 
+ /* Disable Email Image/Audio/Video and Set as Desktop Background context menu items */
+-/*
+ #context-sendimage,
+ #context-sendvideo,
+ #context-sendaudio,
+ #context-sep-setbackground,
+ #context-setDesktopBackground {
+   display: none !important;
+ }
+-*/
++
++
++
++:root {
++  --uc-sidebar-width: 100px;
++  --uc-sidebar-activate-width: 350px;
++}

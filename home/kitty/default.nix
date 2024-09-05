@@ -1,7 +1,7 @@
 { pkgs, root, ... }:
 {
 
-  home.sessionVariables.TERMINAL = "kitty";
+  home.sessionVariables."TERMINAL" = "kitty";
 
   programs.kitty = {
     enable = true;

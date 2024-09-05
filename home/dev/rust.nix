@@ -4,11 +4,7 @@ let
 in
 {
 
-  home.packages = with pkgs; [
-    rustc
-    cargo
-    rustfmt
-  ];
+  home.packages = [ pkgs.rustup ];
 
   xdg.configFile."rustfmt/rustfmt.toml".source = toml "rustfmt.toml" {
     edition = "2021";

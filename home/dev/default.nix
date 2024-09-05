@@ -7,19 +7,20 @@
   ];
 
   home.packages = with pkgs; [
+    zig
+
     # c/++
     gcc
     (lib.setPrio (gcc.meta.priority + 1) clang)
 
     # haskell
     ghc
-    cabal-install
+    stack
 
     # proof assistants
-    lean4
+    elan
     agda
     coq
-    idris
     idris2
 
     # (La)TeX

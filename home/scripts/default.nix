@@ -5,7 +5,7 @@
   # TODO: improve menu-browser and turn it into a standalone package
 
   home.sessionVariables = {
-    BROWSER = "menu-browser";
+    "BROWSER" = "menu-browser";
   };
   xdg =
     let

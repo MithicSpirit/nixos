@@ -1,6 +1,6 @@
 default: gitadd standard
 
-format:
+format: clean
     nix fmt -- --width=80 --verify .
 
 check:
@@ -14,20 +14,27 @@ update: gitadd && standard
     nix flake update
 
 [confirm]
-gc: sudo
-    rm -f result
+gc: clean sudo
     sudo nix-collect-garbage -v --delete-older-than 14d
 
-rebuild operation: sudo gitadd
+build: gitadd
+    nixos-rebuild build --flake ".#$(hostname)"
+
+clean:
+    rm -f result
+
+rebuild operation: build sudo
     sudo nixos-rebuild {{operation}} --flake ".#$(hostname)"
 
-test: (rebuild "test")
-boot: (rebuild "boot")
-
+test: (rebuild 'test')
+boot: (rebuild 'boot')
 
 [private]
 sudo:
+    #!/usr/bin/env -S sh -eux
+    id="$(notify-send -pea 'NixOS Rebuild' 'Sudo prompt' 'Waiting')"
     sudo -v
+    notify-send -r "$id" -t 2000 -u low -ea 'NixOS Rebuild' 'Sudo prompt' 'Done'
 
 [private]
 standard: format check

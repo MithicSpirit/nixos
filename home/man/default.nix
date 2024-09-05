@@ -7,9 +7,9 @@
   };
 
   home.sessionVariables = {
-    MANPAGER = "less";
-    MANROFFOPT = "-c";
-    MANWIDTH = "80";
+    "MANPAGER" = "less";
+    "MANROFFOPT" = "-c";
+    "MANWIDTH" = "80";
   };
 
 }

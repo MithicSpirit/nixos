@@ -11,19 +11,19 @@
   python3,
   fontforge,
 }:
-buildNpmPackage rec {
-  pname = "iosevka-mithic";
-  version = "31.3.0";
+let
+  version = "31.5.0";
   patcher-version = "3.2.1";
 
   iosevka = fetchFromGitHub {
     owner = "be5invis";
     repo = "iosevka";
     rev = "v${version}";
-    hash = "sha256-WrRxVrBJeyUwv0/DYTIHLi52+k2PilC7ay0tc5yq3Pw=";
+    hash = "sha256-kjydpYLOw1uZGmedemZKey0go8DRmgnUq5nrVM0NfxY=";
     name = "iosevka";
   };
-  npmDepsHash = "sha256-xw0GA1aIA/J5hfLQBSE+GJzXfbfWQI2k2pYdenlM9NY=";
+
+  npmDepsHash = "sha256-PpoSzHQMqdlGfcWvIH34ATcf4HZB+VbA6X7zqzV9xZk=";
 
   patcher = fetchzip {
     url = "https://github.com/ryanoasis/nerd-fonts/releases/download/v${patcher-version}/FontPatcher.zip";
@@ -32,10 +32,18 @@ buildNpmPackage rec {
     name = "patcher";
   };
 
+  build-plans = ./build-plans.toml;
+in
+buildNpmPackage {
+  inherit version npmDepsHash;
+
+  pname = "iosevka-mithic";
+
   srcs = [
     iosevka
     patcher
   ];
+
   sourceRoot = "./${iosevka.name}";
 
   nativeBuildInputs =
@@ -51,7 +59,7 @@ buildNpmPackage rec {
 
   patchPhase = ''
     runHook prePatch
-    cp -r ../${patcher.name} patcher
+    cp -r "../${patcher.name}" patcher #" # (fix syntax highlighting)
     chmod -R u+w patcher
     sed -i 's/\( *\)def setup_font_names(.*):/&\n\1    return/' \
       patcher/font-patcher
@@ -60,7 +68,7 @@ buildNpmPackage rec {
 
   configurePhase = ''
     runHook preConfigure
-    cp ${./build-plans.toml} "private-build-plans.toml"
+    cp "${build-plans}" "./private-build-plans.toml"
     runHook postConfigure
   '';
 

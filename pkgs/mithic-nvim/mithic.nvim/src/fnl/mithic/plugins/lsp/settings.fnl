@@ -10,7 +10,8 @@
 
  :clangd {}
  :hls {}
- :nil_ls {}
+ ; :nil_ls {}
+ :nixd {}
  :rust_analyzer {}
  :zls {}
 

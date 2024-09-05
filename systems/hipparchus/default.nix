@@ -33,6 +33,7 @@
     /${root}/host/tlp # or ppd
     /${root}/host/sway
     /${root}/host/amdgpu
+    /${root}/host/fw-fanctrl
   ];
 
   nixpkgs.overlays = overlays;
@@ -48,6 +49,11 @@
   };
   boot.loader.efi.canTouchEfiVariables = true;
   boot.initrd.systemd.enable = true;
+  boot.plymouth = {
+    enable = false; # TODO?
+    font = "${pkgs.iosevka-mithic}/share/fonts/truetype/iosevka-mithic.ttc";
+    theme = "breeze";
+  };
 
   boot.kernelPackages = pkgs.linuxPackages_xanmod_latest;
   boot.kernel.sysctl = {
@@ -62,7 +68,10 @@
   services.fwupd.enable = true;
 
   services.smartd.enable = true;
-  boot.tmp.useTmpfs = true;
+  boot.tmp = {
+    useTmpfs = true;
+    tmpfsSize = "100%"; # fine because of swap
+  };
 
   networking.hostName = "hipparchus";
   networking.networkmanager = {
@@ -133,6 +142,7 @@
       vim
       emacs
       git
+      nixfmt-rfc-style
       htop
       findutils
       rename
@@ -156,6 +166,7 @@
       with builtins; # get all packages from unixtools
       filter (p: typeOf p == "set") (attrValues pkgs.unixtools)
     );
+  # TODO: environment.binsh = with pkgs; lib.getExe dash;
 
   programs.zsh = {
     enable = true;
@@ -204,21 +215,17 @@
     submissionUrl = "https://beacondb.net/v2/geosubmit";
   };
 
-  services.logind =
-    let
-      self = config.services.logind;
-    in
-    {
-      powerKey = "ignore";
-      powerKeyLongPress = "poweroff";
+  services.logind = rec {
+    powerKey = "ignore";
+    powerKeyLongPress = "poweroff";
 
-      suspendKey = "suspend-then-hibernate";
-      hibernateKeyLongPress = self.suspendKey;
-      lidSwitch = self.suspendKey;
+    suspendKey = "suspend-then-hibernate";
+    hibernateKeyLongPress = suspendKey;
+    lidSwitch = suspendKey;
 
-      hibernateKey = "hibernate";
-      suspendKeyLongPress = self.hibernateKey;
-    };
+    hibernateKey = "hibernate";
+    suspendKeyLongPress = hibernateKey;
+  };
 
   systemd.sleep.extraConfig = ''
     HibernateDelaySec=1day
@@ -228,18 +235,9 @@
   services.upower.enable = true;
 
   # weird framework 16 stuff. see arch and nixos wikis
-  environment.etc."libinput/50-framework.quirks".text = # ini
-    ''
-      [Framework Laptop 16 Keyboard Module]
-      MatchName=Framework Laptop 16 Keyboard Module*
-      MatchUdevType=keyboard
-      MatchDMIModalias=dmi:*svnFramework:pnLaptop16*
-      AttrKeyboardIntegration=internal
-    '';
   services.udev.extraRules = # udev
     ''
-      ACTION=="add", SUBSYSTEM=="usb", DRIVERS=="usb", ATTRS{idVendor}=="32ac", ATTRS{idProduct}=="0012", ATTR{power/wakeup}="disabled", ATTR{driver/1-1.1.1.4/power/wakeup}="disabled"
-      ACTION=="add", SUBSYSTEM=="usb", DRIVERS=="usb", ATTRS{idVendor}=="32ac", ATTRS{idProduct}=="0014", ATTR{power/wakeup}="disabled", ATTR{driver/1-1.1.1.4/power/wakeup}="disabled"
+      ACTION=="add", SUBSYSTEM=="usb", ATTRS{idVendor}=="32ac", ATTRS{idProduct}=="0012", ATTR{power/wakeup}="disabled"
     '';
 
 }

@@ -5,18 +5,19 @@
 }:
 stdenv.mkDerivation rec {
   pname = "firefox-ui-fix";
-  version = "8.6.1";
+  version = "8.6.2";
 
   src = fetchFromGitHub {
     owner = "black7375";
     repo = "Firefox-UI-Fix";
     rev = "v${version}";
-    hash = "sha256-OP+gD4sJWfGSjZu2yGkkWct7A0YqVcwE+EmNDixAVGs=";
+    hash = "sha256-19aivAOvXeFOnsP5XhitK3+xk1lwUyXoTK8BE84qbFQ=";
   };
 
   installPhase = ''
     runHook preInstall
-    cp -r . "$out"
+    mkdir -p "$out"
+    cp -r ./ "$out/chrome"
     runHook postInstall
   '';
 

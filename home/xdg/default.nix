@@ -45,8 +45,9 @@ in
   home.preferXdgDirectories = true;
 
   home.sessionVariables = {
-    RUSTUP_HOME = dataDir "rustup";
-    ELAN_HOME = dataDir "elan";
+    "RUSTUP_HOME" = dataDir "rustup";
+    "ELAN_HOME" = dataDir "elan";
+    "STACK_XDG" = "1";
   };
 
   gtk.gtk2.configLocation = configDir "gtk-2.0/gtkrc";
