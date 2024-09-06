@@ -6,8 +6,6 @@
   programs.kitty = {
     enable = true;
 
-    shellIntegration.mode = "no-cursor";
-
     settings =
       let
         colors = (import /${root}/common/colorscheme.nix).hash;
@@ -18,6 +16,7 @@
         disable_ligatures = "cursor";
         cursor_blink_interval = 0;
         mouse_hide_wait = 0;
+        shell_integration = "no-cursor";
         paste_actions = "confirm,confirm-if-large";
         focus_follows_mouse = true;
         window_alert_on_bell = false;

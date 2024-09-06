@@ -1,7 +1,7 @@
 { config, pkgs, ... }:
 let
-  ZDOTDIR = "${config.xdg.configHome}/zsh";
-  zsh_histdir = "${config.xdg.cacheHome}/zsh";
+  zdotdir = "${config.xdg.configHome}/zsh";
+  histdir = "${config.xdg.cacheHome}/zsh";
 in
 {
 
@@ -14,15 +14,15 @@ in
     in
     {
       ".zshenv" = symlink ".profile";
-      "${ZDOTDIR}/.zshenv" = symlink ".profile";
-      "${ZDOTDIR}/.zlogin" = symlink ".login";
+      "${zdotdir}/.zshenv" = symlink ".profile";
+      "${zdotdir}/.zlogin" = symlink ".login";
 
-      "${zsh_histdir}/.keep" = {
+      "${histdir}/.keep" = {
         enable = true;
         text = "";
       };
 
-      "${ZDOTDIR}/.zshrc" = {
+      "${zdotdir}/.zshrc" = {
         enable = true;
         text = ''
           SYSTEMPLUGINS=( # keep in sync with pkgs below
@@ -33,7 +33,7 @@ in
             '${pkgs.zsh-syntax-highlighting}/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh'
           )
           CONFDIR='${./config}'
-          HISTFILE='${zsh_histdir}/history'
+          HISTFILE='${histdir}/history'
           source "$CONFDIR/zshrc"
         '';
       };
@@ -52,8 +52,6 @@ in
     zoxide # TODO: my own thing
   ];
 
-  home.sessionVariables = {
-    inherit ZDOTDIR;
-  };
+  home.sessionVariables."ZDOTDIR" = zdotdir;
 
 }

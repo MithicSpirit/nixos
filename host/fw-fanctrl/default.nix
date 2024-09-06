@@ -11,7 +11,7 @@
       strategyOnDischarging = "slow";
       strategies = {
 
-        "fast" = {
+        "hyper" = {
           fanSpeedUpdateFrequency = 60;
           movingAverageInterval = 1;
           speedCurve = [
@@ -22,25 +22,52 @@
           ];
         };
 
+        "fast" = {
+          fanSpeedUpdateFrequency = 5;
+          movingAverageInterval = 15;
+          speedCurve = [
+            {
+              temp = 20;
+              speed = 0;
+            }
+            {
+              temp = 40;
+              speed = 10;
+            }
+            {
+              temp = 45;
+              speed = 20;
+            }
+            {
+              temp = 75;
+              speed = 80;
+            }
+            {
+              temp = 90;
+              speed = 100;
+            }
+          ];
+        };
+
         "medium" = {
           fanSpeedUpdateFrequency = 5;
-          movingAverageInterval = 30;
+          movingAverageInterval = 20;
           speedCurve = [
             {
               temp = 40;
               speed = 0;
             }
             {
-              temp = 66;
+              temp = 62;
               speed = 10;
             }
             {
-              temp = 72;
-              speed = 25;
+              temp = 69;
+              speed = 20;
             }
             {
-              temp = 84;
-              speed = 85;
+              temp = 83;
+              speed = 80;
             }
             {
               temp = 90;
@@ -51,7 +78,7 @@
 
         "slow" = {
           fanSpeedUpdateFrequency = 5;
-          movingAverageInterval = 45;
+          movingAverageInterval = 30;
           speedCurve = [
             {
               temp = 60;
@@ -63,11 +90,30 @@
             }
             {
               temp = 78;
-              speed = 25;
+              speed = 20;
             }
             {
               temp = 86;
-              speed = 85;
+              speed = 80;
+            }
+            {
+              temp = 90;
+              speed = 100;
+            }
+          ];
+        };
+
+        "sloth" = {
+          fanSpeedUpdateFrequency = 1;
+          movingAverageInterval = 10;
+          speedCurve = [
+            {
+              temp = 80;
+              speed = 0;
+            }
+            {
+              temp = 85;
+              speed = 10;
             }
             {
               temp = 90;
