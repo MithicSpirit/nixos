@@ -23,24 +23,24 @@
         };
 
         "medium" = {
-          fanSpeedUpdateFrequency = 4;
-          movingAverageInterval = 20;
+          fanSpeedUpdateFrequency = 5;
+          movingAverageInterval = 30;
           speedCurve = [
             {
-              temp = 35;
+              temp = 40;
               speed = 0;
             }
             {
-              temp = 40;
+              temp = 66;
               speed = 10;
             }
             {
-              temp = 60;
-              speed = 10;
+              temp = 72;
+              speed = 25;
             }
             {
-              temp = 80;
-              speed = 50;
+              temp = 84;
+              speed = 85;
             }
             {
               temp = 90;
@@ -50,24 +50,24 @@
         };
 
         "slow" = {
-          fanSpeedUpdateFrequency = 6;
-          movingAverageInterval = 40;
+          fanSpeedUpdateFrequency = 5;
+          movingAverageInterval = 45;
           speedCurve = [
             {
-              temp = 50;
+              temp = 60;
               speed = 0;
             }
             {
-              temp = 60;
+              temp = 74;
               speed = 10;
             }
             {
-              temp = 70;
-              speed = 10;
+              temp = 78;
+              speed = 25;
             }
             {
-              temp = 80;
-              speed = 40;
+              temp = 86;
+              speed = 85;
             }
             {
               temp = 90;

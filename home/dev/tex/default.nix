@@ -18,4 +18,9 @@ in
   };
   home.sessionVariables."CHKTEXRC" = config.xdg.configHome;
 
+  home.file."${config.xdg.configHome}/latexmk/latexmkrc" = {
+    source = ./latexmkrc;
+    executable = false;
+  };
+
 }

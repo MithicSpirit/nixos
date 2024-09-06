@@ -4,7 +4,7 @@
   imports = [
     ./rust.nix
     ./python.nix
-    ./tex.nix
+    ./tex
   ];
 
   home.packages = with pkgs; [

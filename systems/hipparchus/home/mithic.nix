@@ -100,8 +100,9 @@
   systemd.user.timers."rclone-school" = {
     Unit.Description = "Resynchronize school directory with rsync often";
     Timer = {
-      OnActiveSec = "1m";
+      OnUnitActiveSec = "15m";
       OnCalendar = "*-*-* *:00/15:00";
+      AccuracySec = "1m";
       Persistent = true;
     };
     Install.WantedBy = [ "timers.target" ];
@@ -115,6 +116,7 @@
     };
     Service = {
       Type = "oneshot";
+      ExecStartPre = "sleep 5";
       ExecStart = "'${config.xdg.userDirs.documents}/school/rclone-sync' --dry-run";
       # TODO: remove --dry-run
     };

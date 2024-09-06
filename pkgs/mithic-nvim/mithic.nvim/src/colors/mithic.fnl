@@ -239,5 +239,8 @@
 
 (hi :GitSignsCurrentLineBlame :Conceal)
 
+;; Language-specific
+(hi :texCmd :Function)
+
 
 (when (vim.fn.exists :syntax_on) (vim.cmd.syntax :reset))
