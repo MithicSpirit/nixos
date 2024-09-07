@@ -26,7 +26,8 @@
     };
 
     fw-fanctrl = {
-      url = "github:TamtamHero/fw-fanctrl/packaging/nix";
+      # url = "github:TamtamHero/fw-fanctrl/packaging/nix";
+      url = "github:MithicSpirit/fw-fanctrl/packaging/nix-criticalTemp";
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.flake-compat.follows = "flake-compat";
     };

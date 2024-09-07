@@ -16,7 +16,7 @@
     RADEON_DPM_STATE_ON_AC = "performance";
     RADEON_DPM_STATE_ON_BAT = "battery";
 
-    PLATFORM_PROFILE_ON_AC = "performance";
+    PLATFORM_PROFILE_ON_AC = "balanced";
     PLATFORM_PROFILE_ON_BAT = "low-power";
 
     CPU_SCALING_GOVERNOR_ON_AC = "powersave";

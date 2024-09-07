@@ -216,15 +216,15 @@
   };
 
   services.logind = rec {
-    powerKey = "ignore";
+    powerKey = suspendKey;
     powerKeyLongPress = "poweroff";
-
-    suspendKey = "suspend-then-hibernate";
-    hibernateKeyLongPress = suspendKey;
     lidSwitch = suspendKey;
 
-    hibernateKey = "hibernate";
+    suspendKey = "suspend-then-hibernate";
     suspendKeyLongPress = hibernateKey;
+
+    hibernateKey = "hibernate";
+    hibernateKeyLongPress = suspendKey;
   };
 
   systemd.sleep.extraConfig = ''

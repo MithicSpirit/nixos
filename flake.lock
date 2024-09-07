@@ -105,16 +105,16 @@
         ]
       },
       "locked": {
-        "lastModified": 1724704488,
-        "narHash": "sha256-QmAanotjk81zsCwHI52XS4u9Cjv6KjNzTkYsAYFrubM=",
-        "owner": "TamtamHero",
+        "lastModified": 1725666450,
+        "narHash": "sha256-0tmRntbcol3jU0Gs95FcuKlkjgoVjLUxH6dG9vODiko=",
+        "owner": "MithicSpirit",
         "repo": "fw-fanctrl",
-        "rev": "db96c5962cff24f4c5977e30ca1c7626fb4171c7",
+        "rev": "d56c315ec7f494da55382cb86eb69234309e04a8",
         "type": "github"
       },
       "original": {
-        "owner": "TamtamHero",
-        "ref": "packaging/nix",
+        "owner": "MithicSpirit",
+        "ref": "packaging/nix-criticalTemp",
         "repo": "fw-fanctrl",
         "type": "github"
       }

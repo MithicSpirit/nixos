@@ -12,89 +12,109 @@
       strategies = {
 
         "hyper" = {
-          fanSpeedUpdateFrequency = 60;
-          movingAverageInterval = 1;
+          fanSpeedUpdateFrequency = 1;
+          movingAverageInterval = 4;
+          criticalTemp = 80;
           speedCurve = [
             {
               temp = 0;
+              speed = 10;
+            }
+            {
+              temp = 15;
+              speed = 15;
+            }
+            {
+              temp = 30;
+              speed = 35;
+            }
+            {
+              temp = 45;
+              speed = 60;
+            }
+            {
+              temp = 60;
               speed = 100;
             }
           ];
         };
 
         "fast" = {
-          fanSpeedUpdateFrequency = 5;
-          movingAverageInterval = 15;
+          fanSpeedUpdateFrequency = 1;
+          movingAverageInterval = 16;
+          criticalTemp = 90;
           speedCurve = [
             {
-              temp = 20;
+              temp = 15;
               speed = 0;
             }
             {
-              temp = 40;
+              temp = 50;
               speed = 10;
             }
             {
-              temp = 45;
-              speed = 20;
+              temp = 65;
+              speed = 25;
             }
             {
               temp = 75;
-              speed = 80;
+              speed = 55;
             }
             {
-              temp = 90;
+              temp = 85;
               speed = 100;
             }
           ];
         };
 
         "medium" = {
-          fanSpeedUpdateFrequency = 5;
-          movingAverageInterval = 20;
+          fanSpeedUpdateFrequency = 1;
+          movingAverageInterval = 24;
+          criticalTemp = 90;
           speedCurve = [
             {
-              temp = 40;
+              temp = 25;
               speed = 0;
             }
             {
-              temp = 62;
+              temp = 55;
               speed = 10;
             }
             {
-              temp = 69;
+              temp = 65;
               speed = 20;
             }
             {
-              temp = 83;
-              speed = 80;
+              temp = 75;
+              speed = 50;
             }
             {
-              temp = 90;
+              temp = 85;
               speed = 100;
             }
           ];
         };
 
         "slow" = {
-          fanSpeedUpdateFrequency = 5;
-          movingAverageInterval = 30;
+          fanSpeedUpdateFrequency = 1;
+          movingAverageInterval = 40;
+          criticalTemp = 90;
           speedCurve = [
             {
-              temp = 60;
+              temp = 50;
               speed = 0;
             }
             {
-              temp = 74;
+              temp = 70;
               speed = 10;
             }
             {
-              temp = 78;
+              temp = 76;
               speed = 20;
             }
             {
-              temp = 86;
-              speed = 80;
+              temp = 84;
+              speed = 55;
             }
             {
               temp = 90;
@@ -105,15 +125,20 @@
 
         "sloth" = {
           fanSpeedUpdateFrequency = 1;
-          movingAverageInterval = 10;
+          movingAverageInterval = 60;
+          criticalTemp = 90;
           speedCurve = [
             {
-              temp = 80;
+              temp = 70;
               speed = 0;
             }
             {
-              temp = 85;
+              temp = 80;
               speed = 10;
+            }
+            {
+              temp = 85;
+              speed = 35;
             }
             {
               temp = 90;

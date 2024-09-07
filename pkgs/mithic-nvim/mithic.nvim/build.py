@@ -49,7 +49,7 @@ class Installer(Enum):
 def run(src: Path, dst: Path) -> None:
     stack = [src]
     while stack:
-        source: Path = stack.pop()
+        source = stack.pop()
         path = source.relative_to(src)
         print(path)
 
