@@ -10,7 +10,6 @@
     lanzaboote = {
       url = "github:nix-community/lanzaboote/v0.4.1";
       inputs.nixpkgs.follows = "nixpkgs";
-      inputs.flake-compat.follows = "flake-compat";
       inputs.pre-commit-hooks-nix.follows = ""; # used for dev only
     };
 
@@ -24,16 +23,6 @@
       url = "github:nix-community/disko";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-
-    fw-fanctrl = {
-      # url = "github:TamtamHero/fw-fanctrl/packaging/nix";
-      url = "github:MithicSpirit/fw-fanctrl/packaging/nix-criticalTemp";
-      inputs.nixpkgs.follows = "nixpkgs";
-      inputs.flake-compat.follows = "flake-compat";
-    };
-
-    # dedupe
-    flake-compat.url = "github:edolstra/flake-compat";
 
   };
 

@@ -1,0 +1,11 @@
+[project]
+name = "fw-fanctrl"
+version = "0"
+scripts.fw-fanctrl = "fanctrl:main"
+
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+py-modules = ["fanctrl"]

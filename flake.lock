@@ -42,6 +42,7 @@
       }
     },
     "flake-compat": {
+      "flake": false,
       "locked": {
         "lastModified": 1696426674,
         "narHash": "sha256-kvjfFW7WAETZlt09AgDn1MrtKzP7t90Vf7vypd3OL1U=",
@@ -95,30 +96,6 @@
         "type": "github"
       }
     },
-    "fw-fanctrl": {
-      "inputs": {
-        "flake-compat": [
-          "flake-compat"
-        ],
-        "nixpkgs": [
-          "nixpkgs"
-        ]
-      },
-      "locked": {
-        "lastModified": 1725666450,
-        "narHash": "sha256-0tmRntbcol3jU0Gs95FcuKlkjgoVjLUxH6dG9vODiko=",
-        "owner": "MithicSpirit",
-        "repo": "fw-fanctrl",
-        "rev": "d56c315ec7f494da55382cb86eb69234309e04a8",
-        "type": "github"
-      },
-      "original": {
-        "owner": "MithicSpirit",
-        "ref": "packaging/nix-criticalTemp",
-        "repo": "fw-fanctrl",
-        "type": "github"
-      }
-    },
     "hardware": {
       "locked": {
         "lastModified": 1725477728,
@@ -158,9 +135,7 @@
     "lanzaboote": {
       "inputs": {
         "crane": "crane",
-        "flake-compat": [
-          "flake-compat"
-        ],
+        "flake-compat": "flake-compat",
         "flake-parts": "flake-parts",
         "flake-utils": "flake-utils",
         "nixpkgs": [
@@ -203,8 +178,6 @@
     "root": {
       "inputs": {
         "disko": "disko",
-        "flake-compat": "flake-compat",
-        "fw-fanctrl": "fw-fanctrl",
         "hardware": "hardware",
         "home-manager": "home-manager",
         "lanzaboote": "lanzaboote",

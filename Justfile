@@ -26,6 +26,9 @@ clean:
 rebuild operation: build sudo
     sudo nixos-rebuild {{operation}} --flake ".#$(hostname)"
 
+package pkg:
+    nix build '.#'{{pkg}}
+
 test: (rebuild 'test')
 boot: (rebuild 'boot')
 
