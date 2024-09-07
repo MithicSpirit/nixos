@@ -5,9 +5,8 @@
   fw-ectool,
 }:
 let
-  checksum = "2a9828f91620c0e8746ecb6875887b34da7888e3";
-  version = "2024-08-25a.g${checksum}";
   pname = "fw-fanctrl";
+  version = "2024-08-25a-criticalTemp";
 in
 python3Packages.buildPythonPackage {
   inherit pname version;
@@ -15,12 +14,13 @@ python3Packages.buildPythonPackage {
   src = fetchFromGitHub {
     owner = "TamtamHero";
     repo = pname;
-    rev = checksum;
+    rev = "2a9828f91620c0e8746ecb6875887b34da7888e3";
     hash = "sha256-vltQwR2pdtyCsKlVmlLgZs/vZqza9YzQTr1/PZk44wA=";
   };
 
   patchPhase = ''
-    cp '${./pyproject.toml}' './pyproject.toml'
+    cp '${./pyproject.toml}' './pyproject.toml' # ' # (fix syntax highlighting)
+    patch -Np1 <'${./criticalTemp.patch}'
   '';
   pyproject = true;
 

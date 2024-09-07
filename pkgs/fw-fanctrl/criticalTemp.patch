@@ -1,0 +1,172 @@
+diff --git a/config.json b/config.json
+index db81b44..b8da466 100644
+--- a/config.json
++++ b/config.json
+@@ -2,82 +2,89 @@
+     "defaultStrategy": "lazy",
+     "strategyOnDischarging" : "",
+     "strategies": {
+         "laziest": {
+             "fanSpeedUpdateFrequency": 5,
+             "movingAverageInterval": 40,
++            "criticalTemp": 90,
+             "speedCurve": [
+                 { "temp": 0, "speed": 0 },
+                 { "temp": 45, "speed": 0 },
+                 { "temp": 65, "speed": 25 },
+                 { "temp": 70, "speed": 35 },
+                 { "temp": 75, "speed": 50 },
+                 { "temp": 85, "speed": 100 }
+             ]
+         },
+         "lazy": {
+             "fanSpeedUpdateFrequency": 5,
+             "movingAverageInterval": 30,
++            "criticalTemp": 90,
+             "speedCurve": [
+                 { "temp": 0, "speed": 15 },
+                 { "temp": 50, "speed": 15 },
+                 { "temp": 65, "speed": 25 },
+                 { "temp": 70, "speed": 35 },
+                 { "temp": 75, "speed": 50 },
+                 { "temp": 85, "speed": 100 }
+             ]
+         },
+         "medium": {
+             "fanSpeedUpdateFrequency": 5,
+             "movingAverageInterval": 30,
++            "criticalTemp": 90,
+             "speedCurve": [
+                 { "temp": 0, "speed": 15 },
+                 { "temp": 40, "speed": 15 },
+                 { "temp": 60, "speed": 30 },
+                 { "temp": 70, "speed": 40 },
+                 { "temp": 75, "speed": 80 },
+                 { "temp": 85, "speed": 100 }
+             ]
+         },
+         "agile": {
+             "fanSpeedUpdateFrequency": 3,
+             "movingAverageInterval": 15,
++            "criticalTemp": 90,
+             "speedCurve": [
+                 { "temp": 0, "speed": 15 },
+                 { "temp": 40, "speed": 15 },
+                 { "temp": 60, "speed": 30 },
+                 { "temp": 70, "speed": 40 },
+                 { "temp": 75, "speed": 80 },
+                 { "temp": 85, "speed": 100 }
+             ]
+         },
+         "very-agile": {
+             "fanSpeedUpdateFrequency": 2,
+             "movingAverageInterval": 5,
++            "criticalTemp": 85,
+             "speedCurve": [
+                 { "temp": 0, "speed": 15 },
+                 { "temp": 40, "speed": 15 },
+                 { "temp": 60, "speed": 30 },
+                 { "temp": 70, "speed": 40 },
+                 { "temp": 75, "speed": 80 },
+                 { "temp": 85, "speed": 100 }
+             ]
+         },
+         "deaf": {
+             "fanSpeedUpdateFrequency": 2,
+             "movingAverageInterval": 5,
++            "criticalTemp": 80,
+             "speedCurve": [
+                 { "temp": 0, "speed": 20 },
+                 { "temp": 40, "speed": 30 },
+                 { "temp": 50, "speed": 50 },
+                 { "temp": 60, "speed": 100 }
+             ]
+         },
+         "aeolus": {
+             "fanSpeedUpdateFrequency": 2,
+             "movingAverageInterval": 5,
++            "criticalTemp": 75,
+             "speedCurve": [
+                 { "temp": 0, "speed": 20 },
+                 { "temp": 40, "speed": 50 },
+                 { "temp": 65, "speed": 100 }
+             ]
+         }
+diff --git a/doc/configuration.md b/doc/configuration.md
+index 6f381fb..0beed65 100644
+--- a/doc/configuration.md
++++ b/doc/configuration.md
+@@ -92,12 +92,27 @@ Strategies can be configured with the following parameters:
+ > ```
+ >
+ > Increase it, and the fan speed changes more gradually. Lower it, and it becomes more responsive.
+ >
+ > **Defaults to 20 seconds.** (minimum 1)
+ 
++> **CriticalTemp**:
++>
++> It is a temperature after which the moving average is ignored and only the current temperature is considered.
++>
++> ```json
++> "criticalTemp": [CRITICAL TEMPERATURE]
++> ```
++>
++> Increase it, and the moving average applies for longer. Lower it, and the moving average is disabled sooner.
++>
++> If it is unset or set to null, the moving average is always considered (effectively the same as setting it to a
++> very high number).
++>
++> **Defaults to null.**
++
+ ---
+ 
+ Once the configuration has been changed, you must reload it with the following command
+ 
+ ```bash
+ fw-fanctrl reload
+diff --git a/fanctrl.py b/fanctrl.py
+index 703e465..8c2798e 100644
+--- a/fanctrl.py
++++ b/fanctrl.py
+@@ -264,22 +264,24 @@ class SocketAlreadyRunningException(Exception):
+ 
+ 
+ class Strategy:
+     name = None
+     fanSpeedUpdateFrequency = None
+     movingAverageInterval = None
++    criticalTemp = None
+     speedCurve = None
+ 
+     def __init__(self, name, parameters):
+         self.name = name
+         self.fanSpeedUpdateFrequency = parameters["fanSpeedUpdateFrequency"]
+         if self.fanSpeedUpdateFrequency is None or self.fanSpeedUpdateFrequency == "":
+             self.fanSpeedUpdateFrequency = 5
+         self.movingAverageInterval = parameters["movingAverageInterval"]
+         if self.movingAverageInterval is None or self.movingAverageInterval == "":
+             self.movingAverageInterval = 20
++        self.criticalTemp = parameters.get("criticalTemp")
+         self.speedCurve = parameters["speedCurve"]
+ 
+ 
+ class Configuration:
+     path = None
+     data = None
+@@ -580,13 +582,15 @@ class FanController:
+     def getEffectiveTemperature(self, currentTemp, timeInterval):
+         # the moving average temperature count for 2/3 of the effective temperature
+         return round(min(self.getMovingAverageTemperature(timeInterval), currentTemp), 1)
+ 
+     def adaptSpeed(self, currentTemp):
+         currentStrategy = self.getCurrentStrategy()
+-        currentTemp = self.getEffectiveTemperature(currentTemp, currentStrategy.movingAverageInterval)
++        criticalTemp = currentStrategy.criticalTemp
++        if criticalTemp is not None and currentTemp < criticalTemp:
++            currentTemp = self.getEffectiveTemperature(currentTemp, currentStrategy.movingAverageInterval)
+         minPoint = currentStrategy.speedCurve[0]
+         maxPoint = currentStrategy.speedCurve[-1]
+         for e in currentStrategy.speedCurve:
+             if currentTemp > e["temp"]:
+                 minPoint = e
+             else:
