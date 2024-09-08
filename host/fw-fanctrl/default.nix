@@ -10,7 +10,7 @@ let
 
       "hyper" = {
         fanSpeedUpdateFrequency = 1;
-        movingAverageInterval = 4;
+        movingAverageInterval = 5;
         criticalTemp = 80;
         speedCurve = [
           {
@@ -38,7 +38,35 @@ let
 
       "fast" = {
         fanSpeedUpdateFrequency = 1;
-        movingAverageInterval = 16;
+        movingAverageInterval = 10;
+        criticalTemp = 85;
+        speedCurve = [
+          {
+            temp = 10;
+            speed = 0;
+          }
+          {
+            temp = 45;
+            speed = 10;
+          }
+          {
+            temp = 60;
+            speed = 25;
+          }
+          {
+            temp = 70;
+            speed = 55;
+          }
+          {
+            temp = 80;
+            speed = 100;
+          }
+        ];
+      };
+
+      "medium" = {
+        fanSpeedUpdateFrequency = 1;
+        movingAverageInterval = 30;
         criticalTemp = 90;
         speedCurve = [
           {
@@ -64,37 +92,9 @@ let
         ];
       };
 
-      "medium" = {
-        fanSpeedUpdateFrequency = 1;
-        movingAverageInterval = 24;
-        criticalTemp = 90;
-        speedCurve = [
-          {
-            temp = 25;
-            speed = 0;
-          }
-          {
-            temp = 55;
-            speed = 10;
-          }
-          {
-            temp = 65;
-            speed = 20;
-          }
-          {
-            temp = 75;
-            speed = 50;
-          }
-          {
-            temp = 85;
-            speed = 100;
-          }
-        ];
-      };
-
       "slow" = {
         fanSpeedUpdateFrequency = 1;
-        movingAverageInterval = 40;
+        movingAverageInterval = 45;
         criticalTemp = 90;
         speedCurve = [
           {

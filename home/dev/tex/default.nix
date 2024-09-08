@@ -9,6 +9,7 @@ in
     tectonic
   ];
 
+  # don't set the variable directly to ./texmf since that prevents updating
   home.file.${texmf}.source = ./texmf;
   home.sessionVariables."TEXMFHOME" = texmf;
 
