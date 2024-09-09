@@ -58,9 +58,7 @@
       );
 
       args = {
-        inherit inputs;
-        inherit root;
-        inherit overlays;
+        inherit inputs root overlays;
       };
 
     in

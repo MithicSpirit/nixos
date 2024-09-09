@@ -160,6 +160,7 @@ in
       Restart = "always";
       ExecStart = "${fw-fanctrl} run --config ${config}";
       ExecStopPost = "${pkgs.lib.getExe pkgs.fw-ectool} autofanctrl";
+      SyslogLevel = "debug";
     };
     after = [ "multi-user.target" ];
     wantedBy = [ "multi-user.target" ];
@@ -173,4 +174,9 @@ in
       post) '${fw-fanctrl}' resume ;;
     esac
   '';
+
+  programs.gamemode.settings.custom = {
+    start = "'${fw-fanctrl}' use fast";
+    end = "'${fw-fanctrl}' reset";
+  };
 }

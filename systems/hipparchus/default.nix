@@ -193,9 +193,8 @@
   };
   home-manager = {
     extraSpecialArgs = {
-      inherit inputs;
-      inherit root;
-      inherit overlays;
+      inherit inputs root overlays;
+      hostConfig = config;
     };
     useUserPackages = true;
     useGlobalPkgs = true;
