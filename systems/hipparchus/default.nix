@@ -228,7 +228,7 @@
 
   systemd.sleep.extraConfig = ''
     HibernateDelaySec=1day
-    SuspendEstimationSec=0
+    SuspendEstimationSec=0s
   '';
 
   services.upower.enable = true;

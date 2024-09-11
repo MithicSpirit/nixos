@@ -9,7 +9,7 @@ let
     strategies = {
 
       "hyper" = {
-        fanSpeedUpdateFrequency = 1;
+        fanSpeedUpdateFrequency = 2;
         movingAverageInterval = 5;
         criticalTemp = 80;
         speedCurve = [
@@ -37,7 +37,7 @@ let
       };
 
       "fast" = {
-        fanSpeedUpdateFrequency = 1;
+        fanSpeedUpdateFrequency = 2;
         movingAverageInterval = 10;
         criticalTemp = 85;
         speedCurve = [
@@ -65,7 +65,7 @@ let
       };
 
       "medium" = {
-        fanSpeedUpdateFrequency = 1;
+        fanSpeedUpdateFrequency = 2;
         movingAverageInterval = 30;
         criticalTemp = 90;
         speedCurve = [
@@ -93,7 +93,7 @@ let
       };
 
       "slow" = {
-        fanSpeedUpdateFrequency = 1;
+        fanSpeedUpdateFrequency = 2;
         movingAverageInterval = 45;
         criticalTemp = 90;
         speedCurve = [
@@ -121,7 +121,7 @@ let
       };
 
       "sloth" = {
-        fanSpeedUpdateFrequency = 1;
+        fanSpeedUpdateFrequency = 2;
         movingAverageInterval = 60;
         criticalTemp = 90;
         speedCurve = [

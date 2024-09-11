@@ -1,31 +1,35 @@
 #!/usr/bin/env zsh
 
-set -xeu pipefail
-unset pid event_json cid tree_json parent
 
-logw() {
-	 jq -rc
+setopt -xuo pipefail -o err_return
+unset pid
+
+pprint() {
+	 jq -rc || :
+}
+
+loop() {
+	local event_json
+	read -rspt 5 event_json
+	pprint <<<$event_json
+	[[ $(jq -rc '.change' <<<$event_json) == 'focus' ]]
+	[[ $(jq -rc '.container.type' <<<$event_json) != 'floating_con' ]]
+	local cid=$(jq -rc '.container.id' <<<$event_json)
+
+	local tree_json=$(swaymsg -rt get_tree)
+	pprint <<<$tree_json
+
+	local parent=$(jq -rc \
+		"..|objects|select(.nodes|arrays|any(.id == ${cid}))" \
+		<<<$tree_json)
+	pprint <<<$parent
+	[[ $(jq -rc '.layout' <<<$parent) != 'tabbed' ]]
+
+	out=$(swaymsg "[con_id=${cid}] split t, layout tabbed")
+	pprint <<<$out
 }
 
 coproc swaymsg -mrt subscribe '["window"]'
 pid=$!
 
-while ps -p $pid >/dev/null; do
-	read -rspt 5 event_json || continue
-	logw <<<$event_json
-	[[ $(jq -rc '.change' <<<$event_json) != 'focus' ]] && continue
-	[[ $(jq -rc '.container.type' <<<$event_json) == 'floating_con' ]] \
-		&& continue
-	cid=$(jq -rc '.container.id' <<<$event_json)
-
-	tree_json=$(swaymsg -rt get_tree)
-	logw <<<$tree_json
-
-	parent=$(jq -rc "..|objects|select(.nodes|arrays|any(.id == $cid))" \
-		<<<$tree_json)
-	logw <<<$parent
-	[[ $(jq -rc '.layout' <<<$parent) == 'tabbed' ]] && continue
-
-	out=$(swaymsg "[con_id=$cid] split t, layout tabbed")
-	logw <<<$out
-done
+while ps -p $pid >/dev/null; do loop || :; done

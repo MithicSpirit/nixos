@@ -34,6 +34,7 @@
     /${root}/home/dev
     /${root}/home/ssh
     /${root}/home/desktop
+    /${root}/home/rclone
   ];
 
   programs.home-manager.enable = true;
@@ -70,7 +71,6 @@
       rmtrash
       ugrep
       yazi
-      rclone
 
       du-dust
       duf
@@ -81,7 +81,6 @@
       sd
 
       pcmanfm
-      qalcmenu
       swayimg
       xdragon
       xournalpp
@@ -92,34 +91,10 @@
       ungoogled-chromium
 
       libqalculate
+      qalcmenu
       qalculate-gtk
     ];
     enableDebugInfo = true;
-  };
-
-  systemd.user.timers."rclone-school" = {
-    Unit.Description = "Resynchronize school directory with rsync often";
-    Timer = {
-      OnUnitActiveSec = "15m";
-      OnCalendar = "*-*-* *:00/15:00";
-      AccuracySec = "1m";
-      Persistent = true;
-    };
-    Install.WantedBy = [ "timers.target" ];
-  };
-
-  systemd.user.services."rclone-school" = {
-    Unit = {
-      Description = "Resynchronize school directory with rsync using standard script";
-      Wants = "network-online.target";
-      After = "network-online.target";
-    };
-    Service = {
-      Type = "oneshot";
-      ExecStartPre = "sleep 5";
-      ExecStart = "'${config.xdg.userDirs.documents}/school/rclone-sync' --dry-run";
-      # TODO: remove --dry-run
-    };
   };
 
   home.stateVersion = "24.05"; # WARNING: do not change
