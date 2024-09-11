@@ -13,13 +13,13 @@ in
   home.file.${texmf}.source = ./texmf;
   home.sessionVariables."TEXMFHOME" = texmf;
 
-  home.file."${config.xdg.configHome}/.chktexrc" = {
+  xdg.configFile.".chktexrc" = {
     source = ./chktexrc;
     executable = false;
   };
   home.sessionVariables."CHKTEXRC" = config.xdg.configHome;
 
-  home.file."${config.xdg.configHome}/latexmk/latexmkrc" = {
+  xdg.configFile."latexmk/latexmkrc" = {
     source = ./latexmkrc;
     executable = false;
   };

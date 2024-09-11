@@ -1,4 +1,9 @@
-{ pkgs, lib, ... }:
+{
+  pkgs,
+  lib,
+  config,
+  ...
+}:
 {
 
   imports = [
@@ -32,5 +37,10 @@
     scc
     rlwrap # idris2 repl improvement
   ];
+
+  home.sessionVariables = {
+    "ELAN_HOME" = "${config.xdg.dataHome}/elan";
+    "STACK_XDG" = "1";
+  };
 
 }

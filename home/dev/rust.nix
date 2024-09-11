@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, config, ... }:
 let
   toml = (pkgs.formats.toml { }).generate;
 in
@@ -17,6 +17,11 @@ in
     use_field_init_shorthand = true;
     use_try_shorthand = true;
     match_block_trailing_comma = true;
+  };
+
+  home.sessionVariables = {
+    "RUSTUP_HOME" = "${config.xdg.dataHome}/rustup";
+    "CARGO_HOME" = "${config.xdg.dataHome}/cargo";
   };
 
 }

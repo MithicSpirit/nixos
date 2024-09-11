@@ -1,7 +1,9 @@
-{ pkgs, ... }:
-let
-  kdep = pkgs.kdePackages;
-in
+{
+  pkgs,
+  config,
+  lib,
+  ...
+}:
 {
   # TODO: check whether names are correct
 
@@ -13,6 +15,8 @@ in
     x11.enable = true;
   };
 
+  xresources.path = "${config.xdg.configHome}/Xresources";
+
   gtk = {
     enable = true;
     font = {
@@ -21,13 +25,42 @@ in
       size = 12;
     };
     iconTheme = {
-      package = kdep.breeze-icons;
+      package = pkgs.kdePackages.breeze-icons;
       name = "breeze-dark";
     };
     theme = {
-      package = kdep.breeze-gtk;
-      name = "Breeze-Dark";
+      package = pkgs.kdePackages.breeze-gtk;
+      name = "Breeze";
     };
+
+    gtk2.extraConfig = ''
+      gtk-application-prefer-dark-theme = 1
+    '';
+    gtk3.extraConfig = {
+      gtk-application-prefer-dark-theme = true;
+    };
+    gtk4.extraConfig = config.gtk.gtk3.extraConfig;
+
+    gtk2.configLocation = "${config.xdg.configHome}/gtk-2.0/gtkrc";
+  };
+
+  xdg.configFile."gtk-4.0/gtk.css".text =
+    let
+      cfg = config.gtk;
+    in
+    lib.mkForce (
+      ''
+        /**
+         * GTK 4 reads the theme configured by gtk-theme-name, but ignores it.
+         * It does however respect user CSS, so import the theme from here.
+        **/
+        @import url("file://${cfg.theme.package}/share/themes/${cfg.theme.name}-Dark/gtk-4.0/gtk.css");
+      ''
+      + cfg.gtk4.extraCss
+    );
+
+  dconf.settings."org/gnome/desktop/interface" = {
+    color-scheme = "prefer-dark";
   };
 
   qt = {

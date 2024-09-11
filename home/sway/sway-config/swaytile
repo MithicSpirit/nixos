@@ -4,29 +4,33 @@
 setopt -xuo pipefail -o err_return
 unset pid
 
-pprint() {
-	 jq -rc || :
+json() {
+	 jq -rc "$@"
+}
+
+logw() {
+	echo "[LOG] $@" || :
+	jq -rc || :
 }
 
 loop() {
-	local event_json
+	local event_json cid tree_json parent tree_json parent
 	read -rspt 5 event_json
-	pprint <<<$event_json
-	[[ $(jq -rc '.change' <<<$event_json) == 'focus' ]]
-	[[ $(jq -rc '.container.type' <<<$event_json) != 'floating_con' ]]
-	local cid=$(jq -rc '.container.id' <<<$event_json)
+	logw event <<<$event_json
+	[[ $(json '.change' <<<$event_json) == 'focus' ]]
+	[[ $(json '.container.type' <<<$event_json) != 'floating_con' ]]
+	json '.container.id' <<<$event_json | read -rs cid
 
-	local tree_json=$(swaymsg -rt get_tree)
-	pprint <<<$tree_json
+	swaymsg -rt get_tree | json | read -rs tree_json
+	logw tree <<<$tree_json
 
-	local parent=$(jq -rc \
-		"..|objects|select(.nodes|arrays|any(.id == ${cid}))" \
-		<<<$tree_json)
-	pprint <<<$parent
-	[[ $(jq -rc '.layout' <<<$parent) != 'tabbed' ]]
+	json "..|objects|select(.nodes|arrays|any(.id == ${cid}))" \
+		<<<$tree_json | read -rs parent
+	logw parent <<<$parent
+	[[ $(json '.layout' <<<$parent) != 'tabbed' ]]
 
-	out=$(swaymsg "[con_id=${cid}] split t, layout tabbed")
-	pprint <<<$out
+	swaymsg "[con_id=${cid}] split t, layout tabbed" | json | read -rs out
+	logw output <<<$out
 }
 
 coproc swaymsg -mrt subscribe '["window"]'

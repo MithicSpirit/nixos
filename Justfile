@@ -37,7 +37,7 @@ boot: (rebuild 'boot')
 [private]
 sudo:
     #!/usr/bin/env -S sh -eux
-    id="$(notify-send -pea 'NixOS Rebuild' 'Sudo prompt' 'Waiting')"
+    id="$(notify-send -t 60000 -pea 'NixOS Rebuild' 'Sudo prompt' 'Waiting')"
     sudo -v
     notify-send -r "$id" -t 2000 -u low -ea 'NixOS Rebuild' 'Sudo prompt' 'Done'
 

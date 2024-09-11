@@ -14,7 +14,7 @@ __EOF__
 	*"Reload") swaymsg reload ;;
 	*"Suspend") sleep 1 && systemctl suspend-then-hibernate ;;
 	*"Hibernate") sleep 1 && systemctl hibernate ;;
-	*"Exit") swaymsg exit ;;
+	*"Exit") swaymsg '[all] kill'; sleep 0.1; swaymsg exit ;;
 	*"Reboot") systemctl reboot ;;
 	*"Power Off") systemctl poweroff ;;
 	*) exit 1 ;;
