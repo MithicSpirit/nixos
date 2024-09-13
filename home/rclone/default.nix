@@ -30,7 +30,7 @@
         };
         Service = {
           Type = "oneshot";
-          ExecStartPre = "${pkgs.coreutils}/bin/sleep 5";
+          ExecStartPre = "${pkgs.coreutils}/bin/sleep 15";
           ExecStart = "'${config.xdg.userDirs.documents}/school/rclone-sync' --dry-run";
           # TODO: remove --dry-run
         };

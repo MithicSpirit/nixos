@@ -445,6 +445,7 @@ DashExcpt = {
     Riemann--Stieltjes
     Arzel\`a--Ascoli
     Stone--Weierstrass
+    inclusion--exclusion
 }
 
 #####################################################################

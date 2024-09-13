@@ -12,18 +12,18 @@
   fontforge,
 }:
 let
-  version = "31.5.0";
+  version = "31.6.1";
   patcher-version = "3.2.1";
 
   iosevka = fetchFromGitHub {
     owner = "be5invis";
     repo = "iosevka";
     rev = "v${version}";
-    hash = "sha256-kjydpYLOw1uZGmedemZKey0go8DRmgnUq5nrVM0NfxY=";
+    hash = "sha256-pulOJ3mJqfonoQPmk6VtdWLhFVeoBjANVi0S9fN9N7c=";
     name = "iosevka";
   };
 
-  npmDepsHash = "sha256-PpoSzHQMqdlGfcWvIH34ATcf4HZB+VbA6X7zqzV9xZk=";
+  npmDepsHash = "sha256-3GEWJLiWDZcjUU1yms0h0mm4eH4Ov20WVSHZN1OB5bA=";
 
   patcher = fetchzip {
     url = "https://github.com/ryanoasis/nerd-fonts/releases/download/v${patcher-version}/FontPatcher.zip";

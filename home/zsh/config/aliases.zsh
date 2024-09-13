@@ -85,6 +85,7 @@ alias \
 	glg="git log HEAD..@{u}" \
 	glsf="for repo in */; do (cd "$repo" && [[ -e .git ]] && git fetch --all) & done; wait" \
 	gp="git push" \
+	gpd="git diff @{u}..HEAD" \
 	gpf="git push --force-with-lease" \
 	gr="git remote -v" \
 	grm="git restore --staged" \

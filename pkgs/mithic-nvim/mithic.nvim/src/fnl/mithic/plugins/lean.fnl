@@ -1,4 +1,4 @@
-((. (require :lean) :setup) {})
+((. (require :lean) :setup) {:mappings true})
 
 (vim.api.nvim_create_autocmd :FileType
   {:pattern [:lean :lean3]

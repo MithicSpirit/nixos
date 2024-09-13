@@ -26,10 +26,10 @@ clean:
     rm -f result
 
 rebuild operation: build sudo
-    sudo nixos-rebuild {{operation}} --flake ".#$(hostname)"
+    sudo nixos-rebuild '{{operation}}' --flake ".#$(hostname)"
 
-package pkg:
-    nix build '.#'{{pkg}}
+package pkg: gitadd
+    nix build '.#{{pkg}}'
 
 test: (rebuild 'test')
 boot: (rebuild 'boot')

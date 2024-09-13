@@ -89,7 +89,6 @@ exportGlyphNames = true
     ampersand = 'upper-open'
     at = 'threefold'
     percent = 'dots'
-    bar = 'force-upright'
     punctuation-dot = 'round'
     diacritic-dot = 'round'
     micro-sign = 'toothless-corner-serifless'
