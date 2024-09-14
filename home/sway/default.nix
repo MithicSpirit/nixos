@@ -16,7 +16,7 @@ in
     enable = true;
     config = null;
     extraConfig = ''
-      set $confdir ${./sway-config}
+      set $confdir ${./cfg}
       set $wallpaper ${wallpaper}
       include $confdir/config
     '';
