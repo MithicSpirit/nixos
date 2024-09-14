@@ -40,6 +40,14 @@
   programs.home-manager.enable = true;
   systemd.user.startServices = "sd-switch";
 
+  nix.settings = {
+    experimental-features = [
+      "nix-command"
+      "flakes"
+    ];
+    use-xdg-base-directories = true;
+  };
+
   wayland.windowManager.sway.extraConfig = ''
     output eDP-2 {
       mode 2560x1600@165Hz

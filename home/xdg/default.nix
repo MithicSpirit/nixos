@@ -9,10 +9,10 @@
     {
       enable = true;
 
-      cacheHome = "${home}/.local/cache";
-      configHome = "${home}/.local/etc";
-      dataHome = "${home}/.local/share";
-      stateHome = "${home}/.local/state";
+      cacheHome = "${home}/local/cache";
+      configHome = "${home}/local/etc";
+      dataHome = "${home}/local/share";
+      stateHome = "${home}/local/state";
       userDirs = {
         enable = true;
         createDirectories = true;
