@@ -45,7 +45,7 @@
       "nix-command"
       "flakes"
     ];
-    use-xdg-base-directories = true;
+    # use-xdg-base-directories = true;
   };
 
   wayland.windowManager.sway.extraConfig = ''

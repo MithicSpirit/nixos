@@ -1,6 +1,6 @@
-{ pkgs, ... }:
+{ pkgs, lib, ... }:
 let
-  fw-fanctrl = pkgs.lib.getExe pkgs.fw-fanctrl;
+  fw-fanctrl = lib.getExe pkgs.fw-fanctrl;
   json = (pkgs.formats.json { }).generate;
   config = json "fw-fanctrl.json" {
 
@@ -159,7 +159,7 @@ in
       Type = "simple";
       Restart = "always";
       ExecStart = "${fw-fanctrl} run --config ${config}";
-      ExecStopPost = "${pkgs.lib.getExe pkgs.fw-ectool} autofanctrl";
+      ExecStopPost = "${lib.getExe pkgs.fw-ectool} autofanctrl";
       SyslogLevel = "debug";
     };
     after = [ "multi-user.target" ];

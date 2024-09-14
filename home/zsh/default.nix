@@ -1,4 +1,8 @@
-{ config, pkgs, ... }:
+{
+  config,
+  pkgs,
+  ...
+}:
 let
   zdotdir = "${config.xdg.configHome}/zsh";
   histdir = "${config.xdg.cacheHome}/zsh";

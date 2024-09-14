@@ -89,6 +89,7 @@
       homeConfigurations = {
 
         hipparchus."mithic" = home-manager.lib.homeManagerConfiguration {
+          pkgs = nixpkgs;
           extraSpecialArgs = args;
           modules = [ ./systems/hipparchus/home/mithic.nix ];
         };

@@ -1,4 +1,9 @@
-{ pkgs, config, ... }:
+{
+  pkgs,
+  config,
+  lib,
+  ...
+}:
 let
   me = pkgs.mithic-nvim;
 in
@@ -12,7 +17,7 @@ in
     extraLuaConfig = # lua
       ''
         vim.g.vimtex_callback_progpath =
-          '${pkgs.lib.getExe config.programs.neovim.finalPackage}'
+          '${lib.getExe config.programs.neovim.finalPackage}'
         require 'mithic'
       '';
     extraPackages = me.extraPackages;
