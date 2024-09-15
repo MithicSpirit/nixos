@@ -18,6 +18,7 @@
     # c/++
     gcc
     (lib.setPrio (gcc.meta.priority + 1) clang)
+    binutils
 
     # haskell
     ghc
@@ -34,6 +35,7 @@
     just
     gdb
     gh
+    glab
     scc
     rlwrap # idris2 repl improvement
   ];

@@ -62,6 +62,7 @@
     signing.key = null;
     aliases = {
       hub = "!gh";
+      lab = "!glab";
     };
 
     ignores = [

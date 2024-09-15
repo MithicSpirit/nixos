@@ -191,8 +191,9 @@
     shell = pkgs.zsh;
     initialPassword = "";
     createHome = true;
-    homeMode = "750";
+    homeMode = "755";
     linger = true;
+    uid = 1000;
   };
   home-manager = {
     extraSpecialArgs = {

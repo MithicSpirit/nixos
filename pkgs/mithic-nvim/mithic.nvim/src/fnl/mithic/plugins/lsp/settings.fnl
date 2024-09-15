@@ -30,7 +30,8 @@
      {:ltex
        {:latex
          {:environments {:numcases :ignore
-                         :subnumcases :ignore}
+                         :subnumcases :ignore
+                         :semiverbatim :ignore}
           :commands
            {"\\noeqref{}" :ignore
             "\\mathtoolsset{}" :ignore

@@ -5,7 +5,7 @@ in
 {
 
   home.packages = with pkgs; [
-    texliveFull
+    (texliveFull.__overrideTeXConfig { withDocs = true; })
     tectonic
   ];
 
