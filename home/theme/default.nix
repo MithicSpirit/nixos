@@ -35,32 +35,29 @@
 
     gtk2.extraConfig = ''
       gtk-application-prefer-dark-theme = 1
+      gtk-enable-animations = false
     '';
     gtk3.extraConfig = {
       gtk-application-prefer-dark-theme = true;
+      gtk-enable-animations = false;
     };
     gtk4.extraConfig = config.gtk.gtk3.extraConfig;
 
     gtk2.configLocation = "${config.xdg.configHome}/gtk-2.0/gtkrc";
   };
 
+  # use dark theme for gtk4
   xdg.configFile."gtk-4.0/gtk.css".text =
     let
       cfg = config.gtk;
     in
-    lib.mkForce (
-      ''
-        /**
-         * GTK 4 reads the theme configured by gtk-theme-name, but ignores it.
-         * It does however respect user CSS, so import the theme from here.
-        **/
-        @import url("file://${cfg.theme.package}/share/themes/${cfg.theme.name}-Dark/gtk-4.0/gtk.css");
-      ''
-      + cfg.gtk4.extraCss
-    );
+    lib.mkForce ''
+      @import url("file://${cfg.theme.package}/share/themes/${cfg.theme.name}-Dark/gtk-4.0/gtk.css");
+      ${cfg.gtk4.extraCss}'';
 
   dconf.settings."org/gnome/desktop/interface" = {
     color-scheme = "prefer-dark";
+    enable-animations = false;
   };
 
   qt = {
