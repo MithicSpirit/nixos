@@ -4,7 +4,6 @@
 \ProvidesPackage{math}[Personal package for mathematics typesetting]
 
 \RequirePackage{iftex}
-\RequirePackage{xparse}
 
 \RequirePackage{amsmath}
 \RequirePackage{amsthm}
@@ -26,8 +25,8 @@
 \RequirePackage{xfrac}
 \RequirePackage{siunitx}
 \RequirePackage{interval}
-\RequirePackage{diffcoeff}
 \RequirePackage{mleftright}
+\RequirePackage{derivative}
 
 \RequirePackage{hyperref}
 \RequirePackage[nameinlink]{cleveref}
@@ -49,7 +48,20 @@
 
 \intervalconfig{soft open fences}
 
-\mleftright
+\mleftright{}
+
+\NewDifferential{\vdif}{\nabla}
+\newcommand{\dv}{\odv}
+\newcommand{\Dv}{\mdv}
+\newcommand{\dev}{\fdv}
+\newcommand{\Dev}{\adv}
+% \pdv, \jdv already included
+\newcommand{\dd}{\odif}
+\newcommand{\pdd}{\pdif}
+\newcommand{\Dd}{\mdif}
+\newcommand{\dde}{\fdif}
+\newcommand{\Dde}{\adif}
+\newcommand{\ndd}{\vdif}
 
 \theoremstyle{definition}
 
@@ -91,7 +103,7 @@
   {Assume, for sake of contradiction}}
 
 \newcommand{\p}[1]{\mathrlap{\,\text{#1}}}
-\NewDocumentCommand{\cat}{m}{\ensuremath{\normalfont\textbf{#1}}}
+\newcommand{\cat}[1]{\ensuremath{\normalfont\textbf{#1}}}
 
 \newcommand{\trans}{^{\mathsf{T}}}
 \newcommand{\compl}{^{\mathsf{C}}}
@@ -114,11 +126,6 @@
 
 \DeclareMathOperator*{\argmax}{arg\,max}
 \DeclareMathOperator*{\argmin}{arg\,min}
-
-% \let\left@\left  % chktex 43
-% \let\right@\right  % chktex 43
-% \renewcommand{\left}{\mathopen{}\mathclose\bgroup\left@}  % chktex 43
-% \renewcommand{\right}{\aftergroup\egroup\right@}  % chktex 43
 
 \let\phantom@nostar\phantom  % chktex 1
 \newcommand{\phantom@star}[1]{\phantom@nostar{{}#1{}}}
@@ -143,32 +150,6 @@
   \fi
 }
 
-% \NewDocumentCommand{\dd}{ O{} O{} }{%
-%   \operatorname{d}^{#1}_{#2}\hspace{-0.5ex}{}}
-% \NewDocumentCommand{\Dd}{ O{} O{} }{%
-%   \operatorname{D}^{#1}_{#2}\hspace{-0.5ex}{}}
-% \NewDocumentCommand{\pdd}{ O{} O{} }{%
-%   \operatorname{\partial}^{#1}_{#2}\hspace{-0.5ex}{}}
-% \NewDocumentCommand{\dde}{ O{} O{} }{%
-%   \operatorname{\delta}^{#1}_{#2}\hspace{-0.5ex}{}}
-% \NewDocumentCommand{\Dde}{ O{} O{} }{%
-%   \operatorname{\Delta}^{#1}_{#2}\hspace{-0.5ex}{}}
-% \NewDocumentCommand{\Nde}{ O{} O{} }{%
-%   \operatorname{\nabla}^{#1}_{#2}\hspace{-0.5ex}{}}
-%
-% \newcommand{\dv@nostar}[3][]{\frac{\dd[#1] #2}{\dd #3}}  % chktex 1
-% \newcommand{\dv@star}[2][]{\dv@nostar[#1]{}{#2}}
-% \newcommand{\dv}{\@ifstar{\dv@star}{\dv@nostar}}
-%
-% \newcommand{\pdv@nostar}[3][]{\frac{\pdd[#1] #2}{\pdd #3}}  % chktex 1
-% \newcommand{\pdv@star}[2][]{\pdv@nostar[#1]{}{#2}}
-% \newcommand{\pdv}{\@ifstar{\pdv@star}{\pdv@nostar}}
-\difdef{l}{}{style=d^}
-\difdef{l}{p}{op-symbol=\partial}
-\NewDocumentCommand{\dlp}{}{\dl.p.}
-\difdef{l}{n}{op-symbol=\nabla}
-\NewDocumentCommand{\dln}{}{\dl.n.}
-
 \newenvironment{smat}{\smallmatrix}{\endsmallmatrix}
 \newenvironment{psmat}{\psmallmatrix}{\endpsmallmatrix}
 \newenvironment{bsmat}{\bsmallmatrix}{\endbsmallmatrix}
@@ -176,11 +157,8 @@
 \newenvironment{vsmat}{\vsmallmatrix}{\endvsmallmatrix}
 \newenvironment{Vsmat}{\Vsmallmatrix}{\endVsmallmatrix}
 
-\RenewDocumentCommand{\implies}{s}{%
-  \IfBooleanTF{#1}{\Rightarrow}{\Longrightarrow}}
-\RenewDocumentCommand{\impliedby}{s}{%
-  \IfBooleanTF{#1}{\Leftarrow}{\Longleftarrow}}
-\RenewDocumentCommand{\iff}{s}{%
-  \IfBooleanTF{#1}{\Leftrightarrow}{\Longleftrightarrow}}
+\renewcommand{\implies}{\@ifstar{\Rightarrow}{\Longrightarrow}}
+\renewcommand{\impliedby}{\@ifstar{\Leftarrow}{\Longleftarrow}}
+\renewcommand{\iff}{\@ifstar{\Leftrightarrow}{\Longleftrightarrow}}
 
-\NewDocumentCommand{\registered}{}{\textsuperscript{\textregistered}}
+\newcommand{\registered}{\textsuperscript{\textregistered}}
