@@ -21,12 +21,13 @@
 \ifluatex\RequirePackage{lualatex-math}\fi
 \RequirePackage{mathrsfs}
 \RequirePackage{stmaryrd}
+\RequirePackage{wasysym}
+
 \RequirePackage{xfrac}
 \RequirePackage{siunitx}
 \RequirePackage{interval}
-% TODO: update definitions to be compatible, then
-% \RequirePackage[math-style=TeX,bold-style=TeX,sans-style=upright,nabla=upright, partial=italic]{unicode-math}
-% ^ also use \unimathsetup instead of long line
+\RequirePackage{diffcoeff}
+\RequirePackage{mleftright}
 
 \RequirePackage{hyperref}
 \RequirePackage[nameinlink]{cleveref}
@@ -47,6 +48,8 @@
 \DeclareSIUnit\clight{\text{\ensuremath{c}}}
 
 \intervalconfig{soft open fences}
+
+\mleftright
 
 \theoremstyle{definition}
 
@@ -112,10 +115,10 @@
 \DeclareMathOperator*{\argmax}{arg\,max}
 \DeclareMathOperator*{\argmin}{arg\,min}
 
-\let\left@\left  % chktex 43
-\let\right@\right  % chktex 43
-\renewcommand{\left}{\mathopen{}\mathclose\bgroup\left@}  % chktex 43
-\renewcommand{\right}{\aftergroup\egroup\right@}  % chktex 43
+% \let\left@\left  % chktex 43
+% \let\right@\right  % chktex 43
+% \renewcommand{\left}{\mathopen{}\mathclose\bgroup\left@}  % chktex 43
+% \renewcommand{\right}{\aftergroup\egroup\right@}  % chktex 43
 
 \let\phantom@nostar\phantom  % chktex 1
 \newcommand{\phantom@star}[1]{\phantom@nostar{{}#1{}}}
@@ -140,26 +143,31 @@
   \fi
 }
 
-\NewDocumentCommand{\dd}{ O{} O{} }{%
-  \operatorname{d}^{#1}_{#2}\hspace{-0.5ex}{}}
-\NewDocumentCommand{\Dd}{ O{} O{} }{%
-  \operatorname{D}^{#1}_{#2}\hspace{-0.5ex}{}}
-\NewDocumentCommand{\pdd}{ O{} O{} }{%
-  \operatorname{\partial}^{#1}_{#2}\hspace{-0.5ex}{}}
-\NewDocumentCommand{\dde}{ O{} O{} }{%
-  \operatorname{\delta}^{#1}_{#2}\hspace{-0.5ex}{}}
-\NewDocumentCommand{\Dde}{ O{} O{} }{%
-  \operatorname{\Delta}^{#1}_{#2}\hspace{-0.5ex}{}}
-\NewDocumentCommand{\Nde}{ O{} O{} }{%
-  \operatorname{\nabla}^{#1}_{#2}\hspace{-0.5ex}{}}
-
-\newcommand{\dv@nostar}[3][]{\frac{\dd[#1] #2}{\dd #3}}  % chktex 1
-\newcommand{\dv@star}[2][]{\dv@nostar[#1]{}{#2}}
-\newcommand{\dv}{\@ifstar{\dv@star}{\dv@nostar}}
-
-\newcommand{\pdv@nostar}[3][]{\frac{\pdd[#1] #2}{\pdd #3}}  % chktex 1
-\newcommand{\pdv@star}[2][]{\pdv@nostar[#1]{}{#2}}
-\newcommand{\pdv}{\@ifstar{\pdv@star}{\pdv@nostar}}
+% \NewDocumentCommand{\dd}{ O{} O{} }{%
+%   \operatorname{d}^{#1}_{#2}\hspace{-0.5ex}{}}
+% \NewDocumentCommand{\Dd}{ O{} O{} }{%
+%   \operatorname{D}^{#1}_{#2}\hspace{-0.5ex}{}}
+% \NewDocumentCommand{\pdd}{ O{} O{} }{%
+%   \operatorname{\partial}^{#1}_{#2}\hspace{-0.5ex}{}}
+% \NewDocumentCommand{\dde}{ O{} O{} }{%
+%   \operatorname{\delta}^{#1}_{#2}\hspace{-0.5ex}{}}
+% \NewDocumentCommand{\Dde}{ O{} O{} }{%
+%   \operatorname{\Delta}^{#1}_{#2}\hspace{-0.5ex}{}}
+% \NewDocumentCommand{\Nde}{ O{} O{} }{%
+%   \operatorname{\nabla}^{#1}_{#2}\hspace{-0.5ex}{}}
+%
+% \newcommand{\dv@nostar}[3][]{\frac{\dd[#1] #2}{\dd #3}}  % chktex 1
+% \newcommand{\dv@star}[2][]{\dv@nostar[#1]{}{#2}}
+% \newcommand{\dv}{\@ifstar{\dv@star}{\dv@nostar}}
+%
+% \newcommand{\pdv@nostar}[3][]{\frac{\pdd[#1] #2}{\pdd #3}}  % chktex 1
+% \newcommand{\pdv@star}[2][]{\pdv@nostar[#1]{}{#2}}
+% \newcommand{\pdv}{\@ifstar{\pdv@star}{\pdv@nostar}}
+\difdef{l}{}{style=d^}
+\difdef{l}{p}{op-symbol=\partial}
+\NewDocumentCommand{\dlp}{}{\dl.p.}
+\difdef{l}{n}{op-symbol=\nabla}
+\NewDocumentCommand{\dln}{}{\dl.n.}
 
 \newenvironment{smat}{\smallmatrix}{\endsmallmatrix}
 \newenvironment{psmat}{\psmallmatrix}{\endpsmallmatrix}

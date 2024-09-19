@@ -158,6 +158,7 @@
       zip
       unzip
       unrar-wrapper
+      xorg.xkill
       fastfetch
       dotacat
       cmatrix

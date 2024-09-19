@@ -20,8 +20,12 @@
 
 
  :texlab
-   {:settings {:texlab {:chktex {:onOpenAndSave true :onEdit true}
-                        :latexFormatter :texlab}}}
+   {:settings {:texlab
+                {:chktex {:onOpenAndSave true :onEdit true}
+                 :inlayHints {:labelDefinitions true :labelReferences false}
+                 :latexFormatter :texlab
+                 :experimental {:followPackageLinks true
+                                :verbatimEnvironments [:semiverbatim]}}}}
 
 
  :ltex
