@@ -14,16 +14,17 @@ update: gitadd && standard
     nix flake update
 
 [confirm]
-gc: clean sudo && boot
+gc: sudo && clean boot
     # delete user roots first
-    nix-collect-garbage -v --delete-older-than 14d --max-freed 0
-    sudo nix-collect-garbage -v --delete-older-than 14d
+    nix-collect-garbage -v --delete-older-than 17d --max-freed 0
+    sudo nix-collect-garbage -v --delete-older-than 17d --max-free 0
 
 build: gitadd
     nixos-rebuild build --flake ".#$(hostname)"
 
 clean:
     rm -f result
+    nix-collect-garbage -v
 
 rebuild op: build sudo
     sudo nixos-rebuild '{{op}}' --flake ".#$(hostname)"

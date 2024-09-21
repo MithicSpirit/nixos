@@ -91,6 +91,11 @@
       "kitty_mod+e" = "open_url_with_hints";
       "kitty_mod+u" = "kitten unicode_input";
     };
+
+    extraConfig = ''
+      mouse_map left click ungrabbed mouse_handle_click selection prompt
+      mouse_map shift+left click grabbed,ungrabbed mouse_handle_click selection prompt
+    '';
   };
 
 }
