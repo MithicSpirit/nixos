@@ -1,6 +1,6 @@
 default: gitadd standard
 
-format: clean
+format: clean-artifact
     nix fmt -- --width=80 --verify .
 
 check:
@@ -14,7 +14,7 @@ update: gitadd && standard
     nix flake update
 
 [confirm]
-gc: sudo && clean boot
+gc: sudo && clean-artifact boot
     # delete user roots first
     nix-collect-garbage -v --delete-older-than 17d --max-freed 0
     sudo nix-collect-garbage -v --delete-older-than 17d --max-free 0
@@ -22,8 +22,7 @@ gc: sudo && clean boot
 build: gitadd
     nixos-rebuild build --flake ".#$(hostname)"
 
-clean:
-    rm -f result
+clean: clean-artifact
     nix-collect-garbage -v
 
 rebuild op: build sudo
@@ -34,6 +33,10 @@ package pkg: gitadd
 
 test: (rebuild 'test')
 boot: (rebuild 'boot')
+
+[private]
+clean-artifact:
+    -[ -h result ] && rm -f result
 
 [private]
 sudo:

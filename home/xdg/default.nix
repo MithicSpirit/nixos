@@ -1,7 +1,6 @@
-{ config, ... }:
+{ config, pkgs, ... }:
 let
   home = config.home.homeDirectory;
-  xdg-root = "${home}/local";
   files = "${home}/files";
 in
 {
@@ -9,10 +8,10 @@ in
   xdg = {
     enable = true;
 
-    cacheHome = "${xdg-root}/cache";
-    configHome = "${xdg-root}/etc";
-    dataHome = "${xdg-root}/share";
-    stateHome = "${xdg-root}/state";
+    cacheHome = "${home}/.cache";
+    configHome = "${home}/.config";
+    dataHome = "${home}/.local/share";
+    stateHome = "${home}/.local/state";
     userDirs = {
       enable = true;
       createDirectories = true;
@@ -40,14 +39,16 @@ in
 
   home.preferXdgDirectories = true;
 
-  home.file =
+  home.file."local".source =
     let
-      symlink = l: { source = config.lib.file.mkOutOfStoreSymlink l; };
+      xdg = config.xdg;
     in
-    {
-      ".local" = symlink xdg-root;
-      ".config" = symlink config.xdg.configHome;
-      ".cache" = symlink config.xdg.cacheHome;
-    };
+    pkgs.runCommandLocal "xdg-local" { } ''
+      mkdir "$out"
+      ln -s "${xdg.cacheHome}" "$out/cache"
+      ln -s "${xdg.configHome}" "$out/etc"
+      ln -s "${xdg.dataHome}" "$out/share"
+      ln -s "${xdg.stateHome}" "$out/state"
+    '';
 
 }
