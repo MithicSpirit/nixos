@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, lib, ... }:
 let
   logiops = pkgs.logiops;
 in
@@ -18,8 +18,8 @@ in
       wants = dep;
       serviceConfig = {
         Type = "simple";
-        ExecStart = "${logiops}/bin/logid";
-        ExecStartPre = "${pkgs.kmod}/bin/modprobe hid_logitech_hidpp";
+        ExecStart = "${lib.getExe logiops}";
+        ExecStartPre = "${lib.getExe' pkgs.kmod "modprobe"} hid_logitech_hidpp";
       };
     };
 

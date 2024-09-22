@@ -2,6 +2,8 @@
   config,
   pkgs,
   root,
+  lib,
+  hostConfig,
   ...
 }:
 let
@@ -137,13 +139,13 @@ in
   services.swayidle =
     let
       lock = 600;
-      notify-send = "${pkgs.libnotify}/bin/notify-send";
-      loginctl = "${pkgs.systemd}/bin/loginctl";
-      sleep = "${pkgs.coreutils}/bin/sleep";
-      pkill = "${pkgs.procps}/bin/pkill";
-      dunstctl = "${config.services.dunst.package}/bin/dunstctl";
-      swaymsg = "${config.wayland.windowManager.sway.package}/bin/swaymsg";
-      swaylock = "${config.programs.swaylock.package}/bin/swaylock";
+      notify-send = lib.getExe pkgs.libnotify;
+      loginctl = lib.getExe' hostConfig.systemd.package "loginctl";
+      sleep = lib.getExe' pkgs.coreutils "sleep";
+      pkill = lib.getExe' pkgs.procps "pkill";
+      dunstctl = lib.getExe' config.services.dunst.package "dunstctl";
+      swaymsg = lib.getExe' config.wayland.windowManager.sway.package "swaymsg";
+      swaylock = lib.getExe config.programs.swaylock.package;
     in
     {
       enable = true;

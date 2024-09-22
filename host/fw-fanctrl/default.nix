@@ -175,7 +175,7 @@ in
     esac
   '';
 
-  programs.gamemode.settings.custom = {
+  programs.gamemode.scripts = {
     start = "'${fw-fanctrl}' use fast";
     end = "'${fw-fanctrl}' reset";
   };

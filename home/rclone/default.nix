@@ -1,4 +1,9 @@
-{ pkgs, config, ... }:
+{
+  pkgs,
+  config,
+  lib,
+  ...
+}:
 {
 
   home.packages = [ pkgs.rclone ];
@@ -30,7 +35,7 @@
         };
         Service = {
           Type = "oneshot";
-          ExecStartPre = "${pkgs.coreutils}/bin/sleep 15";
+          ExecStartPre = "${lib.getExe' pkgs.coreutils "sleep"} 15";
           ExecStart = "'${config.xdg.userDirs.documents}/school/rclone-sync' --dry-run";
           # TODO: remove --dry-run
         };

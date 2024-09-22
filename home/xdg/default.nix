@@ -5,6 +5,8 @@ let
 in
 {
 
+  imports = [ ./trash.nix ];
+
   xdg = {
     enable = true;
 

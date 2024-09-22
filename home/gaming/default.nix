@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, lib, ... }:
 let
   ini = (pkgs.formats.ini { }).generate;
 in
@@ -28,7 +28,7 @@ in
     cpu.pin_cores = 1;
     custom =
       let
-        notify-send = "${pkgs.libnotify}/bin/notify-send";
+        notify-send = lib.getExe pkgs.libnotify;
       in
       {
         start = "${notify-send} -et 5000 -a 'GameMode' 'Started'";
