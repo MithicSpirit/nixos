@@ -1,7 +1,7 @@
 #!/usr/bin/env sh
 
 swaykill() {
-	swaymsg '[all] kill' && sleep "${1:-0.4}"
+	swaymsg '[all] kill' && sleep "${1:-0.5}"
 }
 
 case "$(bemenu -p 'Power' -cl 7 -W 0.2 <<__EOF__

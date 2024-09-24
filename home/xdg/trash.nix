@@ -1,6 +1,6 @@
 { pkgs, lib, ... }:
 let
-  autotrash = pkgs.autotrash;
+  autotrash = pkgs.python3Packages.autotrash;
 in
 {
 

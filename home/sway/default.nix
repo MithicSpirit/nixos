@@ -177,7 +177,7 @@ in
       events = [
         {
           event = "before-sleep";
-          command = ''${loginctl} lock-session; ${swaymsg} "output * power off"; ${sleep} 0.1'';
+          command = ''${loginctl} lock-session; ${swaymsg} "output * power off"; ${sleep} 0.2'';
         }
         {
           event = "after-resume";

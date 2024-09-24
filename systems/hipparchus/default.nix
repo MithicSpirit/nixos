@@ -60,7 +60,7 @@
 
   boot.kernelPackages = pkgs.linuxPackages_xanmod_latest;
   boot.kernel.sysctl = {
-    "vm.swappiness" = 10;
+    "vm.swappiness" = 15;
     "kernel.sysrq" = 244;
   };
 
@@ -146,6 +146,7 @@
       emacs
       git
       nixfmt-rfc-style
+      nix-index
       htop
       findutils
       rename

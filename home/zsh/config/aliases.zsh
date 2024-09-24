@@ -90,7 +90,9 @@ alias \
 	gr="git remote -v" \
 	grm="git restore --staged" \
 	gst="git stash push -u" \
+	gsta="git stash apply --index" \
 	gstp="git stash pop --index" \
+	gsts="git stash show --patch" \
 	gsw="git switch" \
 	gt="git status" \
 	gw="git show" \
