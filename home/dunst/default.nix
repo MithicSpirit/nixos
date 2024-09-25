@@ -12,7 +12,7 @@
     iconTheme = config.gtk.iconTheme;
     settings =
       let
-        colors = (import /${root}/common/colorscheme.nix).hash;
+        colors = (import (root + /common/colorscheme.nix)).hash;
       in
       {
 

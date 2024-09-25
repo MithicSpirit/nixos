@@ -6,35 +6,35 @@
 }:
 {
 
-  imports = [
-    /${root}/home/bat
-    /${root}/home/bemenu
-    /${root}/home/git
-    /${root}/home/gpg
-    /${root}/home/kitty
-    /${root}/home/librewolf # TODO: waiting on #5684
-    /${root}/home/mpv
-    /${root}/home/neovim
-    /${root}/home/newsboat
-    /${root}/home/sway
-    /${root}/home/xdg
-    /${root}/home/zathura
-    /${root}/home/cliphist
-    /${root}/home/scripts
-    /${root}/home/dunst
-    /${root}/home/kdeconnect
-    /${root}/home/fastfetch
-    /${root}/home/theme
-    /${root}/home/man
-    /${root}/home/less
-    /${root}/home/zsh
-    /${root}/home/language
-    /${root}/home/btop
-    /${root}/home/gaming
-    /${root}/home/dev
-    /${root}/home/ssh
-    /${root}/home/desktop
-    /${root}/home/rclone
+  imports = builtins.map (path: root + /home + path) [
+    /bat
+    /bemenu
+    /git
+    /gpg
+    /kitty
+    /librewolf # TODO: waiting on #5684
+    /mpv
+    /neovim
+    /newsboat
+    /sway
+    /xdg
+    /zathura
+    /cliphist
+    /scripts
+    /dunst
+    /kdeconnect
+    /fastfetch
+    /theme
+    /man
+    /less
+    /zsh
+    /language
+    /btop
+    /gaming
+    /dev
+    /ssh
+    /desktop
+    /rclone
   ];
 
   programs.home-manager.enable = true;

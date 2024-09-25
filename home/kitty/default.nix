@@ -8,7 +8,7 @@
 
     settings =
       let
-        colors = (import /${root}/common/colorscheme.nix).hash;
+        colors = (import (root + /common/colorscheme.nix)).hash;
       in
       {
         update_check_interval = 0;

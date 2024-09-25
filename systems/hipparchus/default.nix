@@ -17,27 +17,30 @@
   };
   nix.package = pkgs.nixVersions.latest;
 
-  imports = [
-    inputs.hardware.nixosModules.framework-16-7040-amd
-    inputs.disko.nixosModules.default
-    inputs.home-manager.nixosModules.default
-    ./hardware-configuration.nix
-    ./disko.nix
-    /${root}/host/secure-boot
-    /${root}/host/man
-    /${root}/host/sshd
-    /${root}/host/pipewire
-    /${root}/host/dnscrypt
-    /${root}/host/logitech
-    /${root}/host/virt
-    /${root}/host/gaming
-    /${root}/host/keyd
-    /${root}/host/bluetooth
-    /${root}/host/tlp # or ppd
-    /${root}/host/sway
-    /${root}/host/amdgpu
-    /${root}/host/fw-fanctrl
-  ];
+  imports =
+    [
+      inputs.hardware.nixosModules.framework-16-7040-amd
+      inputs.disko.nixosModules.default
+      inputs.home-manager.nixosModules.default
+      ./hardware-configuration.nix
+      ./disko.nix
+    ]
+    ++ builtins.map (path: root + /host + path) [
+      /secure-boot
+      /man
+      /sshd
+      /pipewire
+      /dnscrypt
+      /logitech
+      /virt
+      /gaming
+      /keyd
+      /bluetooth
+      /tlp # or ppd
+      /sway
+      /amdgpu
+      /fw-fanctrl
+    ];
 
   nixpkgs.overlays = overlays;
   nixpkgs.config = {
@@ -54,7 +57,7 @@
   boot.initrd.systemd.enable = true;
   boot.plymouth = {
     enable = false; # TODO?
-    font = "${pkgs.iosevka-mithic}/share/fonts/truetype/iosevka-mithic.ttc";
+    font = pkgs.iosevka-mithic + /share/fonts/truetype/iosevka-mithic.ttc;
     theme = "breeze";
   };
 
@@ -86,7 +89,7 @@
     enable = true; # default, but just to be safe
     earlySetup = true;
     keyMap = "us";
-    colors = with (import /${root}/common/colorscheme.nix).raw; [
+    colors = with (import (root + /common/colorscheme.nix)).raw; [
       base00
       base01
       base02

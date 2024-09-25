@@ -7,7 +7,7 @@
   ...
 }:
 let
-  wallpaper = import /${root}/common/wallpaper;
+  wallpaper = import (root + /common/wallpaper);
 in
 {
 
