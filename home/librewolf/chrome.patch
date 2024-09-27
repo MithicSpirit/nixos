@@ -1,8 +1,8 @@
 diff --git a/user.js b/user.js
-index 2fe7376..040a6f4 100644
+index 2fe7376..f14a139 100644
 --- a/user.js
 +++ b/user.js
-@@ -79,27 +79,27 @@ user_pref("userChrome.rounding.square_tab",           false);
+@@ -79,27 +79,28 @@ user_pref("userChrome.rounding.square_tab",           false);
  // user_pref("userChrome.autohide.tab",                        true);
  // user_pref("userChrome.autohide.tab.opacity",                true);
  // user_pref("userChrome.autohide.tab.blur",                   true);
@@ -11,6 +11,7 @@ index 2fe7376..040a6f4 100644
  // user_pref("userChrome.autohide.bookmarkbar",                true);
 -// user_pref("userChrome.autohide.sidebar",                    true);
 +user_pref("userChrome.autohide.sidebar",                    true);
++user_pref("widget.gtk.ignore-bogus-leave-notify",              1);
  // user_pref("userChrome.autohide.fill_urlbar",                true);
  // user_pref("userChrome.autohide.back_button",                true);
  // user_pref("userChrome.autohide.forward_button",             true);
@@ -34,7 +35,7 @@ index 2fe7376..040a6f4 100644
  // user_pref("userChrome.hidden.bookmarkbar_icon",             true);
  // user_pref("userChrome.hidden.bookmarkbar_label",            true);
  // user_pref("userChrome.hidden.disabled_menu",                true);
-@@ -191,13 +191,13 @@ user_pref("userChrome.rounding.square_tab",           false);
+@@ -191,13 +192,13 @@ user_pref("userChrome.rounding.square_tab",           false);
  // user_pref("userChrome.findbar.floating_on_top",             true);
  
  // user_pref("userChrome.panel.remove_strip",                  true);
@@ -49,7 +50,7 @@ index 2fe7376..040a6f4 100644
  // user_pref("userChrome.icon.account_label_to_right",         true);
  // user_pref("userChrome.icon.menu.full",                      true);
  // user_pref("userChrome.icon.global_menu.mac",                true);
-@@ -293,29 +293,29 @@ user_pref("browser.tabs.hoverPreview.enabled", true);
+@@ -293,29 +294,29 @@ user_pref("browser.tabs.hoverPreview.enabled", true);
  user_pref("browser.urlbar.clipboard.featureGate", true);
  
  // Integrated calculator at urlbar
@@ -84,7 +85,7 @@ index 2fe7376..040a6f4 100644
  /*
  user_pref("mousewheel.min_line_scroll_amount",                 10); //        5
 diff --git a/userChrome.css b/userChrome.css
-index c084b35..ba992ed 100644
+index c084b35..e96c28a 100644
 --- a/userChrome.css
 +++ b/userChrome.css
 @@ -2,22 +2,25 @@

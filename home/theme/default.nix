@@ -35,11 +35,9 @@
 
     gtk2.extraConfig = ''
       gtk-application-prefer-dark-theme = 1
-      gtk-enable-animations = false
     '';
     gtk3.extraConfig = {
       gtk-application-prefer-dark-theme = true;
-      gtk-enable-animations = false;
     };
     gtk4.extraConfig = config.gtk.gtk3.extraConfig;
 
@@ -57,7 +55,6 @@
 
   dconf.settings."org/gnome/desktop/interface" = {
     color-scheme = "prefer-dark";
-    enable-animations = false;
   };
 
   qt = {

@@ -1,9 +1,9 @@
 {
-  stdenv,
   lib,
+  stdenvNoCC,
   fetchFromGitHub,
 }:
-stdenv.mkDerivation rec {
+stdenvNoCC.mkDerivation rec {
   pname = "firefox-ui-fix";
   version = "8.6.3";
 
@@ -20,8 +20,6 @@ stdenv.mkDerivation rec {
     cp -r ./ "$out/chrome"
     runHook postInstall
   '';
-
-  enableParallelBuilding = true;
 
   meta = with lib; {
     homepage = "https://github.com/black7375/Firefox-UI-Fix";
