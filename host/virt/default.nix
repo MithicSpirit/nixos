@@ -1,17 +1,15 @@
 { pkgs, ... }:
 {
   virtualisation = {
-    docker = {
+    podman = {
       enable = true;
-      storageDriver = "btrfs";
-      enableOnBoot = false;
       autoPrune = {
         enable = true;
         dates = "daily";
       };
+      dockerCompat = true;
+      dockerSocket.enable = true;
     };
-
-    podman.enable = true;
   };
 
   environment.systemPackages = with pkgs; [
