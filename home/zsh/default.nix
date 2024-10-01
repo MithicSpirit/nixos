@@ -57,6 +57,12 @@ in
     zoxide # TODO: my own thing
   ];
 
+  programs.direnv = {
+    enable = true;
+    config = { }; # TODO
+    nix-direnv.enable = true;
+  };
+
   home.sessionVariables."ZDOTDIR" = zdotdir;
 
 }

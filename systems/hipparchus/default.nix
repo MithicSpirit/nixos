@@ -74,6 +74,8 @@
   services.fwupd.enable = true;
 
   services.smartd.enable = true;
+  services.btrfs.autoScrub.enable = true;
+
   boot.tmp = {
     useTmpfs = true;
     tmpfsSize = "100%"; # fine because of swap
@@ -116,6 +118,7 @@
     extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
     config.common.default = [ "gtk" ];
   };
+  services.gnome.gnome-keyring.enable = true; # TODO: use keepassxc (or bitwarden)
 
   services.printing.enable = true;
   programs.dconf.enable = true;

@@ -66,7 +66,7 @@
       tlp-stop = tlp-wrapper "tlp-stop" "stop";
     };
 
-  programs.gamemode.scripts = {
+  programs.gamemode.settings'.custom = {
     start = "/run/wrappers/bin/tlp-stop";
     end = "/run/wrappers/bin/tlp-start";
   };

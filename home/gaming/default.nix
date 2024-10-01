@@ -1,6 +1,6 @@
 { pkgs, lib, ... }:
 let
-  ini = (pkgs.formats.ini { }).generate;
+  ini = (pkgs.formats.ini { listsAsDuplicateKeys = true; }).generate;
 in
 {
 

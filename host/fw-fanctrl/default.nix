@@ -106,7 +106,7 @@ in
     serviceConfig = {
       Type = "simple";
       Restart = "always";
-      ExecStart = "${fw-fanctrl} run --config ${config}";
+      ExecStart = "${fw-fanctrl} run --config ${config} --silent";
       ExecStopPost = "${lib.getExe pkgs.fw-ectool} autofanctrl";
       SyslogLevel = "debug";
     };
@@ -123,7 +123,7 @@ in
     esac
   '';
 
-  programs.gamemode.scripts = {
+  programs.gamemode.settings'.custom = {
     start = "'${fw-fanctrl}' use agile";
     end = "'${fw-fanctrl}' reset";
   };
