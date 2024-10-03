@@ -29,7 +29,7 @@
 
         scrollback_lines = 32768;
         scrollback_pager_history_size = 131072;
-        touch_scroll_multiplier = "2.0";
+        touch_scroll_multiplier = "5.0";
 
         cursor = colors.middle;
         cursor_text_color = "background";

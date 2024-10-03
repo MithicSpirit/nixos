@@ -26,12 +26,13 @@ clean: clean-artifact
     nix-collect-garbage -v
 
 rebuild op: build sudo
-    sudo nixos-rebuild '{{op}}' --flake ".#$(hostname)"
+    sudo nixos-rebuild '{{ op }}' --flake ".#$(hostname)"
 
 package pkg: gitadd
-    nix build '.#{{pkg}}'
+    nix build '.#{{ pkg }}'
 
 test: (rebuild 'test')
+
 boot: (rebuild 'boot')
 
 [private]
