@@ -14,10 +14,10 @@ update: gitadd && standard
     nix flake update
 
 [confirm]
-gc: sudo && clean-artifact boot
+gc: sudo && boot clean
     # delete user roots first
     nix-collect-garbage -v --delete-older-than 17d --max-freed 0
-    sudo nix-collect-garbage -v --delete-older-than 17d --max-free 0
+    sudo nix-collect-garbage -v --delete-older-than 17d --max-freed 0
 
 build: gitadd
     nixos-rebuild build --flake ".#$(hostname)"
