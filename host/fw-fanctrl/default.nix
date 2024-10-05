@@ -124,7 +124,7 @@ in
   '';
 
   programs.gamemode.settings'.custom = {
-    start = "'${fw-fanctrl}' use agile";
-    end = "'${fw-fanctrl}' reset";
+    start = [ "'${fw-fanctrl}' use agile" ];
+    end = [ "'${fw-fanctrl}' reset" ];
   };
 }

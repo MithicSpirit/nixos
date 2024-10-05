@@ -67,8 +67,8 @@
     };
 
   programs.gamemode.settings'.custom = {
-    start = "/run/wrappers/bin/tlp-stop";
-    end = "/run/wrappers/bin/tlp-start";
+    start = [ "/run/wrappers/bin/tlp-stop" ];
+    end = [ "/run/wrappers/bin/tlp-start" ];
   };
 
 }

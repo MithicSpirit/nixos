@@ -10,51 +10,12 @@
         force = pkgs.lib.mkForce;
       in
       {
-        search = {
-          engines =
-            let
-              day = 24 * 60 * 60 * 1000;
-            in
-            {
-              "Startpage" = {
-                urls = [
-                  {
-                    template = "https://www.startpage.com/sp/search";
-                    params = [
-                      {
-                        name = "query";
-                        value = "{searchTerms}";
-                      }
-                    ];
-                  }
-                ];
-                iconUpdateURL = "https://www.startpage.com/favicon.ico";
-                updateInterval = day;
-                metaData.hideOneOffButton = true;
-              };
-
-              # TODO: figure out hideOneOffButton
-              "DuckDuckGo".metaData.hideOneOffButton = true;
-              "Google".metaData.hidden = true;
-              "Bing".metaData.hidden = true;
-              "Wikipedia (en)".metaData.hidden = true;
-            };
-          default = "Startpage";
-          privateDefault = "DuckDuckGo";
-          order = [
-            "Startpage"
-            "DuckDuckGo"
-          ];
-          force = true;
-        };
-
         # must be empty for chrome stuff below to work
         settings = force { };
         extraConfig = force "";
         bookmarks = force [ ];
         userChrome = force "";
         userContent = force "";
-
       };
   };
 

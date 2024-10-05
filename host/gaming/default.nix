@@ -31,12 +31,31 @@ in
           apply_gpu_optimisations = "no";
           amd_performance_level = "high";
         };
+        filter = {
+          blacklist = [
+            "/usr/bin/env"
+            "${lib.getExe pkgs.bash}"
+            "${lib.getExe' pkgs.bash "sh"}"
+            "/usr/bin/bash"
+            "/usr/bin/sh"
+            "/usr/bash"
+            "/usr/sh"
+          ];
+        };
       };
     };
 
     environment.etc."gamemode.ini".source = lib.mkForce (
       settingsFormat.generate "gamemode.ini" config.programs.gamemode.settings'
     );
+
+    programs.gamescope = {
+      enable = true;
+      capSysNice = true;
+      env = {
+        "DRI_PRIME" = "1";
+      };
+    };
   };
 
 }
