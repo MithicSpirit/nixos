@@ -41,33 +41,27 @@
 
   security.wrappers =
     let
-      tlp-wrapper =
-        name: command:
-        let
-          systemctl = lib.getExe' config.systemd.package "systemctl";
-          cmd-pkg =
-            pkgs.writeCBin name # C
-              ''
-                #include <unistd.h>
-                static char *argv[] = {"${systemctl}", "${command}", "tlp.service"};
-                int main() { execv(argv[0], argv); }
-              '';
-        in
-        {
-          source = lib.getExe cmd-pkg;
-          owner = "root";
-          group = "root";
-          setuid = true;
-          program = name;
-        };
+      name = "tlp-start";
+      systemctl = lib.getExe' config.systemd.package "systemctl";
+      cmd-pkg =
+        pkgs.writeCBin name # C
+          ''
+            #include <unistd.h>
+            static char *argv[] = {"${systemctl}", "restart", "tlp.service"};
+            int main() { execv(argv[0], argv); }
+          '';
     in
     {
-      tlp-start = tlp-wrapper "tlp-start" "restart";
-      tlp-stop = tlp-wrapper "tlp-stop" "stop";
+      ${name} = {
+        source = lib.getExe cmd-pkg;
+        owner = "root";
+        group = "root";
+        setuid = true;
+        program = name;
+      };
     };
 
   programs.gamemode.settings'.custom = {
-    start = [ "/run/wrappers/bin/tlp-stop" ];
     end = [ "/run/wrappers/bin/tlp-start" ];
   };
 

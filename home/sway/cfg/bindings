@@ -15,7 +15,6 @@ bindsym --no-repeat --inhibited --to-code {
     $mod+Shift+$left move left
 
     # Move to workspace
-    $mod+grave workspace 0:`
     $mod+1 workspace 1
     $mod+2 workspace 2
     $mod+3 workspace 3
@@ -35,7 +34,6 @@ bindsym --no-repeat --inhibited --to-code {
     $mod+d workspace 17:d
     $mod+f workspace 18:f
     # Move focused container to workspace (and follow)
-    $mod+Shift+grave move container to workspace 0:` ; workspace 0:`
     $mod+Shift+1 move container to workspace 1 ; workspace 1
     $mod+Shift+2 move container to workspace 2 ; workspace 2
     $mod+Shift+3 move container to workspace 3 ; workspace 3
@@ -55,7 +53,6 @@ bindsym --no-repeat --inhibited --to-code {
     $mod+Shift+d move container to workspace 17:d ; workspace 17:d
     $mod+Shift+f move container to workspace 18:f ; workspace 18:f
     # Move focused container to workspace (and don't follow)
-    $mod+Control+grave move container to workspace 0:`
     $mod+Control+1 move container to workspace 1
     $mod+Control+2 move container to workspace 2
     $mod+Control+3 move container to workspace 3
@@ -75,7 +72,6 @@ bindsym --no-repeat --inhibited --to-code {
     $mod+Control+d move container to workspace 17:d
     $mod+Control+f move container to workspace 18:f
     # Move all windows (and follow)
-    $mod+Control+Shift+grave rename workspace to 0:`
     $mod+Control+Shift+1 rename workspace to 1
     $mod+Control+Shift+2 rename workspace to 2
     $mod+Control+Shift+3 rename workspace to 3
