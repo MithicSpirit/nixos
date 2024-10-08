@@ -38,8 +38,8 @@ in
             "${lib.getExe' pkgs.bash "sh"}"
             "/usr/bin/bash"
             "/usr/bin/sh"
-            "/usr/bash"
-            "/usr/sh"
+            "/bin/bash"
+            "/bin/sh"
           ];
         };
       };

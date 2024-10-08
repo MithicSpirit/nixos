@@ -35,19 +35,9 @@
     }@inputs:
     let
 
-      forAllSystems = nixpkgs.lib.genAttrs [
-        "x86_64-linux"
-        # "i686-linux"
-        # "aarch64-linux"
-        # "riscv64-linux"
-        # "aarch64-darwin"
-        # "armv7l-linux"
-        # "armv6l-linux"
-        # "armv5tel-linux"
-        # "mipsel-linux"
-        # "powerpc64le-linux"
-        # "x86_64-darwin"
-      ];
+      forAllSystems = nixpkgs.lib.genAttrs (
+        builtins.attrNames nixpkgs.legacyPackages
+      );
 
       root = ./.;
       overlays = import ./overlays { inherit inputs; };
@@ -69,10 +59,12 @@
       legacyPackages = packages;
       packages = forAllSystems (
         system:
-        (import ./pkgs { nixpkgs = packages.${system}; })
-        // {
-          inherit (disko.packages.${system}) disko disko-install;
-        }
+        nixpkgs.lib.filterAttrs (_key: nixpkgs.lib.meta.availableOn system) (
+          (import ./pkgs { nixpkgs = packages.${system}; })
+          // (nixpkgs.lib.optionalAttrs (disko.packages ? ${system}) {
+            inherit (disko.packages.${system}) disko;
+          })
+        )
       );
 
       formatter = forAllSystems (system: packages.${system}.nixfmt-rfc-style);
@@ -84,6 +76,7 @@
           specialArgs = args;
           modules = [ ./systems/hipparchus ];
         };
+
       };
 
       homeConfigurations = {
@@ -93,6 +86,7 @@
           extraSpecialArgs = args;
           modules = [ ./systems/hipparchus/home/mithic.nix ];
         };
+
       };
 
     };

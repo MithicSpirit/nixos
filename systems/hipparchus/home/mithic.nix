@@ -92,6 +92,7 @@
       swayimg
       xdragon
       xournalpp
+      libreoffice-fresh
 
       firefox
       librewolf

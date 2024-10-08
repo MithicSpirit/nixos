@@ -7,6 +7,7 @@ in
   home.packages = with pkgs; [
     (texliveFull.__overrideTeXConfig { withDocs = true; })
     tectonic
+    python3Packages.pygments # minted
   ];
 
   # don't set the variable directly to ./texmf since that prevents updating
