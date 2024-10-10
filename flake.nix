@@ -30,7 +30,6 @@
     {
       nixpkgs,
       home-manager,
-      disko,
       ...
     }@inputs:
     let
@@ -40,7 +39,7 @@
       );
 
       root = ./.;
-      overlays = import ./overlays { inherit inputs; };
+      overlays = (import ./overlays) inputs;
       mergedOverlays = nixpkgs.lib.composeManyExtensions overlays;
 
       packages = forAllSystems (
@@ -57,15 +56,6 @@
       overlays.default = mergedOverlays;
 
       legacyPackages = packages;
-      packages = forAllSystems (
-        system:
-        nixpkgs.lib.filterAttrs (_key: nixpkgs.lib.meta.availableOn system) (
-          (import ./pkgs { nixpkgs = packages.${system}; })
-          // (nixpkgs.lib.optionalAttrs (disko.packages ? ${system}) {
-            inherit (disko.packages.${system}) disko;
-          })
-        )
-      );
 
       formatter = forAllSystems (system: packages.${system}.nixfmt-rfc-style);
 
