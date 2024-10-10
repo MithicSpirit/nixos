@@ -17,7 +17,7 @@ input * {
     xkb_variant ,,phonetic
     xkb_options grp:win_space_toggle,compose:rctrl,lv3:ralt_switch
     accel_profile flat
-    pointer_accel -0.47
+    pointer_accel -0.49
     tool_mode * absolute
 }
 input type:touchpad {

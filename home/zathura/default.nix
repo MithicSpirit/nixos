@@ -1,9 +1,8 @@
-{ pkgs, ... }:
+{ ... }:
 {
 
   programs.zathura = {
     enable = true;
-    package = (pkgs.zathuraPkgs.override { useMupdf = false; }).zathuraWrapper;
 
     options = {
       selection-clipboard = "clipboard";
