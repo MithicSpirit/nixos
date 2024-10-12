@@ -15,6 +15,7 @@ for_window {
 assign {
     [app_id="btop"] workspace 1
     [app_id="thunderbird"] workspace 2
+    [app_id="betterbird"] workspace 2
     [app_id="signal"] workspace 3
     [app_id="discord|vesktop|ArmCord"] workspace 4
     [app_id="im.riot.Riot"] workspace 5
