@@ -1,1 +1,4 @@
-_inputs: [ (import ./pkgs.nix) ]
+_inputs: [
+  (import ./pkgs.nix)
+  (import ./temporary.nix)
+]

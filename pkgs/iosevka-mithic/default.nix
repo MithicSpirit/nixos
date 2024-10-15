@@ -10,19 +10,20 @@
   ttfautohint-nox,
   python3,
   fontforge,
+  moreutils,
 }:
 let
-  version = "31.7.1";
+  version = "31.9.1";
   patcher-version = "3.2.1";
 
   iosevka = fetchFromGitHub {
     owner = "be5invis";
     repo = "iosevka";
     rev = "v${version}";
-    hash = "sha256-yio+ZJ+hgybgEUfxXt/xk3ahM5lollKGJC0821vi9e0=";
+    hash = "sha256-eAC4afBfHfiteYCzBNGFG2U/oCA7C5CdUlQVSO9Dg6E=";
     name = "iosevka";
   };
-  npmDepsHash = "sha256-gtBQdeX7hkactPSq609DMoc8rY2AHfg2nkpj26ZV88A=";
+  npmDepsHash = "sha256-xwGR21+CpZRFdZYz8SQrSf1tkp3fjGudoMmP5TGgEe8=";
 
   patcher = fetchzip {
     url = "https://github.com/ryanoasis/nerd-fonts/releases/download/v${patcher-version}/FontPatcher.zip";
@@ -51,6 +52,7 @@ buildNpmPackage {
       ttfautohint-nox
       python3
       fontforge
+      moreutils
     ]
     ++ lib.optionals stdenv.isDarwin [
       darwin.cctools # libtool
@@ -67,26 +69,25 @@ buildNpmPackage {
 
   configurePhase = ''
     runHook preConfigure
-    cp "${build-plans}" "./private-build-plans.toml"
+    cp "${build-plans}" "./private-build-plans.toml" #" #
     runHook postConfigure
   '';
 
   buildPhase = ''
     export HOME=$TMPDIR
     runHook preBuild
-    npm run build --no-update-notifier --targets super-ttc::IosevkaMithic \
+    npm run build --no-update-notifier --targets ttf::IosevkaMithic \
       -- --jCmd=$NIX_BUILD_CORES --verbose=9 \
       | cat  # clean up output
-    python patcher/font-patcher --mono --complete --careful \
-      "dist/.super-ttc/IosevkaMithic.ttc"
+    parallel -j $NIX_BUILD_CORES \
+      python patcher/font-patcher --mono --complete --careful -- \
+      dist/IosevkaMithic/TTF/*.ttf
     runHook postBuild
   '';
 
   installPhase = ''
     runHook preInstall
-    fontdir="$out/share/fonts/truetype"
-    install -dm755 "$fontdir"
-    install "Iosevka Mithic.ttc" "$fontdir/$pname.ttc"
+    install -Dt "$out/share/fonts/truetype" -m644 *.ttf
     runHook postInstall
   '';
 
