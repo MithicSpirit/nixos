@@ -22,7 +22,7 @@
           sort = "urgency_descending";
           notification_limit = 3;
           indicate_hidden = true;
-          idle_threshold = 60;
+          idle_threshold = 20;
           format = "%p<b>%s</b> (<i>%a</i>)\\n%b";
           title = "Dunst";
           class = "dunst";
@@ -48,7 +48,7 @@
         urgency_normal = {
           background = colors.bg;
           foreground = colors.fg;
-          timeout = 15;
+          timeout = 20;
         };
         urgency_critical = {
           background = colors.bg;
