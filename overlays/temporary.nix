@@ -1,13 +1,15 @@
 final: prev: {
 
-  cliphist = prev.cliphist.overrideAttrs (_old: {
+  cliphist = prev.cliphist.overrideAttrs (_old: rec {
+    version = "0.6.1";
     src = final.fetchFromGitHub {
       owner = "sentriz";
       repo = "cliphist";
-      rev = "c49dcd26168f704324d90d23b9381f39c30572bd";
-      sha256 = "sha256-2mn55DeF8Yxq5jwQAjAcvZAwAg+pZ4BkEitP6S2N0HY=";
+      rev = "refs/tags/v${version}";
+      sha256 = "sha256-tImRbWjYCdIY8wVMibc5g5/qYZGwgT9pl4pWvY7BDlI=";
     };
-    vendorHash = "sha256-M5n7/QWQ5POWE4hSCMa0+GOVhEDCOILYqkSYIGoy/l0=";
+    vendorHash = "sha256-gG8v3JFncadfCEUa7iR6Sw8nifFNTciDaeBszOlGntU=";
+    passthru.updateScript = final.nix-update-script { };
   });
 
   bitwarden-desktop = prev.bitwarden-desktop.overrideAttrs (_old: {

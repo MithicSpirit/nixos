@@ -79,6 +79,7 @@
       rmtrash
       ugrep
       yazi
+      (parallel-full.override { willCite = true; })
 
       du-dust
       duf

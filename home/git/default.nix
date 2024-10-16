@@ -81,7 +81,7 @@
         syntax-theme = "ansi";
         right-arrow = "->";
         line-numbers-left-format = "{nm:^4}|";
-        width = 80;
+        width = 90;
 
         # colormoved support
         map-styles =
