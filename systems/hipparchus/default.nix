@@ -13,6 +13,7 @@
       "nix-command"
       "flakes"
     ];
+    auto-optimise-store = true;
     use-xdg-base-directories = true;
   };
   nix.package = pkgs.nixVersions.latest;

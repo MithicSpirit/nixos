@@ -23,8 +23,8 @@ build: gitadd
     nixos-rebuild build --flake '.#{{ host }}'
 
 clean: clean-artifact
-    nix-collect-garbage -v
-    nix-store --optimise -v
+    nix store gc -v
+    nix store optimise -v
 
 package pkg: gitadd
     nix build '.#{{ pkg }}'
