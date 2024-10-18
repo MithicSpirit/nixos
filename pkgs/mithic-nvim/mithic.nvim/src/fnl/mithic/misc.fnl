@@ -65,7 +65,7 @@
                        (~= vim.o.ft :gitrebase)
                        (<= 0 (vim.fn.line "'\"") (vim.fn.line "$"))
                        (= 1 (vim.fn.line ".")))
-              (vim.cmd "normal! g'\""))
+              (vim.cmd "normal! g'\"zz"))
          :buffer 0
          :once true})
    :group (vim.api.nvim_create_augroup :mithic-lastpos {})})
