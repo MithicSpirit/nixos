@@ -5,10 +5,10 @@ format: clean-artifact
 
 check:
     nix flake check --all-systems
-    nix run .#deadnix -- --fail
+    nix run .#deadnix -- {{ deadnix-args }} --fail
 
 undead: gitadd && standard
-    nix run .#deadnix -- --edit
+    nix run .#deadnix -- {{ deadnix-args }} --edit
 
 update: gitadd && standard
     nix flake update
@@ -20,7 +20,7 @@ gc: sudo && boot clean
     sudo nix-collect-garbage -v --delete-older-than 17d --max-freed 0
 
 build: gitadd
-    nixos-rebuild build --flake ".#$(hostname)"
+    nixos-rebuild build --flake '.#{{ host }}'
 
 clean: clean-artifact
     nix-collect-garbage -v
@@ -36,7 +36,7 @@ switch: (rebuild 'switch')
 
 [private]
 rebuild op: build sudo
-    sudo nixos-rebuild '{{ op }}' --flake ".#$(hostname)"
+    sudo nixos-rebuild '{{ op }}' --flake '.#{{ host }}'
 
 [private]
 clean-artifact:
@@ -59,3 +59,6 @@ standard: format check
 [private]
 gitadd:
     git add .
+
+deadnix-args := "--exclude ./overlays/temporary.nix"
+host := `hostname`
