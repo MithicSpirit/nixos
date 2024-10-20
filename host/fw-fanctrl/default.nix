@@ -123,7 +123,7 @@ in
     esac
   '';
 
-  programs.gamemode.settings'.custom = {
+  programs.gamemode.settings.custom = {
     start = [ "'${fw-fanctrl}' use agile" ];
     end = [ "'${fw-fanctrl}' reset" ];
   };
