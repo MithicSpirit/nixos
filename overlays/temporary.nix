@@ -1,11 +1,15 @@
 final: prev: {
 
   tlp = prev.tlp.overrideAttrs (old: {
-    makeFlags = (old.makeFlags or [ ]) ++ [
-      "TLP_ULIB=/lib/udev"
-      "TLP_SYSD=/lib/systemd/system"
-      "TLP_SDSL=/lib/systemd/systemd-sleep"
-      "TLP_ELOD=/lib/elogind/systemd-sleep"
+    postPatch = ''
+      substituteInPlace Makefile --replace-fail ' ?= /usr/' ' ?= /'
+    '';
+    makeFlags = [
+      "TLP_NO_INIT=1"
+      "TLP_WITH_ELOGIND=0"
+      "TLP_WITH_SYSTEMD=1"
+
+      "DESTDIR=${placeholder "out"}"
     ];
   });
 
