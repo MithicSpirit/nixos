@@ -1,6 +1,7 @@
 final: prev: {
 
   tlp = prev.tlp.overrideAttrs (_old: {
+    version = "1.7.0-framework";
     src = final.fetchFromGitHub {
       owner = "linrunner";
       repo = "TLP";
