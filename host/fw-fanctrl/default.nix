@@ -2,7 +2,7 @@
 let
   fw-fanctrl = lib.getExe pkgs.fw-fanctrl;
   json = (pkgs.formats.json { }).generate;
-  config = json "fw-fanctrl.json" {
+  conf = json "fw-fanctrl.json" {
 
     defaultStrategy = "medium";
     strategyOnDischarging = "lazy";
@@ -106,13 +106,13 @@ in
     serviceConfig = {
       Type = "simple";
       Restart = "always";
-      ExecStart = "${fw-fanctrl} run --config ${config} --silent";
+      ExecStart = "${fw-fanctrl} run --config ${conf} --silent";
       ExecStopPost = "${lib.getExe pkgs.fw-ectool} autofanctrl";
       SyslogLevel = "debug";
     };
     after = [ "multi-user.target" ];
     wantedBy = [ "multi-user.target" ];
-    restartTriggers = [ config ];
+    restartTriggers = [ conf ];
   };
 
   environment.etc."systemd/system-sleep/fw-fanctrl-suspend".source = pkgs.writeShellScript "fw-fanctrl-suspend" ''

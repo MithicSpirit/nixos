@@ -7,6 +7,8 @@
 {
 
   services.tlp.enable = true;
+  # NOTE: low perf settings on AC are intended to be combined with gamemode when
+  # better perf is needed.
   services.tlp.settings = {
     SOUND_POWER_SAVE_ON_AC = 0;
     SOUND_POWER_SAVE_ON_BAT = 1;
@@ -25,7 +27,7 @@
     PLATFORM_PROFILE_ON_BAT = "low-power";
 
     CPU_SCALING_GOVERNOR_ON_AC = "powersave";
-    CPU_ENERGY_PERF_POLICY_ON_AC = "power"; # use gamemode for better perf
+    CPU_ENERGY_PERF_POLICY_ON_AC = "power";
     CPU_SCALING_GOVERNOR_ON_BAT = "powersave";
     CPU_ENERGY_PERF_POLICY_ON_BAT = "power";
     CPU_BOOST_ON_AC = 1;

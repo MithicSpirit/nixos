@@ -1,4 +1,9 @@
-{ pkgs, lib, ... }:
+{
+  pkgs,
+  lib,
+  config,
+  ...
+}:
 let
   ini = (pkgs.formats.ini { listsAsDuplicateKeys = true; }).generate;
 in
@@ -17,7 +22,7 @@ in
   xdg.configFile."gamemode.ini".source = ini "gamemode.ini" {
     general = {
       desiredgov = "performance";
-      igpu_desiredgov = "powersave";
+      igpu_desiredgov = "performance";
       igpu_power_threshold = 0;
       softrealtime = "off";
       renice = 20;
@@ -35,6 +40,12 @@ in
         end = "${notify-send} -et 5000 -a 'GameMode' 'Stopped'";
         script_timeout = 2;
       };
+  };
+  systemd.user.services."gamemoded".Unit = {
+    X-SwitchMethod = "restart";
+    X-RestartTriggers = [
+      config.xdg.configFile."gamemode.ini".source
+    ];
   };
 
   home.sessionVariables."GAMEMODERUNEXEC" = "mangohud DRI_PRIME=1";

@@ -247,6 +247,8 @@
 
   services.upower.enable = true;
 
+  programs.gamemode.settings.gpu.gpu_device = 1;
+
   # weird framework 16 stuff. see arch and nixos wikis
   services.udev.extraRules = # udev
     ''

@@ -24,7 +24,6 @@ build: gitadd
 
 clean: clean-artifact
     nix store gc -v
-    nix store optimise -v
 
 package pkg: gitadd
     nix build '.#{{ pkg }}'
