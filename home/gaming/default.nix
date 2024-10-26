@@ -9,6 +9,11 @@ let
 in
 {
 
+  home.packages = with pkgs; [
+    path-of-building
+    protonup-qt
+  ];
+
   programs.mangohud = {
     enable = true;
     settings = { };

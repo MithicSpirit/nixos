@@ -17,7 +17,7 @@ input * {
     xkb_variant ,,phonetic
     xkb_options grp:win_space_toggle,compose:rctrl,lv3:ralt_switch
     accel_profile flat
-    pointer_accel -0.5
+    pointer_accel -0.2
     tool_mode * absolute
 }
 input type:touchpad {
@@ -26,7 +26,6 @@ input type:touchpad {
     tap enabled
     tap_button_map lrm
     natural_scroll enabled
-    pointer_accel -0.3
     scroll_factor 0.5
 }
 input type:touch events disabled

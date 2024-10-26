@@ -5,8 +5,8 @@ final: prev: {
     src = final.fetchFromGitHub {
       owner = "linrunner";
       repo = "TLP";
-      rev = "feature/bat.d/framework";
-      hash = "sha256-UCQ4Tgj5+5dsVAePrVIoOHvPZGmFDTS1ynQ8LCMjR8A=";
+      rev = "860057646b5d7ef4b726f7ce03a14baeca8b90d1";
+      hash = "sha256-NjYa964criPD0DVQtSDOlCS8bNb7S1TWDBqHJ7GhnuU=";
     };
   });
 
