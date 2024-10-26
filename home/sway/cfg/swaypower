@@ -1,7 +1,7 @@
 #!/usr/bin/env sh
 
 swaykill() {
-	swaymsg '[all] kill' && sleep "${1:-0.5}"
+	swaymsg '[all] kill' && sleep 0.5
 }
 
 case "$(bemenu -p 'Power' -cl 7 -W 0.2 <<__EOF__
@@ -16,8 +16,8 @@ __EOF__
 )" in
 	*"Lock") loginctl lock-session ;;
 	*"Reload") swaymsg reload ;;
-	*"Suspend") swaykill 1 && systemctl suspend-then-hibernate ;;
-	*"Hibernate") swaykill 1 && systemctl hibernate ;;
+	*"Suspend") sleep 1 && systemctl suspend-then-hibernate ;;
+	*"Hibernate") sleep 1 && systemctl hibernate ;;
 	*"Exit") swaykill && swaymsg exit ;;
 	*"Reboot") swaykill && systemctl reboot ;;
 	*"Power Off") swaykill && systemctl poweroff ;;
