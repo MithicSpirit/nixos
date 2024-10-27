@@ -53,6 +53,7 @@
       mode 2560x1600@165Hz
       scale 1.25
       adaptive_sync on
+      color_profile icc ${../BOE_CQ_NE160QDM-NZ6-icc-profile.icm}
     }
   '';
 
