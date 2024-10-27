@@ -15,9 +15,9 @@ final: prev: {
 
   sway-unwrapped = prev.sway-unwrapped.overrideAttrs (
     finalAttrs: prevAttrs: {
-      version = "1.10-rc4";
+      version = "1.10";
       src = prevAttrs.src.override {
-        hash = "sha256-O8zpOZ7ttPQv8xoH3ytwj2x/evw3+ghHsELEzVh19Q8=";
+        hash = "sha256-PzeU/niUdqI6sf2TCG19G2vNgAZJE5JCyoTwtO9uFTk=";
       };
 
       buildInputs =
