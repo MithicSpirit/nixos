@@ -4,14 +4,15 @@ swaykill() {
 	swaymsg '[all] kill' && sleep 0.5
 }
 
-case "$(bemenu -p 'Power' -cl 7 -W 0.2 <<__EOF__
+case "$(bemenu -p 'Power' -cl 8 -W 0.2 <<__EOF__
 1. Lock
 2. Reload
 3. Exit
-4. Suspend
-5. Hibernate
-6. Reboot
-7. Power Off
+4. Log Off
+5. Suspend
+6. Hibernate
+7. Reboot
+8. Power Off
 __EOF__
 )" in
 	*"Lock") loginctl lock-session ;;
