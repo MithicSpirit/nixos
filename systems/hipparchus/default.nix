@@ -256,6 +256,12 @@
       ACTION=="add", SUBSYSTEM=="usb", DRIVERS=="usb", ATTRS{idVendor}=="32ac", ATTRS{idProduct}=="0014", ATTR{power/wakeup}="disabled", ATTR{driver/1-1.1.1.4/power/wakeup}="disabled"
     '';
 
+  systemd.services.bluetooth-rfkill-resume = {
+    serviceConfig = {
+      ExecStartPre = "${pkgs.coreutils}/bin/sleep 1";
+    };
+  };
+
   programs.gamescope.args = [
     "-w2560"
     "-h1600"

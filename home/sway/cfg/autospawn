@@ -7,7 +7,7 @@ exec {
     # xsettingsd
     ## Apps
     $TERMINAL --class btop --title btop -e btop
-    betterbird
+    thunderbird
     org.signal.Signal
     dev.vencord.Vesktop # discord
     im.riot.Riot # element

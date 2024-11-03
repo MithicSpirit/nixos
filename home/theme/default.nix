@@ -97,6 +97,7 @@
     noto-fonts-cjk-sans
     twemoji-color-font
     dejavu_fonts
+    julia-mono
   ];
 
 }

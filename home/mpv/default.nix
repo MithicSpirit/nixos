@@ -9,7 +9,6 @@
       thumbfast
       sponsorblock
       quality-menu
-      autoload
     ];
 
     config = {
