@@ -53,6 +53,6 @@ in
     ];
   };
 
-  home.sessionVariables."GAMEMODERUNEXEC" = "mangohud DRI_PRIME=1";
+  home.sessionVariables."GAMEMODERUNEXEC" = "DRI_PRIME=1";
 
 }

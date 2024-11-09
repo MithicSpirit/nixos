@@ -138,7 +138,8 @@ in
 
   services.swayidle =
     let
-      lock = 600;
+      lock-time = 600;
+      alert-time = 30;
       notify-send = lib.getExe pkgs.libnotify;
       loginctl = lib.getExe' hostConfig.systemd.package "loginctl";
       sleep = lib.getExe' pkgs.coreutils "sleep";
@@ -152,24 +153,24 @@ in
       extraArgs = [
         "-w"
         "idlehint"
-        "${builtins.toString (lock / 2)}"
+        "${builtins.toString (lock-time / 2)}"
       ];
       timeouts = [
         {
-          timeout = lock - 31;
-          command = "${notify-send} -et 30000";
+          timeout = lock-time - alert-time - 1;
+          command = "${notify-send} -et ${toString (alert-time * 1000)} -a swayidle 'Locking soon'";
         }
         {
-          timeout = lock - 1;
+          timeout = lock-time - 1;
           command = "${dunstctl} set-paused true";
           resumeCommand = "${dunstctl} set-paused false";
         }
         {
-          timeout = lock;
+          timeout = lock-time;
           command = "${loginctl} lock-session";
         }
         {
-          timeout = lock + 15;
+          timeout = lock-time + 15;
           command = ''${swaymsg} "output * power off"'';
           resumeCommand = ''${swaymsg} "output * power on"'';
         }

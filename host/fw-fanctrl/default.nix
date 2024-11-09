@@ -92,6 +92,17 @@ let
         ];
       };
 
+      "max" = {
+        fanSpeedUpdateFrequency = 1;
+        movingAverageInterval = 1;
+        speedCurve = [
+          {
+            temp = 0;
+            speed = 100;
+          }
+        ];
+      };
+
     };
 
   };
