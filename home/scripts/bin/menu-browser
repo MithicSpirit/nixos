@@ -1,35 +1,44 @@
 #!/usr/bin/env zsh
 
-[[ "$#" -gt 0 ]]
-EMPTY="$?"
+unset copid
+# NOTE: keep -l in sync with options_ array length
+coproc bemenu -p 'Browser' -cl 13 -W 0.3
+copid="$!"
 
-notify() { [[ "$EMPTY" -eq 0 ]] && notify-send -a "Menu Browser" "$@" }
+unset empty options_ notify_id sel results
+
+[[ "$#" -gt 0 ]]; empty="$?"
+
+notify() { [[ "$empty" -eq 0 ]] && notify-send -a "Menu Browser" "$@" }
 
 _copy() { printf '%s' "$*" | exec wl-copy }
-_mpv() { exec mpv --quiet --pause "$@" }
 
 # TODO: better handle missing browsers
+# NOTE: keep in sync with -l above
 typeset -A options_=(
 	['0.  New window']='librewolf --new-window'
 	['1.  Current window']='librewolf'
-	['2.  Copy to clipboard']='_copy'
-	['3.  xdg-open']='xdg-open'
-	['4.  mpv']='_mpv'
-	['5.  Qutebrowser']='qutebrowser'
-	['6.  Tor Browser']='torbrowser-launcher'
-	['7.  Chromium']='chromium'
-	['8.  Chromium (Incognito)']='chromium --incognito'
-	['9.  Firefox']='firefox'
-	['10. Brave']='brave-nightly'
-	['11. Librewolf']='librewolf'
-	['12. Nyxt']='nyxt'
-	['13. Vieb']='vieb'
+	['2.  Incognito']='librewolf --private-window'
+	['3.  Copy to clipboard']='_copy'
+	['4.  xdg-open']='xdg-open'
+	['5.  mpv']='mpv --quiet --pause'
+	['6.  Chromium']='chromium --new-window'
+	['7.  Chromium (I)']='chromium --incognito'
+	['8.  Firefox']='firefox --new-window'
+	['9.  Firefox (I)']='firefox --private-window'
+	['10. Brave']='brave --new-window'
+	['11. Brave (I)']='brave --incognito'
+	['12. Tor Browser']='torbrowser-launcher'
 )
 
 notify_id="$(notify -p "URL" "$*")"
 
-sel="$(sort -n <<<"${(@kF)options_}" |
-	bemenu -p 'Browser' -cl "${#options_}" -W 0.3)"
+sort -n <<<"${(@kF)options_}" >&p
+exec {coout}<&p
+coproc :
+
+wait "$copid"
+read -rst 0 sel <&$coout
 
 if [[ -n "$sel" ]] && result="${options_[$sel]}" && [[ -n "$result" ]]; then
 	notify -t 4000 -e "--replace-id=$notify_id" 'Opening' "$result $*"

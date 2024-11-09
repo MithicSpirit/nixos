@@ -96,10 +96,11 @@
       xournalpp
       libreoffice-fresh
 
-      firefox
       librewolf
-      tor-browser
       ungoogled-chromium
+      firefox
+      brave
+      tor-browser
 
       libqalculate
       qalcmenu
