@@ -45,7 +45,7 @@ clean-artifact:
 [private]
 sudo:
     #!/usr/bin/env -S sh -eux
-    if [ -n "${WAYLAND_DISPLAY:-}" ] || [ -n "${DISPLAY:-}" ]; then
+    if [ -n "${WAYLAND_DISPLAY:-}" -o -n "${DISPLAY:-}" ]; then
         id="$(notify-send -t 60000 -pea 'NixOS Rebuild' 'Sudo prompt' 'Waiting')"
         sudo -v
         notify-send -r "$id" -t 2000 -u low -ea 'NixOS Rebuild' 'Sudo prompt' 'Done'

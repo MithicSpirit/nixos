@@ -73,16 +73,8 @@ in
     text = # sh
       ''
         #!/usr/bin/env sh
-
-        if [ -z "$WAYLAND_DISPLAY" ] && [ -z "$DISPLAY" ] && [ "$XDG_VTNR" -eq 1 ]; then
-                resway() {
-                        while ! sway >>/tmp/sway.log 2>&1
-                        do
-                                notify-send -w 'Sway restart' &
-                        done
-                }
-                exec resway
-        fi
+        [ -z "$WAYLAND_DISPLAY" -a -z "$DISPLAY" -a "$XDG_VTNR" -eq 1 ] \
+          && exec sway >>/tmp/sway.log 2>&1
       '';
   };
 

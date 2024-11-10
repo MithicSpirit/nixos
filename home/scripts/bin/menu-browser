@@ -28,7 +28,7 @@ typeset -A options_=(
 	['9.  Firefox (I)']='firefox --private-window'
 	['10. Brave']='brave --new-window'
 	['11. Brave (I)']='brave --incognito'
-	['12. Tor Browser']='torbrowser-launcher'
+	['12. Tor Browser']='tor-browser --new-window'
 )
 
 notify_id="$(notify -p "URL" "$*")"
