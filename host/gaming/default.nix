@@ -15,9 +15,6 @@
   programs.gamescope = {
     enable = true;
     capSysNice = true;
-    env = {
-      "DRI_PRIME" = "1";
-    };
   };
 
 }
