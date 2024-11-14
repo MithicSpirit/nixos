@@ -1,0 +1,209 @@
+commit ed42b43dafe738752ebac1541bd260984605be79
+Author: MithicSpirit <rpc01234@gmail.com>
+Date:   Tue Nov 12 20:25:34 2024 -0500
+
+    config: allow setting stdout/err for exec
+    
+    Introduces the exec_output command, which sets the file to use for
+    stdout and stderr in the exec and exec_always commands.
+
+diff --git a/include/sway/commands.h b/include/sway/commands.h
+index 5210d3ba..d76a428e 100644
+--- a/include/sway/commands.h
++++ b/include/sway/commands.h
+@@ -124,12 +124,13 @@ sway_cmd cmd_commands;
+ sway_cmd cmd_create_output;
+ sway_cmd cmd_default_border;
+ sway_cmd cmd_default_floating_border;
+ sway_cmd cmd_default_orientation;
+ sway_cmd cmd_exec;
+ sway_cmd cmd_exec_always;
++sway_cmd cmd_exec_output;
+ sway_cmd cmd_exit;
+ sway_cmd cmd_floating;
+ sway_cmd cmd_floating_maximum_size;
+ sway_cmd cmd_floating_minimum_size;
+ sway_cmd cmd_floating_modifier;
+ sway_cmd cmd_floating_scroll;
+diff --git a/include/sway/config.h b/include/sway/config.h
+index 71721393..0f19cf21 100644
+--- a/include/sway/config.h
++++ b/include/sway/config.h
+@@ -518,12 +518,14 @@ struct sway_config {
+ 	int titlebar_h_padding;
+ 	int titlebar_v_padding;
+ 	size_t urgent_timeout;
+ 	enum sway_fowa focus_on_window_activation;
+ 	enum sway_popup_during_fullscreen popup_during_fullscreen;
+ 	enum xwayland_mode xwayland;
++	int exec_stdout;
++	int exec_stderr;
+ 
+ 	// swaybg
+ 	char *swaybg_command;
+ 	struct wl_client *swaybg_client;
+ 	struct wl_listener swaybg_client_destroy;
+ 
+diff --git a/sway/commands.c b/sway/commands.c
+index c2c12ee6..9b4680d9 100644
+--- a/sway/commands.c
++++ b/sway/commands.c
+@@ -56,12 +56,13 @@ static const struct cmd_handler handlers[] = {
+ 	{ "client.unfocused", cmd_client_unfocused },
+ 	{ "client.urgent", cmd_client_urgent },
+ 	{ "default_border", cmd_default_border },
+ 	{ "default_floating_border", cmd_default_floating_border },
+ 	{ "exec", cmd_exec },
+ 	{ "exec_always", cmd_exec_always },
++	{ "exec_output", cmd_exec_output },
+ 	{ "floating_maximum_size", cmd_floating_maximum_size },
+ 	{ "floating_minimum_size", cmd_floating_minimum_size },
+ 	{ "floating_modifier", cmd_floating_modifier },
+ 	{ "focus", cmd_focus },
+ 	{ "focus_follows_mouse", cmd_focus_follows_mouse },
+ 	{ "focus_on_window_activation", cmd_focus_on_window_activation },
+diff --git a/sway/commands/exec_always.c b/sway/commands/exec_always.c
+index 8bc1048c..0b1af716 100644
+--- a/sway/commands/exec_always.c
++++ b/sway/commands/exec_always.c
+@@ -1,11 +1,12 @@
+ #include <stdlib.h>
+ #include <stdint.h>
+ #include <string.h>
+ #include <sys/wait.h>
+ #include <unistd.h>
++#include <fcntl.h>
+ #include <signal.h>
+ #include "sway/commands.h"
+ #include "sway/config.h"
+ #include "sway/server.h"
+ #include "sway/desktop/launcher.h"
+ #include "sway/tree/container.h"
+@@ -70,21 +71,31 @@ struct cmd_results *cmd_exec_process(int argc, char **argv) {
+ 		setsid();
+ 		sigset_t set;
+ 		sigemptyset(&set);
+ 		sigprocmask(SIG_SETMASK, &set, NULL);
+ 		signal(SIGPIPE, SIG_DFL);
+ 		close(fd[0]);
++		if (config->exec_stdout >= 0) {
++			dup2(config->exec_stdout, 1);
++			close(config->exec_stdout);
++		}
++		int errfd = fcntl(2, F_DUPFD_CLOEXEC);
++		if (config->exec_stderr >= 0) {
++			dup2(config->exec_stderr, 2);
++			close(config->exec_stderr);
++		}
+ 		if ((child = fork()) == 0) {
+ 			close(fd[1]);
+ 			if (ctx) {
+ 				export_xdga_token(ctx);
+ 			}
+ 			if (ctx && !no_startup_id) {
+ 				export_startup_id(ctx);
+ 			}
+ 			execlp("sh", "sh", "-c", cmd, (void *)NULL);
++			dup2(errfd, 2);
+ 			sway_log_errno(SWAY_ERROR, "execlp failed");
+ 			_exit(1);
+ 		}
+ 		ssize_t s = 0;
+ 		while ((size_t)s < sizeof(pid_t)) {
+ 			s += write(fd[1], ((uint8_t *)&child) + s, sizeof(pid_t) - s);
+diff --git a/sway/commands/exec_output.c b/sway/commands/exec_output.c
+new file mode 100644
+index 00000000..445eb402
+--- /dev/null
++++ b/sway/commands/exec_output.c
+@@ -0,0 +1,53 @@
++#include <fcntl.h>
++#include <unistd.h>
++#include "sway/commands.h"
++
++#define OPEN_OUTPUT(FILE) \
++	(open(FILE, O_RDWR | O_APPEND | O_CREAT, 0600)) // u=rw
++
++struct cmd_results *cmd_exec_output(int argc, char **argv) {
++	struct cmd_results *error =
++		checkarg(argc, "exec_output", EXPECTED_AT_MOST, 2);
++	if (error) {
++		return error;
++	}
++
++	if (config->exec_stdout >= 0) {
++		close(config->exec_stdout);
++		config->exec_stdout = -1;
++	}
++	if (config->exec_stderr >= 0) {
++		close(config->exec_stderr);
++		config->exec_stderr = -1;
++	}
++
++	if (argc >= 1) {
++		int out = OPEN_OUTPUT(argv[0]);
++		if (out < 0) {
++			return cmd_results_new(CMD_FAILURE,
++					  "Could not open file %s", argv[0]);
++		}
++
++		int err;
++		if (argc == 2) {
++			err = OPEN_OUTPUT(argv[1]);
++			if (err < 0) {
++				close(out);
++				return cmd_results_new(CMD_FAILURE,
++						  "Could not open file %s", argv[1]);
++			}
++		} else {
++			err = fcntl(out, F_DUPFD_CLOEXEC);
++			if (err < 0) {
++				close(out);
++				return cmd_results_new(CMD_FAILURE,
++						  "Could not duplicate fd for stderr");
++			}
++		}
++
++		config->exec_stdout = out;
++		config->exec_stderr = err;
++	}
++
++	return cmd_results_new(CMD_SUCCESS, NULL);
++}
+diff --git a/sway/config.c b/sway/config.c
+index 1090edc5..a8612bec 100644
+--- a/sway/config.c
++++ b/sway/config.c
+@@ -254,12 +254,14 @@ static void config_defaults(struct sway_config *config) {
+ 	if (!(config->font = strdup("monospace 10"))) goto cleanup;
+ 	config->font_description = pango_font_description_from_string(config->font);
+ 	config->urgent_timeout = 500;
+ 	config->focus_on_window_activation = FOWA_URGENT;
+ 	config->popup_during_fullscreen = POPUP_SMART;
+ 	config->xwayland = XWAYLAND_MODE_LAZY;
++	config->exec_stdout = -1;
++	config->exec_stderr = -1;
+ 
+ 	config->titlebar_border_thickness = 1;
+ 	config->titlebar_h_padding = 5;
+ 	config->titlebar_v_padding = 4;
+ 
+ 	// floating view
+diff --git a/sway/meson.build b/sway/meson.build
+index 8042c89b..5da9cb21 100644
+--- a/sway/meson.build
++++ b/sway/meson.build
+@@ -52,12 +52,13 @@ sway_sources = files(
+ 	'commands/default_border.c',
+ 	'commands/default_floating_border.c',
+ 	'commands/default_orientation.c',
+ 	'commands/exit.c',
+ 	'commands/exec.c',
+ 	'commands/exec_always.c',
++	'commands/exec_output.c',
+ 	'commands/floating.c',
+ 	'commands/floating_minmax_size.c',
+ 	'commands/floating_modifier.c',
+ 	'commands/focus.c',
+ 	'commands/focus_follows_mouse.c',
+ 	'commands/focus_on_window_activation.c',

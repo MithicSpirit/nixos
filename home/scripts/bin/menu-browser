@@ -41,14 +41,15 @@ wait "$copid"
 read -rst 0 sel <&$coout
 
 if [[ -n "$sel" ]] && result="${options_[$sel]}" && [[ -n "$result" ]]; then
-	notify -t 4000 -e "--replace-id=$notify_id" 'Opening' "$result $*"
-	echo "\n-- $(date) --\n-> \$ $0 $@\n<- \$ $result $*" \
+	notify -t 4000 -e --replace-id="$notify_id" 'Opening' "$result $*"
+	printf '\n-- %s -- \n>$ %s\n<$ %s' "$(date)" "$0 $*" "$result $*" \
 		>>/tmp/menu-browser.log
-	printf '%s' "$result $*"
+	printf '%s\n' "$result $*"
 	"${=result}" "$@" &>>/tmp/menu-browser.log &!
+	exit
 else
-	notify -t 2000 -e "--replace-id=$notify_id" 'Cancelled'
-	echo "\n-- $(date) --\n-> \$ $0 $@\n<- Cancelled" \
+	notify -t 2000 -e --replace-id="$notify_id" 'Cancelled'
+	printf '\n-- %s -- \n>$ %s\n< (Cancelled)' "$(date)" "$0 $*" \
 		>>/tmp/menu-browser.log
 	exit 1
 fi

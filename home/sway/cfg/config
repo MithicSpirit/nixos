@@ -35,6 +35,8 @@ input type:touch events disabled
 workspace_layout tabbed
 xwayland force
 
+exec_output /tmp/sway-exec.log
+
 floating_modifier $mod normal
 focus_follows_mouse yes
 focus_wrapping yes

@@ -150,7 +150,7 @@ in
       timeouts = [
         {
           timeout = lock-time - alert-time - 1;
-          command = "${notify-send} -et ${toString (alert-time * 1000)} -a swayidle 'Locking soon'";
+          command = "${notify-send} -et ${toString (alert-time * 1000)} -u low -a swayidle 'Locking soon'";
         }
         {
           timeout = lock-time - 1;
