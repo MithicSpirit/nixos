@@ -10,6 +10,7 @@
     rounded_corners = false;
     update_time = 2000;
     proc_per_core = true;
+    proc_gradient = false;
     cpu_graph_lower = "Auto";
     show_gpu_info = "Auto";
     gpu_mirror_graph = true;
