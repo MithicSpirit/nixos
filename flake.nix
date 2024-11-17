@@ -15,7 +15,7 @@
 
     home-manager = {
       # url = "github:nix-community/home-manager";
-      url = "github:MithicSpirit/home-manager/5684-merge";
+      url = "github:MithicSpirit/home-manager/5684-merge2";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 

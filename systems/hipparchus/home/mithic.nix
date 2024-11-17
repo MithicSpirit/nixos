@@ -96,7 +96,6 @@
       xournalpp
       libreoffice-fresh
 
-      librewolf
       ungoogled-chromium
       firefox
       brave

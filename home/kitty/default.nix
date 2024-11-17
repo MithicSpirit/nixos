@@ -20,7 +20,6 @@
         paste_actions = "confirm,confirm-if-large";
         focus_follows_mouse = true;
         window_alert_on_bell = false;
-        # TODO: bell_path or linux_bell_theme? if default is not good
         close_on_child_death = true;
         allow_remote_control = "socket";
         listen_on = "unix:@kitty";
@@ -56,7 +55,6 @@
         color15 = colors.base15;
       };
 
-    theme = null; # TODO
     font = {
       package = pkgs.iosevka-mithic;
       name = "Iosevka Mithic";
