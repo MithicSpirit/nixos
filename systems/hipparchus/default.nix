@@ -189,6 +189,16 @@
   };
   environment.pathsToLink = [ "/share/zsh" ]; # fix zsh completions
 
+  programs.obs-studio = {
+    enable = true;
+    enableVirtualCamera = false;
+    # FIXME: move to user when #356845 is merged
+    plugins = with pkgs.obs-studio-plugins; [
+      wlrobs
+      obs-vkcapture
+    ];
+  };
+
   environment.enableDebugInfo = true;
 
   users.users."mithic" = {

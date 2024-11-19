@@ -118,16 +118,15 @@
         ]
       },
       "locked": {
-        "lastModified": 1731790601,
-        "narHash": "sha256-LvQxYDhn6dD1pl9xYmgvp197WMB4DmhNOiJSaVcb2S0=",
-        "owner": "MithicSpirit",
+        "lastModified": 1731964590,
+        "narHash": "sha256-NBqbPdUHFaIQILooq+a//vg18gHDgELIeru4L24hDX4=",
+        "owner": "nix-community",
         "repo": "home-manager",
-        "rev": "f1f7636f742c69c99064d4ffe6afa9fa07dbfb14",
+        "rev": "705cf3763a6d6074c1b7edb3ff0bb44efa7f091b",
         "type": "github"
       },
       "original": {
-        "owner": "MithicSpirit",
-        "ref": "5684-merge2",
+        "owner": "nix-community",
         "repo": "home-manager",
         "type": "github"
       }
