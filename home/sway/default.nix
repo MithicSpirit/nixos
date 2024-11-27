@@ -189,10 +189,13 @@ in
     };
 
   xdg.portal = {
-    config.sway.default = [
-      "wlr"
-      "gtk"
-    ];
+    config.sway = {
+      default = [
+        "wlr"
+        "gtk"
+      ];
+      "org.freedesktop.impl.portal.Secret" = [ "gnome-keyring" ];
+    };
     extraPortals = with pkgs; [
       xdg-desktop-portal-wlr
       xdg-desktop-portal-gtk
@@ -222,6 +225,10 @@ in
       fade = true;
       transition = true;
     };
+  };
+
+  home.sessionVariables = {
+    "NIXOS_OZONE_WL" = "1";
   };
 
 }

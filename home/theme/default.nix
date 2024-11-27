@@ -8,7 +8,7 @@
   # TODO: check whether names are correct
 
   home.pointerCursor = {
-    package = pkgs.libsForQt5.breeze-qt5;
+    package = pkgs.libsForQt5.breeze-qt5; # looks better in qt5
     name = "breeze_cursors";
     size = 32;
     gtk.enable = true;
