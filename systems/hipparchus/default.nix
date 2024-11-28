@@ -37,7 +37,7 @@
       /gaming
       /keyd
       /bluetooth
-      /tlp # or ppd
+      /ppd # or tlp
       /sway
       /amdgpu
       /fw-fanctrl
