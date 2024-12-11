@@ -75,6 +75,7 @@ in
         #!/usr/bin/env sh
         [ -z "$WAYLAND_DISPLAY" -a -z "$DISPLAY" -a "$XDG_VTNR" -eq 1 ] \
           && exec sway >>/tmp/sway.log 2>&1
+        :
       '';
   };
 

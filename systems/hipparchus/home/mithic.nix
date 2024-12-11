@@ -79,6 +79,7 @@
       mediainfo
       rmtrash
       ugrep
+      wcurl
       yazi
       (parallel-full.override { willCite = true; })
 

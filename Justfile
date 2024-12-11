@@ -10,12 +10,11 @@ check:
 undead: gitadd && standard
     nix run .#deadnix -- {{ deadnix-args }} --edit
 
-update: gitadd && standard
-    nix flake update
+update *inputs: gitadd && standard
+    nix flake update {{ inputs }}
 
 [confirm]
 gc: sudo && boot clean
-    # delete user roots first
     nix-collect-garbage -v --delete-older-than 17d --max-freed 0
     sudo nix-collect-garbage -v --delete-older-than 17d --max-freed 0
 
@@ -46,7 +45,7 @@ clean-artifact:
 sudo:
     #!/usr/bin/env -S sh -eux
     if [ -n "${WAYLAND_DISPLAY:-}" -o -n "${DISPLAY:-}" ]; then
-        id="$(notify-send -t 60000 -pea 'NixOS Rebuild' 'Sudo prompt' 'Waiting')"
+        id="$(notify-send -t 600000 -pea 'NixOS Rebuild' 'Sudo prompt' 'Waiting')"
         sudo -v
         notify-send -r "$id" -t 2000 -u low -ea 'NixOS Rebuild' 'Sudo prompt' 'Done'
     else

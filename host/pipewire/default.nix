@@ -20,6 +20,7 @@
     libpulseaudio
     pavucontrol
     pulsemixer
+    helvum
   ];
 
 }
