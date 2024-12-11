@@ -12,21 +12,21 @@
   moreutils,
 }:
 let
-  version = "32.0.1";
-  patcher-version = "3.2.1";
+  version = "32.2.1";
+  patcher-version = "3.3.0";
 
   iosevka = fetchFromGitHub {
     owner = "be5invis";
     repo = "iosevka";
     rev = "v${version}";
-    hash = "sha256-5+rHHm2wwBw/Ii8hwVaJNV63kAjQ3TkicFzy/X1/zoU=";
+    hash = "sha256-z0S38X2A0rfGFNTr/Ym0VHfOhzdz/q42QL3tVf+m5FQ=";
     name = "iosevka";
   };
-  npmDepsHash = "sha256-nDFqIS5E7yAMoL3Ag92yL4NBl0CMXAOK9d6fQAiTZpk=";
+  npmDepsHash = "sha256-dFVhoBf4v0K1mqbiysZNk4yCt4Ars0Pgnr63xIsavDo=";
 
   patcher = fetchzip {
     url = "https://github.com/ryanoasis/nerd-fonts/releases/download/v${patcher-version}/FontPatcher.zip";
-    hash = "sha256-3s0vcRiNA/pQrViYMwU2nnkLUNUcqXja/jTWO49x3BU=";
+    hash = "sha256-/LbO8+ZPLFIUjtZHeyh6bQuplqRfR6SZRu9qPfVZ0Mw=";
     stripRoot = false;
     name = "patcher";
   };

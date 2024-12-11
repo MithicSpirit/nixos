@@ -27,15 +27,14 @@
 
   outputs =
     {
+      systems,
       nixpkgs,
       home-manager,
       ...
     }@inputs:
     let
 
-      forAllSystems = nixpkgs.lib.genAttrs (
-        builtins.attrNames nixpkgs.legacyPackages
-      );
+      forAllSystems = nixpkgs.lib.genAttrs (import systems);
 
       root = ./.;
       overlays = (import ./overlays) inputs;
