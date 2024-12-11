@@ -192,11 +192,7 @@
   programs.obs-studio = {
     enable = true;
     enableVirtualCamera = false;
-    # FIXME: move to user when #356845 is merged
-    plugins = with pkgs.obs-studio-plugins; [
-      wlrobs
-      obs-vkcapture
-    ];
+    package = null;
   };
 
   environment.enableDebugInfo = true;
