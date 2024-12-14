@@ -235,6 +235,8 @@
     submissionUrl = "https://beacondb.net/v2/geosubmit";
   };
 
+  programs.nano.enable = false;
+
   services.logind = rec {
     powerKey = suspendKey;
     powerKeyLongPress = "poweroff";
