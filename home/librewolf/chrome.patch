@@ -85,10 +85,10 @@ index 2fe7376..f14a139 100644
  /*
  user_pref("mousewheel.min_line_scroll_amount",                 10); //        5
 diff --git a/userChrome.css b/userChrome.css
-index c084b35..4ecb239 100644
+index c084b35..e58a340 100644
 --- a/userChrome.css
 +++ b/userChrome.css
-@@ -2,22 +2,28 @@
+@@ -2,22 +2,29 @@
  @import url("css/leptonChrome.css");
  
  
@@ -116,6 +116,7 @@ index c084b35..4ecb239 100644
 +:root {
 +  --uc-sidebar-width: 125px;
 +  --uc-sidebar-activate-width: 400px;
++  --uc-sidebar-fullscreen-width: 1px;
 +
 +  --uc-autohide-sidebar-speed: 150ms;
 +  --uc-autohide-fullscreen-sidebar-speed: 200ms;
