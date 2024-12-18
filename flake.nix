@@ -3,6 +3,8 @@
 
   inputs = {
 
+    systems.url = "github:nix-systems/default";
+
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
 
     hardware.url = "github:NixOS/nixos-hardware";
@@ -10,6 +12,7 @@
     lanzaboote = {
       url = "github:nix-community/lanzaboote/v0.4.1";
       inputs.nixpkgs.follows = "nixpkgs";
+      inputs.flake-utils.inputs.systems.follows = "systems";
       inputs.pre-commit-hooks-nix.follows = ""; # used for dev only
     };
 
@@ -26,15 +29,11 @@
   };
 
   outputs =
-    {
-      systems,
-      nixpkgs,
-      home-manager,
-      ...
-    }@inputs:
+    inputs:
     let
+      inherit (inputs) nixpkgs;
 
-      forAllSystems = nixpkgs.lib.genAttrs (import systems);
+      forAllSystems = nixpkgs.lib.genAttrs (import inputs.systems);
 
       root = ./.;
       overlays = (import ./overlays) inputs;
@@ -47,7 +46,6 @@
       args = {
         inherit inputs root overlays;
       };
-
     in
     {
 
@@ -69,7 +67,7 @@
 
       homeConfigurations = {
 
-        hipparchus."mithic" = home-manager.lib.homeManagerConfiguration {
+        hipparchus."mithic" = inputs.home-manager.lib.homeManagerConfiguration {
           pkgs = nixpkgs;
           extraSpecialArgs = args;
           modules = [ ./systems/hipparchus/home/mithic.nix ];
