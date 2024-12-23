@@ -12,7 +12,7 @@
   moreutils,
 }:
 let
-  version = "32.2.1";
+  version = "32.3.0";
   patcher-version = "3.3.0";
 
   iosevka = fetchFromGitHub {
