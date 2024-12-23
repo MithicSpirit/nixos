@@ -24,8 +24,8 @@ build: gitadd
 clean: clean-artifact
     nix store gc -v
 
-package pkg: gitadd
-    nix build '.#{{ pkg }}'
+package pkg *args: gitadd
+    nix build {{ args }} '.#{{ pkg }}'
 
 test: (rebuild 'test')
 

@@ -47,12 +47,14 @@
 ;; Whitespace cleanup
 (vim.api.nvim_create_autocmd :BufWritePre
   {:callback
-   #(let [c (vim.api.nvim_win_get_cursor 0)]
-      (vim.cmd "%substitute/\\r$//e")
-      (vim.cmd "%substitute/\\s\\+$//e")
-      (vim.cmd "%substitute/\\n\\+\\%$//e")
-      (pcall #(vim.api.nvim_win_set_cursor 0 c))
-      nil)
+   #(when (not (and (~= vim.b.editorconfig nil)
+                    (~= vim.b.editorconfig.trim_trailing_whitespace nil)))
+      (let [c (vim.api.nvim_win_get_cursor 0)]
+        (vim.cmd "%substitute/\\r$//e")
+        (vim.cmd "%substitute/\\s\\+$//e")
+        (vim.cmd "%substitute/\\n\\+\\%$//e")
+        (pcall #(vim.api.nvim_win_set_cursor 0 c))
+        nil))
    :group (vim.api.nvim_create_augroup :mithic-whitespace {})})
 
 
