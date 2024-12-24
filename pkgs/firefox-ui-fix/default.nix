@@ -31,13 +31,6 @@ stdenvNoCC.mkDerivation rec {
     '';
     license = licenses.mpl20;
     platforms = platforms.all;
-    maintainers = [
-      {
-        name = "MithicSpirit";
-        email = "rpc01234@gmail.com";
-        github = "MithicSpirit";
-        githubId = 24192522;
-      }
-    ];
+    maintainers = [ maintainers.mithicspirit ];
   };
 }

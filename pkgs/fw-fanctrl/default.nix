@@ -37,13 +37,6 @@ python3Packages.buildPythonPackage {
     mainProgram = "fw-fanctrl";
     license = licenses.bsd3;
     platforms = platforms.all;
-    maintainers = [
-      {
-        name = "MithicSpirit";
-        email = "rpc01234@gmail.com";
-        github = "MithicSpirit";
-        githubId = 24192522;
-      }
-    ];
+    maintainers = [ maintainers.mithicspirit ];
   };
 }

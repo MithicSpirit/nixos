@@ -11,6 +11,7 @@ in
 
   home.packages = with pkgs; [
     path-of-building
+    exiled-exchange-2
     protonup-qt
   ];
 

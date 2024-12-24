@@ -1,4 +1,5 @@
 {
+  lib,
   vimUtils,
   fennel,
   python3,
@@ -20,4 +21,9 @@ vimUtils.buildVimPlugin {
     python3
   ];
 
+  meta = with lib; {
+    description = "MithicSpirit's Neovim configuration";
+    platforms = platforms.all;
+    maintainers = [ maintainers.mithicspirit ];
+  };
 }

@@ -106,13 +106,6 @@ buildNpmPackage {
     '';
     license = licenses.ofl;
     platforms = platforms.all;
-    maintainers = [
-      {
-        name = "MithicSpirit";
-        email = "rpc01234@gmail.com";
-        github = "MithicSpirit";
-        githubId = 24192522;
-      }
-    ];
+    maintainers = [ maintainers.mithicspirit ];
   };
 }

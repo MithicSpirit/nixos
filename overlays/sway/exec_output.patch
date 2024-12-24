@@ -1,4 +1,4 @@
-commit ed42b43dafe738752ebac1541bd260984605be79
+commit b204935ec1cd1940e6012efdf13f3c3f845cde00
 Author: MithicSpirit <rpc01234@gmail.com>
 Date:   Tue Nov 12 20:25:34 2024 -0500
 
@@ -26,18 +26,17 @@ index 5210d3ba..d76a428e 100644
  sway_cmd cmd_floating_modifier;
  sway_cmd cmd_floating_scroll;
 diff --git a/include/sway/config.h b/include/sway/config.h
-index 71721393..0f19cf21 100644
+index bb770c6f..50ac4c1f 100644
 --- a/include/sway/config.h
 +++ b/include/sway/config.h
-@@ -518,12 +518,14 @@ struct sway_config {
+@@ -518,12 +518,13 @@ struct sway_config {
  	int titlebar_h_padding;
  	int titlebar_v_padding;
  	size_t urgent_timeout;
  	enum sway_fowa focus_on_window_activation;
  	enum sway_popup_during_fullscreen popup_during_fullscreen;
  	enum xwayland_mode xwayland;
-+	int exec_stdout;
-+	int exec_stderr;
++	int exec_out;
  
  	// swaybg
  	char *swaybg_command;
@@ -63,7 +62,7 @@ index c2c12ee6..9b4680d9 100644
  	{ "focus_follows_mouse", cmd_focus_follows_mouse },
  	{ "focus_on_window_activation", cmd_focus_on_window_activation },
 diff --git a/sway/commands/exec_always.c b/sway/commands/exec_always.c
-index 8bc1048c..0b1af716 100644
+index 8bc1048c..abb3eac8 100644
 --- a/sway/commands/exec_always.c
 +++ b/sway/commands/exec_always.c
 @@ -1,11 +1,12 @@
@@ -79,32 +78,30 @@ index 8bc1048c..0b1af716 100644
  #include "sway/server.h"
  #include "sway/desktop/launcher.h"
  #include "sway/tree/container.h"
-@@ -70,21 +71,31 @@ struct cmd_results *cmd_exec_process(int argc, char **argv) {
- 		setsid();
- 		sigset_t set;
- 		sigemptyset(&set);
- 		sigprocmask(SIG_SETMASK, &set, NULL);
- 		signal(SIGPIPE, SIG_DFL);
- 		close(fd[0]);
-+		if (config->exec_stdout >= 0) {
-+			dup2(config->exec_stdout, 1);
-+			close(config->exec_stdout);
-+		}
-+		int errfd = fcntl(2, F_DUPFD_CLOEXEC);
-+		if (config->exec_stderr >= 0) {
-+			dup2(config->exec_stderr, 2);
-+			close(config->exec_stderr);
-+		}
- 		if ((child = fork()) == 0) {
- 			close(fd[1]);
+@@ -78,13 +79,29 @@ struct cmd_results *cmd_exec_process(int argc, char **argv) {
  			if (ctx) {
  				export_xdga_token(ctx);
  			}
  			if (ctx && !no_startup_id) {
  				export_startup_id(ctx);
  			}
++			int errfd = -1;
++			if (config->exec_out >= 0) {
++				errfd = fcntl(STDERR_FILENO, F_DUPFD_CLOEXEC); // save for logging
++				if (dup2(config->exec_out, STDOUT_FILENO) < 0) {
++					sway_log_errno(SWAY_ERROR, "dup2(exec_out, stdout) failed");
++					close(STDOUT_FILENO);
++				}
++				if (dup2(config->exec_out, STDERR_FILENO) < 0) {
++					sway_log_errno(SWAY_ERROR, "dup2(exec_out, stderr) failed");
++					close(STDERR_FILENO);
++				}
++				close(config->exec_out);
++			}
  			execlp("sh", "sh", "-c", cmd, (void *)NULL);
-+			dup2(errfd, 2);
++			if (errfd >= 0) {
++				dup2(errfd, STDERR_FILENO);
++			}
  			sway_log_errno(SWAY_ERROR, "execlp failed");
  			_exit(1);
  		}
@@ -113,76 +110,55 @@ index 8bc1048c..0b1af716 100644
  			s += write(fd[1], ((uint8_t *)&child) + s, sizeof(pid_t) - s);
 diff --git a/sway/commands/exec_output.c b/sway/commands/exec_output.c
 new file mode 100644
-index 00000000..445eb402
+index 00000000..64bbdd77
 --- /dev/null
 +++ b/sway/commands/exec_output.c
-@@ -0,0 +1,53 @@
+@@ -0,0 +1,33 @@
 +#include <fcntl.h>
 +#include <unistd.h>
 +#include "sway/commands.h"
 +
-+#define OPEN_OUTPUT(FILE) \
-+	(open(FILE, O_RDWR | O_APPEND | O_CREAT, 0600)) // u=rw
-+
 +struct cmd_results *cmd_exec_output(int argc, char **argv) {
 +	struct cmd_results *error =
-+		checkarg(argc, "exec_output", EXPECTED_AT_MOST, 2);
++		checkarg(argc, "exec_output", EXPECTED_AT_MOST, 1);
 +	if (error) {
 +		return error;
 +	}
 +
-+	if (config->exec_stdout >= 0) {
-+		close(config->exec_stdout);
-+		config->exec_stdout = -1;
-+	}
-+	if (config->exec_stderr >= 0) {
-+		close(config->exec_stderr);
-+		config->exec_stderr = -1;
-+	}
-+
-+	if (argc >= 1) {
-+		int out = OPEN_OUTPUT(argv[0]);
-+		if (out < 0) {
-+			return cmd_results_new(CMD_FAILURE,
-+					  "Could not open file %s", argv[0]);
-+		}
-+
-+		int err;
-+		if (argc == 2) {
-+			err = OPEN_OUTPUT(argv[1]);
-+			if (err < 0) {
-+				close(out);
-+				return cmd_results_new(CMD_FAILURE,
-+						  "Could not open file %s", argv[1]);
-+			}
-+		} else {
-+			err = fcntl(out, F_DUPFD_CLOEXEC);
-+			if (err < 0) {
-+				close(out);
-+				return cmd_results_new(CMD_FAILURE,
-+						  "Could not duplicate fd for stderr");
-+			}
-+		}
-+
-+		config->exec_stdout = out;
-+		config->exec_stderr = err;
++	if (config->exec_out >= 0) {
++		if (close(config->exec_out) < 0) {
++			return cmd_results_new(
++				CMD_FAILURE,
++				"Failed to close existing fd %d",
++				config->exec_out
++			);
++		};
++		config->exec_out = -1;
 +	}
 +
++	if (argc == 0) {
++		return cmd_results_new(CMD_SUCCESS, NULL);
++	}
++
++	int out = open(argv[0], O_RDWR | O_APPEND | O_CREAT, 0600); // u=rw
++	if (out < 0) {
++		return cmd_results_new(CMD_FAILURE, "Could not open file %s", argv[0]);
++	}
++	config->exec_out = out;
 +	return cmd_results_new(CMD_SUCCESS, NULL);
 +}
 diff --git a/sway/config.c b/sway/config.c
-index 1090edc5..a8612bec 100644
+index 1090edc5..74558506 100644
 --- a/sway/config.c
 +++ b/sway/config.c
-@@ -254,12 +254,14 @@ static void config_defaults(struct sway_config *config) {
+@@ -254,12 +254,13 @@ static void config_defaults(struct sway_config *config) {
  	if (!(config->font = strdup("monospace 10"))) goto cleanup;
  	config->font_description = pango_font_description_from_string(config->font);
  	config->urgent_timeout = 500;
  	config->focus_on_window_activation = FOWA_URGENT;
  	config->popup_during_fullscreen = POPUP_SMART;
  	config->xwayland = XWAYLAND_MODE_LAZY;
-+	config->exec_stdout = -1;
-+	config->exec_stderr = -1;
++	config->exec_out = -1;
  
  	config->titlebar_border_thickness = 1;
  	config->titlebar_h_padding = 5;
