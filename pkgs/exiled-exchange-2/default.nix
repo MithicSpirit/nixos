@@ -66,8 +66,11 @@ buildNpmPackage {
 
   postInstall = ''
     ln -s ${renderer}/* $out/lib/node_modules/${name}/dist/
-    makeWrapper ${electron}/bin/electron $out/bin/${name} \
-      --add-flags $out/lib/node_modules/${name}/dist/main.js
+    makeWrapper ${lib.getExe electron} $out/bin/${name} \
+      --add-flags $out/lib/node_modules/${name}/dist/main.js \
+      --add-flags "\''${NIXOS_OZONE_WL:+\''${WAYLAND_DISPLAY:+--ozone-platform-hint=auto --enable-features=WaylandWindowDecorations --enable-wayland-ime=true}}" \
+      --set-default ELECTRON_IS_DEV 0 \
+      --inherit-argv0
   '';
 
   meta = with lib; {
