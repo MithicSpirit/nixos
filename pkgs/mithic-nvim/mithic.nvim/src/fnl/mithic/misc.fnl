@@ -49,11 +49,9 @@
   {:callback
    #(when (not (and (~= vim.b.editorconfig nil)
                     (~= vim.b.editorconfig.trim_trailing_whitespace nil)))
-      (let [c (vim.api.nvim_win_get_cursor 0)]
-        (vim.cmd "%substitute/\\r$//e")
-        (vim.cmd "%substitute/\\s\\+$//e")
-        (vim.cmd "%substitute/\\n\\+\\%$//e")
-        (pcall #(vim.api.nvim_win_set_cursor 0 c))
+      (let [v (vim.fn.winsaveview)]
+        (vim.cmd "silent! undojoin | silent keepjumps keeppatterns %substitute/[ \\t\\n]\\+\\%$\\|\\s\\+$//e")
+        (vim.fn.winrestview v)
         nil))
    :group (vim.api.nvim_create_augroup :mithic-whitespace {})})
 
