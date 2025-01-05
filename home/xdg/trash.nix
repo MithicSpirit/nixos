@@ -1,11 +1,5 @@
 { pkgs, lib, ... }:
-let
-  autotrash = pkgs.python3Packages.autotrash;
-in
 {
-
-  home.packages = [ autotrash ];
-
   systemd.user = {
 
     timers."autotrash" = {
@@ -21,7 +15,7 @@ in
       Unit.Description = "Delete trash files older than two weeks";
       Service = {
         Type = "oneshot";
-        ExecStart = "'${lib.getExe autotrash}' --days=17 --trash-mounts --verbose";
+        ExecStart = "'${lib.getExe pkgs.autotrash}' --days=17 --trash-mounts --verbose";
       };
     };
 
