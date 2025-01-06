@@ -27,11 +27,11 @@ clean: clean-artifact
 package pkg *args: gitadd
     nix build {{ args }} '.#{{ pkg }}'
 
-test: (rebuild 'test')
+test: (rebuild 'test') system
 
 boot: (rebuild 'boot')
 
-switch: (rebuild 'switch')
+switch: (rebuild 'switch') system
 
 [private]
 rebuild op: build sudo
@@ -59,5 +59,9 @@ standard: format check
 gitadd:
     git add .
 
-deadnix-args := "--exclude ./overlays/temporary.nix"
+[private]
+system:
+    -@fastfetch
+
+deadnix-args := "--exclude ./overlays/temporary"
 host := `hostname`

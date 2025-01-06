@@ -60,6 +60,7 @@ buildNpmPackage {
   env = {
     ELECTRON_SKIP_BINARY_DOWNLOAD = "1";
     ELECTRON_OVERRIDE_DIST_PATH = electron.dist;
+    NIX_CFLAGS_COMPILE = "-Wno-error=incompatible-pointer-types";
   };
 
   prePatch = "cd main";
