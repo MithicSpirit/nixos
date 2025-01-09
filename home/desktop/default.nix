@@ -9,7 +9,7 @@
     vlc
 
     # communication
-    thunderbird
+    thunderbird-latest
     # armcord
     # element-desktop
     # signal-desktop
