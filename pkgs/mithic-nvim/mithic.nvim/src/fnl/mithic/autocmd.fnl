@@ -64,6 +64,11 @@
    :command "setlocal scrolloff=1 colorcolumn=\"\""
    :group augroup})
 
+(vim.api.nvim_create_autocmd :FileType
+  {:pattern :sml
+   :command "setlocal commentstring=(*\\ %s\\ *)"
+   :group augroup})
+
 
 ;; Mappings
 (vim.api.nvim_create_autocmd :FileType
