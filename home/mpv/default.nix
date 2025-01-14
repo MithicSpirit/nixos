@@ -38,8 +38,8 @@
     };
 
     bindings = {
-      "[" = "multiply speed 1/1.2599";
-      "]" = "multiply speed 1.2599";
+      "[" = "multiply speed 1/1.1892";
+      "]" = "multiply speed 1.1892";
       "Q" = "quit";
       "q" = "ignore";
       "ctrl+w" = "ignore";
