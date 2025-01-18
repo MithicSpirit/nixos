@@ -7,25 +7,28 @@
       modules = [
         "title"
         "separator"
-        "os"
+        {
+          type = "os";
+          format = "{name} {build-id} ({codename}) {arch}";
+        }
         "kernel"
         "uptime"
         "packages"
-        "shell"
-        "display"
         "de"
         "wm"
         "wmtheme"
         "theme"
         "icons"
-        "font"
         "cursor"
+        "font"
+        "shell"
         "terminal"
         "terminalfont"
         "cpu"
         "gpu"
         "memory"
         "swap"
+        "display"
         "break"
         "colors"
       ];

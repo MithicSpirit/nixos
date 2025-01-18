@@ -92,7 +92,7 @@ alias \
 	gst='git stash push -u' \
 	gsta='git stash apply --index' \
 	gstp='git stash pop --index' \
-	gstw='git stash show --patch' \
+	gstw='git stash show --patch -u' \
 	gsw='git switch' \
 	gt='git status' \
 	gw='git show' \
