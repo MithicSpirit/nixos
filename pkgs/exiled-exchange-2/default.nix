@@ -74,6 +74,8 @@ buildNpmPackage {
       --inherit-argv0
   '';
 
+  passthru = { inherit renderer; };
+
   meta = with lib; {
     homepage = "https://kvan7.github.io/Exiled-Exchange-2/";
     downloadPage = "https://github.com/Kvan7/Exiled-Exchange-2/releases";
