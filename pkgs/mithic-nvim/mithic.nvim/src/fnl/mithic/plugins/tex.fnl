@@ -1,6 +1,7 @@
 (set vim.g.vimtex_enabled 1)
 (set vim.g.vimtex_compiler_method :latexmk)
 (set vim.g.vimtex_text_obj_enabled 1)
+(set vim.g.vimtex_doc_handlers [:vimtex#doc#handlers#texdoc])
 
 (set vim.g.vimtex_complete_enabled 1)
 (set vim.g.vimtex_complete_close_braces 1)

@@ -4,8 +4,6 @@
   firefox-ui-fix = nixpkgs.callPackage ./firefox-ui-fix { };
   fw-fanctrl = nixpkgs.callPackage ./fw-fanctrl { };
   iosevka-mithic = nixpkgs.callPackage ./iosevka-mithic { };
+  mithic-nvim = nixpkgs.callPackage ./mithic-nvim { };
   qalcmenu = nixpkgs.callPackage ./qalcmenu { };
-
-  mithic-nvim-unwrapped = nixpkgs.callPackage ./mithic-nvim { };
-  mithic-nvim = nixpkgs.callPackage ./mithic-nvim/wrapper.nix { pkgs = nixpkgs; };
 }

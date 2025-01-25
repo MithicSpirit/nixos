@@ -449,6 +449,7 @@ DashExcpt = {
     Stone--Weierstrass
     inclusion--exclusion
     Borel--Cantelli
+    Euler--Mascheroni
 }
 
 #####################################################################

@@ -39,7 +39,7 @@ rebuild op: build sudo
 
 [private]
 clean-artifact:
-    -[ -h result ] && rm result
+    rm -f result result-*
 
 [private]
 sudo:
