@@ -8,15 +8,21 @@
 }:
 {
 
-  nix.settings = {
-    experimental-features = [
-      "nix-command"
-      "flakes"
-    ];
-    auto-optimise-store = true;
-    use-xdg-base-directories = true;
+  nix = {
+    package = pkgs.nixVersions.latest;
+
+    settings = {
+      experimental-features = [
+        "nix-command"
+        "flakes"
+      ];
+      auto-optimise-store = true;
+      use-xdg-base-directories = true;
+    };
+
+    daemonCPUSchedPolicy = "idle";
+    daemonIOSchedClass = "idle";
   };
-  nix.package = pkgs.nixVersions.latest;
 
   imports =
     [

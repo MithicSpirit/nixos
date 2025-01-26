@@ -22,7 +22,7 @@
 ; Prose
 (vim.api.nvim_create_autocmd :FileType
   {:pattern [:text :tex :markdown :gitcommit :help]
-   :command "setlocal shiftwidth=2 expandtab"
+   :command "setlocal shiftwidth=2 expandtab formatoptions+=t"
    :group augroup})
 
 ; Configs

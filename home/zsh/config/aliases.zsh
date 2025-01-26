@@ -34,8 +34,10 @@ alias \
 	fetch='fastfetch' \
 	ffupload='ffsend upload -vd 20 -e 7d' \
 	h='history 1' \
-	idr='rlwrap -n idris2' \
+	idr='rlwrap -N idris2' \
 	idrc='idris2 --total' \
+	sml='rlwrap sml' \
+	smlc='rlwrap sml *.cm' \
 	ipy='ipython' \
 	matrix='cmatrix -ab' \
 	md='mkdir -p' \
