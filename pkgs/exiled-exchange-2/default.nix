@@ -13,7 +13,7 @@
 }:
 let
   name = "exiled-exchange-2";
-  version = "0.1.4";
+  version = "0.6.2";
 
   src = fetchFromGitHub {
     owner = "Kvan7";

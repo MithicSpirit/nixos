@@ -138,7 +138,6 @@
     enable = true;
     package = pkgs.plocate;
     pruneBindMounts = true;
-    localuser = null;
   };
 
   services.gpm.enable = true;
