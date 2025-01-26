@@ -28,6 +28,7 @@
 \RequirePackage{interval}
 \RequirePackage{mleftright}
 \RequirePackage{derivative}
+\RequirePackage[version=4]{mhchem}
 
 \RequirePackage{hyperref}
 \RequirePackage[nameinlink]{cleveref}
@@ -92,7 +93,7 @@
 \Crefname{axiom}{Axiom}{Axioms}
 
 \newenvironment{proof*}[1][\proofname]%
-{\begin{proof}[#1]\renewcommand{\qedsymbol}{}}%
+{\begin{proof}[#1]\renewcommand*{\qed}{}}%
 {\end{proof}}
 
 \newcommand{\foreign}{\emph}
