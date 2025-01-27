@@ -20,6 +20,7 @@
   basedpyright,
   texlab,
   ltex-ls,
+  millet,
 }:
 vimUtils.buildVimPlugin {
 
@@ -86,6 +87,7 @@ vimUtils.buildVimPlugin {
     basedpyright
     texlab
     ltex-ls
+    millet
   ];
 
   meta = with lib; {

@@ -14,6 +14,7 @@
  :nixd {}
  :rust_analyzer {}
  :zls {}
+ :millet {:cmd [:millet-ls]}
 
  :ruff {}
  :basedpyright {}

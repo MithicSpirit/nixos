@@ -37,7 +37,7 @@ alias \
 	idr='rlwrap -N idris2' \
 	idrc='idris2 --total' \
 	sml='rlwrap sml' \
-	smlc='rlwrap sml *.cm' \
+	smlc='rlwrap sml -m *.cm' \
 	ipy='ipython' \
 	matrix='cmatrix -ab' \
 	md='mkdir -p' \

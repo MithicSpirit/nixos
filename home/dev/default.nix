@@ -14,6 +14,11 @@
 
   home.packages = with pkgs; [
     zig
+    elan
+    agda
+    coq
+    idris2
+    smlnj
 
     # c/++
     gcc
@@ -23,12 +28,6 @@
     # haskell
     ghc
     stack
-
-    # proof assistants
-    elan
-    agda
-    coq
-    idris2
 
     # tooling
     gnumake
