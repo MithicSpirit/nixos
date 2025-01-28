@@ -1,7 +1,8 @@
 default: gitadd standard
 
-format: clean-artifact
-    nix fmt -- --width=80 --verify .
+alias fmt:=format
+format *args:
+    nix fmt -- {{ args }}
 
 check:
     nix flake check --all-systems

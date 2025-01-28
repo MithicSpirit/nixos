@@ -25,6 +25,11 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    treefmt-nix = {
+      url = "github:numtide/treefmt-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
   };
 
   outputs =
@@ -32,27 +37,38 @@
     let
       inherit (inputs) nixpkgs;
 
-      forAllSystems = nixpkgs.lib.genAttrs (import inputs.systems);
+      eachSystem = nixpkgs.lib.genAttrs (import inputs.systems);
 
       root = ./.;
       overlays = (import ./overlays) inputs;
       mergedOverlays = nixpkgs.lib.composeManyExtensions overlays;
 
-      packages = forAllSystems (
-        system: nixpkgs.legacyPackages.${system}.extend mergedOverlays
+      packages = eachSystem (
+        sys: nixpkgs.legacyPackages.${sys}.extend mergedOverlays
       );
 
-      args = {
-        inherit inputs root overlays;
-      };
+      treefmt = eachSystem (
+        sys:
+        inputs.treefmt-nix.lib.evalModule packages.${sys} {
+          projectRootFile = "flake.nix";
+          settings = {
+            on-unmatched = "info";
+            verbose = 0;
+          };
+          programs.nixfmt.enable = true;
+          settings.formatter.nixfmt.options = [
+            "--width=80"
+            "--verify"
+          ];
+        }
+      );
+
+      args = { inherit inputs root overlays; };
     in
     {
 
       overlays.default = mergedOverlays;
-
       legacyPackages = packages;
-
-      formatter = forAllSystems (system: packages.${system}.nixfmt-rfc-style);
 
       nixosConfigurations = {
 
@@ -73,6 +89,8 @@
         };
 
       };
+
+      formatter = eachSystem (sys: treefmt.${sys}.config.build.wrapper);
 
     };
 }
