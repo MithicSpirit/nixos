@@ -4,11 +4,12 @@
   config,
   ...
 }:
+let
+  start-name = "tlp-start";
+in
 {
 
   services.tlp.enable = true;
-  # NOTE: low perf settings on AC are intended to be combined with gamemode when
-  # better perf is needed.
   services.tlp.settings = {
     SOUND_POWER_SAVE_ON_AC = 0;
     SOUND_POWER_SAVE_ON_BAT = 1;
@@ -27,7 +28,7 @@
     PLATFORM_PROFILE_ON_BAT = "low-power";
 
     CPU_SCALING_GOVERNOR_ON_AC = "powersave";
-    CPU_ENERGY_PERF_POLICY_ON_AC = "power";
+    CPU_ENERGY_PERF_POLICY_ON_AC = "default";
     CPU_SCALING_GOVERNOR_ON_BAT = "powersave";
     CPU_ENERGY_PERF_POLICY_ON_BAT = "power";
     CPU_BOOST_ON_AC = 1;
@@ -43,28 +44,33 @@
 
   security.wrappers =
     let
-      name = "tlp-start";
-      systemctl = lib.getExe' config.systemd.package "systemctl";
+      tlppkg = pkgs.tlp.override {
+        enableRDW = config.networking.networkmanager.enable;
+      };
+      tlp = lib.getExe tlppkg;
       cmd-pkg =
-        pkgs.writeCBin name # C
+        pkgs.writeCBin start-name # C
           ''
             #include <unistd.h>
-            static char *argv[] = {"${systemctl}", "restart", "tlp.service"};
-            int main() { execv(argv[0], argv); }
+            static char *argv[] = {"${tlp}", "start"};
+            int main() {
+              setreuid(0, 0);
+              execv(argv[0], argv);
+            }
           '';
     in
     {
-      ${name} = {
+      ${start-name} = {
         source = lib.getExe cmd-pkg;
         owner = "root";
         group = "root";
         setuid = true;
-        program = name;
+        program = start-name;
       };
     };
 
   programs.gamemode.settings.custom = {
-    end = [ "/run/wrappers/bin/tlp-start" ];
+    end = [ "${config.security.wrapperDir}/${start-name}" ];
   };
 
 }

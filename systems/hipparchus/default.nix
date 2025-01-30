@@ -1,6 +1,7 @@
 {
   config,
   pkgs,
+  lib,
   inputs,
   root,
   overlays,
@@ -43,7 +44,7 @@
       /gaming
       /keyd
       /bluetooth
-      /ppd # or tlp
+      /tlp # or ppd
       /sway
       /amdgpu
       /fw-fanctrl
@@ -269,6 +270,12 @@
       ACTION=="add", SUBSYSTEM=="usb", DRIVERS=="usb", ATTRS{idVendor}=="32ac", ATTRS{idProduct}=="0012", ATTR{power/wakeup}="disabled"
       ACTION=="add", SUBSYSTEM=="usb", DRIVERS=="usb", ATTRS{idVendor}=="32ac", ATTRS{idProduct}=="0014", ATTR{power/wakeup}="disabled"
     '';
+
+  # remove when properly cooled
+  services.tlp.settings = {
+    PLATFORM_PROFILE_ON_AC = lib.mkForce "low-power";
+    CPU_ENERGY_PERF_POLICY_ON_AC = lib.mkForce "power";
+  };
 
   systemd.services.bluetooth-rfkill-resume = {
     serviceConfig = {

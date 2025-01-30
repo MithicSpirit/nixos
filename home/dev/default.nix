@@ -23,6 +23,7 @@
     # c/++
     gcc
     (lib.setPrio (gcc.meta.priority + 1) clang)
+    clang-tools
     binutils
 
     # haskell
