@@ -69,7 +69,7 @@
     theme = "breeze";
   };
 
-  boot.kernelPackages = pkgs.linuxPackages_xanmod_latest;
+  boot.kernelPackages = pkgs.linuxPackages_latest;
   boot.kernel.sysctl = {
     "vm.swappiness" = 15;
     "kernel.sysrq" = 244;

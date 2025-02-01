@@ -36,7 +36,7 @@
 
 (set vim.opt.textwidth 80)
 (set vim.opt.colorcolumn "+1")
-(set vim.opt.formatoptions "cro/qnl1j")
+(set vim.opt.formatoptions "cr/qnl1j")
 (set vim.opt.wrap false)
 
 (set vim.opt.tabstop 8)

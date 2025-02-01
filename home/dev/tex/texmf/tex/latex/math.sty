@@ -151,6 +151,9 @@
 \newcommand{\sqrt@star}[1]{\sqrt@nostar{\textstyle{#1}}}
 \renewcommand{\sqrt}{\@ifstar{\sqrt@star}{\sqrt@nostar}}
 
+\newlength\@xwidth\settowidth\@xwidth{\(x\)}
+\newcommand{\placeholder}{\mathmakebox[\@xwidth]{\cdot}}
+
 \newlength\nphant@wd
 \newcommand{\nphant@do}[1]{\settowidth{\nphant@wd}{#1}\hspace*{-\nphant@wd}}
 \newcommand{\nphant@math}[2]{\nphant@do{$\m@th#1#2$}}
