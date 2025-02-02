@@ -52,7 +52,7 @@
     output eDP-2 {
       mode 2560x1600@165Hz
       scale 1.25
-      # adaptive_sync on # https://gitlab.freedesktop.org/drm/amd/-/issues/3796
+      adaptive_sync on
       color_profile icc ${../BOE_CQ_NE160QDM-NZ6-icc-profile.icm}
     }
   '';
