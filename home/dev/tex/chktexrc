@@ -450,6 +450,7 @@ DashExcpt = {
     inclusion--exclusion
     Borel--Cantelli
     Euler--Mascheroni
+    Hahn--Banach
 }
 
 #####################################################################

@@ -30,7 +30,10 @@
   (vim.api.nvim_create_autocmd
     :FileType
     {:pattern :tex
-     :command "setlocal iskeyword-=\":\""
+     :callback
+     (fn []
+       (vim.keymap.set :i "]]" "<C-g>u<Plug>(vimtex-delim-close)")
+       (vim.opt_local.iskeyword:remove ":"))
      :group ag})
 
   (set vim.g.vimtex_quickfix_mode 0)
@@ -50,7 +53,7 @@
 (set vim.g.vimtex_mappings_disable
      {:n ["tsf" "tsc" "tse" "ts$" "<F6>" "tsd" "tsD" "<F7>" "<F8>"]
       :x ["tsf" "<F6>" "tsd" "tsD" "<F7>"]
-      :i ["<F7>"]})
+      :i ["]]" "<F7>"]})
 
 (set vim.g.vimtex_imaps_leader "`")
 (set vim.g.vimtex_imaps_list

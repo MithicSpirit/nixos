@@ -68,11 +68,13 @@
     defaultFonts = {
       sansSerif = [
         "Overpass"
+        "Libtertinus Sans"
         "Iosevka Mithic"
         "Noto Sans"
         "Noto Sans CJK"
       ];
       serif = [
+        "Libertinus Serif"
         "Latin Modern Roman"
         "Iosevka Mithic"
         "Noto Serif"
@@ -93,6 +95,7 @@
     overpass
     lmodern
     lmmath
+    libertinus
     noto-fonts
     noto-fonts-cjk-sans
     twemoji-color-font

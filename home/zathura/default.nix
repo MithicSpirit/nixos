@@ -24,11 +24,11 @@
       dbus-service = true;
       dbus-raise-window = true;
 
-      font = "Iosevka Mithic 9";
-      page-padding = 2;
-      page-cache-size = 64;
-      statusbar-h-padding = 3;
-      statusbar-v-padding = 1;
+      font = "Iosevka Mithic 10";
+      page-padding = 4;
+      page-cache-size = 63;
+      statusbar-h-padding = 4;
+      statusbar-v-padding = 2;
 
       completion-bg = "#3B4252";
       completion-fg = "#ECEFF4";

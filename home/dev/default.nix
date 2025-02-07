@@ -19,6 +19,7 @@
     coq
     idris2
     smlnj
+    typst
 
     # c/++
     gcc

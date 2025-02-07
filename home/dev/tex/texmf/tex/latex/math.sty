@@ -48,6 +48,7 @@
   table-alignment-mode=format,
 }
 \DeclareSIUnit\clight{\text{\ensuremath{c}}}
+\DeclareSIUnit\boltzmann{\text{\ensuremath{k_{\text{B}}}}}
 
 \intervalconfig{soft open fences}
 
@@ -132,12 +133,17 @@
 \DeclareMathOperator{\coker}{coker}
 \DeclareMathOperator{\inv}{inv}
 
+\DeclareMathOperator{\GL}{GL}
+
 \DeclareMathOperator{\proj}{proj}
 \DeclareMathOperator{\rej}{rej}
 \DeclareMathOperator{\refl}{refl}
 
 \DeclareMathOperator*{\argmax}{arg\,max}
 \DeclareMathOperator*{\argmin}{arg\,min}
+
+\newcommand{\morph}[1]{\overset{#1}{\longrightarrow}}
+\newcommand{\lmorph}[1]{\overset{#1}{\longleftarrow}}
 
 \let\phantom@nostar\phantom  % chktex 1
 \newcommand{\phantom@star}[1]{\phantom@nostar{{}#1{}}}
@@ -152,7 +158,7 @@
 \renewcommand{\sqrt}{\@ifstar{\sqrt@star}{\sqrt@nostar}}
 
 \newlength\@xwidth\settowidth\@xwidth{\(x\)}
-\newcommand{\placeholder}{\mathmakebox[\@xwidth]{\cdot}}
+\newcommand{\slot}{\mathmakebox[\@xwidth]{\cdot}}
 
 \newlength\nphant@wd
 \newcommand{\nphant@do}[1]{\settowidth{\nphant@wd}{#1}\hspace*{-\nphant@wd}}
