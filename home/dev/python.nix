@@ -4,14 +4,23 @@ let
 in
 {
 
-  home.packages = (with pkgs; [
-    (python3.withPackages (p: with p; [numpy scipy matplotlib]))
-    python3Packages.ipython
-    ruff
-    uv
-    mypy
-    basedpyright
-  ]);
+  home.packages = (
+    with pkgs;
+    [
+      (python3.withPackages (
+        p: with p; [
+          numpy
+          scipy
+          matplotlib
+        ]
+      ))
+      python3Packages.ipython
+      ruff
+      uv
+      mypy
+      basedpyright
+    ]
+  );
 
   xdg.configFile."ruff/ruff.toml".source = toml "ruff.toml" {
     line-length = 79;
