@@ -1,4 +1,4 @@
-{ ... }:
+{ config, ... }:
 {
 
   programs.bemenu = {
@@ -17,7 +17,7 @@
       cw = 2;
       monitor = "all";
       hp = 5;
-      fn = "Iosevka Mithic 12";
+      fn = " ${builtins.head config.fonts.fontconfig.defaultFonts.monospace} 12";
 
       tb = "#3b4252";
       tf = "#88c0d0";

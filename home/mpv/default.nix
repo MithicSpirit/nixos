@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, config, ... }:
 {
 
   programs.mpv = {
@@ -31,9 +31,9 @@
       cache-pause-wait = "10";
       demuxer-max-bytes = "128MiB";
 
-      osd-font = "'Iosevka Mithic'";
+      osd-font = "'${builtins.head config.fonts.fontconfig.defaultFonts.monospace}'";
       osd-font-size = "30";
-      sub-font = "'Overpass'";
+      sub-font = "'${builtins.head config.fonts.fontconfig.defaultFonts.sansSerif}'";
       sub-font-size = "45";
     };
 

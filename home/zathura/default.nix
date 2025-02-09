@@ -1,4 +1,4 @@
-{ ... }:
+{ config, ... }:
 {
 
   programs.zathura = {
@@ -24,7 +24,7 @@
       dbus-service = true;
       dbus-raise-window = true;
 
-      font = "Iosevka Mithic 10";
+      font = "${builtins.head config.fonts.fontconfig.defaultFonts.monospace} 10";
       page-padding = 4;
       page-cache-size = 63;
       statusbar-h-padding = 4;

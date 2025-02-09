@@ -40,7 +40,7 @@ in
       enable = true;
       settings = {
         "<config>" = {
-          font = "Iosevka Mithic 12";
+          font = "${builtins.head config.fonts.fontconfig.defaultFonts.monospace} 12";
           edge = "top";
           layer = "overlay";
           background = "2e3440";
@@ -89,7 +89,7 @@ in
       indicator-caps-lock = true;
       image = "${wallpaper}";
       scaling = "fill";
-      font = "Iosevka Mithic";
+      font = builtins.head config.fonts.fontconfig.defaultFonts.monospace;
       clock = true;
       indicator-idle-visible = true;
       timestr = "%H:%M:%S";

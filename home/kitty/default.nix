@@ -1,4 +1,9 @@
-{ pkgs, root, ... }:
+{
+  pkgs,
+  config,
+  root,
+  ...
+}:
 {
 
   home.sessionVariables."TERMINAL" = "kitty";
@@ -57,7 +62,7 @@
 
     font = {
       package = pkgs.iosevka-mithic;
-      name = "Iosevka Mithic";
+      name = builtins.head config.fonts.fontconfig.defaultFonts.monospace;
       size = 12;
     };
 

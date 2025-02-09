@@ -76,20 +76,20 @@
     # TODO: ranger and rifle replacement(s?) yazi?
 
     packages = with pkgs; [
-      mediainfo
-      rmtrash
-      ugrep
-      wcurl
-      yazi
-      (parallel-full.override { willCite = true; })
-
       du-dust
       duf
       eza
       fd
+      mediainfo
       procs
       ripgrep
+      rmtrash
       sd
+      termdown
+      ugrep
+      wcurl
+      yazi
+      (parallel-full.override { willCite = true; })
 
       pcmanfm
       swayimg

@@ -33,7 +33,7 @@
           mouse_middle_click = "close_all";
           mouse_right_click = "close_current";
 
-          font = "Iosevka Mithic 11";
+          font = "${builtins.head config.fonts.fontconfig.defaultFonts.monospace} 11";
           corner_radius = 4;
           frame_color = colors.accent;
           frame_width = 2;
