@@ -15,7 +15,9 @@
       (fn [m]
         {:highlighters
          {:fixme {:pattern "%f[%w]()FIXME()%f[%W]" :group :MiniHipatternsFixme}
+          :bug {:pattern "%f[%w]()BUG()%f[%W]" :group :MiniHipatternsFixme}
           :hack {:pattern "%f[%w]()HACK()%f[%W]" :group :MiniHipatternsHack}
+          :xxx {:pattern "%f[%w]()XXX()%f[%W]" :group :MiniHipatternsHack}
           :todo {:pattern "%f[%w]()TODO()%f[%W]" :group :MiniHipatternsTodo}
           :note {:pattern "%f[%w]()NOTE()%f[%W]" :group :MiniHipatternsNote}
           :hex_color (m.gen_highlighter.hex_color {:style :inline})}}))

@@ -48,6 +48,7 @@
       /sway
       /amdgpu
       /fw-fanctrl
+      /zram
     ];
 
   nixpkgs.overlays = overlays;
@@ -71,7 +72,6 @@
 
   boot.kernelPackages = pkgs.linuxPackages_latest;
   boot.kernel.sysctl = {
-    "vm.swappiness" = 15;
     "kernel.sysrq" = 244;
   };
 
