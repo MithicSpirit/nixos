@@ -490,6 +490,8 @@ WipeArg = {
     \citetext:{} \citeyear:*{} \citeyearpar:{}
     # tipa which uses "
     \textipa:{}
+    # tikz-cd
+    \arrow:[] \ar:[]
 }
 
 #####################################################################

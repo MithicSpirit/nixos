@@ -36,7 +36,8 @@
        {:latex
          {:environments {:numcases :ignore
                          :subnumcases :ignore
-                         :semiverbatim :ignore}
+                         :semiverbatim :ignore
+                         :tikzcd :ignore}
           :commands
            {"\\noeqref{}" :ignore
             "\\mathtoolsset{}" :ignore
@@ -71,9 +72,7 @@
             "\\ie" :dummy
             "\\eg" :dummy
             "\\nb" :dummy
-            "\\cf" :dummy
-            "\\afsoc" :dummy
-            "\\afsoc*" :dummy}}
+            "\\cf" :dummy}}
         :ltex-ls {:logLevel :config}
         :completionEnabled true
         :checkFrequency :edit}}}}
