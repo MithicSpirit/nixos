@@ -3,7 +3,5 @@ _inputs: [
   (import ./temporary)
 
   (import ./gamemode.nix)
-  (import ./tlp-framework.nix)
-
   (import ./sway)
 ]
