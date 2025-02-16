@@ -48,7 +48,7 @@
       /sway
       /amdgpu
       /fw-fanctrl
-      /zram
+      /zswap # or zram
     ];
 
   nixpkgs.overlays = overlays;
