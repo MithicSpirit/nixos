@@ -19,6 +19,7 @@
       ];
       auto-optimise-store = true;
       use-xdg-base-directories = true;
+      build-dir = "/var/tmp/nix-build";
     };
 
     daemonCPUSchedPolicy = "idle";

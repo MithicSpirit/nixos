@@ -69,6 +69,11 @@
    :command "setlocal commentstring=(*\\ %s\\ *)"
    :group augroup})
 
+(vim.api.nvim_create_autocmd :FileType
+  {:pattern [:sml :ocaml]
+   :command "setglobal fo=cr/qnl1j | setlocal fo<"
+   :group augroup})
+
 
 ;; Mappings
 (vim.api.nvim_create_autocmd :FileType

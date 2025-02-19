@@ -28,11 +28,9 @@ in
   xdg.configFile."gamemode.ini".source = ini "gamemode.ini" {
     general = {
       desiredgov = "performance";
+      igpu_desiredgov = "performance";
       igpu_power_threshold = 100000;
       desiredprof = "performance";
-      softrealtime = "off";
-      renice = 20;
-      ioprio = 0;
       inhibit_screensaver = 0;
       disable_splitlock = 1;
     };
