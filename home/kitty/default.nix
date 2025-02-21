@@ -10,6 +10,7 @@
 
   programs.kitty = {
     enable = true;
+    shellIntegration.mode = null;
 
     settings =
       let

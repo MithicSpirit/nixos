@@ -19,13 +19,13 @@ let
     owner = "Kvan7";
     repo = name;
     rev = "v${version}";
-    hash = "sha256-h1g/V5iqzm4kL6elVMT13NwmnGGs1fmgxAH7xS+Vl0I=";
+    hash = "sha256-NG/WYO3PdsRlVeybF/k+mnThkWLBeRHXJ7w4ifmrjdI=";
   };
 
   renderer = buildNpmPackage {
     inherit nodejs src version;
     pname = "${name}-renderer-data";
-    npmDepsHash = "sha256-HNgJ8iagwaRcAoQ72YqJ76dinNZDNLy8WCcz4YdVzuo=";
+    npmDepsHash = "sha256-pUhRTb9iUuqCrB40Pb2eV3dOzESVnH6vc135VFFEelk=";
 
     prePatch = "cd renderer";
     preBuild = "npm run make-index-files";
@@ -41,7 +41,7 @@ buildNpmPackage {
 
   pname = name;
 
-  npmDepsHash = "sha256-P7o4ICCb87Dtz19PQS5ZW5huQIZa1oVeRDxtLrclKC8=";
+  npmDepsHash = "sha256-qCxq6o7wnkSUc3JmdK8BfJ4alRzLlIJghcSTvuDAWis=";
 
   nativeBuildInputs = [
     autoPatchelfHook

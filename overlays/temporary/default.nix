@@ -4,4 +4,6 @@ final: prev: {
     inherit (final.linuxPackages) x86_energy_perf_policy;
   };
 
+  millet = final.callPackage ./millet.nix { };
+
 }

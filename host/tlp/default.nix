@@ -5,6 +5,7 @@
   ...
 }:
 let
+  tlp = lib.getExe config.services.tlp.package;
   start-name = "tlp-start";
 in
 {
@@ -44,10 +45,6 @@ in
 
   security.wrappers =
     let
-      tlppkg = pkgs.tlp.override {
-        enableRDW = config.networking.networkmanager.enable;
-      };
-      tlp = lib.getExe tlppkg;
       cmd-pkg =
         pkgs.writeCBin start-name # C
           ''
