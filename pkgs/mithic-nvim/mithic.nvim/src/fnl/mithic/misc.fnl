@@ -50,7 +50,7 @@
    #(when (not (and (~= vim.b.editorconfig nil)
                     (~= vim.b.editorconfig.trim_trailing_whitespace nil)))
       (let [v (vim.fn.winsaveview)]
-        (vim.cmd "silent! undojoin | silent keepjumps keeppatterns %substitute/[ \\t\\n]\\+\\%$\\|\\s\\+$//e")
+        (vim.cmd "silent keepjumps keeppatterns %substitute/[ \\t\\n]\\+\\%$\\|\\s\\+$//e")
         (vim.fn.winrestview v)
         nil))
    :group (vim.api.nvim_create_augroup :mithic-whitespace {})})

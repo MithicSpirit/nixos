@@ -20,9 +20,9 @@
 (vim.keymap.set [:n :x] "<leader>P" "\"+P" {:remap true})
 
 (vim.keymap.set :n "gQ"
-  #(let [c (vim.api.nvim_win_get_cursor 0)]
+  #(let [v (vim.fn.winsaveview)]
      (vim.cmd "normal! gggqG")
-     (pcall #(vim.api.nvim_win_set_cursor 0 c))))
+     (vim.fn.winrestview v)))
 (vim.keymap.set :i "<C-Space>" "<C-x><C-o>") ; TODO: set options about this i forger
 (vim.keymap.set :n "<C-W>," "<C-w><")
 (vim.keymap.set :n "<C-W>." "<C-w>>")

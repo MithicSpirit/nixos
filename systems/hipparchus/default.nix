@@ -74,6 +74,7 @@
   boot.kernelPackages = pkgs.linuxPackages_latest;
   boot.kernel.sysctl = {
     "kernel.sysrq" = 244;
+    "net.ipv4.tcp_keepalive_time" = 120;
   };
 
   i18n.defaultLocale = "en_US.UTF-8";
