@@ -122,6 +122,8 @@
     ];
   };
 
+  hardware.enableRedistributableFirmware = true;
+
   services.flatpak.enable = true;
   fonts.fontDir.enable = true;
   xdg.portal = {
