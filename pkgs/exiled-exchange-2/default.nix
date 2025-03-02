@@ -13,13 +13,13 @@
 }:
 let
   name = "exiled-exchange-2";
-  version = "0.7.1";
+  version = "0.8.0";
 
   src = fetchFromGitHub {
     owner = "Kvan7";
     repo = name;
     rev = "v${version}";
-    hash = "sha256-NG/WYO3PdsRlVeybF/k+mnThkWLBeRHXJ7w4ifmrjdI=";
+    hash = "sha256-8f+Oa6lqrAVu9OsDxIgciZh8XJhF55fgoQ0R9apKa88=";
   };
 
   renderer = buildNpmPackage {
@@ -41,7 +41,7 @@ buildNpmPackage {
 
   pname = name;
 
-  npmDepsHash = "sha256-qCxq6o7wnkSUc3JmdK8BfJ4alRzLlIJghcSTvuDAWis=";
+  npmDepsHash = "sha256-0NaQdBs0sIbN6zDXHEl9J5fYvWgNwm4lYyPQ+mhy2Nc=";
 
   nativeBuildInputs = [
     autoPatchelfHook
@@ -73,8 +73,6 @@ buildNpmPackage {
       --set-default ELECTRON_IS_DEV 0 \
       --inherit-argv0
   '';
-
-  passthru = { inherit renderer; };
 
   meta = with lib; {
     homepage = "https://kvan7.github.io/Exiled-Exchange-2/";
