@@ -1,7 +1,6 @@
 {
   pkgs,
   config,
-  lib,
   ...
 }:
 {
@@ -35,7 +34,15 @@
         };
         Service = {
           Type = "oneshot";
-          ExecStartPre = "${lib.getExe' pkgs.coreutils "sleep"} 15";
+          ExecStartPre =
+            let
+              waitping = pkgs.writeShellScript "waitping" ''
+                while ! ping -qc1 -W1 example.com
+                do sleep 1
+                done
+              '';
+            in
+            "${waitping}";
           ExecStart = "'${config.xdg.userDirs.documents}/school/rclone-sync' --dry-run";
           # TODO: remove --dry-run
         };
