@@ -452,6 +452,7 @@ DashExcpt = {
     Borel--Cantelli
     Euler--Mascheroni
     Hahn--Banach
+    Gram--Schmidt
 }
 
 #####################################################################

@@ -22,6 +22,11 @@ in
     ]
   );
 
+  home.sessionVariables = {
+    UV_PYTHON_PREFERENCE = "only-system";
+    UV_PYTHON = "${pkgs.python3}";
+  };
+
   xdg.configFile."ruff/ruff.toml".source = toml "ruff.toml" {
     line-length = 79;
     preview = true;
