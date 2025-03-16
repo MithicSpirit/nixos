@@ -453,6 +453,7 @@ DashExcpt = {
     Euler--Mascheroni
     Hahn--Banach
     Gram--Schmidt
+    Eckmann--Hilton
 }
 
 #####################################################################

@@ -1,6 +1,7 @@
 {
   pkgs,
   config,
+  lib,
   ...
 }:
 {
@@ -36,9 +37,11 @@
           Type = "oneshot";
           ExecStartPre =
             let
+              ping = lib.getExe' pkgs.iputils "ping";
+              sleep = lib.getExe' pkgs.coreutils "sleep";
               waitping = pkgs.writeShellScript "waitping" ''
-                while ! ping -qc1 -W1 example.com
-                do sleep 1
+                while ! ${ping} -qc1 -W1 example.com
+                do ${sleep} 1
                 done
               '';
             in
