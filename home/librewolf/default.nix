@@ -13,7 +13,6 @@
         # must be empty for chrome stuff below to work
         settings = force { };
         extraConfig = force "";
-        bookmarks = force [ ];
         userChrome = force "";
         userContent = force "";
       };
