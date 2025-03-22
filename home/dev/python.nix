@@ -11,6 +11,7 @@ in
         p: with p; [
           numpy
           scipy
+          sympy
           matplotlib
         ]
       ))
