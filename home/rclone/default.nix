@@ -46,8 +46,7 @@
               '';
             in
             "${waitping}";
-          ExecStart = "'${config.xdg.userDirs.documents}/school/rclone-sync' --dry-run";
-          # TODO: remove --dry-run
+          ExecStart = "'${config.xdg.userDirs.documents}/school/rclone-sync'";
         };
       };
     };
