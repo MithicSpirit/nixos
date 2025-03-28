@@ -6,4 +6,7 @@
   iosevka-mithic = nixpkgs.callPackage ./iosevka-mithic { };
   mithic-nvim = nixpkgs.callPackage ./mithic-nvim { };
   qalcmenu = nixpkgs.callPackage ./qalcmenu { };
+  thunderbird-external-editor-revived =
+    nixpkgs.callPackage ./thunderbird-external-editor-revived
+      { };
 }

@@ -1,6 +1,6 @@
 for_window {
     # autosticky
-    [app_id="dragon" title="dragon"] floating enable, sticky enable
+    [app_id="dragon-drop" title="dragon"] floating enable, sticky enable
     [class="net-runelite-client-RuneLite" title="Picture in Picture"] floating enable, sticky enable
     [app_id="[Ll]ibre[Ww]olf" title="^Picture-in-Picture$"] floating enable, sticky enable
     # autofloat

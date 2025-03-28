@@ -30,9 +30,9 @@
           (vim.keymap.set :n "gd" vim.lsp.buf.definition opts))
 
         (when client.server_capabilities.declarationProvider
-          (vim.keymap.set :n "gD" vim.lsp.buf.declaration opts))
+          (vim.keymap.set :n "gD" vim.lsp.buf.declaration opts)))
 
-        (when client.server_capabilities.inlayHintProvider
-          (vim.lsp.inlay_hint.enable true {:bufnr buf})))
+        ;(when client.server_capabilities.inlayHintProvider
+        ;  (vim.lsp.inlay_hint.enable true {:bufnr buf})))
 
       false)}) ; return false to not delete autocmd

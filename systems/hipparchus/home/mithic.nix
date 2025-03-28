@@ -12,7 +12,8 @@
     /git
     /gpg
     /kitty
-    /librewolf # TODO: waiting on #5684
+    /librewolf
+    /thunderbird
     /mpv
     /neovim
     /newsboat
@@ -93,7 +94,7 @@
 
       pcmanfm
       swayimg
-      xdragon
+      dragon-drop
       xournalpp
       libreoffice-fresh
 

@@ -21,7 +21,7 @@
 
 ; Prose
 (vim.api.nvim_create_autocmd :FileType
-  {:pattern [:text :tex :markdown :gitcommit :help]
+  {:pattern [:text :tex :markdown :gitcommit :help :mail]
    :command "setlocal shiftwidth=2 expandtab formatoptions+=t"
    :group augroup})
 
@@ -72,6 +72,11 @@
 (vim.api.nvim_create_autocmd :FileType
   {:pattern [:sml :ocaml]
    :command "setglobal fo=cr/qnl1j | setlocal fo<"
+   :group augroup})
+
+(vim.api.nvim_create_autocmd :FileType
+  {:pattern [:mail]
+   :command "setlocal textwidth=70"
    :group augroup})
 
 
