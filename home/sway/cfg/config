@@ -41,15 +41,15 @@ floating_modifier $mod normal
 focus_follows_mouse yes
 focus_wrapping yes
 
-bar {
+bar 0 {
     font "Iosevka Mithic 10"
     gaps 0
     mode dock
     output *
     position top
-    # TODO: status_command
     strip_workspace_numbers yes
     workspace_buttons yes
+    # status_command: see default.nix (writeCBin)
     # TODO: colorscheme
 }
 

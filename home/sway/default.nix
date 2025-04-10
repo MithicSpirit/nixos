@@ -17,11 +17,18 @@ in
   wayland.windowManager.sway = {
     enable = true;
     config = null;
-    extraConfig = ''
-      set $confdir ${./cfg}
-      set $wallpaper ${wallpaper}
-      include $confdir/config
-    '';
+    extraConfig =
+      let
+        status = lib.getExe (
+          pkgs.writeCBin "swaybar-status" (builtins.readFile ./swaybar-status.c)
+        );
+      in
+      ''
+        set $confdir ${./cfg}
+        set $wallpaper ${wallpaper}
+        include $confdir/config
+        bar 0 status_command ${status}
+      '';
     xwayland = true;
 
     # package = pkgs.swayfx;
