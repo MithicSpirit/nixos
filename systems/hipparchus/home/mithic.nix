@@ -12,6 +12,7 @@
     /git
     /gpg
     /kitty
+    /ghostty
     /librewolf
     /thunderbird
     /mpv

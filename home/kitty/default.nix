@@ -1,5 +1,4 @@
 {
-  pkgs,
   config,
   root,
   ...
@@ -62,7 +61,6 @@
       };
 
     font = {
-      package = pkgs.iosevka-mithic;
       name = builtins.head config.fonts.fontconfig.defaultFonts.monospace;
       size = 12;
     };

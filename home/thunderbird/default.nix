@@ -8,7 +8,10 @@
 
     profiles."mithic" = {
       isDefault = true;
-      settings = { };
+      settings = {
+        "mailnews.wraplength" = 70;
+        "general.smoothScroll.mouseWheel" = false;
+      };
       extraConfig = "";
     };
   };
