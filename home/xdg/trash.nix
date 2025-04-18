@@ -12,7 +12,7 @@
     };
 
     services."autotrash" = {
-      Unit.Description = "Delete trash files older than two weeks";
+      Unit.Description = "Delete trash files older than two and a half weeks";
       Service = {
         Type = "oneshot";
         ExecStart = "'${lib.getExe pkgs.autotrash}' --days=17 --trash-mounts --verbose";
