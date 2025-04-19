@@ -71,7 +71,7 @@
     theme = "breeze";
   };
 
-  boot.kernelPackages = pkgs.linuxPackages_latest;
+  boot.kernelPackages = pkgs.linuxPackages; # TODO: go back to _latest
   boot.kernel.sysctl = {
     "kernel.sysrq" = 244;
     "net.ipv4.tcp_keepalive_time" = 120;
