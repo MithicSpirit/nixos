@@ -6,26 +6,26 @@
 }:
 let
   pname = "fw-fanctrl";
-  version = "2024-08-25a-criticalTemp";
+  version = "1.0.2-criticalTemp";
 in
-python3Packages.buildPythonPackage {
+python3Packages.buildPythonApplication {
   inherit pname version;
 
   src = fetchFromGitHub {
     owner = "TamtamHero";
     repo = pname;
-    rev = "2a9828f91620c0e8746ecb6875887b34da7888e3";
-    hash = "sha256-vltQwR2pdtyCsKlVmlLgZs/vZqza9YzQTr1/PZk44wA=";
+    rev = "80ecc5d273b46f715d924c49234b6867fe3daf33";
+    hash = "sha256-ZWUopNfIxSr5y3M+PwGPM17R4Y2ygRNlmt/81+4ZoHs=";
   };
 
-  patchPhase = ''
-    cp '${./pyproject.toml}' './pyproject.toml' # ' # (fix syntax highlighting)
-    patch -Np1 <'${./criticalTemp.patch}'
-  '';
+  patches = [ ./criticalTemp.patch ];
+
   pyproject = true;
 
   build-system = [ python3Packages.setuptools ];
-  dependencies = [ fw-ectool ];
+  dependencies = [ python3Packages.jsonschema ];
+
+  propagatedBuildInputs = [ fw-ectool ];
 
   meta = with lib; {
     homepage = "https://github.com/TamtamHero/fw-fanctrl";

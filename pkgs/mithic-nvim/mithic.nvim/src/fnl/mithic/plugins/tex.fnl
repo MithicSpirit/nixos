@@ -23,7 +23,7 @@
 (set vim.g.vimtex_view_automatic 1)
 (set vim.g.vimtex_view_method :zathura_simple)
 
-(set vim.g.vimtex_format_enabled 1)
+; (set vim.g.vimtex_format_enabled 1)
 
 (let [ag (vim.api.nvim_create_augroup :mithic-vimtex {})
       ns (vim.api.nvim_create_namespace :mithic-vimtex)]

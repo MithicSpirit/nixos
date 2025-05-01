@@ -109,7 +109,7 @@ let
 in
 {
 
-  environment.systemPackages = [ pkgs.fw-fanctrl ];
+  environment.systemPackages = [ pkgs.fw-ectool pkgs.fw-fanctrl ];
 
   systemd.services."fw-fanctrl" = {
     enable = true;

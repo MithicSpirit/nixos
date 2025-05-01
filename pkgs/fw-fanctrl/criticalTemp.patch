@@ -1,8 +1,83 @@
-diff --git a/config.json b/config.json
-index db81b44..b8da466 100644
---- a/config.json
-+++ b/config.json
-@@ -2,82 +2,89 @@
+diff --git a/src/fw_fanctrl/FanController.py b/src/fw_fanctrl/FanController.py
+index d42e746..58eecec 100644
+--- a/src/fw_fanctrl/FanController.py
++++ b/src/fw_fanctrl/FanController.py
+@@ -132,19 +132,26 @@ class FanController:
+     def get_moving_average_temperature(self, time_interval):
+         sliced_temp_history = [x for x in self.temp_history if x > 0][-time_interval:]
+         if len(sliced_temp_history) == 0:
+             return self.get_actual_temperature()
+         return float(round(sum(sliced_temp_history) / len(sliced_temp_history), 2))
+ 
+-    def get_effective_temperature(self, current_temp, time_interval):
++    def get_effective_temperature(self, current_temp, time_interval, critical_temp):
+         # the moving average temperature count for 2/3 of the effective temperature
+-        return float(round(min(self.get_moving_average_temperature(time_interval), current_temp), 2))
++        average = float(round(min(self.get_moving_average_temperature(time_interval), current_temp), 2))
++        if critical_temp is not None and current_temp > critical_temp:
++            return max(average, current_temp)
++        return average
+ 
+     def adapt_speed(self, current_temp):
+         current_strategy = self.get_current_strategy()
+-        current_temp = self.get_effective_temperature(current_temp, current_strategy.moving_average_interval)
++        current_temp = self.get_effective_temperature(
++            current_temp,
++            current_strategy.moving_average_interval,
++            current_strategy.critical_temp,
++        )
+         min_point = current_strategy.speed_curve[0]
+         max_point = current_strategy.speed_curve[-1]
+         for e in current_strategy.speed_curve:
+             if current_temp > e["temp"]:
+                 min_point = e
+             else:
+@@ -160,13 +167,17 @@ class FanController:
+             self.set_speed(new_speed)
+ 
+     def dump_details(self):
+         current_strategy = self.get_current_strategy()
+         current_temperature = self.get_actual_temperature()
+         moving_average_temp = self.get_moving_average_temperature(current_strategy.moving_average_interval)
+-        effective_temp = self.get_effective_temperature(current_temperature, current_strategy.moving_average_interval)
++        effective_temp = self.get_effective_temperature(
++            current_temperature,
++            current_strategy.moving_average_interval,
++            current_strategy.critical_temp,
++        )
+ 
+         return StatusRuntimeResult(
+             current_strategy.name,
+             self.overwritten_strategy is None,
+             self.speed,
+             current_temperature,
+diff --git a/src/fw_fanctrl/Strategy.py b/src/fw_fanctrl/Strategy.py
+index db2abfe..11a3fff 100644
+--- a/src/fw_fanctrl/Strategy.py
++++ b/src/fw_fanctrl/Strategy.py
+@@ -1,15 +1,17 @@
+ class Strategy:
+     name = None
+     fan_speed_update_frequency = None
+     moving_average_interval = None
++    critical_temp = None
+     speed_curve = None
+ 
+     def __init__(self, name, parameters):
+         self.name = name
+         self.fan_speed_update_frequency = parameters["fanSpeedUpdateFrequency"]
+         if self.fan_speed_update_frequency is None or self.fan_speed_update_frequency == "":
+             self.fan_speed_update_frequency = 5
+         self.moving_average_interval = parameters["movingAverageInterval"]
+         if self.moving_average_interval is None or self.moving_average_interval == "":
+             self.moving_average_interval = 20
++        self.critical_temp = parameters.get("criticalTemp")
+         self.speed_curve = parameters["speedCurve"]
+diff --git a/src/fw_fanctrl/_resources/config.json b/src/fw_fanctrl/_resources/config.json
+index 73b04b9..5c96247 100644
+--- a/src/fw_fanctrl/_resources/config.json
++++ b/src/fw_fanctrl/_resources/config.json
+@@ -3,82 +3,89 @@
      "defaultStrategy": "lazy",
      "strategyOnDischarging" : "",
      "strategies": {
@@ -92,81 +167,27 @@ index db81b44..b8da466 100644
                  { "temp": 65, "speed": 100 }
              ]
          }
-diff --git a/doc/configuration.md b/doc/configuration.md
-index 6f381fb..0beed65 100644
---- a/doc/configuration.md
-+++ b/doc/configuration.md
-@@ -92,12 +92,27 @@ Strategies can be configured with the following parameters:
- > ```
- >
- > Increase it, and the fan speed changes more gradually. Lower it, and it becomes more responsive.
- >
- > **Defaults to 20 seconds.** (minimum 1)
- 
-+> **CriticalTemp**:
-+>
-+> It is a temperature after which the moving average is ignored and only the current temperature is considered.
-+>
-+> ```json
-+> "criticalTemp": [CRITICAL TEMPERATURE]
-+> ```
-+>
-+> Increase it, and the moving average applies for longer. Lower it, and the moving average is disabled sooner.
-+>
-+> If it is unset or set to null, the moving average is always considered (effectively the same as setting it to a
-+> very high number).
-+>
-+> **Defaults to null.**
-+
- ---
- 
- Once the configuration has been changed, you must reload it with the following command
- 
- ```bash
- fw-fanctrl reload
-diff --git a/fanctrl.py b/fanctrl.py
-index 703e465..8c2798e 100644
---- a/fanctrl.py
-+++ b/fanctrl.py
-@@ -264,22 +264,24 @@ class SocketAlreadyRunningException(Exception):
- 
- 
- class Strategy:
-     name = None
-     fanSpeedUpdateFrequency = None
-     movingAverageInterval = None
-+    criticalTemp = None
-     speedCurve = None
- 
-     def __init__(self, name, parameters):
-         self.name = name
-         self.fanSpeedUpdateFrequency = parameters["fanSpeedUpdateFrequency"]
-         if self.fanSpeedUpdateFrequency is None or self.fanSpeedUpdateFrequency == "":
-             self.fanSpeedUpdateFrequency = 5
-         self.movingAverageInterval = parameters["movingAverageInterval"]
-         if self.movingAverageInterval is None or self.movingAverageInterval == "":
-             self.movingAverageInterval = 20
-+        self.criticalTemp = parameters.get("criticalTemp")
-         self.speedCurve = parameters["speedCurve"]
- 
- 
- class Configuration:
-     path = None
-     data = None
-@@ -580,13 +582,15 @@ class FanController:
-     def getEffectiveTemperature(self, currentTemp, timeInterval):
-         # the moving average temperature count for 2/3 of the effective temperature
-         return round(min(self.getMovingAverageTemperature(timeInterval), currentTemp), 1)
- 
-     def adaptSpeed(self, currentTemp):
-         currentStrategy = self.getCurrentStrategy()
--        currentTemp = self.getEffectiveTemperature(currentTemp, currentStrategy.movingAverageInterval)
-+        criticalTemp = currentStrategy.criticalTemp
-+        if criticalTemp is not None and currentTemp < criticalTemp:
-+            currentTemp = self.getEffectiveTemperature(currentTemp, currentStrategy.movingAverageInterval)
-         minPoint = currentStrategy.speedCurve[0]
-         maxPoint = currentStrategy.speedCurve[-1]
-         for e in currentStrategy.speedCurve:
-             if currentTemp > e["temp"]:
-                 minPoint = e
-             else:
+diff --git a/src/fw_fanctrl/_resources/config.schema.json b/src/fw_fanctrl/_resources/config.schema.json
+index 0b27542..f564844 100644
+--- a/src/fw_fanctrl/_resources/config.schema.json
++++ b/src/fw_fanctrl/_resources/config.schema.json
+@@ -75,12 +75,19 @@
+                 "movingAverageInterval": {
+                     "type": "integer",
+                     "minimum": 1,
+                     "maximum": 100,
+                     "description": "The time window (in seconds) over which temperature readings are averaged."
+                 },
++                "criticalTemp": {
++                    "type": "number",
++                    "multipleOf" : 0.01,
++                    "minimum": 0,
++                    "maximum": 100,
++                    "description": "Temperature threshold above which the moving average is ignored."
++                },
+                 "speedCurve": {
+                     "type": "array",
+                     "minItems": 1,
+                     "description": "A list of temperature-speed pairs defining the fan response curve. Should be sorted by ascending `temp`.",
+                     "items": {
+                         "type": "object",

@@ -14,6 +14,7 @@
 
 \RequirePackage{math}
 
+\microtypesetup{protrusion=true,expansion=false}
 \geometry{paper=letterpaper,margin=3.5cm}
 \titleformat{\section}{\FloatBarrier\Large\bfseries}{\thetitle.}%
 {1ex}{}

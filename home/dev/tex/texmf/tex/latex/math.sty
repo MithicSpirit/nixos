@@ -106,15 +106,25 @@
 \newcommand{\cf}{\foreign{cf.\@}}
 
 \newcommand{\p}[1]{\mathrlap{\,\text{#1}}}
-\newcommand{\cat}[1]{\ensuremath{\operatorname{\mathbf{#1}}}}
+\newcommand{\cat}[2][]{\ensuremath{\operatorname{\mathnormal{#1}\mathbf{#2}}}}
 \newcommand{\operatorsf}[1]{\operatorname{\mathsf{#1}}}
 
 \newcommand{\trans}{^{\mathsf{T}}}
-\newcommand{\compl}{^{\mathsf{C}}}
+\newcommand{\compl}{^{\complement}}
+\newcommand{\op}{^{\operatorname{op}}}
 
+\DeclareMathOperator{\ob}{ob}
+\DeclareMathOperator{\mor}{mor}
+\DeclareMathOperator{\dom}{dom}
+\DeclareMathOperator{\cod}{cod}
+\DeclareMathOperator{\id}{id}
 \DeclareMathOperator{\Hom}{Hom}
-\DeclareMathOperator{\Span}{Span}
 \DeclareMathOperator{\Aut}{Aut}
+\DeclareMathOperator{\img}{img}
+\DeclareMathOperator{\coimg}{coimg}
+\DeclareMathOperator{\coker}{coker}
+\DeclareMathOperator{\inv}{inv}
+
 \DeclareMathOperator{\erf}{erf}
 \DeclareMathOperator{\sgn}{sgn}
 \DeclareMathOperator{\csch}{csch}
@@ -122,17 +132,11 @@
 \DeclareMathOperator{\Var}{Var}
 \DeclareMathOperator{\Cov}{Cov}
 
+\DeclareMathOperator{\Span}{Span}
+\DeclareMathOperator{\tr}{tr}
 \DeclareMathOperator{\rank}{rank}
 \DeclareMathOperator{\nullity}{null}
-
-\DeclareMathOperator{\id}{id}
-\DeclareMathOperator{\im}{im}
-\DeclareMathOperator{\coim}{coim}
-\DeclareMathOperator{\coker}{coker}
-\DeclareMathOperator{\inv}{inv}
-
 \DeclareMathOperator{\GL}{GL}
-
 \DeclareMathOperator{\proj}{proj}
 \DeclareMathOperator{\rej}{rej}
 \DeclareMathOperator{\refl}{refl}
@@ -140,8 +144,8 @@
 \DeclareMathOperator*{\argmax}{arg\,max}
 \DeclareMathOperator*{\argmin}{arg\,min}
 
-\newcommand{\morph}[1]{\overset{#1}{\longrightarrow}}
-\newcommand{\lmorph}[1]{\overset{#1}{\longleftarrow}}
+\let\morph\xrightarrow
+\let\lmorph\xleftarrow
 
 \newcommand{\nodisplaytop}{\strut\nopagebreak\vspace{-\baselineskip-\abovedisplayskip}}
 
