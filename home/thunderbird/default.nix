@@ -11,6 +11,7 @@
       settings = {
         "mailnews.wraplength" = 70;
         "general.smoothScroll.mouseWheel" = false;
+        "mail.serverDefaultStoreContractID" = "@mozilla.org/msgstore/maildirstore;1";
       };
       extraConfig = "";
     };

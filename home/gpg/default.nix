@@ -16,7 +16,7 @@
       enableSshSupport = true;
 
       grabKeyboardAndMouse = true;
-      pinentryPackage = pkgs.pinentry-qt;
+      pinentry.package = pkgs.pinentry-qt;
 
       defaultCacheTtl = hours 1;
       defaultCacheTtlSsh = hours 1;

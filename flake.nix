@@ -16,7 +16,8 @@
     };
 
     home-manager = {
-      url = "github:nix-community/home-manager";
+      # url = "github:nix-community/home-manager";
+      url = "github:mithicspirit/home-manager/personal";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
