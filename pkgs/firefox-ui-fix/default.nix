@@ -5,13 +5,13 @@
 }:
 stdenvNoCC.mkDerivation rec {
   pname = "firefox-ui-fix";
-  version = "8.7.0";
+  version = "8.7.1";
 
   src = fetchFromGitHub {
     owner = "black7375";
     repo = "Firefox-UI-Fix";
     rev = "v${version}";
-    hash = "sha256-NBPSKIxTNSuJahySyLqD45R/UmeyvkJBKehUIE/dI0I=";
+    hash = "sha256-2/hTy4QED2qLaMEz2gYS9IQqFf4AZACorh/8Wb2NZwA=";
   };
 
   installPhase = ''
