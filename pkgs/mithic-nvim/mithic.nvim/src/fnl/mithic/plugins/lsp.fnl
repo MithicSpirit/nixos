@@ -1,10 +1,3 @@
-(local lsp_setting (require (.. ... :.settings)))
-
-(each [name conf (pairs lsp_setting)]
-  ((. (require :lspconfig) name :setup) conf))
-
-(tset (require :lspconfig.ui.windows) :default_options :border _G.border)
-
 (each [k v (pairs
              {"d" :signature_help
               "t" :type_definition
@@ -36,3 +29,7 @@
         ;  (vim.lsp.inlay_hint.enable true {:bufnr buf})))
 
       false)}) ; return false to not delete autocmd
+
+(each [name conf (pairs (require (.. ... :.settings)))]
+  (vim.lsp.config name conf)
+  (vim.lsp.enable name))

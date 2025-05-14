@@ -133,11 +133,15 @@
   };
   services.gnome.gnome-keyring.enable = true; # TODO: use keepassxc (or bitwarden)
 
-  services.printing.enable = true;
   programs.dconf.enable = true;
   services.gvfs.enable = true;
   services.udisks2.enable = true;
   programs.kdeconnect.enable = true; # open firewall
+
+  services.printing = {
+    enable = true;
+    drivers = with pkgs; [ hplip ];
+  };
 
   services.locate = {
     enable = true;

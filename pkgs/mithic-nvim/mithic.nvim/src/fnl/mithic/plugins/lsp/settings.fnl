@@ -29,8 +29,8 @@
                                 :verbatimEnvironments [:semiverbatim]}}}}
 
 
- :ltex
-   {:filetypes [:tex :bib :text :markdown]
+ :ltex_plus
+   {:filetypes [:tex :bib :text :markdown :mail]
     :settings
      {:ltex
        {:latex

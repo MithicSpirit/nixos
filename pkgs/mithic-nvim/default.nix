@@ -19,7 +19,7 @@
   ruff,
   basedpyright,
   texlab,
-  ltex-ls,
+  ltex-ls-plus,
   millet,
 }:
 vimUtils.buildVimPlugin {
@@ -86,7 +86,7 @@ vimUtils.buildVimPlugin {
     ruff
     basedpyright
     texlab
-    ltex-ls
+    ltex-ls-plus
     millet
   ];
 
