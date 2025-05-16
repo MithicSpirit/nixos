@@ -159,6 +159,8 @@
       usbutils
       (lib.lowPrio busybox)
       comma
+      nvd
+      nix-tree
       which
       dash
       curl
