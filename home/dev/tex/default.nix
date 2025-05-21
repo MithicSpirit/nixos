@@ -8,6 +8,7 @@ in
     (texliveFull.__overrideTeXConfig { withDocs = true; })
     tectonic
     python3Packages.pygments # minted
+    kdePackages.okular
   ];
 
   # don't set the variable directly to ./texmf since that prevents updating
