@@ -17,6 +17,7 @@ in
       ))
       python3Packages.ipython
       ruff
+      ty
       uv
       mypy
       basedpyright

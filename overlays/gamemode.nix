@@ -1,7 +1,10 @@
 final: prev: {
 
   gamemode = prev.gamemode.overrideAttrs (prevAttrs: {
+
     version = "${prevAttrs.version}-mithic";
+    __intentionallyOverridingVersion = true;
+
     patches = (prevAttrs.patches or [ ]) ++ [
       (final.fetchpatch {
         name = "platform-profile";
@@ -19,6 +22,7 @@ final: prev: {
         hash = "sha256-hMBjgrhexakRpWhEE9y3svWSt28S70+/Pl74rB8WJAs=";
       })
     ];
+
   });
 
 }

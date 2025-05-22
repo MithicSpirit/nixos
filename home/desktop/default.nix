@@ -4,7 +4,7 @@
   home.packages = with pkgs; [
     # utils
     bitwarden-desktop
-    gimp
+    gimp3
     gnome-characters
     vlc
 
