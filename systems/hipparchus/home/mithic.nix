@@ -82,9 +82,11 @@
       duf
       eza
       fd
+      fselect
       mediainfo
       procs
       ripgrep
+      ripgrep-all
       rmtrash
       sd
       termdown

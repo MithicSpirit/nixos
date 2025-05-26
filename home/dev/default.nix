@@ -38,6 +38,7 @@
     gh
     glab
     scc
+    tokei # TODO: decide between scc and tokei
     rlwrap # idris2 repl improvement
   ];
 

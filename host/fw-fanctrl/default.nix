@@ -70,23 +70,23 @@ let
         criticalTemp = 90;
         speedCurve = [
           {
-            temp = 40;
+            temp = 35;
             speed = 15;
           }
           {
-            temp = 60;
+            temp = 55;
             speed = 30;
           }
           {
-            temp = 70;
+            temp = 65;
             speed = 40;
           }
           {
-            temp = 75;
+            temp = 70;
             speed = 80;
           }
           {
-            temp = 85;
+            temp = 80;
             speed = 100;
           }
         ];
