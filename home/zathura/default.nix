@@ -15,6 +15,8 @@
 
       recolor-keephue = true;
       recolor-reverse-video = false;
+      render-loading-bg = "#2E3440";
+      render-loading-fg = "#E5E9F0";
 
       scroll-step = 60;
       scroll-full-overlap = "0.15";

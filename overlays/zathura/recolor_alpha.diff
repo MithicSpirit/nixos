@@ -1,0 +1,50 @@
+diff --git a/zathura/render.c b/zathura/render.c
+index 119dad0..05e1b31 100644
+--- a/zathura/render.c
++++ b/zathura/render.c
+@@ -12,12 +12,15 @@
+ #include "zathura.h"
+ #include "document.h"
+ #include "page.h"
+ #include "page-widget.h"
+ #include "utils.h"
+ 
++#define RECOLOR_ALPHA_SATURATION_THRESHOLD (0.1)
++#define RECOLOR_ALPHA_LIGHTNESS_THRESHOLD (0.7)
++
+ /* private data for ZathuraRenderer */
+ typedef struct private_s {
+   GThreadPool* pool;       /**< Pool of threads */
+   girara_list_t* requests; /**< Render requests */
+   GMutex mutex;            /**< Render lock */
+ 
+@@ -549,12 +552,14 @@ static void recolor_slow(ZathuraRendererPrivate* priv, unsigned int page_width,
+ 
+         /* u is the maximum possible saturation for given h and l. s is a
+          * rescaled saturation between 0 and 1 */
+         const double u = colorumax(h, l, 0, 1);
+         const double s = fabs(u) > DBL_EPSILON ? 1.0 / u : 0.0;
+ 
++        if (s < RECOLOR_ALPHA_SATURATION_THRESHOLD && l < RECOLOR_ALPHA_LIGHTNESS_THRESHOLD)
++          l = l * l * l / RECOLOR_ALPHA_LIGHTNESS_THRESHOLD / RECOLOR_ALPHA_LIGHTNESS_THRESHOLD;
+         /* Interpolates lightness between light and dark colors. white goes to
+          * light, and black goes to dark. */
+         l = l * (l2 - l1) + l1;
+ 
+         const double su = s * colorumax(h, l, l1, l2);
+ 
+@@ -622,12 +627,14 @@ static void recolor_fast(ZathuraRendererPrivate* priv, unsigned int page_width,
+ 
+         /* u is the maximum possible saturation for given h and l. s is a
+          * rescaled saturation between 0 and 1 */
+         const double u = colorumax(h, l, 0, 1);
+         const double s = fabs(u) > DBL_EPSILON ? 1.0 / u : 0.0;
+ 
++        if (s < RECOLOR_ALPHA_SATURATION_THRESHOLD && l < RECOLOR_ALPHA_LIGHTNESS_THRESHOLD)
++          l = l * l * l / RECOLOR_ALPHA_LIGHTNESS_THRESHOLD / RECOLOR_ALPHA_LIGHTNESS_THRESHOLD;
+         /* Interpolates lightness between light and dark colors. white goes to
+          * light, and black goes to dark. */
+         l = l * (l2 - l1) + l1;
+ 
+         const double su = s * colorumax(h, l, l1, l2);
+ 

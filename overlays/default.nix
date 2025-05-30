@@ -4,4 +4,5 @@ _inputs: [
 
   (import ./gamemode.nix)
   (import ./sway)
+  (import ./zathura)
 ]

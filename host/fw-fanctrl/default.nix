@@ -70,19 +70,19 @@ let
         criticalTemp = 90;
         speedCurve = [
           {
-            temp = 35;
+            temp = 40;
             speed = 15;
           }
           {
-            temp = 55;
+            temp = 50;
             speed = 30;
           }
           {
-            temp = 65;
+            temp = 60;
             speed = 40;
           }
           {
-            temp = 70;
+            temp = 65;
             speed = 80;
           }
           {
@@ -141,4 +141,5 @@ in
     start = [ "'${fw-fanctrl}' use agile" ];
     end = [ "'${fw-fanctrl}' reset" ];
   };
+
 }
