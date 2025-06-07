@@ -15,6 +15,9 @@
 
       recolor-keephue = true;
       recolor-reverse-video = false;
+      recolor-adjust-lightness = true;
+
+      render-loading = true;
       render-loading-bg = "#2E3440";
       render-loading-fg = "#E5E9F0";
 

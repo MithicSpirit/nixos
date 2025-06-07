@@ -51,7 +51,7 @@
 
 (set vim.g.vimtex_mappings_prefix "<localleader>")
 (set vim.g.vimtex_mappings_disable
-     {:n ["tsf" "tsc" "tse" "ts$" "<F6>" "tsd" "tsD" "<F7>" "<F8>"]
+     {:n ["tsf" "tsc" "tse" "ts$" "tsb" "tss" "<F6>" "tsd" "tsD" "<F7>" "<F8>"]
       :x ["tsf" "<F6>" "tsd" "tsD" "<F7>"]
       :i ["]]" "<F7>"]})
 
