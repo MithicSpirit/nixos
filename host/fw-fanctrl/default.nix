@@ -92,9 +92,34 @@ let
         ];
       };
 
+      "high" = {
+        fanSpeedUpdateFrequency = 2;
+        movingAverageInterval = 6;
+        criticalTemp = 80;
+        speedCurve = [
+          {
+            temp = 30;
+            speed = 15;
+          }
+          {
+            temp = 35;
+            speed = 70;
+          }
+          {
+            temp = 45;
+            speed = 80;
+          }
+          {
+            temp = 60;
+            speed = 100;
+          }
+        ];
+      };
+
       "max" = {
         fanSpeedUpdateFrequency = 1;
         movingAverageInterval = 1;
+        criticalTemp = 0;
         speedCurve = [
           {
             temp = 0;

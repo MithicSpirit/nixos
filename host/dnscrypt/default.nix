@@ -3,10 +3,15 @@
   services.dnscrypt-proxy2 = {
     enable = true;
     settings = {
+
       ipv6_servers = true;
       require_dnssec = true;
       require_nolog = true;
       require_nofilter = true;
+
+      cache = true;
+      cache_max_ttl = 3 * 60 * 60; # 3 hours
+
     };
   };
 

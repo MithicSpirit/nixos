@@ -153,11 +153,12 @@
 
   environment.systemPackages =
     (with pkgs; [
-      coreutils
+      coreutils-full
       moreutils
       util-linux
       usbutils
-      (lib.lowPrio busybox)
+      busybox
+      procps
       comma
       nvd
       nix-tree

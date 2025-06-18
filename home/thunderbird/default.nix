@@ -9,7 +9,7 @@
     profiles."mithic" = {
       isDefault = true;
       settings = {
-        "mailnews.wraplength" = 70;
+        "mailnews.wraplength" = 0; # use external editor
         "general.smoothScroll.mouseWheel" = false;
         "mail.serverDefaultStoreContractID" = "@mozilla.org/msgstore/maildirstore;1";
       };

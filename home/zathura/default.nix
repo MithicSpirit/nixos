@@ -1,8 +1,9 @@
-{ config, ... }:
+{ config, pkgs, ... }:
 {
 
   programs.zathura = {
     enable = true;
+    package = pkgs.zathura.override { useMupdf = false; };
 
     options = {
       selection-clipboard = "clipboard";
@@ -13,6 +14,7 @@
       statusbar-home-tilde = true;
       guioptions = "hv";
 
+      recolor = true;
       recolor-keephue = true;
       recolor-reverse-video = false;
       recolor-adjust-lightness = true;
