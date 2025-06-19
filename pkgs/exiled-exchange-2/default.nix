@@ -13,18 +13,18 @@
 }:
 let
   name = "exiled-exchange-2";
-  version = "0.9.4";
+  version = "0.10.3";
 
   src = fetchFromGitHub {
     owner = "Kvan7";
     repo = name;
     rev = "v${version}";
-    hash = "sha256-RujG6ouCL1b6PF/Ek5mxB3OR2rVaaJw7Y9PXo9kXsgk=";
+    hash = "sha256-ZtyUhsqRE8qw0BFxSMEQDdtEmK4Vj2gYgkU2mBQb3Ls=";
   };
 
   renderer = buildNpmPackage {
     inherit nodejs src version;
-    pname = "${name}-renderer-data";
+    pname = "exiled-exchange2-renderer";
     npmDepsHash = "sha256-pUhRTb9iUuqCrB40Pb2eV3dOzESVnH6vc135VFFEelk=";
 
     prePatch = "cd renderer";
@@ -39,9 +39,9 @@ in
 buildNpmPackage {
   inherit nodejs src version;
 
-  pname = name;
+  pname = "exiled-exchange2";
 
-  npmDepsHash = "sha256-ifldGxEB2hQ+c2bN/cJXPuq2gDYrIM3yrpIS6DE9aYE=";
+  npmDepsHash = "sha256-q2jbXyyJ4NPieK7m3baUYnDgNbKVcEHFLhTGd5ueRsk=";
 
   nativeBuildInputs = [
     autoPatchelfHook
