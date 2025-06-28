@@ -78,7 +78,7 @@
   };
 
   i18n.defaultLocale = "en_US.UTF-8";
-  i18n.supportedLocales = [ "all" ];
+  i18n.extraLocales = "all";
   time.timeZone = "US/Eastern";
 
   services.fwupd.enable = true;
@@ -161,6 +161,7 @@
       procps
       comma
       nvd
+      nh
       nix-tree
       which
       dash

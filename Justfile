@@ -16,8 +16,8 @@ update *inputs: gitadd && standard
 
 [confirm]
 gc: sudo && boot clean
-    nix-collect-garbage -v --delete-older-than 17d --max-freed 0
-    sudo nix-collect-garbage -v --delete-older-than 17d --max-freed 0
+    nix-collect-garbage -v --delete-older-than 22d --max-freed 0
+    sudo nix-collect-garbage -v --delete-older-than 22d --max-freed 0
 
 build: gitadd
     nixos-rebuild build --flake '.#{{ host }}'
