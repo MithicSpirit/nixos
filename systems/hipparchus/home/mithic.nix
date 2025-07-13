@@ -84,6 +84,7 @@
       fd
       fselect
       mediainfo
+      nix-output-monitor
       procs
       ripgrep
       ripgrep-all

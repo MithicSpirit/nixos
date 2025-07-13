@@ -20,13 +20,13 @@ gc: sudo && boot clean
     sudo nix-collect-garbage -v --delete-older-than 22d --max-freed 0
 
 build: gitadd
-    nixos-rebuild build --flake '.#{{ host }}'
+    nixos-rebuild build --flake '.#{{ host }}' |& nom
 
 clean: clean-artifact
     nix store gc -v
 
 package pkg *args: gitadd
-    nix build {{ args }} '.#{{ pkg }}'
+    nom build {{ args }} '.#{{ pkg }}'
 
 test: (rebuild 'test') system
 
@@ -36,7 +36,7 @@ switch: (rebuild 'switch') system
 
 [private]
 rebuild op: build sudo
-    sudo nixos-rebuild '{{ op }}' --flake '.#{{ host }}'
+    sudo nixos-rebuild '{{ op }}' --flake '.#{{ host }}' |& nom
 
 [private]
 clean-artifact:
