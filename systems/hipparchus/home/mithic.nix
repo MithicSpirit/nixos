@@ -78,6 +78,7 @@
     # TODO: ranger and rifle replacement(s?) yazi?
 
     packages = with pkgs; [
+      curlFull
       du-dust
       duf
       eza
@@ -92,7 +93,6 @@
       sd
       termdown
       ugrep
-      wcurl
       yazi
       (parallel-full.override { willCite = true; })
 
