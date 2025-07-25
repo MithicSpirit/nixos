@@ -26,31 +26,30 @@
     daemonIOSchedClass = "idle";
   };
 
-  imports =
-    [
-      inputs.hardware.nixosModules.framework-16-7040-amd
-      inputs.disko.nixosModules.default
-      inputs.home-manager.nixosModules.default
-      ./hardware-configuration.nix
-      ./disko.nix
-    ]
-    ++ builtins.map (path: root + /host + path) [
-      /secure-boot
-      /man
-      /sshd
-      /pipewire
-      /dnscrypt
-      /logitech
-      /virt
-      /gaming
-      /keyd
-      /bluetooth
-      /tlp # or ppd
-      /sway
-      /amdgpu
-      /fw-fanctrl
-      /zswap # or zram
-    ];
+  imports = [
+    inputs.hardware.nixosModules.framework-16-7040-amd
+    inputs.disko.nixosModules.default
+    inputs.home-manager.nixosModules.default
+    ./hardware-configuration.nix
+    ./disko.nix
+  ]
+  ++ builtins.map (path: root + /host + path) [
+    /secure-boot
+    /man
+    /sshd
+    /pipewire
+    /dnscrypt
+    /logitech
+    /virt
+    /gaming
+    /keyd
+    /bluetooth
+    /tlp # or ppd
+    /sway
+    /amdgpu
+    /fw-fanctrl
+    /zswap # or zram
+  ];
 
   nixpkgs.overlays = overlays;
   nixpkgs.config = {
@@ -89,6 +88,17 @@
     enable = true;
     timer.enable = true;
   };
+  systemd.services."tzupdate".preStart =
+    let
+      ping = lib.getExe' pkgs.iputils "ping";
+      sleep = lib.getExe' pkgs.coreutils "sleep";
+      waitping = pkgs.writeShellScript "waitping" ''
+        while ! ${ping} -qc1 -W1 example.com
+        do ${sleep} 1
+        done
+      '';
+    in
+    "${waitping}";
 
   services.fwupd.enable = true;
 

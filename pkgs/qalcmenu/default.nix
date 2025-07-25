@@ -32,7 +32,8 @@ stdenvNoCC.mkDerivation rec {
         util-linux
         libqalculate
         wl-clipboard
-      ] ++ (if menu != null then [ menu ] else [ ]);
+      ]
+      ++ (if menu != null then [ menu ] else [ ]);
     in
     # bash
     ''

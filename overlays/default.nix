@@ -5,5 +5,4 @@ _inputs: [
   (import ./gamemode.nix)
   (import ./mangohud)
   (import ./sway)
-  (import ./zathura)
 ]

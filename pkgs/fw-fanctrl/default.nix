@@ -6,7 +6,7 @@
 }:
 let
   pname = "fw-fanctrl";
-  version = "1.0.2-criticalTemp";
+  version = "1.0.3_criticalTemp";
 in
 python3Packages.buildPythonApplication {
   inherit pname version;
@@ -14,8 +14,8 @@ python3Packages.buildPythonApplication {
   src = fetchFromGitHub {
     owner = "TamtamHero";
     repo = pname;
-    rev = "80ecc5d273b46f715d924c49234b6867fe3daf33";
-    hash = "sha256-ZWUopNfIxSr5y3M+PwGPM17R4Y2ygRNlmt/81+4ZoHs=";
+    rev = "b35c9280a3b4a3cf5b0cd551efa3adca6aa6a7d1";
+    hash = "sha256-TDVULNb/oH66/UX20mC89NSx8YPe8mPwNCB9+phavP4=";
   };
 
   patches = [ ./criticalTemp.patch ];

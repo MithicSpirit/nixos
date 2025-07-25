@@ -40,7 +40,7 @@ rebuild op: build sudo
 
 [private]
 clean-artifact:
-    rm -f result result-*
+    rm -f result result-* repl-result-*
 
 [private]
 sudo:

@@ -12,17 +12,17 @@
   moreutils,
 }:
 let
-  version = "33.2.5";
+  version = "33.2.6";
   patcher-version = "3.4.0";
 
   iosevka = fetchFromGitHub {
     owner = "be5invis";
     repo = "iosevka";
-    rev = "v${version}";
-    hash = "sha256-2yIkANG5hnath2EHiRXSKEflFoler9syz4e3AU5jxgU=";
+    rev = "007b922316ff9d4ef6c58d4b0cb60401a4ff7ce0";
+    hash = "sha256-X3oLe7CrPokvGsxaKuaaeHp9MIYHIMVASYUPpA1zcY0=";
     name = "iosevka";
   };
-  npmDepsHash = "sha256-n6vd2ed4OCUIz3YyOO8Yt/wQJCznrwYCZlg3MRJEX6o=";
+  npmDepsHash = "sha256-GV/7/t/phSrxjcUizW7aNpp1yjA6P8NOiepNp8DrTaY=";
 
   patcher = fetchzip {
     url = "https://github.com/ryanoasis/nerd-fonts/releases/download/v${patcher-version}/FontPatcher.zip";
@@ -45,17 +45,16 @@ buildNpmPackage {
 
   sourceRoot = "./${iosevka.name}";
 
-  nativeBuildInputs =
-    [
-      unzip
-      ttfautohint-nox
-      python3
-      fontforge
-      moreutils
-    ]
-    ++ lib.optionals stdenv.isDarwin [
-      darwin.cctools # libtool
-    ];
+  nativeBuildInputs = [
+    unzip
+    ttfautohint-nox
+    python3
+    fontforge
+    moreutils
+  ]
+  ++ lib.optionals stdenv.isDarwin [
+    darwin.cctools # libtool
+  ];
 
   patchPhase = ''
     runHook prePatch

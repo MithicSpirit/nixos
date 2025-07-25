@@ -1,32 +1,34 @@
-{ pkgs, ... }:
+{ pkgs, lib, ... }:
 let
   toml = (pkgs.formats.toml { }).generate;
+  py = pkgs.python3.withPackages (
+    p: with p; [
+      numpy
+      scipy
+      sympy
+      matplotlib
+      ipython
+      ruff
+      uv
+      mypy
+    ]
+  );
 in
 {
 
   home.packages = (
     with pkgs;
     [
-      (python3.withPackages (
-        p: with p; [
-          numpy
-          scipy
-          sympy
-          matplotlib
-        ]
-      ))
-      python3Packages.ipython
-      ruff
+      (lib.hiPrio py)
       ty
-      uv
-      mypy
       basedpyright
     ]
   );
 
   home.sessionVariables = {
     UV_PYTHON_PREFERENCE = "only-system";
-    UV_PYTHON = "${pkgs.python3}";
+    UV_PYTHON = "${py}";
+    UV_PYTHON_INSTALL_BIN = "0";
   };
 
   xdg.configFile."ruff/ruff.toml".source = toml "ruff.toml" {
