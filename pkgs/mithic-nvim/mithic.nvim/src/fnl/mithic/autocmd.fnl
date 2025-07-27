@@ -39,7 +39,7 @@
 
 ; Shells
 (vim.api.nvim_create_autocmd :FileType
-  {:pattern [:sh :zsh :fish :lua]
+  {:pattern [:sh :zsh :fish :lua :make]
    :command "setlocal shiftwidth=8 noexpandtab"
    :group augroup})
 

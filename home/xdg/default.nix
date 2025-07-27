@@ -1,6 +1,7 @@
 { config, pkgs, ... }:
 let
   home = config.home.homeDirectory;
+  xdg = config.xdg;
   files = "${home}/files";
 in
 {
@@ -17,7 +18,7 @@ in
     userDirs = {
       enable = true;
       createDirectories = true;
-      templates = "${config.xdg.dataHome}/templates";
+      templates = "${xdg.dataHome}/templates";
 
       documents = "${files}/documents";
       download = "${files}/downloads";
@@ -41,16 +42,15 @@ in
 
   home.preferXdgDirectories = true;
 
-  home.file."local".source =
-    let
-      xdg = config.xdg;
-    in
-    pkgs.runCommandLocal "xdg-local" { } ''
+  home.file."local" = {
+    source = pkgs.runCommandLocal "xdg-local" { } ''
       mkdir "$out"
       ln -s "${xdg.cacheHome}" "$out/cache"
       ln -s "${xdg.configHome}" "$out/etc"
       ln -s "${xdg.dataHome}" "$out/share"
       ln -s "${xdg.stateHome}" "$out/state"
     '';
+    recursive = true;
+  };
 
 }
