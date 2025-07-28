@@ -33,11 +33,20 @@ in
     mimeApps = {
       enable = true;
       # TODO
+      defaultApplications = {
+        "images/png" = "swayimg.desktop";
+        "images/jpg" = "swayimg.desktop";
+        "images/webp" = "swayimg.desktop";
+        "images/svg+xml" = "swayimg.desktop";
+        "images/jpeg" = "swayimg.desktop";
+      };
     };
 
     # More portal options set in particular DE
     portal.enable = true;
     portal.xdgOpenUsePortal = true;
+
+    terminal-exec.enable = true;
   };
 
   home.preferXdgDirectories = true;
@@ -50,7 +59,6 @@ in
       ln -s "${xdg.dataHome}" "$out/share"
       ln -s "${xdg.stateHome}" "$out/state"
     '';
-    recursive = true;
   };
 
 }

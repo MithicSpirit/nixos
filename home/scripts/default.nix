@@ -4,9 +4,7 @@
   home.sessionPath = [ "${./bin}" ];
   # TODO: improve menu-browser and turn it into a standalone package
 
-  home.sessionVariables = {
-    "BROWSER" = "menu-browser";
-  };
+  home.sessionVariables."BROWSER" = "menu-browser";
   xdg =
     let
       mimeTypes = [
@@ -14,6 +12,8 @@
         "text/xml"
         "x-scheme-handler/http"
         "x-scheme-handler/https"
+        "x-scheme-handler/about"
+        "x-scheme-handler/unknown"
       ];
     in
     {

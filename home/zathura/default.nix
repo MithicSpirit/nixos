@@ -76,4 +76,6 @@
       unmap q
     '';
   };
+
+  xdg.mimeApps.defaultApplications."application/pdf" = "zathura.desktop";
 }
