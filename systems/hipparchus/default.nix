@@ -19,7 +19,6 @@
       ];
       auto-optimise-store = true;
       use-xdg-base-directories = true;
-      build-dir = "/var/tmp";
     };
 
     daemonCPUSchedPolicy = "idle";
