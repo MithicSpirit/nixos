@@ -51,7 +51,10 @@
     /zswap # or zram
   ];
 
-  nixpkgs.overlays = overlays;
+  nixpkgs.overlays = overlays ++ [
+    (final: _prev: { nix = final.nixVersions.latest; })
+  ];
+
   nixpkgs.config = {
     allowUnfree = false; # TODO: make global?
     rocmSupport = true;
