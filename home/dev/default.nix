@@ -17,7 +17,6 @@
     elan
     agda
     coq
-    idris2
     smlnj
     typst
 
@@ -30,6 +29,10 @@
     # haskell
     ghc
     stack
+
+    # idris2
+    idris2
+    idris2Packages.pack
 
     # tooling
     gnumake
