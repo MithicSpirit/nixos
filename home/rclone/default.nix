@@ -37,15 +37,15 @@
           Type = "oneshot";
           ExecStartPre =
             let
-              ping = lib.getExe' pkgs.iputils "ping";
+              curl = lib.getExe pkgs.curl;
               sleep = lib.getExe' pkgs.coreutils "sleep";
-              waitping = pkgs.writeShellScript "waitping" ''
-                while ! ${ping} -q4c1 -W1 example.com
+              waitnet = pkgs.writeShellScript "waitnet" ''
+                while ! ${curl} -fsSLm 10 --connect-timeout 2 -o /dev/null 'https://example.com'
                 do ${sleep} 1
                 done
               '';
             in
-            "${waitping}";
+            "${waitnet}";
           TimeoutStartSec = 60;
           ExecStart = "'${config.xdg.userDirs.documents}/school/rclone-sync'";
         };
