@@ -23,9 +23,9 @@ in
       wants = dep;
       serviceConfig = {
         Type = "simple";
-        ExecStart = "${lib.getExe logiops}";
-        ExecStartPre = "${lib.getExe' pkgs.kmod "modprobe"} hid_logitech_hidpp";
       };
+      preStart = "${lib.getExe' pkgs.kmod "modprobe"} hid_logitech_hidpp";
+      script = "${lib.getExe logiops}";
       restartTriggers = [ config.environment.etc."logid.cfg".source ];
     };
 

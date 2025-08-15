@@ -48,6 +48,7 @@ vimUtils.buildVimPlugin {
     vim-sneak
     undotree
     nvim-parinfer
+    direnv-vim
     #firenvim
     vimtex
     idris2-nvim

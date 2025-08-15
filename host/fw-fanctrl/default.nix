@@ -145,10 +145,10 @@ in
     serviceConfig = {
       Type = "simple";
       Restart = "always";
-      ExecStart = "${fw-fanctrl} run --config ${conf} --silent";
-      ExecStopPost = "${lib.getExe pkgs.fw-ectool} autofanctrl";
       SyslogLevel = "debug";
     };
+    script = "${fw-fanctrl} run --config ${conf} --silent";
+    postStart = "${lib.getExe pkgs.fw-ectool} autofanctrl";
     after = [ "multi-user.target" ];
     wantedBy = [ "multi-user.target" ];
     restartTriggers = [ conf ];

@@ -48,6 +48,7 @@
     /amdgpu
     /fw-fanctrl
     /zswap # or zram
+    /timezone
   ];
 
   nixpkgs.overlays = overlays ++ [
@@ -80,27 +81,6 @@
 
   i18n.defaultLocale = "en_US.UTF-8";
   i18n.extraLocales = "all";
-
-  # set default but allow imperative modification
-  time.timeZone = lib.mkForce "US/Eastern";
-  systemd.services.systemd-timedated.environment."NIXOS_STATIC_TIMEZONE" =
-    lib.mkForce null;
-  # requires imperative modification
-  services.tzupdate = {
-    enable = true;
-    timer.enable = true;
-  };
-  systemd.services."tzupdate".preStart =
-    let
-      ping = lib.getExe' pkgs.iputils "ping";
-      sleep = lib.getExe' pkgs.coreutils "sleep";
-      waitping = pkgs.writeShellScript "waitping" ''
-        while ! ${ping} -q4c1 -W1 example.com
-        do ${sleep} 1
-        done
-      '';
-    in
-    "${waitping}";
 
   services.fwupd.enable = true;
 
@@ -204,6 +184,7 @@
       testdisk
       stress-ng
       tree
+      bees
       file
       zip
       unzip
@@ -316,9 +297,7 @@
   };
 
   systemd.services.bluetooth-rfkill-resume = {
-    serviceConfig = {
-      ExecStartPre = "${pkgs.coreutils}/bin/sleep 1";
-    };
+    preStart = "${pkgs.coreutils}/bin/sleep 1";
   };
 
   programs.gamescope.args = [

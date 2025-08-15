@@ -46,6 +46,7 @@
               '';
             in
             "${waitping}";
+          TimeoutStartSec = 60;
           ExecStart = "'${config.xdg.userDirs.documents}/school/rclone-sync'";
         };
       };
