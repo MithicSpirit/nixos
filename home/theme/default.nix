@@ -8,7 +8,7 @@
   # TODO: check whether names are correct
 
   home.pointerCursor = {
-    package = pkgs.libsForQt5.breeze-qt5; # looks better in qt5
+    package = pkgs.kdePackages.breeze;
     name = "breeze_cursors";
     size = 32;
     gtk.enable = true;
@@ -60,7 +60,7 @@
   qt = {
     enable = true;
     platformTheme.name = "gtk3";
-    style.name = "breeze";
+    style.name = "Fusion";
   };
 
   fonts.fontconfig = {

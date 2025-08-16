@@ -137,7 +137,10 @@
   programs.dconf.enable = true;
   services.gvfs.enable = true;
   services.udisks2.enable = true;
-  programs.kdeconnect.enable = true; # open firewall
+  programs.kdeconnect = {
+    enable = true; # open firewall
+    package = pkgs.kdePackages.kdeconnect-kde;
+  };
 
   services.printing = {
     enable = true;
