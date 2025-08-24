@@ -24,7 +24,7 @@
   };
 
   environment.etc."libinput/local-overrides.quirks".text = ''
-    [Serial Keyboards]
+    [keyd Keyboard]
     MatchUdevType=keyboard
     MatchName=keyd virtual keyboard
     AttrKeyboardIntegration=internal
