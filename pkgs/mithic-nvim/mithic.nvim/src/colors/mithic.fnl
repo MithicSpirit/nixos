@@ -242,5 +242,8 @@
 ;; Language-specific
 (hi :texCmd :Function)
 
+(hi :leanGoalsAccomplishedSign :DiagnosticOk)
+(hi :leanUnsolvedGoals :DiagnosticError)
+
 
 (when (vim.fn.exists :syntax_on) (vim.cmd.syntax :reset))
