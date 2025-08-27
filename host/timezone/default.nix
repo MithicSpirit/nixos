@@ -23,9 +23,6 @@
         '';
       in
       "${waitnet}";
-    serviceConfig = {
-      TimeoutStartSec = 60;
-    };
   };
 
   nixpkgs.overlays = [

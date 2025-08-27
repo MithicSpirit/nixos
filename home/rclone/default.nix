@@ -46,8 +46,7 @@
               '';
             in
             "${waitnet}";
-          TimeoutStartSec = 60;
-          ExecStart = "'${config.xdg.userDirs.documents}/school/rclone-sync'";
+          ExecStart = "'${config.xdg.userDirs.documents}/school/rclone-sync' --log-systemd";
         };
       };
     };
