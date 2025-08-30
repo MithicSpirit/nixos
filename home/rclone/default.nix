@@ -1,7 +1,6 @@
 {
   pkgs,
   config,
-  lib,
   ...
 }:
 {
@@ -35,17 +34,7 @@
         };
         Service = {
           Type = "oneshot";
-          ExecStartPre =
-            let
-              curl = lib.getExe pkgs.curl;
-              sleep = lib.getExe' pkgs.coreutils "sleep";
-              waitnet = pkgs.writeShellScript "waitnet" ''
-                while ! ${curl} -fsSLm 10 --connect-timeout 2 -o /dev/null 'https://example.com'
-                do ${sleep} 1
-                done
-              '';
-            in
-            "${waitnet}";
+          ExecStartPre = "${pkgs.wait-for-internet}";
           ExecStart = "'${config.xdg.userDirs.documents}/school/rclone-sync' --log-systemd";
         };
       };

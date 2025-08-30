@@ -3,71 +3,33 @@
   lib,
   buildNpmPackage,
   fetchFromGitHub,
-  fetchzip,
   darwin,
-  unzip,
   ttfautohint-nox,
-  python3,
-  fontforge,
-  moreutils,
 }:
-let
-  version = "33.2.8";
-  patcher-version = "3.4.0";
-
-  iosevka = fetchFromGitHub {
-    owner = "be5invis";
-    repo = "iosevka";
-    tag = "v${version}";
-    hash = "sha256-rHkIvfS20A0cvFBcLfFLAvcVVF5BgbtMdDxMvwH0B+I=";
-    name = "iosevka";
-  };
-  npmDepsHash = "sha256-PYzNg5gduwtwc99GyatXnmHCh9mpAulz43Ehdle0rAM=";
-
-  patcher = fetchzip {
-    url = "https://github.com/ryanoasis/nerd-fonts/releases/download/v${patcher-version}/FontPatcher.zip";
-    hash = "sha256-koZj0Tn1HtvvSbQGTc3RbXQdUU4qJwgClOVq1RXW6aM=";
-    stripRoot = false;
-    name = "patcher";
-  };
-
-  build-plans = ./build-plans.toml;
-in
-buildNpmPackage {
-  inherit version npmDepsHash;
-
+buildNpmPackage (finalAttrs: {
   pname = "iosevka-mithic";
 
-  srcs = [
-    iosevka
-    patcher
-  ];
+  version = "33.2.8";
 
-  sourceRoot = "./${iosevka.name}";
+  src = fetchFromGitHub {
+    owner = "be5invis";
+    repo = "iosevka";
+    tag = "v${finalAttrs.version}";
+    hash = "sha256-rHkIvfS20A0cvFBcLfFLAvcVVF5BgbtMdDxMvwH0B+I=";
+  };
+
+  npmDepsHash = "sha256-PYzNg5gduwtwc99GyatXnmHCh9mpAulz43Ehdle0rAM=";
 
   nativeBuildInputs = [
-    unzip
     ttfautohint-nox
-    python3
-    fontforge
-    moreutils
   ]
   ++ lib.optionals stdenv.isDarwin [
     darwin.cctools # libtool
   ];
 
-  patchPhase = ''
-    runHook prePatch
-    cp -r "../${patcher.name}" patcher #" # (fix syntax highlighting)
-    chmod -R u+w patcher
-    sed -i 's/\( *\)def setup_font_names(.*):/&\n\1    return/' \
-      patcher/font-patcher
-    runHook postPatch
-  '';
-
   configurePhase = ''
     runHook preConfigure
-    cp "${build-plans}" "./private-build-plans.toml" #" #
+    cp "${./build-plans.toml}" "./private-build-plans.toml" #" #
     runHook postConfigure
   '';
 
@@ -77,15 +39,12 @@ buildNpmPackage {
     npm run build --no-update-notifier --targets ttf::IosevkaMithic \
       -- --jCmd=$NIX_BUILD_CORES --verbose=9 \
       | cat  # clean up output
-    parallel -j $NIX_BUILD_CORES \
-      python patcher/font-patcher --mono --complete --careful -- \
-      dist/IosevkaMithic/TTF/*.ttf
     runHook postBuild
   '';
 
   installPhase = ''
     runHook preInstall
-    install -Dt "$out/share/fonts/truetype" -m644 *.ttf
+    install -Dt "$out/share/fonts/truetype" -m644 dist/IosevkaMithic/TTF/*.ttf
     runHook postInstall
   '';
 
@@ -107,4 +66,4 @@ buildNpmPackage {
     platforms = platforms.all;
     maintainers = [ maintainers.mithicspirit ];
   };
-}
+})

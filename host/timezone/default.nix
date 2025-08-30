@@ -12,17 +12,7 @@
     timer.enable = true;
   };
   systemd.services."tzupdate" = {
-    preStart =
-      let
-        curl = lib.getExe pkgs.curl;
-        sleep = lib.getExe' pkgs.coreutils "sleep";
-        waitnet = pkgs.writeShellScript "waitnet" ''
-          while ! ${curl} -fsSLm 10 --connect-timeout 2 -o /dev/null 'https://example.com'
-          do ${sleep} 1
-          done
-        '';
-      in
-      "${waitnet}";
+    preStart = "${pkgs.wait-for-internet}";
   };
 
   nixpkgs.overlays = [

@@ -13,6 +13,7 @@ in
     path-of-building
     exiled-exchange-2
     protonup-qt
+    protonplus
   ];
 
   programs.mangohud = {
