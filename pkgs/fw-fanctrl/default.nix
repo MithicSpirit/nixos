@@ -19,6 +19,10 @@ python3Packages.buildPythonApplication {
   };
 
   patches = [ ./criticalTemp.patch ];
+  postPatch = ''
+    substituteInPlace pyproject.toml \
+      --replace-fail '"jsonschema~=4.23.0"' '"jsonschema~=4.23"'
+  '';
 
   pyproject = true;
 

@@ -261,16 +261,16 @@
 
   programs.nano.enable = false;
 
-  services.logind = rec {
-    powerKey = suspendKey;
-    powerKeyLongPress = "poweroff";
-    lidSwitch = suspendKey;
+  services.logind.settings.Login = rec {
+    HandlePowerKey = HandleSuspendKey;
+    HandlePowerKeyLongPress = "poweroff";
+    HandleLidSwitch = HandleSuspendKey;
 
-    suspendKey = "suspend-then-hibernate";
-    suspendKeyLongPress = hibernateKey;
+    HandleSuspendKey = "suspend-then-hibernate";
+    HandleSuspendKeyLongPress = HandleHibernateKey;
 
-    hibernateKey = "hibernate";
-    hibernateKeyLongPress = suspendKey;
+    HandleHibernateKey = "hibernate";
+    HandleHibernateKeyLongPress = HandleSuspendKey;
   };
 
   systemd.sleep.extraConfig = ''

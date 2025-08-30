@@ -1,28 +1,13 @@
 final: prev: {
 
-  gamemode = prev.gamemode.overrideAttrs (prevAttrs: {
-
-    version = "${prevAttrs.version}-mithic";
-    __intentionallyOverridingVersion = true;
-
-    patches = (prevAttrs.patches or [ ]) ++ [
-      (final.fetchpatch {
-        name = "platform-profile";
-        url = "https://github.com/FeralInteractive/gamemode/compare/1d9c1e6a72355dc2fc2947961489ad4d95375fb4..fb7776764be3ad071e6a1ed4bfa55ec9fc22a23d.diff";
-        hash = "sha256-nQ7XPY/8uztBP30xfAXhLYsh1U7vH6nThYb4+rfxGHM=";
-      })
-      (final.fetchpatch {
-        name = "platform-profile-fix";
-        url = "https://github.com/FeralInteractive/gamemode/commit/01c1e80c96d41a16306223fed55a2ee1af30fc99.diff";
-        hash = "sha256-oSno9uo5hHYH9Bff8HP74YBcnSBiSu6DMbX+Bji9aII=";
-      })
-      (final.fetchpatch {
-        name = "restart";
-        url = "https://github.com/FeralInteractive/gamemode/commit/056af542dd7538c94df01f915123bd3d19e89bab.diff";
-        hash = "sha256-hMBjgrhexakRpWhEE9y3svWSt28S70+/Pl74rB8WJAs=";
-      })
-    ];
-
-  });
+  gamemode = prev.gamemode.overrideAttrs {
+    version = "1.8.2_r18_g4ce5f21";
+    src = final.fetchFromGitHub {
+      owner = "FeralInteractive";
+      repo = "gamemode";
+      rev = "4ce5f2193a12766046ba9261da02429e8af72cf3";
+      hash = "sha256-qf3Co5ASR65jEcQqCY/mt3bzQ7z6vKXXh7hrBhJ5EvA=";
+    };
+  };
 
 }
