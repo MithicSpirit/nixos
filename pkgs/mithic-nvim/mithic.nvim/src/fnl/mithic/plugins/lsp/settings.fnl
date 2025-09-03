@@ -6,7 +6,7 @@
  ;   {:settings {:fennel {:workspace
  ;                          {:library (vim.api.nvim_list_runtime_paths)}
  ;                        :diagnostics {:globals [:vim]}}}}
- :fennel_ls {:settings {:fennel-ls {:extra-globals :vim}}}
+ :fennel_ls {}
 
  :clangd {}
  :hls {}

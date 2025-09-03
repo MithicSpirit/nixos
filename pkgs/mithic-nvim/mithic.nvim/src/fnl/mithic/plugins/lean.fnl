@@ -6,5 +6,7 @@
 (vim.api.nvim_create_autocmd :FileType
   {:pattern [:lean :lean3]
    :callback
-   #(vim.keymap.set :n "<LocalLeader>s" (_G.cmd "LeanSorryFill") {:buffer true})
+   (fn []
+     (vim.keymap.set :n "<LocalLeader>s" (_G.cmd "LeanSorryFill") {:buffer true})
+     (set vim.opt_local.comments "s0:/-,mb: ,ex:-/,:--"))
    :group (vim.api.nvim_create_augroup :mithic-lean {})})

@@ -32,3 +32,5 @@
 {\thetitle.}{0pt}{}
 
 \allowdisplaybreaks{}
+
+\newcommand{\due}[3]{\year=#1 \month=#2 \day=#3 \date{Due: \today}}

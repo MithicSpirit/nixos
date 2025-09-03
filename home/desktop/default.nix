@@ -5,6 +5,7 @@
     # utils
     bitwarden-desktop
     gimp3
+    inkscape
     gnome-characters
     vlc
 
