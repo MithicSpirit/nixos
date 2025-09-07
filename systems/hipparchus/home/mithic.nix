@@ -18,7 +18,7 @@
     /mpv
     /neovim
     /newsboat
-    /sway
+    /hyprland # or sway
     /xdg
     /zathura
     /cliphist
@@ -50,14 +50,25 @@
     # use-xdg-base-directories = true;
   };
 
-  wayland.windowManager.sway.extraConfig = ''
-    output eDP-2 {
-      mode 2560x1600@165Hz
-      scale 1.25
-      adaptive_sync on
-      color_profile icc ${../BOE_CQ_NE160QDM-NZ6-icc-profile.icm}
-    }
-  '';
+  wayland.windowManager = {
+    sway.extraConfig = ''
+      output eDP-2 {
+        mode 2560x1600@165Hz
+        scale 1.25
+        adaptive_sync on
+        color_profile icc ${../BOE_CQ_NE160QDM-NZ6-icc-profile.icm}
+      }
+    '';
+    hyprland.settings.monitorv2 = [
+      {
+        output = "eDP-2";
+        mode = "2560x1600@165";
+        position = "0x0";
+        scale = 1.25;
+        vrr = 1;
+      }
+    ];
+  };
 
   systemd.user.sessionVariables = config.home.sessionVariables;
   home.file.".profile" = {

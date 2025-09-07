@@ -67,4 +67,5 @@ in
 {
   raw = palette;
   hash = builtins.mapAttrs (_: raw: "#${raw}") palette;
+  rgb = builtins.mapAttrs (_: raw: "rgb(${raw})") palette;
 }

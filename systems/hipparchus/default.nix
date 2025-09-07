@@ -44,7 +44,7 @@
     /keyd
     /bluetooth
     /tlp # or ppd
-    /sway
+    # /sway (hyprland)
     /amdgpu
     /fw-fanctrl
     /zswap # or zram

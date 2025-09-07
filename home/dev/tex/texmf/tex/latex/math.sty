@@ -150,6 +150,33 @@
 \let\lmorph\xleftarrow
 
 \newcommand{\nodisplaytop}{\strut\nopagebreak\vspace{-\baselineskip-\abovedisplayskip}}
+\newcommand{\displaymerge}{\strut\nopagebreak\vspace{-\belowdisplayskip-\baselineskip-\abovedisplayskip}}
+
+\newcommand{\bra@nostar}[2][]{
+  \ifx#1\empty \langle #2 \rvert % chktex 1
+  \else \csname #1l \endcsname\langle #2 \csname #1r \endcsname\rvert \fi} % chktex 1
+\newcommand{\bra@star}[1]{\left\langle #1 \right\rvert} % chktex 1
+\newcommand{\bra}{\@ifstar{\bra@star}{\bra@nostar}}
+
+\newcommand{\ket@nostar}[2][]{
+  \ifx#1\empty \lvert #2 \rangle % chktex 1
+  \else \csname #1l \endcsname\lvert #2 \csname #1r \endcsname\rangle \fi} % chktex 1
+\newcommand{\ket@star}[1]{\left\lvert #1 \right\rangle} % chktex 1
+\newcommand{\ket}{\@ifstar{\ket@star}{\ket@nostar}}
+
+\ifluatex
+  \def\@middlemid{\Umiddle class 3 \vert} % chktex 1
+\else
+  \def\@middlemid{\mathrel{}\middle\vert\mathrel{}}
+\fi
+
+\newcommand{\braket@nostar}[3][]{
+  \ifx#1\empty \langle #2 \mid #3 \rangle % chktex 1
+  \else \csname #1l \endcsname\langle #2 \csname #1m \endcsname\vert #3 %chktex 1
+  \csname #1r \endcsname\rangle \fi} % chktex 1
+\newcommand{\braket@star}[2]{\left\langle #1 \@middlemid #2 \right\rangle} % chktex 1
+\newcommand{\braket}{\@ifstar{\braket@star}{\braket@nostar}}
+
 
 \let\phantom@nostar\phantom  % chktex 1
 \newcommand{\phantom@star}[1]{\phantom@nostar{{}#1{}}}
@@ -157,7 +184,7 @@
 \newcommand{\phantomeq}{\phantom*{=}}
 
 \let\qedhere@nostar\qedhere
-\renewcommand{\qedhere}{\@ifstar{\\&\notag\qedhere@nostar}{\qedhere@nostar}}
+\renewcommand{\qedhere}{\@ifstar{\tag*{\qedhere@nostar}}{\qedhere@nostar}}
 
 \let\sqrt@nostar\sqrt  % chktex 1
 \newcommand{\sqrt@star}[1]{\sqrt@nostar{\textstyle{#1}}}
