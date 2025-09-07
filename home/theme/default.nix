@@ -32,14 +32,11 @@
       package = pkgs.kdePackages.breeze-gtk;
       name = "Breeze";
     };
+    colorScheme = "dark";
 
     gtk2.extraConfig = ''
       gtk-application-prefer-dark-theme = 1
     '';
-    gtk3.extraConfig = {
-      gtk-application-prefer-dark-theme = true;
-    };
-    gtk4.extraConfig = config.gtk.gtk3.extraConfig;
 
     gtk2.configLocation = "${config.xdg.configHome}/gtk-2.0/gtkrc";
   };
