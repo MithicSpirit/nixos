@@ -88,5 +88,5 @@
     '';
   };
 
-  xdg.mimeApps.defaultApplications."application/pdf" = "zathura.desktop";
+  xdg.mimeApps.defaultApplications."application/pdf" = "org.pwmt.zathura.desktop";
 }

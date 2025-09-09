@@ -79,7 +79,10 @@ in
 
       group = {
         auto_group = true;
-        drag_into_group = 1;
+        drag_into_group = 2; # groupbar
+        merge_groups_on_drag = false;
+        merge_groups_on_groupbar = true;
+        merge_floated_into_tiled_on_groupbar = true;
         group_on_movetoworkspace = true;
         "col.border_inactive" = colors.rgb.bg;
         "col.border_active" = colors.rgb.accent;
@@ -89,9 +92,9 @@ in
         groupbar = {
           enabled = true;
           rounding = 0;
-          gaps_out = 3;
-          gaps_in = 3;
-          indicator_height = 5;
+          gaps_out = 4;
+          gaps_in = 5;
+          indicator_height = 8;
           keep_upper_gap = false;
 
           render_titles = false;
@@ -105,7 +108,6 @@ in
           "col.active" = colors.rgb.accent;
           "col.locked_inactive" = colors.rgb.warning;
           "col.locked_active" = colors.rgb.good;
-          # TODO
         };
       };
 
@@ -119,12 +121,14 @@ in
         new_window_takes_over_fullscreen = 1;
         exit_window_retains_fullscreen = true;
         render_unfocused_fps = 3;
+        lockdead_screen_delay = 2000;
+        enable_anr_dialog = true;
+        anr_missed_pings = 3;
       };
 
       binds = {
-        workspace_back_and_forth = true;
-
-        # movefocus_cycles_fullscreen
+        workspace_back_and_forth = false;
+        movefocus_cycles_fullscreen = true; # TODO?
       };
 
       xwayland = {
@@ -151,8 +155,8 @@ in
       ];
 
       windowrule = [
-        "group, group:0" # automatically group all windows
-        "prop xray 1, fullscreen:1" # hide bar in transparent fullscreen windows
+        "group set always, group:0" # automatically group all windows
+        "opacity 0.6, tag:dragging, floating:1" # see underneath when dragging
         # pin
         "pin, class:dragon-drop, title:dragon"
         "pin, class:librewolf, title:Picture-in-Picture"
@@ -164,6 +168,8 @@ in
         "renderunfocused, xdgtag:proton-game"
         "immediate, content:game" # allow tearing
         "immediate, xdgtag:proton-game"
+        "group override barred, content:game" # don't auto group
+        "group override barred, xdgtag:proton-game"
         "content game, xdgtag:proton-game" # TODO: probably doesn't work
         "content game, initialClass:steam_app_.*"
         "content game, initialClass:warframe.x64.exe"
@@ -172,11 +178,11 @@ in
       ];
 
       exec-once = [
-        "[workspace 1 silent; fullscreen] ${config.home.sessionVariables.TERMINAL} --class btop --title btop -e btop"
-        "[workspace 2 silent; group] thunderbird"
-        "[workspace 3 silent; group] org.signal.Signal"
-        "[workspace 4 silent; group] dev.vencord.Vesktop"
-        "[workspace 5 silent; group] im.riot.Riot"
+        "[workspace 1; fullscreen] ${config.home.sessionVariables.TERMINAL} --class btop --title btop -e btop"
+        "[workspace 2 silent] thunderbird"
+        "[workspace 3 silent] org.signal.Signal"
+        "[workspace 4] dev.vencord.Vesktop" # breaks on silent
+        "[workspace 5] im.riot.Riot" # breaks on silent
       ];
 
       workspace = lib.mapAttrsToList (
@@ -194,7 +200,7 @@ in
         "XDG_SESSION_DESKTOP,Hyprland"
 
         "GDK_BACKEND,wayland,x11,*"
-        "SDL_VIDEODRIVER,wayland"
+        "SDL_VIDEODRIVER,wayland,x11"
         "CLUTTER_BACKEND,wayland"
 
         "QT_QPA_PLATFORM,wayland;xcb"
@@ -210,10 +216,10 @@ in
           scrot = "\"$XDG_PICTURES_DIR/screenshots/$(date +%Y-%m-%d_%H-%M-%S.%N).png\"";
         in
         [
-          "$mod, Return, exec, bemenu-run -p Run >/tmp/exec.log 2>&1"
-          "$mod SHIFT, Return, exec, ${config.home.sessionVariables.TERMINAL} >/tmp/exec.log 2>&1"
-          "$mod CONTROL, Return, exec, ${config.home.sessionVariables.BROWSER} >/tmp/exec.log 2>&1"
-          "$mod CONTROL SHIFT, Return, exec, bemenu -p hyprctl </dev/null | xargs hyprctl"
+          "$mod, Return, execr, bemenu-run -p Run >/tmp/exec.log 2>&1"
+          "$mod SHIFT, Return, execr, ${config.home.sessionVariables.TERMINAL} >/tmp/exec.log 2>&1"
+          "$mod CONTROL, Return, execr, ${config.home.sessionVariables.BROWSER} >/tmp/exec.log 2>&1"
+          "$mod CONTROL SHIFT, Return, execr, bemenu -p hyprctl </dev/null | xargs hyprctl"
 
           # TODO: better keybinds for groups
           "$mod, j, layoutmsg, cyclenext"
@@ -235,7 +241,7 @@ in
           # "$mod CONTROL, j, togglegroup"
           # "$mod CONTROL, k, layoutmsg, mfact exact 0.5"
 
-          "$mod, o, moveoutofgroup, active"
+          "$mod, o, moveoutofgroup"
           "$mod SHIFT, o, lockactivegroup, toggle"
           "$mod CONTROL, o, togglegroup"
           "$mod SHIFT CONTROL, o, lockgroups, lock"
@@ -243,32 +249,45 @@ in
           "$mod, z, fullscreen, 0"
           "$mod SHIFT, z, togglefloating"
           "$mod CONTROL, z, fullscreen, 1"
+
+          "$mod, mouse:272, moveoutofgroup"
           "$mod SHIFT, mouse:272, setfloating"
 
+          "$mod, mouse:272, tagwindow, +dragging"
+          "$mod SHIFT, mouse:272, tagwindow, +dragging"
+          "$mod CONTROL, mouse:272, tagwindow, +dragging"
+          "$mod, mouse:273, tagwindow, +dragging"
+          "$mod SHIFT, mouse:273, tagwindow, +dragging"
+          "$mod CONTROL, mouse:273, tagwindow, +dragging"
+
           "$mod SHIFT, x, killactive"
-          "$mod CONTROL, x, exec, loginctl lock-session"
-          "$mod CONTROL SHIFT, x, exec, ${./power-menu.sh}"
+          "$mod CONTROL, x, execr, loginctl lock-session"
+          "$mod CONTROL SHIFT, x, execr, ${./power-menu.sh}"
           # "$mod CONTROL SHIFT, x, exit"
 
-          "$mod, v, exec, bemenu-cliphist"
-          "$mod SHIFT, v, exec, cliphist list | bemenu -p Delete -cl -W 0.5 | cliphist delete"
-          "$mod CONTROL SHIFT, v, exec, wl-copy -c; cliphist wipe"
+          "$mod, v, execr, bemenu-cliphist"
+          "$mod SHIFT, v, execr, cliphist list | bemenu -p Delete -cl -W 0.5 | cliphist delete"
+          "$mod CONTROL SHIFT, v, execr, wl-copy -c; cliphist wipe"
 
-          "$mod, u, exec, ="
-          "$mod SHIFT, u, exec, pcmanfm"
-          "$mod CONTROL, u, exec, clipbrowse"
+          "$mod, u, execr, ="
+          "$mod SHIFT, u, execr, pcmanfm"
+          "$mod CONTROL, u, execr, clipbrowse"
 
-          "$mod, p, exec, ${grimblast} --cursor copysave screen ${scrot}"
-          "$mod SHIFT, p, exec, ${grimblast} copysave area ${scrot}"
-          "$mod CONTROL, p, exec, ${grimblast} --cursor copysave output ${scrot}"
+          "$mod, p, execr, ${grimblast} --cursor copysave screen ${scrot}"
+          "$mod SHIFT, p, execr, ${grimblast} copysave area ${scrot}"
+          "$mod CONTROL, p, execr, ${grimblast} --cursor copysave output ${scrot}"
 
+          # TODO: dunst bindings
           # TODO: disable touchpad
         ]
         ++ builtins.concatLists (
           lib.mapAttrsToList (name: id: [
             "$mod, ${name}, workspace, ${id}"
+            "$mod SHIFT, ${name}, moveoutofgroup"
             "$mod SHIFT, ${name}, movetoworkspace, ${id}"
+            "$mod CONTROL, ${name}, moveoutofgroup"
             "$mod CONTROL, ${name}, movetoworkspacesilent, ${id}"
+            "$mod CONTROL SHIFT, ${name}, movetoworkspace, ${id}"
           ]) workspaces
         );
 
@@ -278,27 +297,37 @@ in
       ];
 
       bindl = [
-        ", XF86AudioPlay, exec, playerctl play-pause"
-        ", XF86AudioPause, exec, playerctl pause --all-players"
-        ", XF86AudioPrev, exec, playerctl previous"
-        ", XF86AudioNext, exec, playerctl next"
-        ", XF86AudioStop, exec, playerctl stop --all-players"
-        ", XF86AudioMute, exec, wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"
-        ", XF86AudioMicMute, exec, wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle"
+        ", XF86AudioPlay, execr, playerctl play-pause"
+        ", XF86AudioPause, execr, playerctl pause --all-players"
+        ", XF86AudioPrev, execr, playerctl previous"
+        ", XF86AudioNext, execr, playerctl next"
+        ", XF86AudioStop, execr, playerctl stop --all-players"
+        ", XF86AudioMute, execr, wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"
+        ", XF86AudioMicMute, execr, wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle"
       ];
       bindel = [
-        ", XF86AudioRaiseVolume, exec, wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%+"
-        ", XF86AudioLowerVolume, exec, wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-"
+        ", XF86AudioRaiseVolume, execr, wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%+"
+        ", XF86AudioLowerVolume, execr, wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-"
         # what was the thing other than brightnessctl?
-        ", XF86MonBrightnessUp, exec, brightnessctl -e set 2%+"
-        ", XF86MonBrightnessDown, exec, brightnessctl -e set 2%-"
-        "SHIFT, XF86MonBrightnessUp, exec, brightnessctl -e set 10%+"
-        "SHIFT, XF86MonBrightnessDown, exec, brightnessctl -e set 10%-"
+        ", XF86MonBrightnessUp, execr, brightnessctl -e set 2%+"
+        ", XF86MonBrightnessDown, execr, brightnessctl -e set 2%-"
+        "SHIFT, XF86MonBrightnessUp, execr, brightnessctl -e set 10%+"
+        "SHIFT, XF86MonBrightnessDown, execr, brightnessctl -e set 10%-"
+      ];
+
+      bindr = [
+        "$mod, mouse:272, tagwindow, -dragging"
+        "$mod SHIFT, mouse:272, tagwindow, -dragging"
+        "$mod CONTROL, mouse:272, tagwindow, -dragging"
+        "$mod, mouse:273, tagwindow, -dragging"
+        "$mod SHIFT, mouse:273, tagwindow, -dragging"
+        "$mod CONTROL, mouse:273, tagwindow, -dragging"
       ];
 
       bindm = [
         "$mod, mouse:272, movewindow"
         "$mod SHIFT, mouse:272, movewindow"
+        "$mod CONTROL, mouse:272, movewindow"
         "$mod, mouse:273, resizewindow"
         "$mod SHIFT, mouse:273, resizewindow 2"
         "$mod CONTROL, mouse:273, resizewindow 1"
@@ -361,8 +390,8 @@ in
         general = {
           lock_cmd = "if ! pidof -q hyprlock; then hyprlock; hyprctl dispatch dpms on; brightnessctl -r; fi";
           unlock_cmd = "killall -USR1 hyprlock";
-          on_lock_cmd = "dunsctl set-paused true";
-          on_unlock_cmd = "dunsctl set-paused false";
+          on_lock_cmd = "dunstctl set-paused true";
+          on_unlock_cmd = "dunstctl set-paused false";
           before_sleep_cmd = "loginctl lock-session";
           after_sleep_cmd = "hyprctl dispatch dpms on";
 

@@ -1,4 +1,9 @@
-{ config, pkgs, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
 let
   home = config.home.homeDirectory;
   xdg = config.xdg;
@@ -32,14 +37,30 @@ in
     mime.enable = true;
     mimeApps = {
       enable = true;
-      # TODO
-      defaultApplications = {
-        "images/png" = "swayimg.desktop";
-        "images/jpg" = "swayimg.desktop";
-        "images/webp" = "swayimg.desktop";
-        "images/svg+xml" = "swayimg.desktop";
-        "images/jpeg" = "swayimg.desktop";
-      };
+      # TODO: swayimg module
+      defaultApplications = lib.genAttrs [
+        "image/avif"
+        "image/bmp"
+        "image/gif"
+        "image/heif"
+        "image/jpeg"
+        "image/jpg"
+        "image/pbm"
+        "image/pjpeg"
+        "image/png"
+        "image/svg+xml"
+        "image/tiff"
+        "image/webp"
+        "image/x-bmp"
+        "image/x-exr"
+        "image/x-png"
+        "image/x-portable-anymap"
+        "image/x-portable-bitmap"
+        "image/x-portable-graymap"
+        "image/x-portable-pixmap"
+        "image/x-targa"
+        "image/x-tga"
+      ] (_: "swayimg.desktop");
     };
 
     # More portal options set in particular DE

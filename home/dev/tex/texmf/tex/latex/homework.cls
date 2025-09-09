@@ -3,7 +3,16 @@
 \NeedsTeXFormat{LaTeX2e}
 \ProvidesClass{homework}[Personal package for typesetting homework]
 
-\LoadClass[11pt,titlepage]{article}
+\newif\if@sparse \@sparsetrue
+\DeclareOption{sparse}{\@sparsetrue}
+\DeclareOption{dense}{\@sparsefalse}
+\DeclareOption*{\PassOptionsToClass{\CurrentOption}{article}}
+\ProcessOptions\relax
+
+\if@sparse \PassOptionsToClass{titlepage}{article} \fi
+
+\LoadClass[11pt]{article}
+
 
 \RequirePackage{lmodern}
 \RequirePackage{microtype}
@@ -19,7 +28,12 @@
 \hypersetup{colorlinks=true,bookmarksnumbered}
 \mathtoolsset{showonlyrefs,showmanualtags}
 
-\newcommand{\sectionbreak}{\clearpage}
+\if@sparse
+  \newcommand{\sectionbreak}{\clearpage}
+\else
+  \newcommand{\sectionbreak}{\pagebreak[1]}
+\fi
+
 \renewcommand{\thesection}{\arabic{section}}
 \renewcommand{\thesubsection}{\alph{subsection}}
 \renewcommand{\thesubsubsection}{\roman{subsubsection}}
