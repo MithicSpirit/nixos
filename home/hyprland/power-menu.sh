@@ -1,6 +1,8 @@
 #!/usr/bin/env sh
 set -euo pipefail
 
+trap '' INT HUP TERM QUIT
+
 case "$(bemenu -p 'Power' -cl 9 -W 0.2 <<__EOF__
 1. Lock
 2. Screen Off
@@ -16,7 +18,8 @@ __EOF__
 	*"Lock") loginctl lock-session ;;
 	*"Screen Off")
 		loginctl lock-session
-		sleep 2; hyprctl dispatch dpms off ;;
+		sleep 5; hyprctl dispatch dpms off
+		;;
 	*"Reload") hyprctl reload ;;
 	*"Suspend") sleep 2; systemctl suspend-then-hibernate ;;
 	*"Hibernate") sleep 2; systemctl hibernate ;;
@@ -24,7 +27,10 @@ __EOF__
 	*"Log Off")
 		systemctl --user exit
 		sleep 1; hyprctl dispatch exit
-		sleep 1; killall -u mithic ;;
+		sleep 1; killall -HUP -u mithic
+		sleep 1; killall -TERM -u mithic
+		sleep 1; killall -KILL -u mithic
+		;;
 	*"Reboot") systemctl reboot ;;
 	*"Power Off") systemctl poweroff ;;
 	*) exit 1 ;;
