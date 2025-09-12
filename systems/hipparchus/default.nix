@@ -163,6 +163,7 @@
       usbutils
       busybox
       procps
+      psmisc
       comma
       nvd
       nh

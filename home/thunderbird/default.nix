@@ -12,6 +12,7 @@
         "mailnews.wraplength" = 0; # use external editor
         "general.smoothScroll.mouseWheel" = false;
         "mail.serverDefaultStoreContractID" = "@mozilla.org/msgstore/maildirstore;1";
+        "mail.identity.default.archive_granularity" = 0;
       };
       extraConfig = "";
     };

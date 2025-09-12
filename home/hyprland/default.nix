@@ -44,9 +44,9 @@ in
         gaps_in = 2;
         gaps_out = 4;
         "col.inactive_border" = colors.rgb.bg;
-        "col.active_border" = colors.rgb.accent;
-        "col.nogroup_border" = colors.rgb.bad;
-        "col.nogroup_border_active" = colors.rgb.strange;
+        "col.active_border" = colors.rgb.colored;
+        "col.nogroup_border" = colors.rgb.bg;
+        "col.nogroup_border_active" = colors.rgb.good;
       };
 
       decoration = {
@@ -86,15 +86,15 @@ in
         group_on_movetoworkspace = true;
         "col.border_inactive" = colors.rgb.bg;
         "col.border_active" = colors.rgb.accent;
-        "col.border_locked_inactive" = colors.rgb.warning;
-        "col.border_locked_active" = colors.rgb.good;
+        "col.border_locked_inactive" = colors.rgb.bg;
+        "col.border_locked_active" = colors.rgb.warning;
 
         groupbar = {
           enabled = true;
           rounding = 0;
           gaps_out = 4;
-          gaps_in = 5;
-          indicator_height = 8;
+          gaps_in = 4;
+          indicator_height = 6;
           keep_upper_gap = false;
 
           render_titles = false;
@@ -107,7 +107,7 @@ in
           "col.inactive" = colors.rgb.bg;
           "col.active" = colors.rgb.accent;
           "col.locked_inactive" = colors.rgb.warning;
-          "col.locked_active" = colors.rgb.good;
+          "col.locked_active" = colors.rgb.accent;
         };
       };
 
@@ -116,7 +116,7 @@ in
         disable_splash_rendering = true;
         font_family = "Sans";
         force_default_wallpaper = 0;
-        vrr = 1;
+        vrr = 2;
         disable_autoreload = true;
         new_window_takes_over_fullscreen = 1;
         exit_window_retains_fullscreen = true;
@@ -141,6 +141,11 @@ in
         new_render_scheduling = true;
       };
 
+      cursor = {
+        no_hardware_cursors = 0;
+        enable_hyprcursor = false; # TODO: find theme
+      };
+
       ecosystem = {
         no_update_news = true;
         no_donation_nag = true;
@@ -155,26 +160,31 @@ in
       ];
 
       windowrule = [
-        "group set always, group:0" # automatically group all windows
-        "opacity 0.6, tag:dragging, floating:1" # see underneath when dragging
         # pin
         "pin, class:dragon-drop, title:dragon"
         "pin, class:librewolf, title:Picture-in-Picture"
         # float
         "float, class:qalculate-gtk"
         "float, class:xdg-desktop-portal"
-        # games
-        "renderunfocused, content:game" # don't lag in bg
-        "renderunfocused, xdgtag:proton-game"
-        "immediate, content:game" # allow tearing
-        "immediate, xdgtag:proton-game"
-        "group override barred, content:game" # don't auto group
-        "group override barred, xdgtag:proton-game"
+        "float, class:Matplotlib"
+        "float, class:steam, initialTitle:negative:Steam"
+        # setup games
         "content game, xdgtag:proton-game" # TODO: probably doesn't work
         "content game, initialClass:steam_app_.*"
         "content game, initialClass:warframe.x64.exe"
         "content game, initialClass:pathofexilesteam.exe"
         "content game, initialClass:exefile.exe" # eve
+        # game effects
+        "renderunfocused, content:game" # don't lag in bg
+        "renderunfocused, xdgtag:proton-game"
+        "immediate, content:game" # allow tearing
+        "immediate, xdgtag:proton-game"
+        "group override barred, content:game"
+        "group override barred, xdgtag:proton-game"
+        # misc
+        "group override barred, floating:1" # don't group floats
+        "group set always, group:0, floating:0" # group most windows
+        "opacity 0.6, tag:dragging, floating:1" # see underneath when dragging
       ];
 
       exec-once = [
@@ -243,8 +253,8 @@ in
 
           "$mod, o, moveoutofgroup"
           "$mod SHIFT, o, lockactivegroup, toggle"
-          "$mod CONTROL, o, togglegroup"
-          "$mod SHIFT CONTROL, o, lockgroups, lock"
+          "$mod SHIFT, o, denywindowfromgroup, toggle"
+          "$mod CONTROL SHIFT, o, togglegroup"
 
           "$mod, z, fullscreen, 0"
           "$mod SHIFT, z, togglefloating"

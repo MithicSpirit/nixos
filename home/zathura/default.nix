@@ -21,7 +21,7 @@
         window-title-home-tilde = true;
         window-title-basename = true;
         statusbar-home-tilde = true;
-        guioptions = "hv";
+        guioptions = "sv"; # TODO: hv not working
 
         recolor = true;
         recolor-keephue = true;
