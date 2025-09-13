@@ -171,6 +171,7 @@ in
         # setup games
         "content game, xdgtag:proton-game" # TODO: probably doesn't work
         "content game, initialClass:steam_app_.*"
+        "content game, initialClass:net-runelite-client-RuneLite"
         "content game, initialClass:warframe.x64.exe"
         "content game, initialClass:pathofexilesteam.exe"
         "content game, initialClass:exefile.exe" # eve
@@ -211,6 +212,7 @@ in
 
         "GDK_BACKEND,wayland,x11,*"
         "SDL_VIDEODRIVER,wayland,x11"
+        "SDL_AUDIODRIVER,pipewire,pulseaudio,pulse"
         "CLUTTER_BACKEND,wayland"
 
         "QT_QPA_PLATFORM,wayland;xcb"

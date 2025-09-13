@@ -10,22 +10,23 @@
   libXrandr,
   libXtst,
   libXt,
+  libxcb,
 }:
 let
   name = "exiled-exchange-2";
-  version = "0.10.3";
+  version = "0.12.2";
 
   src = fetchFromGitHub {
     owner = "Kvan7";
     repo = name;
     rev = "v${version}";
-    hash = "sha256-ZtyUhsqRE8qw0BFxSMEQDdtEmK4Vj2gYgkU2mBQb3Ls=";
+    hash = "sha256-PgbHTcRiy4+6PkU7uYJ9H4Ur3+cQbFf5Hej9r0/sjec=";
   };
 
   renderer = buildNpmPackage {
     inherit nodejs src version;
     pname = "exiled-exchange2-renderer";
-    npmDepsHash = "sha256-pUhRTb9iUuqCrB40Pb2eV3dOzESVnH6vc135VFFEelk=";
+    npmDepsHash = "sha256-rP3cUkOFkhuAtx6+/hbJlVdUFrbwq9cT8adsH7zDk+Q=";
 
     prePatch = "cd renderer";
     preBuild = "npm run make-index-files";
@@ -37,11 +38,17 @@ let
   };
 in
 buildNpmPackage {
-  inherit nodejs src version;
+  inherit
+    nodejs
+    src
+    version
+    renderer
+    ;
 
   pname = "exiled-exchange2";
 
-  npmDepsHash = "sha256-q2jbXyyJ4NPieK7m3baUYnDgNbKVcEHFLhTGd5ueRsk=";
+  npmDepsHash = "sha256-6BfDEcAvhoX6fB6lI6Gn8sfpSeEVM9n95nVrRQfz3XE=";
+  makeCacheWritable = true;
 
   nativeBuildInputs = [
     autoPatchelfHook
@@ -55,6 +62,7 @@ buildNpmPackage {
     libXrandr
     libXtst
     libXt
+    libxcb
   ];
 
   env = {
@@ -66,7 +74,7 @@ buildNpmPackage {
   prePatch = "cd main";
 
   postInstall = ''
-    ln -s ${renderer}/* $out/lib/node_modules/${name}/dist/
+    ln -s $renderer/* $out/lib/node_modules/${name}/dist/
     makeWrapper ${lib.getExe electron} $out/bin/${name} \
       --add-flags $out/lib/node_modules/${name}/dist/main.js \
       --add-flags "\''${NIXOS_OZONE_WL:+\''${WAYLAND_DISPLAY:+--ozone-platform-hint=auto --enable-features=WaylandWindowDecorations --enable-wayland-ime=true}}" \
