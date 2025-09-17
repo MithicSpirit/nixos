@@ -59,15 +59,21 @@
         color_profile icc ${../BOE_CQ_NE160QDM-NZ6-icc-profile.icm}
       }
     '';
-    hyprland.settings.monitorv2 = [
-      {
-        output = "eDP-2";
-        mode = "2560x1600@165";
-        position = "0x0";
-        scale = 1.25;
-        vrr = 1;
-      }
-    ];
+    hyprland.settings = {
+      monitorv2 = [
+        {
+          output = "eDP-2";
+          mode = "2560x1600@165";
+          position = "0x0";
+          scale = 1.25;
+          vrr = 1;
+        }
+      ];
+      workspace = [
+        "r[1], monitor:eDP-2, default:true"
+        "r[2-10], monitor:eDP-2"
+      ];
+    };
   };
 
   systemd.user.sessionVariables = config.home.sessionVariables;

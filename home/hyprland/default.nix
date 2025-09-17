@@ -44,9 +44,9 @@ in
         gaps_in = 2;
         gaps_out = 4;
         "col.inactive_border" = colors.rgb.bg;
-        "col.active_border" = colors.rgb.colored;
+        "col.active_border" = colors.rgb.strange;
         "col.nogroup_border" = colors.rgb.bg;
-        "col.nogroup_border_active" = colors.rgb.good;
+        "col.nogroup_border_active" = colors.rgb.colored;
       };
 
       decoration = {
@@ -87,7 +87,7 @@ in
         "col.border_inactive" = colors.rgb.bg;
         "col.border_active" = colors.rgb.accent;
         "col.border_locked_inactive" = colors.rgb.bg;
-        "col.border_locked_active" = colors.rgb.warning;
+        "col.border_locked_active" = colors.rgb.strange;
 
         groupbar = {
           enabled = true;
@@ -106,7 +106,7 @@ in
 
           "col.inactive" = colors.rgb.bg;
           "col.active" = colors.rgb.accent;
-          "col.locked_inactive" = colors.rgb.warning;
+          "col.locked_inactive" = colors.rgb.strange;
           "col.locked_active" = colors.rgb.accent;
         };
       };
@@ -137,7 +137,7 @@ in
       };
 
       render = {
-        direct_scanout = 1;
+        direct_scanout = 0; # breaks cursor in fullscreen
         new_render_scheduling = true;
       };
 
@@ -161,13 +161,16 @@ in
 
       windowrule = [
         # pin
+        "float, class:dragon-drop, title:dragon"
         "pin, class:dragon-drop, title:dragon"
+        "float, class:librewolf, title:Picture-in-Picture"
         "pin, class:librewolf, title:Picture-in-Picture"
         # float
         "float, class:qalculate-gtk"
         "float, class:xdg-desktop-portal"
         "float, class:Matplotlib"
         "float, class:steam, initialTitle:negative:Steam"
+        "float, class:librewolf, title:Library" # bookmarks
         # setup games
         "content game, xdgtag:proton-game" # TODO: probably doesn't work
         "content game, initialClass:steam_app_.*"
@@ -180,11 +183,11 @@ in
         "renderunfocused, xdgtag:proton-game"
         "immediate, content:game" # allow tearing
         "immediate, xdgtag:proton-game"
-        "group override barred, content:game"
-        "group override barred, xdgtag:proton-game"
+        "group override barred deny, content:game" # don't group
+        "group override barred deny, xdgtag:proton-game"
         # misc
-        "group override barred, floating:1" # don't group floats
-        "group set always, group:0, floating:0" # group most windows
+        "group override barred deny, floating:1" # don't group floats
+        "group set always, group:0, floating:0" # group all other windows
         "opacity 0.6, tag:dragging, floating:1" # see underneath when dragging
       ];
 
@@ -256,13 +259,18 @@ in
           "$mod, o, moveoutofgroup"
           "$mod SHIFT, o, lockactivegroup, toggle"
           "$mod SHIFT, o, denywindowfromgroup, toggle"
+          "$mod CONTROL SHIFT, o, denywindowfromgroup, off"
           "$mod CONTROL SHIFT, o, togglegroup"
 
           "$mod, z, fullscreen, 0"
-          "$mod SHIFT, z, togglefloating"
           "$mod CONTROL, z, fullscreen, 1"
+          "$mod CONTROL SHIFT, z, togglefloating"
+
+          "$mod SHIFT, z, moveoutofgroup"
+          "$mod SHIFT, z, togglefloating"
 
           "$mod, mouse:272, moveoutofgroup"
+          "$mod SHIFT, mouse:272, moveoutofgroup"
           "$mod SHIFT, mouse:272, setfloating"
 
           "$mod, mouse:272, tagwindow, +dragging"
@@ -275,7 +283,6 @@ in
           "$mod SHIFT, x, killactive"
           "$mod CONTROL, x, execr, loginctl lock-session"
           "$mod CONTROL SHIFT, x, execr, ${./power-menu.sh}"
-          # "$mod CONTROL SHIFT, x, exit"
 
           "$mod, v, execr, bemenu-cliphist"
           "$mod SHIFT, v, execr, cliphist list | bemenu -p Delete -cl -W 0.5 | cliphist delete"
@@ -309,6 +316,7 @@ in
       ];
 
       bindl = [
+        "$mod CONTROL SHIFT, x, dpms, on"
         ", XF86AudioPlay, execr, playerctl play-pause"
         ", XF86AudioPause, execr, playerctl pause --all-players"
         ", XF86AudioPrev, execr, playerctl previous"
@@ -320,7 +328,7 @@ in
       bindel = [
         ", XF86AudioRaiseVolume, execr, wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%+"
         ", XF86AudioLowerVolume, execr, wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-"
-        # what was the thing other than brightnessctl?
+        # TODO: what was the thing other than brightnessctl?
         ", XF86MonBrightnessUp, execr, brightnessctl -e set 2%+"
         ", XF86MonBrightnessDown, execr, brightnessctl -e set 2%-"
         "SHIFT, XF86MonBrightnessUp, execr, brightnessctl -e set 10%+"
@@ -337,12 +345,12 @@ in
       ];
 
       bindm = [
-        "$mod, mouse:272, movewindow"
-        "$mod SHIFT, mouse:272, movewindow"
-        "$mod CONTROL, mouse:272, movewindow"
-        "$mod, mouse:273, resizewindow"
-        "$mod SHIFT, mouse:273, resizewindow 2"
-        "$mod CONTROL, mouse:273, resizewindow 1"
+        "$mod, mouse:272, movewindow" # ungroup
+        "$mod SHIFT, mouse:272, movewindow" # float, ungroup
+        "$mod CONTROL, mouse:272, movewindow" # normal
+        "$mod, mouse:273, resizewindow" # normal
+        "$mod SHIFT, mouse:273, resizewindow 2" # force resize
+        "$mod CONTROL, mouse:273, resizewindow 1" # keep aspect ratio
       ];
     };
     importantPrefixes = [
@@ -400,10 +408,10 @@ in
       enable = true;
       settings = {
         general = {
-          lock_cmd = "if ! pidof -q hyprlock; then hyprlock; hyprctl dispatch dpms on; brightnessctl -r; fi";
+          lock_cmd = "if ! pidof -q hyprlock; then hyprlock; fi";
           unlock_cmd = "killall -USR1 hyprlock";
           on_lock_cmd = "dunstctl set-paused true";
-          on_unlock_cmd = "dunstctl set-paused false";
+          on_unlock_cmd = "hyprctl dispatch dpms on; dunstctl set-paused false";
           before_sleep_cmd = "loginctl lock-session";
           after_sleep_cmd = "hyprctl dispatch dpms on";
 
@@ -445,8 +453,8 @@ in
       background = {
         path = "${wallpaper}";
         color = colors.rgb.floor;
-        blur_size = 8;
-        blur_passes = 2;
+        blur_size = 6;
+        blur_passes = 3;
       };
       input-field = {
         size = "160,160";

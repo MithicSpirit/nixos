@@ -18,11 +18,17 @@ __EOF__
 	*"Lock") loginctl lock-session ;;
 	*"Screen Off")
 		loginctl lock-session
-		sleep 5; hyprctl dispatch dpms off
+		sleep 1.5; hyprctl dispatch dpms off
 		;;
 	*"Reload") hyprctl reload ;;
-	*"Suspend") sleep 2; systemctl suspend-then-hibernate ;;
-	*"Hibernate") sleep 2; systemctl hibernate ;;
+	*"Suspend")
+		loginctl lock-session
+		sleep 3; systemctl suspend-then-hibernate
+		;;
+	*"Hibernate")
+		loginctl lock-session
+		sleep 3; systemctl hibernate
+		;;
 	*"Exit") hyprctl dispatch exit ;;
 	*"Log Off")
 		systemctl --user exit

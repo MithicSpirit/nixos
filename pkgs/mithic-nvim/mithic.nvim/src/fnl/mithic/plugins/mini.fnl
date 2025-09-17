@@ -4,8 +4,6 @@
 
 (mini :ai)
 
-(mini :bracketed)
-
 (mini :bufremove
       (fn [m] (vim.keymap.set :n "<S-Tab>" #(m.delete 0))))
 
