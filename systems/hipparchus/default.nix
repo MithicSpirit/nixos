@@ -164,6 +164,7 @@
       busybox
       procps
       psmisc
+      (lib.lowPrio plan9port)
       comma
       nvd
       nh
