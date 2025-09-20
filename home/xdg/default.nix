@@ -1,7 +1,6 @@
 {
   config,
   pkgs,
-  lib,
   ...
 }:
 let
@@ -38,29 +37,7 @@ in
     mimeApps = {
       enable = true;
       # TODO: swayimg module
-      defaultApplications = lib.genAttrs [
-        "image/avif"
-        "image/bmp"
-        "image/gif"
-        "image/heif"
-        "image/jpeg"
-        "image/jpg"
-        "image/pbm"
-        "image/pjpeg"
-        "image/png"
-        "image/svg+xml"
-        "image/tiff"
-        "image/webp"
-        "image/x-bmp"
-        "image/x-exr"
-        "image/x-png"
-        "image/x-portable-anymap"
-        "image/x-portable-bitmap"
-        "image/x-portable-graymap"
-        "image/x-portable-pixmap"
-        "image/x-targa"
-        "image/x-tga"
-      ] (_: "swayimg.desktop");
+      defaultApplicationPackages = [ pkgs.swayimg ];
     };
 
     # More portal options set in particular DE

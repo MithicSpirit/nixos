@@ -88,5 +88,6 @@
     '';
   };
 
-  xdg.mimeApps.defaultApplications."application/pdf" = "org.pwmt.zathura.desktop";
+  xdg.mimeApps.defaultApplicationPackages = [ config.programs.zathura.package ];
+
 }

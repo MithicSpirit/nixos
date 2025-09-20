@@ -33,13 +33,13 @@
         window-padding-color = "extend";
         window-decoration = "server";
         window-theme = "ghostty";
+        window-show-tab-bar = "never";
         resize-overlay = "never"; # TODO: after-delay (#6640)
         resize-overlay-position = "center";
         initial-window = true;
         quit-after-last-window-closed = false;
         gtk-single-instance = true;
         gtk-titlebar = false;
-        gtk-adwaita = false;
         gtk-custom-css =
           let
             no-rounded-corners = pkgs.writeTextFile {
@@ -71,7 +71,7 @@
         background = colors.base00;
         foreground = colors.base07;
         selection-background = colors.fake;
-        selection-foreground = colors.base07; # TODO: cell-foreground (#5219)
+        selection-foreground = "cell-foreground";
         # minimum-contrast = 3; HACK: breaks fastfetch icon
         palette = [
           "0=${colors.base00'}"
