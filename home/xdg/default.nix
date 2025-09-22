@@ -34,11 +34,7 @@ in
     };
 
     mime.enable = true;
-    mimeApps = {
-      enable = true;
-      # TODO: swayimg module
-      defaultApplicationPackages = [ pkgs.swayimg ];
-    };
+    mimeApps.enable = true;
 
     # More portal options set in particular DE
     portal.enable = true;

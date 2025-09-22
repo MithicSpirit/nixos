@@ -171,6 +171,7 @@ in
         "float, class:Matplotlib"
         "float, class:steam, initialTitle:negative:Steam"
         "float, class:librewolf, title:Library" # bookmarks
+        "float, class:swayimg(|_.*)"
         # setup games
         "content game, xdgtag:proton-game" # TODO: probably doesn't work
         "content game, initialClass:steam_app_.*"

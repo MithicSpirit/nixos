@@ -19,6 +19,7 @@
     /neovim
     /newsboat
     /hyprland # or sway
+    /swayimg
     /xdg
     /zathura
     /cliphist
