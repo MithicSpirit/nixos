@@ -38,12 +38,12 @@
 \renewcommand{\thesubsection}{\alph{subsection}}
 \renewcommand{\thesubsubsection}{\roman{subsubsection}}
 
-\titleformat{\section}{\FloatBarrier\normalfont\large\bfseries}%
+\titleformat{\section}[hang]{\FloatBarrier\normalfont\large\bfseries}%
 {\thetitle.}{1em}{}
-\titleformat{\subsection}{\FloatBarrier\normalfont\normalsize\bfseries}%
-{(\thetitle)}{1em}{}
+\titleformat{\subsection}[runin]{\FloatBarrier\normalfont\normalsize\bfseries}%
+{(\thetitle)}{0.5em}{}
 \titleformat{\subsubsection}[runin]{\FloatBarrier\normalfont\bfseries}%
-{\thetitle.}{0pt}{}
+{\thetitle.}{0.5em}{}
 
 \allowdisplaybreaks{}
 

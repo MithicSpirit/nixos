@@ -368,7 +368,7 @@ Silent = {
     \addlinespace \cr \fill \frontmatter
     \toprule \midrule \bottomrule
 
-    \onslide \pause
+    \onslide \pause \tikzexternalize
 
     \nodisplaytop \displaymerge
 }[

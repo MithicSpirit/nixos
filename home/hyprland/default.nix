@@ -117,6 +117,8 @@ in
         font_family = "Sans";
         force_default_wallpaper = 0;
         vrr = 2;
+        mouse_move_enables_dpms = true;
+        key_press_enables_dpms = true;
         disable_autoreload = true;
         new_window_takes_over_fullscreen = 1;
         exit_window_retains_fullscreen = true;
