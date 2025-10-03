@@ -20,7 +20,7 @@
         # font
         font-family = builtins.head config.fonts.fontconfig.defaultFonts.monospace;
         font-size = 12.5;
-        freetype-load-flags = "hinting,no-force-autohint,monochrome,autohint";
+        font-style = "SemiBold";
         adjust-cell-height = "-5%";
 
         # mouse

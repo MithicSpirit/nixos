@@ -16,7 +16,7 @@
 \RequirePackage{math}
 
 \microtypesetup{protrusion=true,expansion=false}
-\geometry{paper=letterpaper,margin=3.5cm}
+\geometry{paper=letterpaper,hmargin=4cm,vmargin=3cm}
 
 \newcommand{\sectionbreak}{}
 

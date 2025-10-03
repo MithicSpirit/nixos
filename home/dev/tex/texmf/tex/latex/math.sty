@@ -19,6 +19,19 @@
 
 \RequirePackage{mathtools}
 \RequirePackage{thmtools}
+% FIXME: remove; waiting on muzimuzhi/thmtools#72
+\IfFormatAtLeastTF{2024-11-01}{
+  \renewcommand*\@addtoreset[2]{%
+    \bgroup
+      \edef\aliasctr@@truelist{\aliasctr@follow{#2}}%
+      \let\@elt\relax
+      \expandafter\@cons\aliasctr@@truelist{{#1}}%
+    \egroup
+    \expandafter\xdef\csname theH#1\endcsname{%
+      \expandafter\noexpand\csname theH#2\endcsname.%
+      \noexpand\the\noexpand\value{#1}}%
+  }
+}{}
 \ifluatex\RequirePackage{lualatex-math}\fi
 \RequirePackage{mathrsfs}
 \RequirePackage{stmaryrd}
@@ -114,6 +127,7 @@
 \newcommand{\trans}{^{\mathsf{T}}}
 \newcommand{\compl}{^{\complement}}
 \newcommand{\op}{^{\operatorname{op}}}
+\newcommand{\ab}{^{\operatorname{ab}}}
 
 \DeclareMathOperator{\ob}{ob}
 \DeclareMathOperator{\mor}{mor}
@@ -152,29 +166,29 @@
 \newcommand{\nodisplaytop}{\strut\nopagebreak\vspace{-\baselineskip-\abovedisplayskip}}
 \newcommand{\displaymerge}{\strut\nopagebreak\vspace{-\belowdisplayskip-\baselineskip-\abovedisplayskip}}
 
-\newcommand{\bra@nostar}[2][]{
+\ifluatex
+  \def\middlemid{\Umiddle class 3 \vert} % chktex 1
+\else
+  \def\middlemid{\mathrel{}\middle\vert\mathrel{}}
+\fi
+
+\newcommand{\bra@nostar}[2][\empty]{
   \ifx#1\empty \langle #2 \rvert % chktex 1
   \else \csname #1l \endcsname\langle #2 \csname #1r \endcsname\rvert \fi} % chktex 1
 \newcommand{\bra@star}[1]{\left\langle #1 \right\rvert} % chktex 1
 \newcommand{\bra}{\@ifstar{\bra@star}{\bra@nostar}}
 
-\newcommand{\ket@nostar}[2][]{
+\newcommand{\ket@nostar}[2][\empty]{
   \ifx#1\empty \lvert #2 \rangle % chktex 1
   \else \csname #1l \endcsname\lvert #2 \csname #1r \endcsname\rangle \fi} % chktex 1
 \newcommand{\ket@star}[1]{\left\lvert #1 \right\rangle} % chktex 1
 \newcommand{\ket}{\@ifstar{\ket@star}{\ket@nostar}}
 
-\ifluatex
-  \def\@middlemid{\Umiddle class 3 \vert} % chktex 1
-\else
-  \def\@middlemid{\mathrel{}\middle\vert\mathrel{}}
-\fi
-
-\newcommand{\braket@nostar}[3][]{
+\newcommand{\braket@nostar}[3][\empty]{
   \ifx#1\empty \langle #2 \mid #3 \rangle % chktex 1
   \else \csname #1l \endcsname\langle #2 \csname #1m \endcsname\vert #3 %chktex 1
   \csname #1r \endcsname\rangle \fi} % chktex 1
-\newcommand{\braket@star}[2]{\left\langle #1 \@middlemid #2 \right\rangle} % chktex 1
+\newcommand{\braket@star}[2]{\left\langle #1 \middlemid #2 \right\rangle} % chktex 1
 \newcommand{\braket}{\@ifstar{\braket@star}{\braket@nostar}}
 
 

@@ -230,7 +230,7 @@ in
 
       bind =
         let
-          grimblast = "grimblast --notify --openfile --scale 1";
+          grimblast = "grimblast --notify --openfile"; # TODO: --scale?
           scrot = "\"$XDG_PICTURES_DIR/screenshots/$(date +%Y-%m-%d_%H-%M-%S.%N).png\"";
         in
         [
@@ -288,7 +288,7 @@ in
           "$mod CONTROL SHIFT, x, execr, ${./power-menu.sh}"
 
           "$mod, v, execr, bemenu-cliphist"
-          "$mod SHIFT, v, execr, cliphist list | bemenu -p Delete -cl -W 0.5 | cliphist delete"
+          "$mod SHIFT, v, execr, cliphist list | bemenu -p Delete -cl 10 -W 0.5 | cliphist delete"
           "$mod CONTROL SHIFT, v, execr, wl-copy -c; cliphist wipe"
 
           "$mod, u, execr, ="
