@@ -29,4 +29,19 @@ final: prev: {
     }
   );
 
+  vimPlugins = prev.vimPlugins // {
+    nvim-lspconfig = final.vimUtils.buildVimPlugin {
+      pname = "nvim-lspconfig";
+      version = "2025-09-14";
+      src = final.fetchFromGitHub {
+        owner = "neovim";
+        repo = "nvim-lspconfig";
+        rev = "78174f395e705de97d1329c18394831737d9a4b4";
+        hash = "sha256-GpA7tCY/Fqd50sGa7SP7+LVCSHg4NmJVsSoKrdkFVeY=";
+      };
+      meta.homepage = "https://github.com/neovim/nvim-lspconfig/";
+      meta.hydraPlatforms = [ ];
+    };
+  };
+
 }
