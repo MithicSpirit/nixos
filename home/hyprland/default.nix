@@ -177,10 +177,6 @@ in
         # setup games
         "content game, xdgtag:proton-game" # TODO: probably doesn't work
         "content game, initialClass:steam_app_.*"
-        "content game, initialClass:net-runelite-client-RuneLite"
-        "content game, initialClass:warframe.x64.exe"
-        "content game, initialClass:pathofexilesteam.exe"
-        "content game, initialClass:exefile.exe" # eve
         # game effects
         "renderunfocused, content:game" # don't lag in bg
         "renderunfocused, xdgtag:proton-game"
@@ -230,7 +226,7 @@ in
 
       bind =
         let
-          grimblast = "grimblast --notify --openfile"; # TODO: --scale?
+          grimblast = "grimblast --notify --openparentdir";
           scrot = "\"$XDG_PICTURES_DIR/screenshots/$(date +%Y-%m-%d_%H-%M-%S.%N).png\"";
         in
         [
@@ -319,7 +315,6 @@ in
       ];
 
       bindl = [
-        "$mod CONTROL SHIFT, x, dpms, on"
         ", XF86AudioPlay, execr, playerctl play-pause"
         ", XF86AudioPause, execr, playerctl pause --all-players"
         ", XF86AudioPrev, execr, playerctl previous"
@@ -414,9 +409,9 @@ in
           lock_cmd = "if ! pidof -q hyprlock; then hyprlock; fi";
           unlock_cmd = "killall -USR1 hyprlock";
           on_lock_cmd = "dunstctl set-paused true";
-          on_unlock_cmd = "hyprctl dispatch dpms on; dunstctl set-paused false";
+          on_unlock_cmd = "hyprctl dispatch forceidle 0; dunstctl set-paused false";
           before_sleep_cmd = "loginctl lock-session";
-          after_sleep_cmd = "hyprctl dispatch dpms on";
+          after_sleep_cmd = "hyprctl dispatch forceidle 0";
 
           ignore_dbus_inhibit = true;
           ignore_systemd_inhibit = true;

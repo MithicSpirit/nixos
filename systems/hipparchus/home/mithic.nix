@@ -71,7 +71,7 @@
         }
       ];
       workspace = [
-        "r[1], monitor:eDP-2, default:true"
+        "1, monitor:eDP-2, default:true"
         "r[2-10], monitor:eDP-2"
       ];
     };

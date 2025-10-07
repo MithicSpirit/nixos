@@ -18,7 +18,7 @@ __EOF__
 	*"Lock") loginctl lock-session ;;
 	*"Screen Off")
 		loginctl lock-session
-		sleep 1.5; hyprctl dispatch dpms off
+		sleep 3; hyprctl dispatch forceidle 660
 		;;
 	*"Reload") hyprctl reload ;;
 	*"Suspend")

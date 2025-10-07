@@ -3,6 +3,7 @@ _inputs: [
   (import ./temporary)
 
   (import ./gamemode.nix)
+  (import ./hyprland)
   (import ./mangohud)
   (import ./sway)
 ]
