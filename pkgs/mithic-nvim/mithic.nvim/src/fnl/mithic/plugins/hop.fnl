@@ -9,7 +9,7 @@
                     (or opts {}))]
     #(let [cole vim.o.conceallevel]
        (set vim.opt.conceallevel 0)
-       ((. (require :hop) typ) full-opts)
+       ((. hop typ) full-opts)
        (set vim.opt.conceallevel cole))))
 
 (each [k v (pairs

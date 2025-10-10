@@ -37,7 +37,17 @@ __EOF__
 		sleep 1; killall -TERM -u mithic
 		sleep 1; killall -KILL -u mithic
 		;;
-	*"Reboot") systemctl reboot ;;
-	*"Power Off") systemctl poweroff ;;
+	*"Reboot")
+		systemctl reboot
+		sleep 1; killall -HUP -u mithic
+		sleep 1; killall -TERM -u mithic
+		sleep 1; killall -KILL -u mithic
+		;;
+	*"Power Off")
+		systemctl poweroff
+		sleep 1; killall -HUP -u mithic
+		sleep 1; killall -TERM -u mithic
+		sleep 1; killall -KILL -u mithic
+		;;
 	*) exit 1 ;;
 esac

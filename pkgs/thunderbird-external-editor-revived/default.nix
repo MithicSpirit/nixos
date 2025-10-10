@@ -5,7 +5,7 @@
 }:
 rustPlatform.buildRustPackage (finalAttrs: {
 
-  pname = "librewolf-external-editor-revived";
+  pname = "thunderbird-external-editor-revived";
   version = "1.2.0";
 
   src = fetchFromGitHub {

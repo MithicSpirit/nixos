@@ -42,17 +42,6 @@ in
     });
   '';
 
-  services.udev.extraHwdb = # hwdb
-    ''
-      mouse:usb:*:name:Logitech USB Receiver Mouse:*
-      mouse:bluetooth:*:name:Logitech MX Master 3S:*
-        MOUSE_DPI=1000@142
-        MOUSE_WHEEL_CLICK_ANGLE=1
-        MOUSE_WHEEL_CLICK_COUNT=360
-        MOUSE_WHEEL_CLICK_ANGLE_HORIZONTAL=26
-        MOUSE_WHEEL_CLICK_COUNT_HORIZONTAL=14
-    '';
-
   environment.etc."libinput/local-overrides.quirks".text = ''
     [Logitech MX Master 3S]
     MatchVendor=0x046D
