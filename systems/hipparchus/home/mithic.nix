@@ -115,7 +115,6 @@
       (parallel-full.override { willCite = true; })
 
       pcmanfm
-      swayimg
       dragon-drop
       xournalpp
       libreoffice-fresh

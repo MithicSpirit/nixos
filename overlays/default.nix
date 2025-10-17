@@ -6,4 +6,5 @@ _inputs: [
   (import ./hyprland)
   (import ./mangohud)
   (import ./sway)
+  (import ./zathura.nix)
 ]
