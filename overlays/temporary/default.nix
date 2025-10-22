@@ -12,23 +12,6 @@ final: prev: {
     }
   );
 
-  wireplumber = prev.wireplumber.overrideAttrs (
-    _: prevAttrs: {
-      patches = (prevAttrs.patches or [ ]) ++ [
-        (final.fetchpatch2 {
-          name = "ensure-device-valid.patch";
-          url = "https://gitlab.freedesktop.org/pipewire/wireplumber/-/commit/ebd9d2a7d55da59e8c16eee6c90b121d64b66ce6.patch";
-          hash = "sha256-vac4llMk0VE4o8hEwAA60LzQi8EjSVlB5WDaeGc35gA=";
-        })
-        (final.fetchpatch2 {
-          name = "fix-log-critical.patch";
-          url = "https://gitlab.freedesktop.org/pipewire/wireplumber/-/commit/1bde4f2cdf429b2797b12d01074c0890a006877f.patch";
-          hash = "sha256-1Vzshfb1yruNHJ/HEIXd9G4Yr1rHwPIjJN5YPbXcRx8=";
-        })
-      ];
-    }
-  );
-
   vimPlugins = prev.vimPlugins // {
     nvim-lspconfig = final.vimUtils.buildVimPlugin {
       pname = "nvim-lspconfig";
@@ -51,6 +34,18 @@ final: prev: {
           name = "revert-io-btrfs-regression.patch";
           url = "https://github.com/aristocratos/btop/commit/845d2cb0663de0b0c0cfac1af43bea934203e3dc.patch?full_index=1";
           hash = "sha256-gLDiXYE98u1Y5OrJumCkdNsdAlvUVfnl62nRr8dTZkU=";
+        })
+      ];
+    }
+  );
+
+  hyprland = prev.hyprland.overrideAttrs (
+    _: prevAttrs: {
+      patches = (prevAttrs.patches or [ ]) ++ [
+        (final.fetchpatch2 {
+          name = "forceidle-dispatcher.patch";
+          url = "https://github.com/hyprwm/Hyprland/commit/59ff7b2f891d06f4097128faf7027a3863542167.patch?full_index=1";
+          hash = "sha256-w+tJ5rour7/FP2jMi6/YU8mEOPLybGyy3P9lN2lcVfI=";
         })
       ];
     }

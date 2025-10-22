@@ -40,10 +40,16 @@
 
 \titleformat{\section}[hang]{\FloatBarrier\normalfont\large\bfseries}%
 {\thetitle.}{1em}{}
+
 \titleformat{\subsection}[runin]{\FloatBarrier\normalfont\normalsize\bfseries}%
 {(\thetitle)}{0.5em}{}
+\titlespacing{\subsection}{0pt}{0pt}{\parindent}
+
 \titleformat{\subsubsection}[runin]{\FloatBarrier\normalfont\bfseries}%
 {\thetitle.}{0.5em}{}
+\titlespacing{\subsubsection}{0pt}{0pt}{\parindent}
+
+
 
 \allowdisplaybreaks{}
 
