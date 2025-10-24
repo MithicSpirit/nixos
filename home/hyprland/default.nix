@@ -487,7 +487,7 @@ in
     tray = true;
 
     temperature.day = 5500;
-    temperature.night = 3600;
+    temperature.night = 3000;
     settings.general = {
       brightness-day = 1.0;
       brightness-night = 1.0;

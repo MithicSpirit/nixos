@@ -3,13 +3,16 @@
   programs.git = {
     enable = true;
 
-    userName = "MithicSpirit";
-    userEmail = "rpc01234@gmail.com";
-    extraConfig = {
+    settings = {
       # basic
+      user = {
+        name = "MithicSpirit";
+        email = "rpc01234@gmail.com";
+      };
       init.defaultBranch = "main";
       commit.verbose = true;
       advice.addEmptyPathspec = false;
+
       # branches and remotes
       branch = {
         autoSetupMerge = "simple";
@@ -29,6 +32,7 @@
       };
       transfer.fsckObjects = true;
       receive.fsckObjects = true;
+
       # diffs and conflicts
       diff = {
         algorithm = "histogram";
@@ -46,24 +50,26 @@
         missingCommitsCheck = "warn";
       };
       rerere.enabled = true;
+
       # misc
       sendemail = {
         confirm = "always";
         annotate = true;
         multiEdit = true;
         smtpEncryption = "tls";
-        smtpUser = config.programs.git.userEmail;
+        smtpUser = config.programs.git.settings.user.email;
         smtpServer = "smtp.gmail.com";
         smtpServerPort = 587;
       };
       gc.autoDetach = true;
+
+      aliases = {
+        hub = "!gh";
+        lab = "!glab";
+      };
     };
     signing.signByDefault = true;
     signing.key = null;
-    aliases = {
-      hub = "!gh";
-      lab = "!glab";
-    };
 
     ignores = [
       "/compile_commands.json"
@@ -71,38 +77,38 @@
       "/.venv/**"
       "flycheck_*"
     ];
+  };
 
-    delta = {
+  programs.delta = {
+    enable = true;
+    enableGitIntegration = true;
 
-      enable = true;
-      options = {
-        navigate = true;
-        line-numbers = true;
-        syntax-theme = "ansi";
-        right-arrow = "->";
-        line-numbers-left-format = "{nm:^4}|";
-        width = 90;
+    options = {
+      navigate = true;
+      line-numbers = true;
+      syntax-theme = "ansi";
+      right-arrow = "->";
+      line-numbers-left-format = "{nm:^4}|";
+      width = 90;
 
-        # colormoved support
-        map-styles =
-          with builtins;
+      # colormoved support
+      map-styles =
+        with builtins;
+        let
+          table = {
+            "bold purple" = ''syntax "#380f2e"'';
+            "bold blue" = ''syntax "#2c1349"'';
+            "bold cyan" = ''syntax "#0d3a36"'';
+            "bold yellow" = ''syntax "#273414"'';
+          };
+        in
+        foldl' (
+          acc: elem:
           let
-            table = {
-              "bold purple" = ''syntax "#380f2e"'';
-              "bold blue" = ''syntax "#2c1349"'';
-              "bold cyan" = ''syntax "#0d3a36"'';
-              "bold yellow" = ''syntax "#273414"'';
-            };
+            new = "${elem} => ${table.${elem}}";
           in
-          foldl' (
-            acc: elem:
-            let
-              new = "${elem} => ${table.${elem}}";
-            in
-            if acc == "" then new else "${acc}, ${new}"
-          ) "" (attrNames table);
-
-      };
+          if acc == "" then new else "${acc}, ${new}"
+        ) "" (attrNames table);
     };
   };
 }
