@@ -82,7 +82,7 @@ let
             speed = 40;
           }
           {
-            temp = 65;
+            temp = 70;
             speed = 80;
           }
           {

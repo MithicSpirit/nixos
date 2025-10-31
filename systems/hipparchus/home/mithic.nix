@@ -97,7 +97,7 @@
 
     packages = with pkgs; [
       curlFull
-      du-dust
+      dust
       duf
       eza
       fd
@@ -138,6 +138,8 @@
       obs-vkcapture
     ];
   };
+
+  services.mpris-proxy.enable = true;
 
   home.stateVersion = "24.05"; # WARNING: do not change
 }

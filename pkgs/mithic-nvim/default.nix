@@ -1,7 +1,7 @@
 {
   lib,
   vimUtils,
-  fennel,
+  luaPackages,
   python3,
   vimPlugins,
   # dependencies
@@ -35,7 +35,7 @@ vimUtils.buildVimPlugin {
   '';
 
   nativeBuildInputs = [
-    fennel
+    luaPackages.fennel
     python3
   ];
 
