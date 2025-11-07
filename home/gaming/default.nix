@@ -10,7 +10,7 @@ in
 {
 
   home.packages = with pkgs; [
-    path-of-building
+    rusty-path-of-building
     exiled-exchange-2
     protonup-qt
     protonplus

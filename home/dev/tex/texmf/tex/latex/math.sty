@@ -163,7 +163,9 @@
 \let\morph\xrightarrow
 \let\lmorph\xleftarrow
 
-\newcommand{\nodisplaytop}{\strut\nopagebreak\vspace{-\baselineskip-\abovedisplayskip}}
+\newcommand{\nodisplaytop}{\strut\nopagebreak\@ifstar%
+  {\vspace{-\baselineskip-\abovedisplayshortskip}}%
+  {\vspace{-\baselineskip-\abovedisplayskip}}}
 \newcommand{\displaymerge}{\strut\nopagebreak\vspace{-\belowdisplayskip-\baselineskip-\abovedisplayskip}}
 
 \ifluatex

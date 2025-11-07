@@ -1,0 +1,99 @@
+diff --git a/src/debug/HyprCtl.cpp b/src/debug/HyprCtl.cpp
+index a0ccddd0..685b1e13 100644
+--- a/src/debug/HyprCtl.cpp
++++ b/src/debug/HyprCtl.cpp
+@@ -386,34 +386,36 @@ std::string CHyprCtl::getWindowData(PHLWINDOW w, eHyprCtlOutputFormat format) {
+     "grouped": [{}],
+     "tags": [{}],
+     "swallowing": "0x{:x}",
+     "focusHistoryID": {},
+     "inhibitingIdle": {},
+     "xdgTag": "{}",
+-    "xdgDescription": "{}"
++    "xdgDescription": "{}",
++    "contentType": "{}"
+ }},)#",
+             rc<uintptr_t>(w.get()), (w->m_isMapped ? "true" : "false"), (w->isHidden() ? "true" : "false"), sc<int>(w->m_realPosition->goal().x),
+             sc<int>(w->m_realPosition->goal().y), sc<int>(w->m_realSize->goal().x), sc<int>(w->m_realSize->goal().y), w->m_workspace ? w->workspaceID() : WORKSPACE_INVALID,
+             escapeJSONStrings(!w->m_workspace ? "" : w->m_workspace->m_name), (sc<int>(w->m_isFloating) == 1 ? "true" : "false"), (w->m_isPseudotiled ? "true" : "false"),
+             w->monitorID(), escapeJSONStrings(w->m_class), escapeJSONStrings(w->m_title), escapeJSONStrings(w->m_initialClass), escapeJSONStrings(w->m_initialTitle), w->getPID(),
+             (sc<int>(w->m_isX11) == 1 ? "true" : "false"), (w->m_pinned ? "true" : "false"), sc<uint8_t>(w->m_fullscreenState.internal), sc<uint8_t>(w->m_fullscreenState.client),
+             getGroupedData(w, format), getTagsData(w, format), rc<uintptr_t>(w->m_swallowed.get()), getFocusHistoryID(w),
+-            (g_pInputManager->isWindowInhibiting(w, false) ? "true" : "false"), escapeJSONStrings(w->xdgTag().value_or("")), escapeJSONStrings(w->xdgDescription().value_or("")));
++            (g_pInputManager->isWindowInhibiting(w, false) ? "true" : "false"), escapeJSONStrings(w->xdgTag().value_or("")), escapeJSONStrings(w->xdgDescription().value_or("")),
++            escapeJSONStrings(NContentType::toString(w->getContentType())));
+     } else {
+         return std::format(
+             "Window {:x} -> {}:\n\tmapped: {}\n\thidden: {}\n\tat: {},{}\n\tsize: {},{}\n\tworkspace: {} ({})\n\tfloating: {}\n\tpseudo: {}\n\tmonitor: {}\n\tclass: {}\n\ttitle: "
+             "{}\n\tinitialClass: {}\n\tinitialTitle: {}\n\tpid: "
+             "{}\n\txwayland: {}\n\tpinned: "
+             "{}\n\tfullscreen: {}\n\tfullscreenClient: {}\n\tgrouped: {}\n\ttags: {}\n\tswallowing: {:x}\n\tfocusHistoryID: {}\n\tinhibitingIdle: {}\n\txdgTag: "
+-            "{}\n\txdgDescription: {}\n\n",
++            "{}\n\txdgDescription: {}\n\tcontentType: {}\n\n",
+             rc<uintptr_t>(w.get()), w->m_title, sc<int>(w->m_isMapped), sc<int>(w->isHidden()), sc<int>(w->m_realPosition->goal().x), sc<int>(w->m_realPosition->goal().y),
+             sc<int>(w->m_realSize->goal().x), sc<int>(w->m_realSize->goal().y), w->m_workspace ? w->workspaceID() : WORKSPACE_INVALID,
+             (!w->m_workspace ? "" : w->m_workspace->m_name), sc<int>(w->m_isFloating), sc<int>(w->m_isPseudotiled), w->monitorID(), w->m_class, w->m_title, w->m_initialClass,
+             w->m_initialTitle, w->getPID(), sc<int>(w->m_isX11), sc<int>(w->m_pinned), sc<uint8_t>(w->m_fullscreenState.internal), sc<uint8_t>(w->m_fullscreenState.client),
+             getGroupedData(w, format), getTagsData(w, format), rc<uintptr_t>(w->m_swallowed.get()), getFocusHistoryID(w), sc<int>(g_pInputManager->isWindowInhibiting(w, false)),
+-            w->xdgTag().value_or(""), w->xdgDescription().value_or(""));
++            w->xdgTag().value_or(""), w->xdgDescription().value_or(""), NContentType::toString(w->getContentType()));
+     }
+ }
+ 
+ static std::string clientsRequest(eHyprCtlOutputFormat format, std::string request) {
+     std::string result = "";
+     if (format == eHyprCtlOutputFormat::FORMAT_JSON) {
+diff --git a/src/protocols/types/ContentType.cpp b/src/protocols/types/ContentType.cpp
+index c0a3d30f..e163528b 100644
+--- a/src/protocols/types/ContentType.cpp
++++ b/src/protocols/types/ContentType.cpp
+@@ -12,12 +12,22 @@ namespace NContentType {
+         if (it != table.end())
+             return it->second;
+         else
+             throw std::invalid_argument(std::format("Unknown content type {}", name));
+     }
+ 
++    const char* toString(eContentType contentType) {
++        switch (contentType) {
++            case CONTENT_TYPE_NONE: return "";
++            case CONTENT_TYPE_PHOTO: return "photo";
++            case CONTENT_TYPE_VIDEO: return "video";
++            case CONTENT_TYPE_GAME: return "game";
++            default: return "";
++        }
++    }
++
+     eContentType fromWP(wpContentTypeV1Type contentType) {
+         switch (contentType) {
+             case WP_CONTENT_TYPE_V1_TYPE_NONE: return CONTENT_TYPE_NONE;
+             case WP_CONTENT_TYPE_V1_TYPE_PHOTO: return CONTENT_TYPE_PHOTO;
+             case WP_CONTENT_TYPE_V1_TYPE_VIDEO: return CONTENT_TYPE_VIDEO;
+             case WP_CONTENT_TYPE_V1_TYPE_GAME: return CONTENT_TYPE_GAME;
+@@ -31,7 +41,7 @@ namespace NContentType {
+             case CONTENT_TYPE_PHOTO: return DRM_MODE_CONTENT_TYPE_PHOTO;
+             case CONTENT_TYPE_VIDEO: return DRM_MODE_CONTENT_TYPE_CINEMA;
+             case CONTENT_TYPE_GAME: return DRM_MODE_CONTENT_TYPE_GAME;
+             default: return DRM_MODE_CONTENT_TYPE_NO_DATA;
+         }
+     }
+-}
+\ No newline at end of file
++}
+diff --git a/src/protocols/types/ContentType.hpp b/src/protocols/types/ContentType.hpp
+index 66fcbca7..b0180312 100644
+--- a/src/protocols/types/ContentType.hpp
++++ b/src/protocols/types/ContentType.hpp
+@@ -10,9 +10,10 @@ namespace NContentType {
+         CONTENT_TYPE_PHOTO = 1,
+         CONTENT_TYPE_VIDEO = 2,
+         CONTENT_TYPE_GAME  = 3,
+     };
+ 
+     eContentType fromString(const std::string name);
++    const char*  toString(eContentType contentType);
+     eContentType fromWP(wpContentTypeV1Type contentType);
+     uint16_t     toDRM(eContentType contentType);
+-}
+\ No newline at end of file
++}

@@ -10,9 +10,8 @@
     hardware.url = "github:NixOS/nixos-hardware";
 
     lanzaboote = {
-      url = "github:nix-community/lanzaboote/v0.4.2";
+      url = "github:nix-community/lanzaboote/v0.4.3";
       inputs.nixpkgs.follows = "nixpkgs";
-      inputs.rust-overlay.follows = "rust-overlay-tmp";
       inputs.pre-commit-hooks-nix.follows = ""; # used for dev only
     };
 
@@ -28,12 +27,6 @@
 
     treefmt-nix = {
       url = "github:numtide/treefmt-nix";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
-    # HACK: https://github.com/nix-community/lanzaboote/pull/487
-    rust-overlay-tmp = {
-      url = "github:oxalica/rust-overlay/59c45eb69d9222a4362673141e00ff77842cd219";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 

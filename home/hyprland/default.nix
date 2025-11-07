@@ -177,6 +177,7 @@ in
         # setup games
         "content game, xdgtag:proton-game" # TODO: probably doesn't work
         "content game, initialClass:steam_app_.*"
+        "content game, initialClass:dota2"
         # game effects
         "renderunfocused, content:game" # don't lag in bg
         "renderunfocused, xdgtag:proton-game"
