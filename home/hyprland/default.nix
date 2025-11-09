@@ -176,7 +176,7 @@ in
             "title:Picture-in-Picture"
           ];
           game = [
-            "xdgtag:proton-game"
+            "xdgTag:proton-game"
             "class:steam_app_.*"
             "class:dota2"
             "class:Terraria.bin.x86_64"

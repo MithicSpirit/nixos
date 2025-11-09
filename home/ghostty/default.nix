@@ -10,6 +10,7 @@
     # XXX: #3555, #3708
 
     enable = true;
+    # systemd.enable = true;
     clearDefaultKeybinds = true;
 
     settings =

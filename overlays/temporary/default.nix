@@ -42,11 +42,6 @@ final: prev: {
   hyprland = prev.hyprland.overrideAttrs (
     _: prevAttrs: {
       patches = (prevAttrs.patches or [ ]) ++ [
-        (final.fetchpatch2 {
-          name = "forceidle-dispatcher.patch";
-          url = "https://github.com/hyprwm/Hyprland/commit/59ff7b2f891d06f4097128faf7027a3863542167.patch?full_index=1";
-          hash = "sha256-w+tJ5rour7/FP2jMi6/YU8mEOPLybGyy3P9lN2lcVfI=";
-        })
         ./hyprland-activewindow-contenttype.diff
       ];
     }
