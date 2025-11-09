@@ -187,7 +187,6 @@
       mtr
       ldns
       testdisk
-      stress-ng
       tree
       bees
       file

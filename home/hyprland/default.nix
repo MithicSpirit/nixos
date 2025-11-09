@@ -122,7 +122,7 @@ in
         disable_autoreload = true;
         new_window_takes_over_fullscreen = 1;
         exit_window_retains_fullscreen = true;
-        render_unfocused_fps = 3;
+        render_unfocused_fps = 6;
         lockdead_screen_delay = 2000;
         enable_anr_dialog = true;
         anr_missed_pings = 3;
@@ -161,35 +161,48 @@ in
         }
       ];
 
-      windowrule = [
-        # pin
-        "float, class:dragon-drop, title:dragon"
-        "pin, class:dragon-drop, title:dragon"
-        "float, class:librewolf, title:Picture-in-Picture"
-        "pin, class:librewolf, title:Picture-in-Picture"
-        # float
-        "float, class:qalculate-gtk"
-        "float, class:xdg-desktop-portal"
-        "float, class:Matplotlib"
-        "float, class:steam, initialTitle:negative:Steam"
-        "float, class:librewolf, title:Library" # bookmarks
-        "float, class:swayimg(|_.*)"
-        # setup games
-        "content game, xdgtag:proton-game" # TODO: probably doesn't work
-        "content game, initialClass:steam_app_.*"
-        "content game, initialClass:dota2"
-        # game effects
-        "renderunfocused, content:game" # don't lag in bg
-        "renderunfocused, xdgtag:proton-game"
-        "immediate, content:game" # allow tearing
-        "immediate, xdgtag:proton-game"
-        "group override barred deny, content:game" # don't group
-        "group override barred deny, xdgtag:proton-game"
-        # misc
-        "group override barred deny, floating:1" # don't group floats
-        "group set always, group:0, floating:0" # group all other windows
-        "opacity 0.6, tag:dragging, floating:1" # see underneath when dragging
-      ];
+      windowrule =
+        let
+          float = [
+            "class:qalculate-gtk"
+            "class:xdg-desktop-portal"
+            "class:Matplotlib"
+            "class:steam, initialTitle:negative:Steam" # non-main steam window
+            "class:librewolf, title:Library" # bookmarks
+            "class:swayimg(|_.*)"
+          ];
+          pin = [
+            "title:dragon"
+            "title:Picture-in-Picture"
+          ];
+          game = [
+            "xdgtag:proton-game"
+            "class:steam_app_.*"
+            "class:dota2"
+            "class:Terraria.bin.x86_64"
+            "class:factorio"
+          ];
+          floatRules = builtins.concatMap (rule: [
+            "float, ${rule}"
+            "group override barred deny, ${rule}"
+          ]) (float ++ pin);
+          pinRules = builtins.concatMap (rule: [ "pin, ${rule}" ]) pin;
+          gameRules = builtins.concatMap (rule: [
+            "content game, ${rule}"
+            "renderunfocused, ${rule}"
+            "immediate, ${rule}"
+            "fullscreen, ${rule}"
+            "group override barred deny, ${rule}"
+          ]) game;
+        in
+        floatRules
+        ++ pinRules
+        ++ gameRules
+        ++ [
+          "group override barred deny, floating:1" # don't group floats
+          "group set always, group:0, floating:0, fullscreen:0" # group all other windows
+          "opacity 0.6, tag:dragging, floating:1" # see underneath when dragging
+        ];
 
       exec-once = [
         "[workspace 1; fullscreen] ${config.home.sessionVariables.TERMINAL} --class btop --title btop -e btop"
