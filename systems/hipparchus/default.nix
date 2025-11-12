@@ -46,7 +46,7 @@
     /tlp # or ppd
     # /sway (hyprland)
     /amdgpu
-    /fw-fanctrl
+    # /fw-fanctrl
     /zswap # or zram
     /timezone
   ];
