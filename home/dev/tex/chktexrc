@@ -455,6 +455,9 @@ DashExcpt = {
     Gram--Schmidt
     Eckmann--Hilton
     Orion--Cygnus
+    Mayer--Vietoris
+    Riemann--Lebesgue
+    Riesz--Fischer
 }
 
 #####################################################################
