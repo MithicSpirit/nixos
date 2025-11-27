@@ -55,7 +55,7 @@
         default-bg = colors.floor;
         default-fg = colors.middle;
         recolor-lightcolor = "#000";
-        recolor-darkcolor = "#ddd";
+        recolor-darkcolor = "#d6cfc4";
         inputbar-bg = colors.shadow;
         inputbar-fg = colors.fg;
         notification-bg = colors.bg;

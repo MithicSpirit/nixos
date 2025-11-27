@@ -35,7 +35,7 @@
         Service = {
           Type = "oneshot";
           ExecStartPre = "${pkgs.wait-for-internet}";
-          ExecStart = "'${config.xdg.userDirs.documents}/school/rclone-sync' --log-systemd";
+          ExecStart = "'${execPath}' --log-systemd";
         };
       };
     };
