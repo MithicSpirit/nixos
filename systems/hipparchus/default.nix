@@ -201,6 +201,7 @@
       neo-cowsay
       bsdgames
       sl
+      fw-ectool
     ])
     ++ (
       with builtins; # get all packages from unixtools
