@@ -93,11 +93,16 @@
     tmpfsSize = "100%"; # fine because of swap
   };
 
-  networking.hostName = "hipparchus";
-  networking.networkmanager = {
-    enable = true;
-    wifi.backend = "iwd";
-    wifi.powersave = true;
+  networking = {
+    hostName = "hipparchus";
+    networkmanager = {
+      enable = true;
+      wifi.backend = "iwd";
+      wifi.powersave = true;
+    };
+    wireless.iwd.settings = {
+      DriverQuirks.DefaultInterface = null;
+    };
   };
 
   console = {
