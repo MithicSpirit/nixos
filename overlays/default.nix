@@ -1,9 +1,7 @@
 _inputs: [
   (import ./pkgs.nix)
-  (import ./temporary)
+  (import ./miscellaneous)
 
-  (import ./gamemode.nix)
-  (import ./mangohud)
   (import ./sway)
   (import ./zathura.nix)
 ]

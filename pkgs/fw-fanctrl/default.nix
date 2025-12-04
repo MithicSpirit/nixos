@@ -6,7 +6,7 @@
 }:
 let
   pname = "fw-fanctrl";
-  version = "1.0.3_criticalTemp";
+  version = "1.0.3-criticalTemp";
 in
 python3Packages.buildPythonApplication {
   inherit pname version;

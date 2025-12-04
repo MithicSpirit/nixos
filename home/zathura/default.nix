@@ -41,7 +41,8 @@
         dbus-raise-window = true;
 
         font = "${builtins.head config.fonts.fontconfig.defaultFonts.monospace} 10";
-        page-padding = 4;
+        page-h-padding = 4;
+        page-v-padding = 4;
         page-cache-size = 63;
         statusbar-h-padding = 4;
         statusbar-v-padding = 2;

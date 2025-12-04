@@ -14,7 +14,7 @@ final: prev: {
 
   vimPlugins = prev.vimPlugins // {
     nvim-lspconfig = final.vimUtils.buildVimPlugin {
-      pname = "nvim-lspconfig";
+      inherit (prev.vimPlugins.nvim-lspconfig) pname meta;
       version = "2025-09-14";
       src = final.fetchFromGitHub {
         owner = "neovim";
@@ -22,8 +22,6 @@ final: prev: {
         rev = "78174f395e705de97d1329c18394831737d9a4b4";
         hash = "sha256-GpA7tCY/Fqd50sGa7SP7+LVCSHg4NmJVsSoKrdkFVeY=";
       };
-      meta.homepage = "https://github.com/neovim/nvim-lspconfig/";
-      meta.hydraPlatforms = [ ];
     };
   };
 
@@ -48,7 +46,8 @@ final: prev: {
   );
 
   tzupdate = final.rustPlatform.buildRustPackage {
-    inherit (prev.tzupdate) pname version meta;
+    inherit (prev.tzupdate) pname meta;
+    version = "3.1.0-24-g91d65d8";
     src = final.fetchFromGitHub {
       owner = "cdown";
       repo = "tzupdate";
@@ -56,6 +55,16 @@ final: prev: {
       hash = "sha256-XWl0erykdn8mHFczr8jPkjk7jgNOXndmMNrV6QKb0jY=";
     };
     cargoHash = "sha256-96lD0Sc2hdhNKeIS4zkiG4J0dxEFt6/Np7HHMSoF8j4=";
+  };
+
+  gamemode = prev.gamemode.overrideAttrs {
+    version = "1.8.2-18-g4ce5f21";
+    src = final.fetchFromGitHub {
+      owner = "FeralInteractive";
+      repo = "gamemode";
+      rev = "4ce5f2193a12766046ba9261da02429e8af72cf3";
+      hash = "sha256-qf3Co5ASR65jEcQqCY/mt3bzQ7z6vKXXh7hrBhJ5EvA=";
+    };
   };
 
 }

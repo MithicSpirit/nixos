@@ -25,7 +25,7 @@
 vimUtils.buildVimPlugin {
 
   pname = "mithic-nvim"; # mithic.nvim
-  version = "";
+  version = "0.0.0";
 
   src = ./mithic.nvim;
 
