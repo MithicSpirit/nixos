@@ -293,12 +293,8 @@
   # weird framework 16 stuff. see arch and nixos wikis
   services.udev.extraRules = # udev
     ''
-      # keyboard
-      ACTION=="add", SUBSYSTEM=="usb", DRIVERS=="usb", ATTRS{idVendor}=="32ac", ATTRS{idProduct}=="0012", ATTR{power/wakeup}="disabled"
       # trackpad
       ACTION=="add", SUBSYSTEM=="i2c", DRIVERS=="i2c_hid_acpi", ATTRS{name}=="PIXA3854:00", ATTR{power/wakeup}="disabled"
-      # audio
-      ACTION=="add", SUBSYSTEM=="usb", DRIVERS=="usb", ATTRS{idVendor}=="32ac", ATTRS{idProduct}=="0010", ATTR{power/wakeup}="disabled"
     '';
 
   # remove when properly cooled

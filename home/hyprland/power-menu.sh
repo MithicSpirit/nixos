@@ -32,22 +32,22 @@ __EOF__
 	*"Exit") hyprctl dispatch exit ;;
 	*"Log Off")
 		systemctl --user exit
-		sleep 1; hyprctl dispatch exit
-		sleep 1; killall -HUP -u mithic
-		sleep 1; killall -TERM -u mithic
-		sleep 1; killall -KILL -u mithic
+		sleep 2; hyprctl dispatch exit
+		sleep 2; killall -HUP -u mithic
+		sleep 2; killall -TERM -u mithic
+		sleep 4; killall -KILL -u mithic
 		;;
 	*"Reboot")
 		systemctl reboot
-		sleep 1; killall -HUP -u mithic
-		sleep 1; killall -TERM -u mithic
-		sleep 1; killall -KILL -u mithic
+		sleep 2; killall -HUP -u mithic
+		sleep 2; killall -TERM -u mithic
+		sleep 6; killall -KILL -u mithic
 		;;
 	*"Power Off")
 		systemctl poweroff
-		sleep 1; killall -HUP -u mithic
-		sleep 1; killall -TERM -u mithic
-		sleep 1; killall -KILL -u mithic
+		sleep 2; killall -HUP -u mithic
+		sleep 2; killall -TERM -u mithic
+		sleep 6; killall -KILL -u mithic
 		;;
 	*) exit 1 ;;
 esac
