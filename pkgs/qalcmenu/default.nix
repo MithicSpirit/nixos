@@ -35,8 +35,7 @@ stdenvNoCC.mkDerivation rec {
       ]
       ++ (if menu != null then [ menu ] else [ ]);
     in
-    # bash
-    ''
+    /* bash */ ''
       runHook preInstall
 
       installManPage ./qalcmenu.1 ./=.1

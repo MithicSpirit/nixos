@@ -191,6 +191,8 @@ in
             "content game, ${rule}"
             "renderunfocused, ${rule}"
             "immediate, ${rule}"
+            "suppressevent fullscreen maximize fullscreenoutput, ${rule}"
+            "float, ${rule}"
             "fullscreen, ${rule}"
             "group override barred deny, ${rule}"
           ]) game;
@@ -393,13 +395,12 @@ in
   home.file.".login" = {
     enable = true;
     executable = true;
-    text = # sh
-      ''
-        #!/usr/bin/env sh
-        [ -z "$WAYLAND_DISPLAY" -a -z "$DISPLAY" -a "$XDG_VTNR" -eq 1 ] \
-          && exec Hyprland >>/tmp/hyprland.log 2>&1
-        :
-      '';
+    text = /* sh */ ''
+      #!/usr/bin/env sh
+      [ -z "$WAYLAND_DISPLAY" -a -z "$DISPLAY" -a "$XDG_VTNR" -eq 1 ] \
+        && exec Hyprland >>/tmp/hyprland.log 2>&1
+      :
+    '';
   };
 
   services.hyprpaper = {
@@ -569,73 +570,72 @@ in
         }
       ];
 
-      style = # css
-        ''
-          window#waybar {
-            font-size: 13;
-            font-family: monospace;
-          }
-          tooltip, #tray, #window {
-            font-family: sans-serif;
-          }
+      style = /* css */ ''
+        window#waybar {
+          font-size: 13;
+          font-family: monospace;
+        }
+        tooltip, #tray, #window {
+          font-family: sans-serif;
+        }
 
-          window#waybar {
-            background: ${colors.hash.floor};
-            color: ${colors.hash.fg};
-          }
-          #custom-status {
-            background: ${colors.hash.bg};
-          }
-          #workspaces button {
-            color: ${colors.hash.lower};
-            background: ${colors.hash.floor};
-          }
-          #workspaces button.hosting-monitor {
-            color: ${colors.hash.fg};
-            background: ${colors.hash.bg};
-          }
-          #workspaces button.visible {
-            color: ${colors.hash.colored};
-          }
-          #workspaces button.active.hosting-monitor {
-            color: ${colors.hash.accent};
-            background: ${colors.hash.shadow};
-          }
-          #workspaces button.urgent {
-            color: ${colors.hash.advanced};
-          }
+        window#waybar {
+          background: ${colors.hash.floor};
+          color: ${colors.hash.fg};
+        }
+        #custom-status {
+          background: ${colors.hash.bg};
+        }
+        #workspaces button {
+          color: ${colors.hash.lower};
+          background: ${colors.hash.floor};
+        }
+        #workspaces button.hosting-monitor {
+          color: ${colors.hash.fg};
+          background: ${colors.hash.bg};
+        }
+        #workspaces button.visible {
+          color: ${colors.hash.colored};
+        }
+        #workspaces button.active.hosting-monitor {
+          color: ${colors.hash.accent};
+          background: ${colors.hash.shadow};
+        }
+        #workspaces button.urgent {
+          color: ${colors.hash.advanced};
+        }
 
-          #window {
-            padding: 0 0.25em;
-          }
-          #window > image {
-            padding-top: 1pt;
-          }
-          #window > label {
-            padding-top: 2pt;
-          }
-          #windowcount {
-            padding: 0 0.25em;
-          }
-          #workspaces {
-            padding-right: 0.25em;
-          }
-          #workspaces button {
-            padding: 1px;
-            border-radius: 0;
-            border-width: 0;
-          }
-          #workspaces button > box {
-            min-height: 1.5em;
-            min-width: 1.5em;
-          }
-          #tray > widget > image {
-            padding: 0 0.25em;
-          }
-          #custom-status {
-            padding: 0 0.5em;
-          }
-        '';
+        #window {
+          padding: 0 0.25em;
+        }
+        #window > image {
+          padding-top: 1pt;
+        }
+        #window > label {
+          padding-top: 2pt;
+        }
+        #windowcount {
+          padding: 0 0.25em;
+        }
+        #workspaces {
+          padding-right: 0.25em;
+        }
+        #workspaces button {
+          padding: 1px;
+          border-radius: 0;
+          border-width: 0;
+        }
+        #workspaces button > box {
+          min-height: 1.5em;
+          min-width: 1.5em;
+        }
+        #tray > widget > image {
+          padding: 0 0.25em;
+        }
+        #custom-status {
+          padding: 0 0.5em;
+        }
+      '';
     };
 
 }

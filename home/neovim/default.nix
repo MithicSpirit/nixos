@@ -14,12 +14,11 @@ in
     defaultEditor = true;
 
     plugins = [ me ];
-    extraLuaConfig = # lua
-      ''
-        vim.g.vimtex_callback_progpath =
-          '${lib.getExe config.programs.neovim.finalPackage}'
-        require 'mithic'
-      '';
+    extraLuaConfig = /* lua */ ''
+      vim.g.vimtex_callback_progpath =
+        '${lib.getExe config.programs.neovim.finalPackage}'
+      require 'mithic'
+    '';
     extraPackages = me.propagatedBuildInputs;
   };
 

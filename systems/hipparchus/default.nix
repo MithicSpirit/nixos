@@ -291,11 +291,10 @@
   programs.gamemode.settings.gpu.gpu_device = 1;
 
   # weird framework 16 stuff. see arch and nixos wikis
-  services.udev.extraRules = # udev
-    ''
-      # trackpad
-      ACTION=="add", SUBSYSTEM=="i2c", DRIVERS=="i2c_hid_acpi", ATTRS{name}=="PIXA3854:00", ATTR{power/wakeup}="disabled"
-    '';
+  services.udev.extraRules = /* udev */ ''
+    # trackpad
+    ACTION=="add", SUBSYSTEM=="i2c", DRIVERS=="i2c_hid_acpi", ATTRS{name}=="PIXA3854:00", ATTR{power/wakeup}="disabled"
+  '';
 
   # remove when properly cooled
   services.tlp.settings = {

@@ -4,7 +4,7 @@
   programs.thunderbird = {
     enable = true;
     package = pkgs.thunderbird-latest;
-    nativeMessagingHosts = [ pkgs.thunderbird-external-editor-revived ];
+    nativeMessagingHosts = [ pkgs.external-editor-revived ];
 
     profiles."mithic" = {
       isDefault = true;

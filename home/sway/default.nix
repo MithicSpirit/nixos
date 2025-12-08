@@ -77,13 +77,12 @@ in
   home.file.".login" = {
     enable = true;
     executable = true;
-    text = # sh
-      ''
-        #!/usr/bin/env sh
-        [ -z "$WAYLAND_DISPLAY" -a -z "$DISPLAY" -a "$XDG_VTNR" -eq 1 ] \
-          && exec sway >>/tmp/sway.log 2>&1
-        :
-      '';
+    text = /* sh */ ''
+      #!/usr/bin/env sh
+      [ -z "$WAYLAND_DISPLAY" -a -z "$DISPLAY" -a "$XDG_VTNR" -eq 1 ] \
+        && exec sway >>/tmp/sway.log 2>&1
+      :
+    '';
   };
 
   programs.swaylock = {

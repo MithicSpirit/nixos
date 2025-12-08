@@ -42,9 +42,8 @@ rebuild op: build sudo
 clean-artifact:
     rm -f result result-* repl-result-*
 
-[private]
+[private, script]
 sudo:
-    #!/usr/bin/env -S sh -eux
     if [ -n "${WAYLAND_DISPLAY:-}" -o -n "${DISPLAY:-}" ]; then
         id="$(notify-send -t 600000 -pea 'NixOS Rebuild' 'Sudo prompt' 'Waiting')"
         sudo -v
@@ -66,3 +65,7 @@ system:
 
 deadnix-args := "--exclude ./overlays/temporary"
 host := `hostname`
+
+set shell := ['bash', '-euo', 'pipefail', '-c']
+set script-interpreter := ['bash', '-euxo', 'pipefail']
+set unstable

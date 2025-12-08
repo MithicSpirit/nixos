@@ -45,8 +45,7 @@
           let
             no-rounded-corners = pkgs.writeTextFile {
               name = "ghostty-no-rounded-corners.css";
-              text = # CSS
-                "window { border-radius: 0 0; }";
+              text = /* css */ "window { border-radius: 0 0; }";
             };
           in
           [ "${no-rounded-corners}" ];

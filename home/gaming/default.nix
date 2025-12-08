@@ -6,14 +6,33 @@
 }:
 let
   ini = (pkgs.formats.ini { listsAsDuplicateKeys = true; }).generate;
+
+  add-cli-flags =
+    pkg: flags:
+    pkgs.runCommandLocal "${pkg.name}-wrapped"
+      {
+        inherit (pkg) meta;
+        nativeBuildInputs = [ pkgs.makeWrapper ];
+        propagatedBuildInputs = [ pkg ];
+      }
+      ''
+        mkdir -p "$out/bin/"
+        makeWrapper '${lib.getExe pkg}' $out/bin/'${pkg.meta.mainProgram}' \
+          --add-flags '${flags}' \
+          --inherit-argv0
+      '';
 in
 {
 
   home.packages = with pkgs; [
-    rusty-path-of-building
-    exiled-exchange-2
+    # compatibility tool version management
     protonup-qt
     protonplus
+
+    # path of exile
+    rusty-path-of-building
+    (add-cli-flags awakened-poe-trade "--no-overlay")
+    (add-cli-flags exiled-exchange-2 "--no-overlay")
   ];
 
   programs.mangohud = {

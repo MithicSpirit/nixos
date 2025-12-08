@@ -4,16 +4,13 @@
   fetchFromGitHub,
   fw-ectool,
 }:
-let
-  pname = "fw-fanctrl";
-  version = "1.0.3-criticalTemp";
-in
 python3Packages.buildPythonApplication {
-  inherit pname version;
+  pname = "fw-fanctrl-criticalTemp";
+  version = "1.0.3";
 
   src = fetchFromGitHub {
     owner = "TamtamHero";
-    repo = pname;
+    repo = "fw-fanctrl";
     rev = "b35c9280a3b4a3cf5b0cd551efa3adca6aa6a7d1";
     hash = "sha256-TDVULNb/oH66/UX20mC89NSx8YPe8mPwNCB9+phavP4=";
   };
