@@ -14,13 +14,13 @@
 }:
 let
   name = "awakened-poe-trade";
-  version = "3.27.105";
+  version = "3.27.106";
 
   src = fetchFromGitHub {
     owner = "SnosMe";
     repo = name;
     rev = "v${version}";
-    hash = "sha256-D6QJBXwKXrzr8EIwFFFpjqHf+O1j/MwUmzH/iqSo/gA=";
+    hash = "sha256-sP/IpTWkmjKmG+fCuRe0fr8xHPqEFpFpC9RLHZaUde4=";
   };
 
   renderer = buildNpmPackage {
@@ -47,7 +47,7 @@ buildNpmPackage {
 
   pname = name;
 
-  npmDepsHash = "sha256-Tow7tK5EM9d1N7OF4JYoiMragswr/sVIM4uCpYivyTY=";
+  npmDepsHash = "sha256-RUQMmoj+r5eUvS2vXE4ZR5PHJkVk4Nw2ezDEX2O8pEI=";
   makeCacheWritable = true;
 
   nativeBuildInputs = [

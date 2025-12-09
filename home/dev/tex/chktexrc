@@ -459,6 +459,7 @@ DashExcpt = {
     Riemann--Lebesgue
     Riesz--Fischer
     Radon--Nikodym
+    Lummer--Gehrcke
 }
 
 #####################################################################
