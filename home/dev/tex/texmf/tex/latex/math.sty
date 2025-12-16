@@ -121,7 +121,6 @@
 \newcommand{\cf}{\foreign{cf.\@}}
 
 \newcommand{\p}[1]{\mathrlap{\,\text{#1}}}
-\newcommand{\cat}[2][]{\ensuremath{\operatorname{\mathnormal{#1}\mathbf{#2}}}}
 \newcommand{\operatorsf}[1]{\operatorname{\mathsf{#1}}}
 
 \newcommand{\trans}{^{\mathsf{T}}}
@@ -163,6 +162,13 @@
 
 \let\morph\xrightarrow
 \let\lmorph\xleftarrow
+
+\def\cat@prefix{}
+\def\cat@name{}
+% \newcommand{\cat@inner}[1][]{\textnormal{\cat@prefix\textbf{\cat@name}#1}}
+\newcommand{\cat@inner}[1][]{\ensuremath{\operatorname{%
+      \mathnormal{\cat@prefix\textbf{\cat@name}#1}}}}
+\newcommand{\cat}[2][]{\def\cat@prefix{#1}\def\cat@name{#2}\cat@inner}
 
 \newcommand{\nodisplaytop}{\strut\nopagebreak\@ifstar%
   {\vspace{-\baselineskip-\abovedisplayshortskip}}%
