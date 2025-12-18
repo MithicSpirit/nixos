@@ -1,0 +1,32 @@
+diff --git a/tools/mpris-proxy.c b/tools/mpris-proxy.c
+index 2774bcc1a..f11915332 100644
+--- a/tools/mpris-proxy.c
++++ b/tools/mpris-proxy.c
+@@ -435,12 +435,13 @@ static const DBusObjectPathVTable player_table = {
+ 	.message_function = player_message,
+ };
+ 
+ static void add_player(DBusConnection *conn, const char *name,
+ 							const char *sender)
+ {
++	return; // HACK: disable
+ 	DBusMessage *reply = NULL;
+ 	DBusMessage *msg;
+ 	DBusMessageIter iter, args;
+ 	DBusError err;
+ 	char *path, *owner;
+ 	struct player *player;
+@@ -514,12 +515,13 @@ done:
+ 	dbus_message_unref(msg);
+ 	g_free(path);
+ }
+ 
+ static void remove_player(DBusConnection *conn, const char *sender)
+ {
++	return; // HACK: disable
+ 	DBusMessage *msg;
+ 	char *path, *owner;
+ 
+ 	if (!adapter)
+ 		return;
+ 

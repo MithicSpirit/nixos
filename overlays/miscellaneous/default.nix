@@ -1,7 +1,7 @@
 final: prev: {
 
   mpv-unwrapped = prev.mpv-unwrapped.overrideAttrs (
-    _: prevAttrs:
+    _finalAttrs: prevAttrs:
     assert prevAttrs.version == "0.40.0";
     {
       patches = (prevAttrs.patches or [ ]) ++ [
@@ -28,7 +28,7 @@ final: prev: {
   };
 
   btop = prev.btop.overrideAttrs (
-    _: prevAttrs:
+    _finalAttrs: prevAttrs:
     assert prevAttrs.version == "1.4.5";
     {
       patches = (prevAttrs.patches or [ ]) ++ [
@@ -56,7 +56,7 @@ final: prev: {
     };
 
   gamemode = prev.gamemode.overrideAttrs (
-    _: prevAttrs:
+    _finalAttrs: prevAttrs:
     assert prevAttrs.version == "1.8.2";
     {
       version = "1.8.2-18-g4ce5f21";
@@ -70,7 +70,7 @@ final: prev: {
   );
 
   rustup = prev.rustup.overrideAttrs (
-    _: prevAttrs:
+    _finalAttrs: prevAttrs:
     assert (prevAttrs.version == "1.28.2");
     {
       doCheck = false;

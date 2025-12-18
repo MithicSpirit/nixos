@@ -228,6 +228,8 @@
 
   environment.enableDebugInfo = true;
 
+  environment.enableAllTerminfo = true;
+
   users.users."mithic" = {
     description = "MithicSpirit";
     extraGroups = [
@@ -254,7 +256,7 @@
   };
   systemd.services."user@${toString config.users.users."mithic".uid}" = {
     environment = builtins.mapAttrs (
-      _: toString
+      _name: toString
     ) config.home-manager.users."mithic".home.sessionVariables;
     overrideStrategy = "asDropin";
   };

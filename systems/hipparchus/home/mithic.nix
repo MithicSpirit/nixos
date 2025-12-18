@@ -139,7 +139,10 @@
     ];
   };
 
-  services.mpris-proxy.enable = true;
+  services.mpris-proxy = {
+    enable = true;
+    package = pkgs.bluez-mpris-proxy;
+  };
 
   home.stateVersion = "24.05"; # WARNING: do not change
 }

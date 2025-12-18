@@ -31,7 +31,7 @@
         settings.Keywords = "Internet;WWW;Browser;Web;Explorer";
       };
       mimeApps.defaultApplications = lib.genAttrs mimeTypes (
-        _: "menu-browser.desktop"
+        _name: "menu-browser.desktop"
       );
     };
 
