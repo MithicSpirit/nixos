@@ -10,9 +10,11 @@
     hardware.url = "github:NixOS/nixos-hardware";
 
     lanzaboote = {
-      url = "github:nix-community/lanzaboote/v0.4.3";
-      inputs.nixpkgs.follows = "nixpkgs";
-      inputs.pre-commit-hooks-nix.follows = ""; # used for dev only
+      url = "github:nix-community/lanzaboote/v1.0.0";
+      inputs = {
+        nixpkgs.follows = "nixpkgs";
+        pre-commit.follows = ""; # used for dev only
+      };
     };
 
     home-manager = {
@@ -23,6 +25,16 @@
     disko = {
       url = "github:nix-community/disko";
       inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    ghostty = {
+      url = "github:ghostty-org/ghostty";
+      inputs = {
+        nixpkgs.follows = "nixpkgs";
+        home-manager.follows = "home-manager";
+        flake-utils.inputs.systems.follows = "systems";
+        flake-compat.follows = ""; # compat not needed
+      };
     };
 
     treefmt-nix = {

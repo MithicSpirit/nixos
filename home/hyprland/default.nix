@@ -122,7 +122,7 @@ in
         disable_autoreload = true;
         new_window_takes_over_fullscreen = 1;
         exit_window_retains_fullscreen = true;
-        render_unfocused_fps = 6;
+        render_unfocused_fps = 10;
         lockdead_screen_delay = 2000;
         enable_anr_dialog = true;
         anr_missed_pings = 3;

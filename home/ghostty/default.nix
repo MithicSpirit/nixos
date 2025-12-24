@@ -10,7 +10,7 @@
     # XXX: #3555, #3708
 
     enable = true;
-    # systemd.enable = true;
+    systemd.enable = true;
     clearDefaultKeybinds = true;
 
     settings =
@@ -97,7 +97,6 @@
         cursor-style = "block";
         cursor-style-blink = false;
         background-opacity = "0.93";
-        bold-is-bright = false;
         adjust-cursor-thickness = "+200%";
 
         # keybinds
@@ -119,6 +118,37 @@
           "ctrl+shift+k=scroll_page_fractional:-0.5"
           "ctrl+shift+alt+j=jump_to_prompt:+1"
           "ctrl+shift+alt+k=jump_to_prompt:-1"
+          # vim keybinds
+          "vim/"
+          "alt+escape=activate_key_table:vim"
+          "vim/q=deactivate_key_table"
+          "vim/shift+q=deactivate_key_table"
+          "vim/i=deactivate_key_table"
+          "vim/enter=deactivate_key_table"
+          "vim/catch_all=ignore"
+          "vim/e=scroll_page_lines:1"
+          "vim/ctrl+e=scroll_page_lines:1"
+          "vim/j=scroll_page_lines:1"
+          "vim/y=scroll_page_lines:-1"
+          "vim/ctrl+y=scroll_page_lines:-1"
+          "vim/k=scroll_page_lines:-1"
+          "vim/f=scroll_page_down"
+          "vim/ctrl+f=scroll_page_down"
+          "vim/b=scroll_page_up"
+          "vim/ctrl+b=scroll_page_up"
+          "vim/d=scroll_page_fractional:0.5"
+          "vim/ctrl+d=scroll_page_fractional:0.5"
+          "vim/u=scroll_page_fractional:-0.5"
+          "vim/ctrl+u=scroll_page_fractional:-0.5"
+          "vim/g=scroll_to_top"
+          "vim/shift+g=scroll_to_bottom"
+          "vim/slash=start_search"
+          "vim/n=navigate_search:next"
+          "vim/shift+n=navigate_search:previous"
+          "vim/escape=end_search"
+          "vim/y=copy_to_clipboard"
+          "vim/ctrl+y=copy_to_clipboard:vt"
+          "vim/shift+y=copy_to_clipboard:plain"
         ];
       };
 
