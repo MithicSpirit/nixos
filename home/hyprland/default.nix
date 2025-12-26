@@ -122,7 +122,7 @@ in
         disable_autoreload = true;
         new_window_takes_over_fullscreen = 1;
         exit_window_retains_fullscreen = true;
-        render_unfocused_fps = 10;
+        render_unfocused_fps = 15;
         lockdead_screen_delay = 2000;
         enable_anr_dialog = true;
         anr_missed_pings = 3;
@@ -144,7 +144,8 @@ in
       };
 
       cursor = {
-        no_hardware_cursors = 0;
+        no_hardware_cursors = 2;
+        no_break_fs_vrr = 2;
         enable_hyprcursor = false; # TODO: find theme
       };
 
@@ -181,6 +182,7 @@ in
             "class:dota2"
             "class:Terraria.bin.x86_64"
             "class:factorio"
+            "class:openttd"
           ];
           floatRules = builtins.concatMap (rule: [
             "float, ${rule}"
@@ -207,7 +209,7 @@ in
         ];
 
       exec-once = [
-        "[workspace 1; fullscreen] ${config.home.sessionVariables.TERMINAL} --class btop --title btop -e btop"
+        "[workspace 1; fullscreen] ${config.home.sessionVariables.TERMINAL} --class=btop --title=btop -e btop"
         "[workspace 2 silent] thunderbird"
         "[workspace 3 silent] org.signal.Signal"
         "[workspace 4] dev.vencord.Vesktop" # breaks on silent
@@ -244,11 +246,19 @@ in
         let
           grimblast = "grimblast --notify --openparentdir";
           scrot = "\"$XDG_PICTURES_DIR/screenshots/$(date +%Y-%m-%d_%H-%M-%S.%N).png\"";
+          terminal =
+            let
+              inherit (config.home.sessionVariables) TERMINAL;
+            in
+            if lib.hasPrefix "ghostty" TERMINAL then
+              "${TERMINAL} +new-window"
+            else
+              TERMINAL;
         in
         [
-          "$mod, Return, execr, bemenu-run -p Run >/tmp/exec.log 2>&1"
-          "$mod SHIFT, Return, execr, ${config.home.sessionVariables.TERMINAL} >/tmp/exec.log 2>&1"
-          "$mod CONTROL, Return, execr, ${config.home.sessionVariables.BROWSER} >/tmp/exec.log 2>&1"
+          "$mod, Return, execr, bemenu-run -p Run >>/tmp/exec.log 2>&1"
+          "$mod SHIFT, Return, execr, ${terminal} >>/tmp/exec.log 2>&1"
+          "$mod CONTROL, Return, execr, ${config.home.sessionVariables.BROWSER} >>/tmp/exec.log 2>&1"
           "$mod CONTROL SHIFT, Return, execr, bemenu -p hyprctl </dev/null | xargs hyprctl"
 
           # TODO: better keybinds for groups

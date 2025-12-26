@@ -1,0 +1,45 @@
+diff --git a/src/font/sprite/draw/braille.zig b/src/font/sprite/draw/braille.zig
+index fb2d54748..e032afb81 100644
+--- a/src/font/sprite/draw/braille.zig
++++ b/src/font/sprite/draw/braille.zig
+@@ -79,12 +79,20 @@ pub fn draw2800_28FF(
+     if (x_px_left >= 2 and y_px_left >= 4 and w == 0) {
+         w += 1;
+         x_px_left -= 2;
+         y_px_left -= 4;
+     }
+ 
++    // HACK: reorder
++    // Last - increase dot width
++    if (x_px_left >= 2 and y_px_left >= 4) {
++        w += 1;
++        x_px_left -= 2;
++        y_px_left -= 4;
++    }
++
+     // Second, prefer a non-zero margin
+     if (x_px_left >= 2 and x_margin == 0) {
+         x_margin = 1;
+         x_px_left -= 2;
+     }
+     if (y_px_left >= 2 and y_margin == 0) {
+@@ -109,19 +117,12 @@ pub fn draw2800_28FF(
+     }
+     if (y_px_left >= 2) {
+         y_margin += 1;
+         y_px_left -= 2;
+     }
+ 
+-    // Last - increase dot width
+-    if (x_px_left >= 2 and y_px_left >= 4) {
+-        w += 1;
+-        x_px_left -= 2;
+-        y_px_left -= 4;
+-    }
+-
+     assert(x_px_left <= 1 or y_px_left <= 1);
+     assert(2 * x_margin + 2 * w + x_spacing <= width);
+     assert(2 * y_margin + 4 * w + 3 * y_spacing <= height);
+ 
+     const x = [2]i32{ x_margin, x_margin + w + x_spacing };
+     const y = y: {

@@ -77,4 +77,21 @@ final: prev: {
     }
   );
 
+  ghostty = prev.ghostty.overrideAttrs (
+    _finalAttrs: prevAttrs:
+    assert (prevAttrs.version == "1.3.0-dev");
+    {
+      patches = (prevAttrs.patches or [ ]) ++ [
+        # HACK: https://github.com/ghostty-org/ghostty/pull/10004
+        ./ghostty-dedupe-wheel-events.diff
+        # (final.fetchpatch2 {
+        #   name = "disinflate-wheel-events+pr=10004.patch";
+        #   url = "https://github.com/ghostty-org/ghostty/pull/10004/commits/0883553ac0a9877d19183d2659b455eb82a3c390.patch?full_index=1";
+        #   hash = "sha256-ks8xBjQmagB+w7CYMWLgJ+TTS1tH1uQ11SqvN9OQrok=";
+        # })
+        ./ghostty-fix-braille.diff
+      ];
+    }
+  );
+
 }

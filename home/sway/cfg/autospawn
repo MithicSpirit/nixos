@@ -6,7 +6,7 @@ exec {
     # gammastep-indicator
     # xsettingsd
     ## Apps
-    $TERMINAL --class btop --title btop -e btop
+    $TERMINAL --class=btop --title=btop -e btop
     thunderbird
     org.signal.Signal
     dev.vencord.Vesktop # discord

@@ -28,7 +28,7 @@
     };
 
     ghostty = {
-      url = "github:ghostty-org/ghostty";
+      url = "github:ghostty-org/ghostty/tip";
       inputs = {
         nixpkgs.follows = "nixpkgs";
         home-manager.follows = "home-manager";

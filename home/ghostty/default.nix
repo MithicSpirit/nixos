@@ -1,16 +1,17 @@
 {
-  pkgs,
+  lib,
   config,
   root,
   ...
 }:
 {
+  home.sessionVariables."TERMINAL" = "ghostty";
+  xdg.terminal-exec.settings.default = [ "com.mitchellh.ghostty.desktop" ];
 
   programs.ghostty = {
-    # XXX: #3555, #3708
 
     enable = true;
-    systemd.enable = true;
+    systemd.enable = false; # manual
     clearDefaultKeybinds = true;
 
     settings =
@@ -20,9 +21,9 @@
       {
         # font
         font-family = builtins.head config.fonts.fontconfig.defaultFonts.monospace;
-        font-size = 12.5;
+        font-size = 12;
         font-style = "SemiBold";
-        adjust-cell-height = "-5%";
+        freetype-load-flags = "no-hinting,no-monochrome";
 
         # mouse
         cursor-click-to-move = false;
@@ -35,20 +36,13 @@
         window-decoration = "server";
         window-theme = "ghostty";
         window-show-tab-bar = "never";
-        resize-overlay = "never"; # TODO: after-delay (#6640)
+        resize-overlay = "after-first";
         resize-overlay-position = "center";
         initial-window = true;
-        quit-after-last-window-closed = false;
-        gtk-single-instance = true;
+        gtk-single-instance = false; # only for systemd service
+        quit-after-last-window-closed = true;
+        quit-after-last-window-closed-delay = "";
         gtk-titlebar = false;
-        gtk-custom-css =
-          let
-            no-rounded-corners = pkgs.writeTextFile {
-              name = "ghostty-no-rounded-corners.css";
-              text = /* css */ "window { border-radius: 0 0; }";
-            };
-          in
-          [ "${no-rounded-corners}" ];
 
         # clipboard
         clipboard-read = "allow";
@@ -58,14 +52,22 @@
         clipboard-paste-bracketed-safe = true;
         copy-on-select = true;
 
-        # misc
-        scrollback-limit = 16 * 1024 * 1024; # 16 MB
-        linux-cgroup = "single-instance";
-        working-directory = "inherit";
+        # shell integration
         shell-integration = "detect";
         shell-integration-features = "no-cursor,sudo,title";
+        notify-on-command-finish = "unfocused";
+        notify-on-command-finish-action = "notify,no-bell";
+        notify-on-command-finish-after = 0;
+
+        # misc
+        scrollback-limit = 16 * 1024 * 1024; # 16 MB
+        mouse-scroll-multiplier = "discrete:3.125,precision:1"; # HACK: for some reason one notch is 1.6, so use 3.125 to get 5 lines of scrolling per notch.
+        linux-cgroup = "single-instance";
+        working-directory = "inherit";
+        window-inherit-working-directory = false;
         desktop-notifications = true;
         auto-update = "off";
+        bell-features = "system,audio,attention,no-title,border";
 
         # theme
         background = colors.base00;
@@ -152,6 +154,29 @@
         ];
       };
 
+  };
+
+  systemd.user.services."ghostty" = {
+    Unit = {
+      Description = "Ghostty Terminal Emulator";
+      After = [
+        "graphical-session.target"
+        "dbus.socket"
+      ];
+      Requires = "dbus.socket";
+      # TODO: add themes
+      X-Reload-Triggers = [ "${config.xdg.configFile."ghostty/config".source}" ];
+      X-SwitchMethod = "reload"; # don't restart to prevent closing terminal
+    };
+    Service = {
+      Type = "notify-reload";
+      ReloadSignal = "SIGUSR2";
+      BusName = "com.mitchellh.ghostty";
+      ExecStart = "${lib.getExe config.programs.ghostty.package} --gtk-single-instance=true --initial-window=false --quit-after-last-window-closed=false";
+    };
+    Install = {
+      WantedBy = [ "graphical-session.target" ];
+    };
   };
 
 }

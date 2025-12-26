@@ -1,0 +1,46 @@
+diff --git a/src/Surface.zig b/src/Surface.zig
+index fd658a43b..8932209b2 100644
+--- a/src/Surface.zig
++++ b/src/Surface.zig
+@@ -3506,21 +3506,39 @@ pub fn scrollCallback(
+         // We have mouse events, are not in an alternate scroll buffer,
+         // or have alternate scroll disabled. In this case, we just run
+         // the normal logic.
+ 
+         // If we're scrolling up or down, then send a mouse event.
+         if (self.isMouseReporting()) {
+-            for (0..@abs(y.delta)) |_| {
++            // Based on #10004. See
++            // - https://github.com/ghostty-org/ghostty/discussions/8875
++            // - https://github.com/ghostty-org/ghostty/pull/8907
++            // - https://github.com/ghostty-org/ghostty/pull/10004
++            if (!scroll_mods.precision) {
++                if (yoff != 0) {
++                    const button: input.MouseButton = if (yoff > 0) .four else .five;
++                    const pos = try self.rt_surface.getCursorPos();
++                    try self.mouseReport(button, .press, self.mouse.mods, pos);
++                }
++                if (xoff != 0) {
++                    const button: input.MouseButton = if (xoff > 0) .six else .seven;
++                    const pos = try self.rt_surface.getCursorPos();
++                    try self.mouseReport(button, .press, self.mouse.mods, pos);
++                }
++                return;
++            }
++
++            for (0..y.magnitude()) |_| {
+                 const pos = try self.rt_surface.getCursorPos();
+                 try self.mouseReport(switch (y.direction()) {
+                     .up_right => .four,
+                     .down_left => .five,
+                 }, .press, self.mouse.mods, pos);
+             }
+ 
+-            for (0..@abs(x.delta)) |_| {
++            for (0..x.magnitude()) |_| {
+                 const pos = try self.rt_surface.getCursorPos();
+                 try self.mouseReport(switch (x.direction()) {
+                     .up_right => .six,
+                     .down_left => .seven,
+                 }, .press, self.mouse.mods, pos);
+             }
