@@ -1,19 +1,5 @@
 final: prev: {
 
-  mpv-unwrapped = prev.mpv-unwrapped.overrideAttrs (
-    _finalAttrs: prevAttrs:
-    assert prevAttrs.version == "0.40.0";
-    {
-      patches = (prevAttrs.patches or [ ]) ++ [
-        (final.fetchpatch2 {
-          name = "wayland-clipboard-lag-fix.patch";
-          url = "https://github.com/mpv-player/mpv/commit/d20ded876d27497d3fe6a9494add8106b507a45c.patch?full_index=1";
-          hash = "sha256-IKXTUF0+pmwO4Lt5cr+i6KOCCU1Sv9vDp1+IHOwM8UY=";
-        })
-      ];
-    }
-  );
-
   vimPlugins = prev.vimPlugins // {
     nvim-lspconfig = final.vimUtils.buildVimPlugin {
       inherit (prev.vimPlugins.nvim-lspconfig) pname meta;

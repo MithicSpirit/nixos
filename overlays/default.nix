@@ -1,6 +1,7 @@
 inputs: [
-  (import ./pkgs.nix)
   ((import ./inputs.nix) inputs)
+  (import ./pkgs.nix)
+
   (import ./miscellaneous)
 
   (import ./bluez)
