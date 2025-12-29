@@ -191,6 +191,7 @@
       lsof
       mtr
       ldns
+      smartmontools
       testdisk
       tree
       bees
@@ -288,6 +289,7 @@
   '';
 
   services.upower.enable = true;
+  services.dbus.implementation = "broker";
 
   programs.gamemode.settings.gpu.gpu_device = 1;
 

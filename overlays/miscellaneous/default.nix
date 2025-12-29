@@ -13,20 +13,6 @@ final: prev: {
     };
   };
 
-  btop = prev.btop.overrideAttrs (
-    _finalAttrs: prevAttrs:
-    assert prevAttrs.version == "1.4.5";
-    {
-      patches = (prevAttrs.patches or [ ]) ++ [
-        (final.fetchpatch2 {
-          name = "revert-io-btrfs-regression.patch";
-          url = "https://github.com/aristocratos/btop/commit/845d2cb0663de0b0c0cfac1af43bea934203e3dc.patch?full_index=1";
-          hash = "sha256-gLDiXYE98u1Y5OrJumCkdNsdAlvUVfnl62nRr8dTZkU=";
-        })
-      ];
-    }
-  );
-
   tzupdate =
     assert prev.tzupdate.version == "3.1.0";
     final.rustPlatform.buildRustPackage {
