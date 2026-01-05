@@ -165,6 +165,7 @@ in
       windowrule =
         let
           float = [
+            "class:xdg-desktop-portal-gtk"
             "class:qalculate-gtk"
             "class:xdg-desktop-portal"
             "class:Matplotlib"
@@ -321,7 +322,10 @@ in
           "$mod SHIFT, p, execr, ${grimblast} copysave area ${scrot}"
           "$mod CONTROL, p, execr, ${grimblast} --cursor copysave output ${scrot}"
 
-          # TODO: dunst bindings
+          "$mod, n, execr, dunstctl context"
+          "$mod SHIFT, n, execr, dunstctl close"
+          "$mod CONTROL SHIFT, n, execr, dunstctl close-all"
+
           # TODO: disable touchpad
         ]
         ++ builtins.concatLists (
