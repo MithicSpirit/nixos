@@ -183,7 +183,7 @@
       vim
       emacs
       git
-      nixfmt-rfc-style
+      nixfmt
       nix-index
       htop
       findutils

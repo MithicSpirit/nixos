@@ -114,13 +114,14 @@ in
       misc = {
         disable_hyprland_logo = true;
         disable_splash_rendering = true;
+        disable_watchdog_warning = true;
         font_family = "Sans";
         force_default_wallpaper = 0;
         vrr = 2;
         mouse_move_enables_dpms = true;
         key_press_enables_dpms = true;
         disable_autoreload = true;
-        new_window_takes_over_fullscreen = 1;
+        on_focus_under_fullscreen = 1;
         exit_window_retains_fullscreen = true;
         render_unfocused_fps = 15;
         lockdead_screen_delay = 2000;
@@ -162,52 +163,113 @@ in
         }
       ];
 
-      windowrule =
-        let
-          float = [
-            "class:xdg-desktop-portal-gtk"
-            "class:qalculate-gtk"
-            "class:xdg-desktop-portal"
-            "class:Matplotlib"
-            "class:steam, initialTitle:negative:Steam" # non-main steam window
-            "class:librewolf, title:Library" # bookmarks
-            "class:swayimg(|_.*)"
-          ];
-          pin = [
-            "title:dragon"
-            "title:Picture-in-Picture"
-          ];
-          game = [
-            "xdgTag:proton-game"
-            "class:steam_app_.*"
-            "class:dota2"
-            "class:Terraria.bin.x86_64"
-            "class:factorio"
-            "class:openttd"
-          ];
-          floatRules = builtins.concatMap (rule: [
-            "float, ${rule}"
-            "group override barred deny, ${rule}"
-          ]) (float ++ pin);
-          pinRules = builtins.concatMap (rule: [ "pin, ${rule}" ]) pin;
-          gameRules = builtins.concatMap (rule: [
-            "content game, ${rule}"
-            "renderunfocused, ${rule}"
-            "immediate, ${rule}"
-            "suppressevent fullscreen maximize fullscreenoutput, ${rule}"
-            "float, ${rule}"
-            "fullscreen, ${rule}"
-            "group override barred deny, ${rule}"
-          ]) game;
-        in
-        floatRules
-        ++ pinRules
-        ++ gameRules
-        ++ [
-          "group override barred deny, floating:1" # don't group floats
-          "group set always, group:0, floating:0, fullscreen:0" # group all other windows
-          "opacity 0.6, tag:dragging, floating:1" # see underneath when dragging
-        ];
+      windowrule = [
+        {
+          name = "group-all";
+          "match:float" = false;
+          "match:fullscreen" = false;
+          group = "set always";
+        }
+        {
+          name = "no-group-floats";
+          "match:float" = true;
+          group = "override barred deny";
+        }
+        {
+          name = "transparent-dragging";
+          "match:tag" = "dragging";
+          "match:float" = true;
+          opacity = 0.6;
+        }
+      ]
+      ++ builtins.concatLists (
+        lib.mapAttrsToList
+          (
+            basename:
+            { props, effects }:
+            lib.mapAttrsToList (
+              propname: prop: { name = "${basename}:${propname}"; } // effects // prop
+            ) props
+          )
+          {
+            float = {
+              effects = {
+                float = true;
+                group = "override barred deny";
+              };
+              props = {
+                "xdg-desktop-portal" = {
+                  # xdg-desktop-portal, xdg-desktop-portal-gtk, etc.
+                  "match:class" = "xdg-desktop-portal(|-.*)";
+                };
+                "qalculate-gtk" = {
+                  "match:class" = "qalculate-gtk";
+                };
+                "matplotlib" = {
+                  "match:class" = "Matplotlib";
+                };
+                "steam-popup" = {
+                  "match:class" = "steam";
+                  "match:initial_title" = "negative:Steam";
+                };
+                "librewolf-bookmarks" = {
+                  "match:class" = "librewolf";
+                  "match:initial_title" = "Library";
+                };
+                "swayimg" = {
+                  # swayimg, swayimg_123456, etc.
+                  "match:class" = "swayimg(|_.*)";
+                };
+              };
+            };
+            pin = {
+              effects = {
+                float = true;
+                pin = true;
+                group = "override barred deny";
+              };
+              props = {
+                "dragon" = {
+                  "match:title" = "dragon";
+                };
+                "librewolf-picture-in-picture" = {
+                  "match:class" = "librewolf";
+                  "match:title" = "Picture-in-Picture";
+                };
+              };
+            };
+            game = {
+              effects = {
+                fullscreen = true;
+                group = "override barred deny";
+                content = "game";
+                render_unfocused = true;
+                immediate = true;
+                suppress_event = "fullscreen maximize fullscreenoutput";
+              };
+              props = {
+                "proton-wayland" = {
+                  "match:xdg_tag" = "proton-game";
+                };
+                "proton-xwayland" = {
+                  "match:class" = "steam_app_.*";
+                };
+                "dota2" = {
+                  "match:class" = "dota2";
+                };
+                "terraria" = {
+                  "match:class" = "Terraria\\.bin\\.x86_64";
+                };
+                "factorio" = {
+                  "match:class" = "factorio";
+                };
+                "openttd" = {
+                  "match:class" = "openttd";
+                };
+              };
+            };
+          }
+      );
 
       exec-once = [
         "[workspace 1; fullscreen] ${config.home.sessionVariables.TERMINAL} --class=btop --title=btop -e btop"
@@ -420,8 +482,11 @@ in
   services.hyprpaper = {
     enable = true;
     settings = {
-      preload = "${wallpaper}";
-      wallpaper = ", ${wallpaper}";
+      splash = false;
+      wallpaper = {
+        monitor = "";
+        path = "${wallpaper}";
+      };
     };
   };
 

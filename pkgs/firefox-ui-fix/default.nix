@@ -5,7 +5,7 @@
 }:
 stdenvNoCC.mkDerivation {
   pname = "firefox-ui-fix";
-  version = "8.7.4";
+  version = "8.7.5";
 
   src = fetchFromGitHub {
     owner = "black7375";

@@ -62,29 +62,33 @@
 
   fonts.fontconfig = {
     enable = true;
-    defaultFonts = {
-      sansSerif = [
-        "Overpass"
-        "Libtertinus Sans"
-        "Iosevka Mithic"
-        "Noto Sans"
-        "Noto Sans CJK"
-      ];
-      serif = [
-        "Libertinus Serif"
-        "Latin Modern Roman"
-        "Iosevka Mithic"
-        "Noto Serif"
-      ];
-      monospace = [
-        "Iosevka Mithic"
-        "Overpass Mono"
-      ];
-      emoji = [
-        "Twemoji"
-        "Iosevka Mithic"
-      ];
-    };
+    defaultFonts =
+      let
+        standard = "Iosevka Mithic";
+      in
+      {
+        sansSerif = [
+          "Overpass"
+          "Libtertinus Sans"
+          standard
+          "Noto Sans"
+          "Noto Sans CJK"
+        ];
+        serif = [
+          "Libertinus Serif"
+          "Latin Modern Roman"
+          standard
+          "Noto Serif"
+        ];
+        monospace = [
+          standard
+          "Overpass Mono"
+        ];
+        emoji = [
+          "Twemoji"
+          standard
+        ];
+      };
   };
 
   home.packages = with pkgs; [

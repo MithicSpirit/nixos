@@ -4,7 +4,7 @@
   buildNpmPackage,
   fetchFromGitHub,
   autoPatchelfHook,
-  nodejs,
+  nodejs_22,
   electron,
   libX11,
   libXrandr,
@@ -13,6 +13,7 @@
   libxcb,
 }:
 let
+  nodejs = nodejs_22; # HACK: issue with lockfiles not being in sync
   name = "awakened-poe-trade";
   version = "3.27.106";
 

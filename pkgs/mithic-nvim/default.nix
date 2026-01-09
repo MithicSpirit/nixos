@@ -56,7 +56,7 @@ vimUtils.buildVimPlugin {
     lean-nvim
     Coqtail
     cornelis
-    nvim-treesitter.withAllGrammars
+    nvim-treesitter-legacy.withAllGrammars # TODO: switch to non-legacy
 
     # tpope
     vim-sleuth

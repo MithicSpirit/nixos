@@ -41,14 +41,6 @@ final: prev: {
     }
   );
 
-  rustup = prev.rustup.overrideAttrs (
-    _finalAttrs: prevAttrs:
-    assert (prevAttrs.version == "1.28.2");
-    {
-      doCheck = false;
-    }
-  );
-
   ghostty = prev.ghostty.overrideAttrs (
     _finalAttrs: prevAttrs:
     assert (prevAttrs.version == "1.3.0-dev");

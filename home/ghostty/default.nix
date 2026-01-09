@@ -22,7 +22,6 @@
         # font
         font-family = builtins.head config.fonts.fontconfig.defaultFonts.monospace;
         font-size = 12;
-        font-style = "SemiBold";
         freetype-load-flags = "no-hinting,no-monochrome";
 
         # mouse
