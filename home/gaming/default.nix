@@ -33,6 +33,9 @@ in
     rusty-path-of-building
     (add-cli-flags awakened-poe-trade "--no-overlay")
     (add-cli-flags exiled-exchange-2 "--no-overlay")
+
+    # eve online
+    pyfa
   ];
 
   programs.mangohud = {

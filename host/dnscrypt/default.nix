@@ -10,7 +10,8 @@
       require_nofilter = true;
 
       cache = true;
-      cache_max_ttl = 3 * 60 * 60; # 3 hours
+      cache_min_ttl = 60 * 15; # 15 minutes
+      cache_max_ttl = 60 * 60; # 1 hour
 
     };
   };

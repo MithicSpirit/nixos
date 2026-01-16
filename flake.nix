@@ -28,12 +28,13 @@
     };
 
     ghostty = {
-      url = "github:ghostty-org/ghostty/tip";
+      url = "github:ghostty-org/ghostty/c90f47f11f5ceaf0f161350c3755db2c50ade3f1";
       inputs = {
         nixpkgs.follows = "nixpkgs";
         home-manager.follows = "home-manager";
         flake-utils.inputs.systems.follows = "systems";
         flake-compat.follows = ""; # compat not needed
+        zon2nix.follows = ""; # only for dev shell
       };
     };
 

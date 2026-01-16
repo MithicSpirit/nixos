@@ -58,4 +58,14 @@ final: prev: {
     }
   );
 
+  grimblast = prev.grimblast.overrideAttrs (
+    _finalAttrs: prevAttrs:
+    assert (prevAttrs.version == "0.1-unstable-2025-12-18");
+    {
+      patches = (prevAttrs.patches or [ ]) ++ [
+        ./grimblast-fix-lock.diff
+      ];
+    }
+  );
+
 }

@@ -23,9 +23,11 @@
           notification_limit = 3;
           indicate_hidden = true;
           idle_threshold = 4;
-          format = "%p<b>%s</b> (<i>%a</i>)\\n%b";
           title = "Dunst";
           class = "dunst";
+
+          font = "${builtins.head config.fonts.fontconfig.defaultFonts.monospace} 11";
+          format = "%p<b>%s</b> (<i>%a</i>)\\n%b";
 
           dmenu = "${lib.getExe pkgs.bemenu} -p Dunst -cl 7 -W 0.5";
           browser = "${../scripts/bin/menu-browser}";
@@ -33,7 +35,9 @@
           mouse_middle_click = "close_all";
           mouse_right_click = "close_current";
 
-          font = "${builtins.head config.fonts.fontconfig.defaultFonts.monospace} 11";
+          origin = "top-right";
+          width = 300;
+          offset = "(17, 28)";
           corner_radius = 4;
           frame_color = colors.accent;
           frame_width = 2;

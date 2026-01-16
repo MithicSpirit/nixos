@@ -4,7 +4,7 @@ alias fmt:=format
 format *args:
     nix fmt -- {{ args }}
 
-check:
+check: gitprepare
     nix flake check --all-systems
     nix run .#deadnix -- {{ deadnix-args }} --fail
 
@@ -19,14 +19,14 @@ gc: sudo && boot clean
     nix-collect-garbage -v --delete-older-than 22d --max-freed 0
     sudo nix-collect-garbage -v --delete-older-than 22d --max-freed 0
 
-build: gitadd
+build: gitprepare
     nixos-rebuild build --flake '.#{{ host }}' |& nom
 
 clean: clean-artifact
     nix store gc -v
     nix store optimise -v
 
-package pkg *args: gitadd
+package pkg *args: gitprepare
     nom build {{ args }} '.#{{ pkg }}'
 
 test: (rebuild 'test') system
@@ -59,6 +59,10 @@ standard: format check
 [private]
 gitadd:
     git add .
+
+[private]
+gitprepare:
+    git add --intent-to-add .
 
 [private]
 system:

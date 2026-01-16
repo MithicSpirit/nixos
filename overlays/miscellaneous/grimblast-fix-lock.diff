@@ -1,0 +1,130 @@
+diff --git a/grimblast b/grimblast
+index ddfa737..c5c54bf 100755
+--- a/grimblast
++++ b/grimblast
+@@ -18,27 +18,39 @@
+ ## hyprctl equivalents.
+ ## https://github.com/OctopusET/sway-contrib/blob/master/grimshot/grimshot
+ 
+ NAME="$(basename "$0")"
+ 
+ # Check whether another instance is running
+-GRIMBLASTLOCK="${XDG_RUNTIME_DIR:-${XDG_CACHE_DIR:-$HOME/.cache}}/$NAME.lock"
++LOCK="${XDG_RUNTIME_DIR:-${XDG_CACHE_DIR:-$HOME/.cache}}/$NAME.lock"
++HOLD_LOCK=0
++HYPRPICKER_PID=0
+ 
+-killhyprpicker() {
+-    pidof -q hyprpicker && pkill hyprpicker
++acquire-lock() {
++    [[ $HOLD_LOCK -ne 0 ]] && return
++    [[ -e "$LOCK" ]] && exit 2
++    touch "$LOCK"
++    HOLD_LOCK=1
+ }
+ 
+-cleanup() {
+-    rm -f "$GRIMBLASTLOCK"
+-    killhyprpicker
++freezescreen() {
++    acquire-lock
++    hyprpicker -rz &
++    HYPRPICKER_PID=$!
++    sleep 0.2
++}
++
++release-lock() {
++    [[ $HOLD_LOCK -eq 0 ]] && return
++    [[ $HYPRPICKER_PID -gt 0 ]] && kill $HYPRPICKER_PID
++    pidof -q hyprpicker && pkill hyprpicker
++    rm -f "$LOCK"
+ }
+ 
+ # Entry point
+-[[ -e $GRIMBLASTLOCK ]] && exit 2
+-trap cleanup EXIT
+-touch "$GRIMBLASTLOCK"
++trap release-lock EXIT
+ 
+ [[ $HYPRLAND_INSTANCE_SIGNATURE ]] || {
+     echo "Error: HYPRLAND_INSTANCE_SIGNATURE not set! (is hyprland running?)" >&2
+     exit 1
+ }
+ 
+@@ -82,13 +94,13 @@ notify::error() {
+     fi
+     echo "$1" >&2
+ }
+ 
+ # If invoked with -h, print usage before dying
+ die() {
+-    killhyprpicker
++    release-lock
+     local msg OPTIND option
+     while getopts 'h' option; do
+         case "$option" in
+             h) usage >&2 ;;
+             ?) echo "die: Usage: die [-h] MESSAGE" >&2 ;;
+         esac
+@@ -118,17 +130,12 @@ get-mime-type() {
+     case $FILETYPE in
+         png | jpeg) echo "image/$FILETYPE" ;;
+         ppm) echo "image/x-portable-pixmap" ;;
+     esac
+ }
+ 
+-freezescreen() {
+-    hyprpicker -rz &
+-    sleep 0.2
+-}
+-
+ # Checks whether an individual tool is available
+ # If invoked with -q (quiet), no output is printed, useful for use in tests
+ # Exits with 0 if the tool is available, non-zero otherwise
+ grimblast::check() {
+     local cmd result OPTIND option status quiet=false
+     while getopts 'q' option; do
+@@ -213,12 +220,13 @@ output() {
+     WHAT="$OUTPUT"
+ }
+ 
+ area() {
+     local fullscreen_workspaces workspaces windows
+     [[ $CURSOR ]] && die "'-c|--cursor' cannot be used with TARGET 'area'"
++    acquire-lock
+ 
+     if [[ $FREEZE ]] && grimblast::check -q hyprpicker; then
+         freezescreen
+     fi
+ 
+     # disable animation for layer namespace "selection" (slurp)
+@@ -233,13 +241,13 @@ area() {
+     GEOM="$(jq -r '.[] | "\(.at[0]),\(.at[1]) \(.size[0])x\(.size[1])"' <<<"$windows" | slurp "${SLURP_ARGS[@]}")"
+ 
+     grimblast::wait
+ 
+     # Check if user exited slurp without selecting the area
+     [[ $GEOM ]] || {
+-        killhyprpicker
++        release-lock
+         exit 1
+     }
+     WHAT="Area"
+ }
+ 
+ # Action functions.
+@@ -252,13 +260,13 @@ copy() {
+ 
+ save() {
+     local file title message
+     file="${1:-$DEFAULT_TARGET_DIR/$(date +"$DATE_FORMAT").$FILETYPE}"
+     screenshot "$file" "$GEOM" "$OUTPUT" || die "Could not take screenshot with grim"
+     title="Screenshot of $WHAT" message="$(basename "$file")"
+-    killhyprpicker
++    release-lock
+     notify::showparentdir "$title" "$message" -i "$file"
+     echo "$file"
+ }
+ 
+ edit() {
+     local editor="${GRIMBLAST_EDITOR%% *}"

@@ -178,7 +178,6 @@ in
         {
           name = "transparent-dragging";
           "match:tag" = "dragging";
-          "match:float" = true;
           opacity = 0.6;
         }
       ]
@@ -270,6 +269,27 @@ in
             };
           }
       );
+
+      layerrule = [
+        {
+          name = "bottom-waybar";
+          "match:namespace" = "waybar";
+          no_screen_share = true;
+          order = 1000;
+        }
+        {
+          name = "overlay-bemenu";
+          "match:namespace" = "menu";
+          no_screen_share = true;
+          order = 900;
+        }
+        {
+          name = "overlay-notifications";
+          "match:namespace" = "notifications";
+          no_screen_share = true;
+          order = 800;
+        }
+      ];
 
       exec-once = [
         "[workspace 1; fullscreen] ${config.home.sessionVariables.TERMINAL} --class=btop --title=btop -e btop"
