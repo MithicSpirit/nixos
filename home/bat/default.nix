@@ -1,6 +1,4 @@
-{ ... }:
-{
-
+{...}: {
   programs.bat = {
     enable = true;
     config = {
@@ -10,5 +8,4 @@
       pager = "less --quiet --RAW-CONTROL-CHARS --mouse";
     };
   };
-
 }

@@ -23,7 +23,6 @@
   millet,
 }:
 vimUtils.buildVimPlugin {
-
   pname = "mithic-nvim"; # mithic.nvim
   version = "0.0.0";
 
@@ -94,6 +93,6 @@ vimUtils.buildVimPlugin {
   meta = with lib; {
     description = "MithicSpirit's Neovim configuration";
     platforms = platforms.all;
-    maintainers = [ maintainers.mithicspirit ];
+    maintainers = [maintainers.mithicspirit];
   };
 }

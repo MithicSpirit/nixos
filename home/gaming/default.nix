@@ -3,27 +3,23 @@
   lib,
   config,
   ...
-}:
-let
-  ini = (pkgs.formats.ini { listsAsDuplicateKeys = true; }).generate;
+}: let
+  ini = (pkgs.formats.ini {listsAsDuplicateKeys = true;}).generate;
 
-  add-cli-flags =
-    pkg: flags:
+  add-cli-flags = pkg: flags:
     pkgs.runCommandLocal "${pkg.name}-wrapped"
-      {
-        inherit (pkg) meta;
-        nativeBuildInputs = [ pkgs.makeWrapper ];
-        propagatedBuildInputs = [ pkg ];
-      }
-      ''
-        mkdir -p "$out/bin/"
-        makeWrapper '${lib.getExe pkg}' $out/bin/'${pkg.meta.mainProgram}' \
-          --add-flags '${flags}' \
-          --inherit-argv0
-      '';
-in
-{
-
+    {
+      inherit (pkg) meta;
+      nativeBuildInputs = [pkgs.makeWrapper];
+      propagatedBuildInputs = [pkg];
+    }
+    ''
+      mkdir -p "$out/bin/"
+      makeWrapper '${lib.getExe pkg}' $out/bin/'${pkg.meta.mainProgram}' \
+        --add-flags '${flags}' \
+        --inherit-argv0
+    '';
+in {
   home.packages = with pkgs; [
     # compatibility tool version management
     protonup-qt
@@ -40,7 +36,7 @@ in
 
   programs.mangohud = {
     enable = true;
-    settings = { };
+    settings = {};
   };
   xdg.configFile."MangoHud/MangoHud.conf" = {
     enable = true;
@@ -58,15 +54,13 @@ in
       disable_splitlock = 1;
     };
     cpu.pin_cores = 1;
-    custom =
-      let
-        notify-send = lib.getExe pkgs.libnotify;
-      in
-      {
-        start = "${notify-send} -et 5000 -a 'GameMode' 'Started'";
-        end = "${notify-send} -et 5000 -a 'GameMode' 'Stopped'";
-        script_timeout = 2;
-      };
+    custom = let
+      notify-send = lib.getExe pkgs.libnotify;
+    in {
+      start = "${notify-send} -et 5000 -a 'GameMode' 'Started'";
+      end = "${notify-send} -et 5000 -a 'GameMode' 'Stopped'";
+      script_timeout = 2;
+    };
   };
   systemd.user.services."gamemoded".Unit = {
     X-SwitchMethod = "restart";
@@ -76,5 +70,4 @@ in
   };
 
   home.sessionVariables."GAMEMODERUNEXEC" = "DRI_PRIME=1";
-
 }

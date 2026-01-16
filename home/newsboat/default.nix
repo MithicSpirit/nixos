@@ -1,6 +1,4 @@
-{ ... }:
-{
-
+{...}: {
   programs.newsboat = {
     enable = true;
 

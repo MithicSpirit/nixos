@@ -7,7 +7,6 @@
         content = {
           type = "gpt";
           partitions = {
-
             ESP = {
               type = "EF00";
               size = "1G";
@@ -15,7 +14,7 @@
                 type = "filesystem";
                 format = "vfat";
                 mountpoint = "/boot";
-                mountOptions = [ "umask=0077" ];
+                mountOptions = ["umask=0077"];
               };
             };
 
@@ -28,7 +27,7 @@
                 passwordFile = "/tmp/password";
                 content = {
                   type = "btrfs";
-                  extraArgs = [ "-f" ];
+                  extraArgs = ["-f"];
                   subvolumes = {
                     "/nixroot" = {
                       mountpoint = "/";
@@ -58,7 +57,6 @@
                 };
               };
             };
-
           };
         };
       };

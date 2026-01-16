@@ -1,6 +1,4 @@
-{ ... }:
-{
-
+{...}: {
   zramSwap = {
     enable = true;
     algorithm = "lz4 zstd";
@@ -14,6 +12,5 @@
   };
 
   # zswap+zram = bad
-  boot.kernelParams = [ "zswap.enabled=0" ];
-
+  boot.kernelParams = ["zswap.enabled=0"];
 }

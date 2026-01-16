@@ -1,13 +1,14 @@
-{ pkgs, lib, ... }:
-let
+{
+  pkgs,
+  lib,
+  ...
+}: let
   fw-fanctrl = lib.getExe pkgs.fw-fanctrl;
-  json = (pkgs.formats.json { }).generate;
+  json = (pkgs.formats.json {}).generate;
   conf = json "fw-fanctrl.json" {
-
     defaultStrategy = "medium";
     strategyOnDischarging = "lazy";
     strategies = {
-
       "lazy" = {
         fanSpeedUpdateFrequency = 5;
         movingAverageInterval = 30;
@@ -127,13 +128,9 @@ let
           }
         ];
       };
-
     };
-
   };
-in
-{
-
+in {
   environment.systemPackages = [
     pkgs.fw-ectool
     pkgs.fw-fanctrl
@@ -149,22 +146,20 @@ in
     };
     script = "${fw-fanctrl} run --config ${conf} --silent";
     postStart = "${lib.getExe pkgs.fw-ectool} autofanctrl";
-    after = [ "multi-user.target" ];
-    wantedBy = [ "multi-user.target" ];
-    restartTriggers = [ conf ];
+    after = ["multi-user.target"];
+    wantedBy = ["multi-user.target"];
+    restartTriggers = [conf];
   };
 
-  environment.etc."systemd/system-sleep/fw-fanctrl-suspend".source =
-    pkgs.writeShellScript "fw-fanctrl-suspend" ''
-      case "$1" in
-        pre) '${fw-fanctrl}' pause ;;
-        post) '${fw-fanctrl}' resume ;;
-      esac
-    '';
+  environment.etc."systemd/system-sleep/fw-fanctrl-suspend".source = pkgs.writeShellScript "fw-fanctrl-suspend" ''
+    case "$1" in
+      pre) '${fw-fanctrl}' pause ;;
+      post) '${fw-fanctrl}' resume ;;
+    esac
+  '';
 
   programs.gamemode.settings.custom = {
-    start = [ "'${fw-fanctrl}' use agile" ];
-    end = [ "'${fw-fanctrl}' reset" ];
+    start = ["'${fw-fanctrl}' use agile"];
+    end = ["'${fw-fanctrl}' reset"];
   };
-
 }

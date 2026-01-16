@@ -1,6 +1,4 @@
-{ config, ... }:
-{
-
+{config, ...}: {
   programs.bemenu = {
     enable = true;
     settings = {

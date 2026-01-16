@@ -2,15 +2,12 @@
   config,
   pkgs,
   ...
-}:
-let
+}: let
   home = config.home.homeDirectory;
   xdg = config.xdg;
   files = "${home}/files";
-in
-{
-
-  imports = [ ./trash.nix ];
+in {
+  imports = [./trash.nix];
 
   xdg = {
     enable = true;
@@ -46,7 +43,7 @@ in
   home.preferXdgDirectories = true;
 
   home.file."local" = {
-    source = pkgs.runCommandLocal "xdg-local" { } ''
+    source = pkgs.runCommandLocal "xdg-local" {} ''
       mkdir "$out"
       ln -s "${xdg.cacheHome}" "$out/cache"
       ln -s "${xdg.configHome}" "$out/etc"
@@ -54,5 +51,4 @@ in
       ln -s "${xdg.stateHome}" "$out/state"
     '';
   };
-
 }

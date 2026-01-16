@@ -10,7 +10,6 @@
   menu ? null,
 }:
 stdenvNoCC.mkDerivation rec {
-
   pname = "qalcmenu";
   version = "2023.11.27";
 
@@ -26,16 +25,23 @@ stdenvNoCC.mkDerivation rec {
     makeWrapper
   ];
 
-  installPhase =
-    let
-      path = [
+  installPhase = let
+    path =
+      [
         util-linux
         libqalculate
         wl-clipboard
       ]
-      ++ (if menu != null then [ menu ] else [ ]);
-    in
-    /* bash */ ''
+      ++ (
+        if menu != null
+        then [menu]
+        else []
+      );
+  in
+    /*
+    bash
+    */
+    ''
       runHook preInstall
 
       installManPage ./qalcmenu.1 ./=.1
@@ -57,8 +63,7 @@ stdenvNoCC.mkDerivation rec {
     '';
     license = licenses.agpl3Plus;
     platforms = platforms.all;
-    maintainers = [ maintainers.mithicspirit ];
+    maintainers = [maintainers.mithicspirit];
     mainProgram = "qalcmenu";
   };
-
 }

@@ -3,8 +3,7 @@
   config,
   lib,
   ...
-}:
-{
+}: {
   # TODO: check whether names are correct
 
   home.pointerCursor = {
@@ -42,10 +41,9 @@
   };
 
   # use dark theme for gtk4
-  xdg.configFile."gtk-4.0/gtk.css".text =
-    let
-      cfg = config.gtk;
-    in
+  xdg.configFile."gtk-4.0/gtk.css".text = let
+    cfg = config.gtk;
+  in
     lib.mkForce ''
       @import url("file://${cfg.theme.package}/share/themes/${cfg.theme.name}-Dark/gtk-4.0/gtk.css");
       ${cfg.gtk4.extraCss}'';
@@ -62,33 +60,31 @@
 
   fonts.fontconfig = {
     enable = true;
-    defaultFonts =
-      let
-        standard = "Iosevka Mithic";
-      in
-      {
-        sansSerif = [
-          "Overpass"
-          "Libtertinus Sans"
-          standard
-          "Noto Sans"
-          "Noto Sans CJK"
-        ];
-        serif = [
-          "Libertinus Serif"
-          "Latin Modern Roman"
-          standard
-          "Noto Serif"
-        ];
-        monospace = [
-          standard
-          "Overpass Mono"
-        ];
-        emoji = [
-          "Twemoji"
-          standard
-        ];
-      };
+    defaultFonts = let
+      standard = "Iosevka Mithic";
+    in {
+      sansSerif = [
+        "Overpass"
+        "Libtertinus Sans"
+        standard
+        "Noto Sans"
+        "Noto Sans CJK"
+      ];
+      serif = [
+        "Libertinus Serif"
+        "Latin Modern Roman"
+        standard
+        "Noto Serif"
+      ];
+      monospace = [
+        standard
+        "Overpass Mono"
+      ];
+      emoji = [
+        "Twemoji"
+        standard
+      ];
+    };
   };
 
   home.packages = with pkgs; [
@@ -103,5 +99,4 @@
     dejavu_fonts
     julia-mono
   ];
-
 }

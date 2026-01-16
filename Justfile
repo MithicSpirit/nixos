@@ -1,8 +1,8 @@
 default: gitadd standard
 
-alias fmt:=format
-format *args:
+fmt *args:
     nix fmt -- {{ args }}
+format: (fmt '.')
 
 check: gitprepare
     nix flake check --all-systems

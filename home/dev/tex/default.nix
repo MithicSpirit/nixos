@@ -1,11 +1,12 @@
-{ pkgs, config, ... }:
-let
-  texmf = "${config.xdg.dataHome}/texmf";
-in
 {
-
+  pkgs,
+  config,
+  ...
+}: let
+  texmf = "${config.xdg.dataHome}/texmf";
+in {
   home.packages = with pkgs; [
-    (texliveFull.__overrideTeXConfig { withDocs = true; })
+    (texliveFull.__overrideTeXConfig {withDocs = true;})
     tectonic
     python3Packages.pygments # minted
     kdePackages.okular
@@ -25,5 +26,4 @@ in
     source = ./latexmkrc;
     executable = false;
   };
-
 }

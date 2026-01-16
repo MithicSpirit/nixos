@@ -1,14 +1,16 @@
-{ pkgs, lib, ... }:
 {
+  pkgs,
+  lib,
+  ...
+}: {
   systemd.user = {
-
     timers."autotrash" = {
       Unit.Description = "Delete old trash files daily";
       Timer = {
         OnCalendar = "daily";
         Persistent = true;
       };
-      Install.WantedBy = [ "timers.target" ];
+      Install.WantedBy = ["timers.target"];
     };
 
     services."autotrash" = {
@@ -18,6 +20,5 @@
         ExecStart = "'${lib.getExe pkgs.autotrash}' --days=17 --trash-mounts --verbose";
       };
     };
-
   };
 }

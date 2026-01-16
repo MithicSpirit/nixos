@@ -1,6 +1,4 @@
-{ ... }:
-{
-
+{...}: {
   services.cliphist = {
     enable = true;
     allowImages = true;
@@ -9,5 +7,4 @@
       "1500"
     ];
   };
-
 }

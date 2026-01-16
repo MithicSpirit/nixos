@@ -3,9 +3,7 @@
   lib,
   config,
   ...
-}:
-{
-
+}: {
   imports = [
     ./rust.nix
     ./python.nix
@@ -49,5 +47,4 @@
     "ELAN_HOME" = "${config.xdg.dataHome}/elan";
     "STACK_XDG" = "1";
   };
-
 }

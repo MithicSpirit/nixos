@@ -1,11 +1,9 @@
-{ ... }:
-{
-
+{...}: {
   services.keyd = {
     enable = true;
 
     keyboards.default = {
-      ids = [ "*" ];
+      ids = ["*"];
       settings.main = {
         capslock = "esc";
         esc = "capslock";
@@ -29,5 +27,4 @@
     MatchName=keyd virtual keyboard
     AttrKeyboardIntegration=internal
   '';
-
 }

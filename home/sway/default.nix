@@ -5,30 +5,25 @@
   lib,
   hostConfig,
   ...
-}:
-let
+}: let
   wallpaper = import (root + /common/wallpaper);
-in
-{
-
+in {
   # TODO: bar
   # TODO: .login
   # TODO: device-specific output config
   wayland.windowManager.sway = {
     enable = true;
     config = null;
-    extraConfig =
-      let
-        status = lib.getExe (
-          pkgs.writeCBin "swaybar-status" (builtins.readFile ./swaybar-status.c)
-        );
-      in
-      ''
-        set $confdir ${./cfg}
-        set $wallpaper ${wallpaper}
-        include $confdir/config
-        bar 0 status_command ${status}
-      '';
+    extraConfig = let
+      status = lib.getExe (
+        pkgs.writeCBin "swaybar-status" (builtins.readFile ./swaybar-status.c)
+      );
+    in ''
+      set $confdir ${./cfg}
+      set $wallpaper ${wallpaper}
+      include $confdir/config
+      bar 0 status_command ${status}
+    '';
     xwayland = true;
 
     # package = pkgs.swayfx;
@@ -77,12 +72,16 @@ in
   home.file.".login" = {
     enable = true;
     executable = true;
-    text = /* sh */ ''
-      #!/usr/bin/env sh
-      [ -z "$WAYLAND_DISPLAY" -a -z "$DISPLAY" -a "$XDG_VTNR" -eq 1 ] \
-        && exec sway >>/tmp/sway.log 2>&1
-      :
-    '';
+    text =
+      /*
+      sh
+      */
+      ''
+        #!/usr/bin/env sh
+        [ -z "$WAYLAND_DISPLAY" -a -z "$DISPLAY" -a "$XDG_VTNR" -eq 1 ] \
+          && exec sway >>/tmp/sway.log 2>&1
+        :
+      '';
   };
 
   programs.swaylock = {
@@ -135,65 +134,63 @@ in
     };
   };
 
-  services.swayidle =
-    let
-      lock-time = 600;
-      alert-time = 30;
-      notify-send = lib.getExe pkgs.libnotify;
-      loginctl = lib.getExe' hostConfig.systemd.package "loginctl";
-      sleep = lib.getExe' pkgs.coreutils "sleep";
-      pkill = lib.getExe' pkgs.procps "pkill";
-      dunstctl = lib.getExe' config.services.dunst.package "dunstctl";
-      swaymsg = lib.getExe' config.wayland.windowManager.sway.package "swaymsg";
-      swaylock = lib.getExe config.programs.swaylock.package;
-    in
-    {
-      enable = true;
-      extraArgs = [
-        "-w"
-        "idlehint"
-        "${builtins.toString (lock-time / 2)}"
-      ];
-      timeouts = [
-        {
-          timeout = lock-time - alert-time - 1;
-          command = "${notify-send} -et ${toString (alert-time * 1000)} -u low -a swayidle 'Locking soon'";
-        }
-        {
-          timeout = lock-time - 1;
-          command = "${dunstctl} set-paused true";
-          resumeCommand = "${dunstctl} set-paused false";
-        }
-        {
-          timeout = lock-time;
-          command = "${loginctl} lock-session";
-        }
-        {
-          timeout = lock-time + 15;
-          command = ''${swaymsg} "output * power off"'';
-          resumeCommand = ''${swaymsg} "output * power on"'';
-        }
-      ];
-      events = [
-        {
-          event = "before-sleep";
-          command = ''${loginctl} lock-session; ${swaymsg} "output * power off"; ${sleep} 0.2'';
-        }
-        {
-          event = "after-resume";
-          command = ''${sleep} 0.2; ${swaymsg} "output * power on"'';
-        }
-        {
-          event = "lock";
-          command = "${swaylock} -f; ${sleep} 0.1";
-          # TODO: sudo -K
-        }
-        {
-          event = "unlock";
-          command = ''${pkill} -USR1 "^swaylock$"'';
-        }
-      ];
-    };
+  services.swayidle = let
+    lock-time = 600;
+    alert-time = 30;
+    notify-send = lib.getExe pkgs.libnotify;
+    loginctl = lib.getExe' hostConfig.systemd.package "loginctl";
+    sleep = lib.getExe' pkgs.coreutils "sleep";
+    pkill = lib.getExe' pkgs.procps "pkill";
+    dunstctl = lib.getExe' config.services.dunst.package "dunstctl";
+    swaymsg = lib.getExe' config.wayland.windowManager.sway.package "swaymsg";
+    swaylock = lib.getExe config.programs.swaylock.package;
+  in {
+    enable = true;
+    extraArgs = [
+      "-w"
+      "idlehint"
+      "${builtins.toString (lock-time / 2)}"
+    ];
+    timeouts = [
+      {
+        timeout = lock-time - alert-time - 1;
+        command = "${notify-send} -et ${toString (alert-time * 1000)} -u low -a swayidle 'Locking soon'";
+      }
+      {
+        timeout = lock-time - 1;
+        command = "${dunstctl} set-paused true";
+        resumeCommand = "${dunstctl} set-paused false";
+      }
+      {
+        timeout = lock-time;
+        command = "${loginctl} lock-session";
+      }
+      {
+        timeout = lock-time + 15;
+        command = ''${swaymsg} "output * power off"'';
+        resumeCommand = ''${swaymsg} "output * power on"'';
+      }
+    ];
+    events = [
+      {
+        event = "before-sleep";
+        command = ''${loginctl} lock-session; ${swaymsg} "output * power off"; ${sleep} 0.2'';
+      }
+      {
+        event = "after-resume";
+        command = ''${sleep} 0.2; ${swaymsg} "output * power on"'';
+      }
+      {
+        event = "lock";
+        command = "${swaylock} -f; ${sleep} 0.1";
+        # TODO: sudo -K
+      }
+      {
+        event = "unlock";
+        command = ''${pkill} -USR1 "^swaylock$"'';
+      }
+    ];
+  };
 
   xdg.portal = {
     config.sway = {
@@ -201,7 +198,7 @@ in
         "wlr"
         "gtk"
       ];
-      "org.freedesktop.impl.portal.Secret" = [ "gnome-keyring" ];
+      "org.freedesktop.impl.portal.Secret" = ["gnome-keyring"];
     };
     extraPortals = with pkgs; [
       xdg-desktop-portal-wlr
@@ -237,5 +234,4 @@ in
   home.sessionVariables = {
     "NIXOS_OZONE_WL" = "1";
   };
-
 }

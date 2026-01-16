@@ -3,9 +3,7 @@
   pkgs,
   root,
   ...
-}:
-{
-
+}: {
   imports = builtins.map (path: root + /home + path) [
     /bat
     /bemenu
@@ -112,7 +110,7 @@
       termdown
       ugrep
       yazi
-      (parallel-full.override { willCite = true; })
+      (parallel-full.override {willCite = true;})
 
       pcmanfm
       dragon-drop

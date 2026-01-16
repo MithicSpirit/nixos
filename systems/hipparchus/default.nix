@@ -6,9 +6,7 @@
   root,
   overlays,
   ...
-}:
-{
-
+}: {
   nix = {
     package = pkgs.nixVersions.latest;
 
@@ -25,35 +23,38 @@
     daemonIOSchedClass = "idle";
   };
 
-  imports = [
-    inputs.hardware.nixosModules.framework-16-7040-amd
-    inputs.disko.nixosModules.default
-    inputs.home-manager.nixosModules.default
-    ./hardware-configuration.nix
-    ./disko.nix
-  ]
-  ++ builtins.map (path: root + /host + path) [
-    /secure-boot
-    /man
-    /sshd
-    /pipewire
-    /dnscrypt
-    /logitech
-    /virt
-    /gaming
-    /keyd
-    /bluetooth
-    /tlp # or ppd
-    # /sway (hyprland)
-    /amdgpu
-    # /fw-fanctrl
-    /zswap # or zram
-    /timezone
-  ];
+  imports =
+    [
+      inputs.hardware.nixosModules.framework-16-7040-amd
+      inputs.disko.nixosModules.default
+      inputs.home-manager.nixosModules.default
+      ./hardware-configuration.nix
+      ./disko.nix
+    ]
+    ++ builtins.map (path: root + /host + path) [
+      /secure-boot
+      /man
+      /sshd
+      /pipewire
+      /dnscrypt
+      /logitech
+      /virt
+      /gaming
+      /keyd
+      /bluetooth
+      /tlp # or ppd
+      # /sway (hyprland)
+      /amdgpu
+      # /fw-fanctrl
+      /zswap # or zram
+      /timezone
+    ];
 
-  nixpkgs.overlays = overlays ++ [
-    (final: _prev: { nix = final.nixVersions.latest; })
-  ];
+  nixpkgs.overlays =
+    overlays
+    ++ [
+      (final: _prev: {nix = final.nixVersions.latest;})
+    ];
 
   nixpkgs.config = {
     allowUnfree = false; # TODO: make global?
@@ -134,8 +135,8 @@
   fonts.fontDir.enable = true;
   xdg.portal = {
     enable = true;
-    extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
-    config.common.default = [ "gtk" ];
+    extraPortals = [pkgs.xdg-desktop-portal-gtk];
+    config.common.default = ["gtk"];
   };
   services.gnome.gnome-keyring.enable = true; # TODO: use keepassxc (or bitwarden)
 
@@ -149,7 +150,7 @@
 
   services.printing = {
     enable = true;
-    drivers = with pkgs; [ hplip ];
+    drivers = with pkgs; [hplip];
   };
 
   services.locate = {
@@ -183,7 +184,7 @@
       vim
       emacs
       git
-      nixfmt
+      alejandra
       nix-index
       htop
       findutils
@@ -210,7 +211,8 @@
     ])
     ++ (
       with builtins; # get all packages from unixtools
-      filter (p: typeOf p == "set") (attrValues pkgs.unixtools)
+      
+        filter (p: typeOf p == "set") (attrValues pkgs.unixtools)
     );
   # TODO: environment.binsh = with pkgs; lib.getExe dash;
 
@@ -219,7 +221,7 @@
     enableLsColors = true;
     enableCompletion = true;
   };
-  environment.pathsToLink = [ "/share/zsh" ]; # fix zsh completions
+  environment.pathsToLink = ["/share/zsh"]; # fix zsh completions
 
   programs.obs-studio = {
     enable = true;
@@ -256,9 +258,11 @@
     users."mithic" = import ./home/mithic.nix;
   };
   systemd.services."user@${toString config.users.users."mithic".uid}" = {
-    environment = builtins.mapAttrs (
-      _name: toString
-    ) config.home-manager.users."mithic".home.sessionVariables;
+    environment =
+      builtins.mapAttrs (
+        _name: toString
+      )
+      config.home-manager.users."mithic".home.sessionVariables;
     overrideStrategy = "asDropin";
   };
 
@@ -294,10 +298,14 @@
   programs.gamemode.settings.gpu.gpu_device = 1;
 
   # weird framework 16 stuff. see arch and nixos wikis
-  services.udev.extraRules = /* udev */ ''
-    # trackpad
-    ACTION=="add", SUBSYSTEM=="i2c", DRIVERS=="i2c_hid_acpi", ATTRS{name}=="PIXA3854:00", ATTR{power/wakeup}="disabled"
-  '';
+  services.udev.extraRules =
+    /*
+    udev
+    */
+    ''
+      # trackpad
+      ACTION=="add", SUBSYSTEM=="i2c", DRIVERS=="i2c_hid_acpi", ATTRS{name}=="PIXA3854:00", ATTR{power/wakeup}="disabled"
+    '';
 
   # remove when properly cooled
   services.tlp.settings = {
@@ -315,5 +323,4 @@
     "-r165"
     "--adaptive-sync"
   ];
-
 }

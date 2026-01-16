@@ -4,8 +4,7 @@
   root,
   pkgs,
   ...
-}:
-let
+}: let
   wallpaper = import (root + /common/wallpaper);
   colors = import (root + /common/colorscheme.nix);
   workspaces = {
@@ -28,9 +27,7 @@ let
     "d" = "17";
     "f" = "18";
   };
-in
-{
-
+in {
   wayland.windowManager.hyprland = {
     enable = true;
     systemd.enable = true;
@@ -163,32 +160,36 @@ in
         }
       ];
 
-      windowrule = [
-        {
-          name = "group-all";
-          "match:float" = false;
-          "match:fullscreen" = false;
-          group = "set always";
-        }
-        {
-          name = "no-group-floats";
-          "match:float" = true;
-          group = "override barred deny";
-        }
-        {
-          name = "transparent-dragging";
-          "match:tag" = "dragging";
-          opacity = 0.6;
-        }
-      ]
-      ++ builtins.concatLists (
-        lib.mapAttrsToList
+      windowrule =
+        [
+          {
+            name = "group-all";
+            "match:float" = false;
+            "match:fullscreen" = false;
+            group = "set always";
+          }
+          {
+            name = "no-group-floats";
+            "match:float" = true;
+            group = "override barred deny";
+          }
+          {
+            name = "transparent-dragging";
+            "match:tag" = "dragging";
+            opacity = 0.6;
+          }
+        ]
+        ++ builtins.concatLists (
+          lib.mapAttrsToList
           (
-            basename:
-            { props, effects }:
-            lib.mapAttrsToList (
-              propname: prop: { name = "${basename}:${propname}"; } // effects // prop
-            ) props
+            basename: {
+              props,
+              effects,
+            }:
+              lib.mapAttrsToList (
+                propname: prop: {name = "${basename}:${propname}";} // effects // prop
+              )
+              props
           )
           {
             float = {
@@ -268,7 +269,7 @@ in
               };
             };
           }
-      );
+        );
 
       layerrule = [
         {
@@ -299,9 +300,11 @@ in
         "[workspace 5] im.riot.Riot" # breaks on silent
       ];
 
-      workspace = lib.mapAttrsToList (
-        name: id: "${id}, defaultName:${name}"
-      ) workspaces;
+      workspace =
+        lib.mapAttrsToList (
+          name: id: "${id}, defaultName:${name}"
+        )
+        workspaces;
 
       master = {
         mfact = 0.5;
@@ -325,19 +328,16 @@ in
 
       "$mod" = "SUPER";
 
-      bind =
-        let
-          grimblast = "grimblast --notify --openparentdir";
-          scrot = "\"$XDG_PICTURES_DIR/screenshots/$(date +%Y-%m-%d_%H-%M-%S.%N).png\"";
-          terminal =
-            let
-              inherit (config.home.sessionVariables) TERMINAL;
-            in
-            if lib.hasPrefix "ghostty" TERMINAL then
-              "${TERMINAL} +new-window"
-            else
-              TERMINAL;
+      bind = let
+        grimblast = "grimblast --notify --openparentdir";
+        scrot = "\"$XDG_PICTURES_DIR/screenshots/$(date +%Y-%m-%d_%H-%M-%S.%N).png\"";
+        terminal = let
+          inherit (config.home.sessionVariables) TERMINAL;
         in
+          if lib.hasPrefix "ghostty" TERMINAL
+          then "${TERMINAL} +new-window"
+          else TERMINAL;
+      in
         [
           "$mod, Return, execr, bemenu-run -p Run >>/tmp/exec.log 2>&1"
           "$mod SHIFT, Return, execr, ${terminal} >>/tmp/exec.log 2>&1"
@@ -418,7 +418,8 @@ in
             "$mod CONTROL, ${name}, moveoutofgroup"
             "$mod CONTROL, ${name}, movetoworkspacesilent, ${id}"
             "$mod CONTROL SHIFT, ${name}, movetoworkspace, ${id}"
-          ]) workspaces
+          ])
+          workspaces
         );
 
       binde = [
@@ -483,20 +484,24 @@ in
         "hyprland"
         "gtk"
       ];
-      "org.freedesktop.impl.portal.Secret" = [ "gnome-keyring" ];
+      "org.freedesktop.impl.portal.Secret" = ["gnome-keyring"];
     };
-    extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
+    extraPortals = [pkgs.xdg-desktop-portal-gtk];
   };
 
   home.file.".login" = {
     enable = true;
     executable = true;
-    text = /* sh */ ''
-      #!/usr/bin/env sh
-      [ -z "$WAYLAND_DISPLAY" -a -z "$DISPLAY" -a "$XDG_VTNR" -eq 1 ] \
-        && exec Hyprland >>/tmp/hyprland.log 2>&1
-      :
-    '';
+    text =
+      /*
+      sh
+      */
+      ''
+        #!/usr/bin/env sh
+        [ -z "$WAYLAND_DISPLAY" -a -z "$DISPLAY" -a "$XDG_VTNR" -eq 1 ] \
+          && exec Hyprland >>/tmp/hyprland.log 2>&1
+        :
+      '';
   };
 
   services.hyprpaper = {
@@ -510,45 +515,43 @@ in
     };
   };
 
-  services.hypridle =
-    let
-      lock-time = 600;
-      alert-time = 30;
-      off-time = 60;
-    in
-    {
-      enable = true;
-      settings = {
-        general = {
-          lock_cmd = "if ! pidof -q hyprlock; then hyprlock; fi";
-          unlock_cmd = "killall -USR1 hyprlock";
-          on_lock_cmd = "dunstctl set-paused true";
-          on_unlock_cmd = "hyprctl dispatch forceidle 0; dunstctl set-paused false";
-          before_sleep_cmd = "loginctl lock-session";
-          after_sleep_cmd = "hyprctl dispatch forceidle 0";
+  services.hypridle = let
+    lock-time = 600;
+    alert-time = 30;
+    off-time = 60;
+  in {
+    enable = true;
+    settings = {
+      general = {
+        lock_cmd = "if ! pidof -q hyprlock; then hyprlock; fi";
+        unlock_cmd = "killall -USR1 hyprlock";
+        on_lock_cmd = "dunstctl set-paused true";
+        on_unlock_cmd = "hyprctl dispatch forceidle 0; dunstctl set-paused false";
+        before_sleep_cmd = "loginctl lock-session";
+        after_sleep_cmd = "hyprctl dispatch forceidle 0";
 
-          ignore_dbus_inhibit = true;
-          ignore_systemd_inhibit = true;
-          ignore_wayland_inhibit = true;
-        };
-        listener = [
-          {
-            timeout = lock-time - alert-time;
-            on-timeout = "brightnessctl -s set 10";
-            on-resume = "brightnessctl -r";
-          }
-          {
-            timeout = lock-time;
-            on-timeout = "loginctl lock-session";
-          }
-          {
-            timeout = lock-time + off-time;
-            on-timeout = "hyprctl dispatch dpms off";
-            on-resume = "hyprctl dispatch dpms on; brightnessctl -r";
-          }
-        ];
+        ignore_dbus_inhibit = true;
+        ignore_systemd_inhibit = true;
+        ignore_wayland_inhibit = true;
       };
+      listener = [
+        {
+          timeout = lock-time - alert-time;
+          on-timeout = "brightnessctl -s set 10";
+          on-resume = "brightnessctl -r";
+        }
+        {
+          timeout = lock-time;
+          on-timeout = "loginctl lock-session";
+        }
+        {
+          timeout = lock-time + off-time;
+          on-timeout = "hyprctl dispatch dpms off";
+          on-resume = "hyprctl dispatch dpms on; brightnessctl -r";
+        }
+      ];
     };
+  };
 
   programs.hyprlock = {
     enable = true;
@@ -611,65 +614,67 @@ in
     };
   };
 
-  programs.waybar =
-    let
-      icon-size = 16;
-    in
-    {
-      enable = true;
-      systemd.enable = true;
+  programs.waybar = let
+    icon-size = 16;
+  in {
+    enable = true;
+    systemd.enable = true;
 
-      settings = [
-        {
-          layer = "top";
-          position = "top";
-          mode = "dock";
-          height = 24;
-          modules-left = [
-            "hyprland/workspaces"
-            "hyprland/windowcount"
-            "hyprland/window"
-          ];
-          modules-right = [
-            "tray"
-            "custom/status"
-          ];
+    settings = [
+      {
+        layer = "top";
+        position = "top";
+        mode = "dock";
+        height = 24;
+        modules-left = [
+          "hyprland/workspaces"
+          "hyprland/windowcount"
+          "hyprland/window"
+        ];
+        modules-right = [
+          "tray"
+          "custom/status"
+        ];
 
-          "hyprland/workspaces" = {
-            format = "{name}";
-            sort-by = "id";
+        "hyprland/workspaces" = {
+          format = "{name}";
+          sort-by = "id";
+        };
+
+        "hyprland/windowcount" = {
+          format = "({})";
+          format-fullscreen = "[{}]";
+          format-empty = " ";
+        };
+
+        "hyprland/window" = {
+          inherit icon-size;
+          separate-outputs = true;
+          icon = true;
+          format = "{title} ({class})";
+          rewrite = {
+            " \\(\\)" = "";
           };
+        };
 
-          "hyprland/windowcount" = {
-            format = "({})";
-            format-fullscreen = "[{}]";
-            format-empty = " ";
-          };
+        "custom/status" = {
+          exec = lib.getExe (
+            pkgs.writeCBin "hyprland-waybar-status" (builtins.readFile ./status.c)
+          );
+        };
 
-          "hyprland/window" = {
-            inherit icon-size;
-            separate-outputs = true;
-            icon = true;
-            format = "{title} ({class})";
-            rewrite = {
-              " \\(\\)" = "";
-            };
-          };
+        "tray" = {
+          inherit icon-size;
+          reverse-direction = true;
+        };
+      }
+    ];
 
-          "custom/status" = {
-            exec = lib.getExe (
-              pkgs.writeCBin "hyprland-waybar-status" (builtins.readFile ./status.c)
-            );
-          };
-
-          "tray" = {
-            inherit icon-size;
-            reverse-direction = true;
-          };
-        }
-      ];
-
-      style = /* css */ ''
+    style =
+      /*
+      css
+      */
+      ''
         window#waybar {
           font-size: 13;
           font-family: monospace;
@@ -735,6 +740,5 @@ in
           padding: 0 0.5em;
         }
       '';
-    };
-
+  };
 }

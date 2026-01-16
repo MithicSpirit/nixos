@@ -20,12 +20,13 @@ buildNpmPackage (finalAttrs: {
 
   npmDepsHash = "sha256-uujfgTv2QEhywQNmglZusgikGEZvVtWL/lYFq6Q1VFc=";
 
-  nativeBuildInputs = [
-    ttfautohint-nox
-  ]
-  ++ lib.optionals stdenv.isDarwin [
-    darwin.cctools # libtool
-  ];
+  nativeBuildInputs =
+    [
+      ttfautohint-nox
+    ]
+    ++ lib.optionals stdenv.isDarwin [
+      darwin.cctools # libtool
+    ];
 
   configurePhase = ''
     runHook preConfigure
@@ -64,6 +65,6 @@ buildNpmPackage (finalAttrs: {
     '';
     license = licenses.ofl;
     platforms = platforms.all;
-    maintainers = [ maintainers.mithicspirit ];
+    maintainers = [maintainers.mithicspirit];
   };
 })

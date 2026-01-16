@@ -1,11 +1,9 @@
-{ ... }:
-{
+{...}: {
   programs.ssh = {
     enable = true;
     enableDefaultConfig = false;
 
     matchBlocks = {
-
       "*" = {
         addKeysToAgent = "ask";
       };
@@ -19,7 +17,6 @@
           PreferredAuthentications = "keyboard-interactive";
         };
       };
-
     };
   };
 }

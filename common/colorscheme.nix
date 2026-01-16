@@ -63,8 +63,7 @@ let
     good = nord14;
     strange = nord15;
   };
-in
-{
+in {
   raw = palette;
   hash = builtins.mapAttrs (_name: raw: "#${raw}") palette;
   rgb = builtins.mapAttrs (_name: raw: "rgb(${raw})") palette;

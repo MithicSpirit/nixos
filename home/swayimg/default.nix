@@ -1,13 +1,13 @@
-{ config, root, ... }:
-let
-  colors = (import (root + /common/colorscheme.nix)).hash;
-in
 {
-
+  config,
+  root,
+  ...
+}: let
+  colors = (import (root + /common/colorscheme.nix)).hash;
+in {
   programs.swayimg = {
     enable = true;
     settings = {
-
       general = {
         size = "image";
         overlay = "yes";
@@ -37,10 +37,8 @@ in
         size = 12;
         color = colors.fg + "dd";
       };
-
     };
   };
 
-  xdg.mimeApps.defaultApplicationPackages = [ config.programs.swayimg.package ];
-
+  xdg.mimeApps.defaultApplicationPackages = [config.programs.swayimg.package];
 }

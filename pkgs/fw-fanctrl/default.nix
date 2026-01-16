@@ -15,7 +15,7 @@ python3Packages.buildPythonApplication {
     hash = "sha256-TDVULNb/oH66/UX20mC89NSx8YPe8mPwNCB9+phavP4=";
   };
 
-  patches = [ ./criticalTemp.patch ];
+  patches = [./criticalTemp.patch];
   postPatch = ''
     substituteInPlace pyproject.toml \
       --replace-fail '"jsonschema~=4.23.0"' '"jsonschema~=4.23"'
@@ -23,10 +23,10 @@ python3Packages.buildPythonApplication {
 
   pyproject = true;
 
-  build-system = [ python3Packages.setuptools ];
-  dependencies = [ python3Packages.jsonschema ];
+  build-system = [python3Packages.setuptools];
+  dependencies = [python3Packages.jsonschema];
 
-  propagatedBuildInputs = [ fw-ectool ];
+  propagatedBuildInputs = [fw-ectool];
 
   meta = with lib; {
     homepage = "https://github.com/TamtamHero/fw-fanctrl";
@@ -38,6 +38,6 @@ python3Packages.buildPythonApplication {
     mainProgram = "fw-fanctrl";
     license = licenses.bsd3;
     platforms = platforms.all;
-    maintainers = [ maintainers.mithicspirit ];
+    maintainers = [maintainers.mithicspirit];
   };
 }

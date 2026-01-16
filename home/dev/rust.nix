@@ -1,10 +1,11 @@
-{ pkgs, config, ... }:
-let
-  toml = (pkgs.formats.toml { }).generate;
-in
 {
-
-  home.packages = [ pkgs.rustup ];
+  pkgs,
+  config,
+  ...
+}: let
+  toml = (pkgs.formats.toml {}).generate;
+in {
+  home.packages = [pkgs.rustup];
 
   xdg.configFile."rustfmt/rustfmt.toml".source = toml "rustfmt.toml" {
     edition = "2021";
@@ -23,5 +24,4 @@ in
     "RUSTUP_HOME" = "${config.xdg.dataHome}/rustup";
     "CARGO_HOME" = "${config.xdg.dataHome}/cargo";
   };
-
 }

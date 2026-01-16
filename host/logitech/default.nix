@@ -3,12 +3,9 @@
   lib,
   config,
   ...
-}:
-let
+}: let
   logiops = pkgs.logiops;
-in
-{
-
+in {
   # TODO: fix scrolling with bolt
   # - hiresscroll.hires: true
   # - remove quirks and hwdb if possible
@@ -16,14 +13,14 @@ in
 
   # TODO: wait for proper support to be merged (#287399, #167388)
 
-  environment.systemPackages = [ logiops ];
+  environment.systemPackages = [logiops];
 
   systemd = {
-    packages = [ logiops ];
+    packages = [logiops];
     services.logid = {
-      wantedBy = [ "multi-user.target" ];
+      wantedBy = ["multi-user.target"];
       preStart = "${lib.getExe' pkgs.kmod "modprobe"} hid_logitech_hidpp";
-      restartTriggers = [ config.environment.etc."logid.cfg".source ];
+      restartTriggers = [config.environment.etc."logid.cfg".source];
     };
   };
 
@@ -57,5 +54,4 @@ in
     ModelLogitechMXMaster3=1
     AttrEventCode=+REL_WHEEL_HI_RES;+REL_HWHEEL_HI_RES;
   '';
-
 }

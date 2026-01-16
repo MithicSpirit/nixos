@@ -31,6 +31,6 @@ stdenvNoCC.mkDerivation {
     '';
     license = licenses.mpl20;
     platforms = platforms.all;
-    maintainers = [ maintainers.mithicspirit ];
+    maintainers = [maintainers.mithicspirit];
   };
 }

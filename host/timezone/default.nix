@@ -3,9 +3,7 @@
   lib,
   config,
   ...
-}:
-{
-
+}: {
   # set default but allow imperative modification
   time.timeZone = lib.mkForce "US/Eastern";
   systemd.services.systemd-timedated.environment."NIXOS_STATIC_TIMEZONE" =
@@ -26,5 +24,4 @@
       fi
     '';
   };
-
 }

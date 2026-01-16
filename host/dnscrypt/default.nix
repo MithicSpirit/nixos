@@ -1,9 +1,7 @@
-{ ... }:
-{
+{...}: {
   services.dnscrypt-proxy = {
     enable = true;
     settings = {
-
       ipv6_servers = true;
       require_dnssec = true;
       require_nolog = true;
@@ -12,7 +10,6 @@
       cache = true;
       cache_min_ttl = 60 * 15; # 15 minutes
       cache_max_ttl = 60 * 60; # 1 hour
-
     };
   };
 

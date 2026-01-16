@@ -3,13 +3,10 @@
   lib,
   config,
   ...
-}:
-let
+}: let
   tlp = lib.getExe config.services.tlp.package;
   start-name = "tlp-start";
-in
-{
-
+in {
   services.tlp.enable = true;
   services.tlp.settings = {
     SOUND_POWER_SAVE_ON_AC = 0;
@@ -43,31 +40,29 @@ in
 
   services.power-profiles-daemon.enable = false; # incompatible
 
-  security.wrappers =
-    let
-      cmd-pkg =
-        pkgs.writeCBin start-name # C
-          ''
-            #include <unistd.h>
-            static char *argv[] = {"${tlp}", "start"};
-            int main() {
-              setreuid(0, 0);
-              execv(argv[0], argv);
-            }
-          '';
-    in
-    {
-      ${start-name} = {
-        source = lib.getExe cmd-pkg;
-        owner = "root";
-        group = "root";
-        setuid = true;
-        program = start-name;
-      };
+  security.wrappers = let
+    cmd-pkg =
+      pkgs.writeCBin start-name # C
+      
+      ''
+        #include <unistd.h>
+        static char *argv[] = {"${tlp}", "start"};
+        int main() {
+          setreuid(0, 0);
+          execv(argv[0], argv);
+        }
+      '';
+  in {
+    ${start-name} = {
+      source = lib.getExe cmd-pkg;
+      owner = "root";
+      group = "root";
+      setuid = true;
+      program = start-name;
     };
-
-  programs.gamemode.settings.custom = {
-    end = [ "${config.security.wrapperDir}/${start-name}" ];
   };
 
+  programs.gamemode.settings.custom = {
+    end = ["${config.security.wrapperDir}/${start-name}"];
+  };
 }

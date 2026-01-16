@@ -1,5 +1,4 @@
-{ config, ... }:
-{
+{config, ...}: {
   programs.git = {
     enable = true;
 
@@ -92,22 +91,21 @@
       width = 90;
 
       # colormoved support
-      map-styles =
-        with builtins;
-        let
-          table = {
-            "bold purple" = ''syntax "#380f2e"'';
-            "bold blue" = ''syntax "#2c1349"'';
-            "bold cyan" = ''syntax "#0d3a36"'';
-            "bold yellow" = ''syntax "#273414"'';
-          };
-        in
+      map-styles = with builtins; let
+        table = {
+          "bold purple" = ''syntax "#380f2e"'';
+          "bold blue" = ''syntax "#2c1349"'';
+          "bold cyan" = ''syntax "#0d3a36"'';
+          "bold yellow" = ''syntax "#273414"'';
+        };
+      in
         foldl' (
-          acc: elem:
-          let
+          acc: elem: let
             new = "${elem} => ${table.${elem}}";
           in
-          if acc == "" then new else "${acc}, ${new}"
+            if acc == ""
+            then new
+            else "${acc}, ${new}"
         ) "" (attrNames table);
     };
   };

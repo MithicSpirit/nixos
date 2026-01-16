@@ -1,6 +1,8 @@
-{ config, lib, ... }:
 {
-
+  config,
+  lib,
+  ...
+}: {
   programs.gamemode = {
     enable = true;
     enableRenice = true;
@@ -17,12 +19,9 @@
     capSysNice = true;
   };
 
-  boot.kernelModules =
-    let
-      kver = config.boot.kernelPackages.kernel.version;
-    in
-    {
-      "ntsync" = lib.versionAtLeast kver "6.14";
-    };
-
+  boot.kernelModules = let
+    kver = config.boot.kernelPackages.kernel.version;
+  in {
+    "ntsync" = lib.versionAtLeast kver "6.14";
+  };
 }

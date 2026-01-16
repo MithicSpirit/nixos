@@ -1,6 +1,4 @@
-{ ... }:
-{
-
+{...}: {
   programs.man = {
     enable = true;
     generateCaches = true;
@@ -11,5 +9,4 @@
     "MANROFFOPT" = "-c";
     "MANWIDTH" = "80";
   };
-
 }

@@ -1,1 +1,1 @@
-final: _prev: import ../pkgs { nixpkgs = final; }
+final: _prev: import ../pkgs {nixpkgs = final;}

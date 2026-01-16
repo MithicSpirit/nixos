@@ -1,8 +1,5 @@
-{ pkgs, ... }:
-{
-
+{pkgs, ...}: {
   environment.systemPackages = [
     pkgs.radeontop
   ];
-
 }

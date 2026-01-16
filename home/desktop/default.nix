@@ -1,6 +1,4 @@
-{ pkgs, ... }:
-{
-
+{pkgs, ...}: {
   home.packages = with pkgs; [
     # utils
     bitwarden-desktop
@@ -14,5 +12,4 @@
     # element-desktop
     # signal-desktop
   ];
-
 }

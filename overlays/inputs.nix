@@ -1,8 +1,6 @@
-inputs: _final: prev:
-let
+inputs: _final: prev: let
   inherit (prev.stdenv.hostPlatform) system;
-in
-{
+in {
   inherit (inputs.disko.packages."${system}") disko-install;
   inherit (inputs.ghostty.packages."${system}") ghostty;
 }

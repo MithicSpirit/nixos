@@ -1,51 +1,50 @@
 let
   youtube = id: "https://www.youtube.com/feeds/videos.xml?channel_id=${id}";
-in
-[
+in [
   {
     title = "3Blue1Brown";
     url = youtube "UCYO_jab_esuFRV4b17AJtAw";
-    tags = [ "edu" ];
+    tags = ["edu"];
   }
   {
     title = "Veritasium";
     url = youtube "UCHnyfMqiRRG1u-2MsSQLbXA";
-    tags = [ "edu" ];
+    tags = ["edu"];
   }
   {
     title = "vlogbrothers";
     url = youtube "UCGaVdbSav8xWuFWTadK6loA";
-    tags = [ "edu" ];
+    tags = ["edu"];
   }
   {
     title = "Captain Disillusion";
     url = youtube "UCEOXxzW2vU0P-0THehuIIeg";
-    tags = [ "edu" ];
+    tags = ["edu"];
   }
   {
     title = "NileRed";
     url = youtube "UCFhXFikryT4aFcLkLw2LBLA";
-    tags = [ "edu" ];
+    tags = ["edu"];
   }
   {
     title = "minutephysics";
     url = youtube "UCUHW94eEFW7hkUMVaZz4eDg";
-    tags = [ "edu" ];
+    tags = ["edu"];
   }
   {
     title = "Tom Scott";
     url = youtube "UCBa659QWEk1AI4Tg--mrJ2A";
-    tags = [ "edu" ];
+    tags = ["edu"];
   }
   {
     title = "Zach Star";
     url = youtube "UCpCSAcbqs-sjEVfk_hMfY9w";
-    tags = [ "edu" ];
+    tags = ["edu"];
   }
   {
     title = "Branch Education";
     url = youtube "UCdp4_l1vPmpN-gDbUwhaRUQ";
-    tags = [ "edu" ];
+    tags = ["edu"];
   }
 
   {
@@ -91,7 +90,7 @@ in
   {
     title = "Technology Connections";
     url = youtube "UCy0tKL1T7wFoYcxCe0xjN6Q";
-    tags = [ "tech" ];
+    tags = ["tech"];
   }
   {
     title = "Chris Titus Tech";
@@ -104,37 +103,37 @@ in
   {
     title = "Linus Tech Tips";
     url = youtube "UCXuqSBlHAE6Xw-yeJA0Tunw";
-    tags = [ "tech" ];
+    tags = ["tech"];
   }
 
   {
     title = "Aliensrock";
     url = youtube "UCKtix2xNNXdcEfEFnoOnvMw";
-    tags = [ "fun" ];
+    tags = ["fun"];
   }
   {
     title = "ianxofour";
     url = youtube "UCJisX5g6Vt6vlfqzFE_7jjw";
-    tags = [ "fun" ];
+    tags = ["fun"];
   }
   {
     title = "LockPickingLawyer";
     url = youtube "UCm9K6rby98W8JigLoZOh6FQ";
-    tags = [ "fun" ];
+    tags = ["fun"];
   }
   {
     title = "ilmango";
     url = youtube "UCHSI8erNrN6hs3sUK6oONLA";
-    tags = [ "fun" ];
+    tags = ["fun"];
   }
   {
     title = "Glarses";
     url = youtube "UCFtOX-21N1earf-K58C7HjQ";
-    tags = [ "fun" ];
+    tags = ["fun"];
   }
   {
     title = "Hanannie";
     url = youtube "UCL9E5fndNunI68TNadI8J8w";
-    tags = [ "fun" ];
+    tags = ["fun"];
   }
 ]

@@ -1,6 +1,8 @@
-{ pkgs, config, ... }:
 {
-
+  pkgs,
+  config,
+  ...
+}: {
   programs.mpv = {
     enable = true;
 
@@ -68,6 +70,5 @@
     skip_notice = true
   '';
 
-  home.packages = [ pkgs.yt-dlp ];
-
+  home.packages = [pkgs.yt-dlp];
 }

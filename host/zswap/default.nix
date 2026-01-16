@@ -1,5 +1,4 @@
-{ config, ... }:
-{
+{config, ...}: {
   assertions = [
     {
       assertion = !config.zramSwap.enable;
@@ -18,5 +17,4 @@
     "zswap.enabled=1"
     "zswap.max_pool_percent=25"
   ];
-
 }

@@ -1,24 +1,25 @@
-{ pkgs, lib, ... }:
-let
-  toml = (pkgs.formats.toml { }).generate;
-  py = pkgs.python3.withPackages (
-    p: with p; [
-      numpy
-      scipy
-      sympy
-      matplotlib
-      ipython
-      ruff
-      uv
-      mypy
-    ]
-  );
-in
 {
-
+  pkgs,
+  lib,
+  ...
+}: let
+  toml = (pkgs.formats.toml {}).generate;
+  py = pkgs.python3.withPackages (
+    p:
+      with p; [
+        numpy
+        scipy
+        sympy
+        matplotlib
+        ipython
+        ruff
+        uv
+        mypy
+      ]
+  );
+in {
   home.packages = (
-    with pkgs;
-    [
+    with pkgs; [
       (lib.hiPrio py)
       ty
       basedpyright
@@ -35,7 +36,7 @@ in
     line-length = 79;
     preview = true;
     lint = {
-      select = [ "ALL" ];
+      select = ["ALL"];
       ignore = [
         "E203"
         "E266"
@@ -56,5 +57,4 @@ in
       ];
     };
   };
-
 }
