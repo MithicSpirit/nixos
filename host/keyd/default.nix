@@ -4,19 +4,20 @@
 
     keyboards.default = {
       ids = ["*"];
-      settings.main = {
-        capslock = "esc";
-        esc = "capslock";
+      settings = {
+        global = {
+          disable_modifier_guard = 1; # prevent ctrl event on alt+click
+        };
+        main = {
+          capslock = "esc";
+          esc = "capslock";
 
-        # undo default config
-        leftalt = "leftalt";
-        leftcontrol = "leftcontrol";
-        leftmeta = "leftmeta";
-        leftshift = "leftshift";
-        rightalt = "rightalt";
-        rightcontrol = "rightcontrol";
-        rightmeta = "rightmeta";
-        rightshift = "rightshift";
+          # undo default config
+          rightcontrol = "rightcontrol";
+          rightmeta = "rightmeta";
+          rightshift = "rightshift";
+          # lalt,lctrl,lmeta,lshift,ralt cannot be reset
+        };
       };
     };
   };

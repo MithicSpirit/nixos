@@ -296,8 +296,9 @@ in {
         "[workspace 1; fullscreen] ${config.home.sessionVariables.TERMINAL} --class=btop --title=btop -e btop"
         "[workspace 2 silent] thunderbird"
         "[workspace 3 silent] org.signal.Signal"
-        "[workspace 4] dev.vencord.Vesktop" # breaks on silent
-        "[workspace 5] im.riot.Riot" # breaks on silent
+        "[workspace 4 silent] dev.vencord.Vesktop"
+        "[workspace 5 silent] org.zulip.Zulip"
+        "[workspace 6 silent] im.riot.Riot"
       ];
 
       workspace =

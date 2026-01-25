@@ -1,5 +1,5 @@
 diff --git a/grimblast b/grimblast
-index ddfa737..c5c54bf 100755
+index b1d4904..6db1f29 100755
 --- a/grimblast
 +++ b/grimblast
 @@ -18,27 +18,39 @@

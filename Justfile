@@ -31,9 +31,9 @@ package pkg *args: gitprepare
 
 test: (rebuild 'test') system
 
-boot: (rebuild 'boot')
+boot: gitadd (rebuild 'boot')
 
-switch: (rebuild 'switch') system
+switch: gitadd (rebuild 'switch') system
 
 [private]
 rebuild op: build sudo

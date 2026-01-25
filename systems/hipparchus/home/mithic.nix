@@ -116,6 +116,7 @@
       dragon-drop
       xournalpp
       libreoffice-fresh
+      onlyoffice-desktopeditors
 
       ungoogled-chromium
       firefox
