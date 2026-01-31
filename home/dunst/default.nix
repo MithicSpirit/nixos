@@ -21,7 +21,7 @@
         title = "Dunst";
         class = "dunst";
 
-        font = "${builtins.head config.fonts.fontconfig.defaultFonts.monospace} 11";
+        font = "${builtins.head config.fonts.fontconfig.defaultFonts.monospace} 10";
         format = "%p<b>%s</b> (<i>%a</i>)\\n%b";
 
         dmenu = "${lib.getExe pkgs.bemenu} -p Dunst -cl 7 -W 0.5";

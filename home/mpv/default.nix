@@ -20,7 +20,8 @@
       tscale = "oversample";
 
       af = "scaletempo2=min-speed=1/4:max-speed=4";
-      volume = "74";
+      volume = "70";
+      replaygain = "album";
       ao = "pipewire,pulse,jack,alsa";
 
       ytdl-raw-options-append = "format-sort=+res:1080";

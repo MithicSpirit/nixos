@@ -16,18 +16,18 @@
       };
     };
 
+    disko = {
+      url = "github:nix-community/disko/v1.13.0";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    disko = {
-      url = "github:nix-community/disko";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
     ghostty = {
-      url = "github:ghostty-org/ghostty/c90f47f11f5ceaf0f161350c3755db2c50ade3f1";
+      url = "github:ghostty-org/ghostty/061a0ae5656c05525aa812f474dee2ed32700125";
       inputs = {
         nixpkgs.follows = "nixpkgs";
         home-manager.follows = "home-manager";

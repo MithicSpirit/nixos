@@ -73,9 +73,7 @@ in
     prePatch = "cd main";
 
     postInstall =
-      /*
-      bash
-      */
+      # bash
       ''
         ln -s $renderer/* $out/lib/node_modules/'${name}'/dist/
         makeWrapper '${lib.getExe electron}' $out/bin/'${name}' \

@@ -92,11 +92,13 @@
     overpass
     lmodern
     lmmath
+    liberation_ttf
     libertinus
     noto-fonts
     noto-fonts-cjk-sans
     twemoji-color-font
     dejavu_fonts
     julia-mono
+    winePackages.fonts
   ];
 }

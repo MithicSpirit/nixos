@@ -53,7 +53,7 @@
     sway.extraConfig = ''
       output eDP-2 {
         mode 2560x1600@165Hz
-        scale 1.25
+        scale ${toString (160 / 120.)}
         adaptive_sync on
         color_profile icc ${../BOE_CQ_NE160QDM-NZ6-icc-profile.icm}
       }
@@ -64,10 +64,14 @@
           output = "eDP-2";
           mode = "2560x1600@165";
           position = "0x0";
-          scale = 1.25;
+          scale = toString (160 / 120.);
           vrr = 1;
         }
       ];
+      render = {
+        cm_fs_passthrough = 0;
+        cm_auto_hdr = 0;
+      };
       workspace = [
         "1, monitor:eDP-2, default:true"
         "r[2-10], monitor:eDP-2"

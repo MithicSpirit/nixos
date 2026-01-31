@@ -73,9 +73,7 @@ in {
     enable = true;
     executable = true;
     text =
-      /*
-      sh
-      */
+      # sh
       ''
         #!/usr/bin/env sh
         [ -z "$WAYLAND_DISPLAY" -a -z "$DISPLAY" -a "$XDG_VTNR" -eq 1 ] \

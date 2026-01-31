@@ -16,7 +16,7 @@
         "flakes"
       ];
       use-xdg-base-directories = true;
-      cores = 11; # num - 1
+      cores = 10; # num - 2
     };
 
     daemonCPUSchedPolicy = "idle";
@@ -209,9 +209,9 @@
       sl
       fw-ectool
     ])
-    ++ (
-      with builtins; # get all packages from unixtools
-      
+    ++ # get all packages from unixtools
+    (
+      with builtins;
         filter (p: typeOf p == "set") (attrValues pkgs.unixtools)
     );
   # TODO: environment.binsh = with pkgs; lib.getExe dash;
@@ -299,9 +299,7 @@
 
   # weird framework 16 stuff. see arch and nixos wikis
   services.udev.extraRules =
-    /*
-    udev
-    */
+    # udev
     ''
       # trackpad
       ACTION=="add", SUBSYSTEM=="i2c", DRIVERS=="i2c_hid_acpi", ATTRS{name}=="PIXA3854:00", ATTR{power/wakeup}="disabled"

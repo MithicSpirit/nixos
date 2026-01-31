@@ -38,9 +38,7 @@ stdenvNoCC.mkDerivation rec {
         else []
       );
   in
-    /*
-    bash
-    */
+    # bash
     ''
       runHook preInstall
 

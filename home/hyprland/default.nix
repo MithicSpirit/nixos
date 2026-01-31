@@ -241,6 +241,7 @@ in {
             game = {
               effects = {
                 fullscreen = true;
+                tile = true;
                 group = "override barred deny";
                 content = "game";
                 render_unfocused = true;
@@ -494,9 +495,7 @@ in {
     enable = true;
     executable = true;
     text =
-      /*
-      sh
-      */
+      # sh
       ''
         #!/usr/bin/env sh
         [ -z "$WAYLAND_DISPLAY" -a -z "$DISPLAY" -a "$XDG_VTNR" -eq 1 ] \
@@ -672,12 +671,10 @@ in {
     ];
 
     style =
-      /*
-      css
-      */
+      # css
       ''
         window#waybar {
-          font-size: 13;
+          font-size: 9pt;
           font-family: monospace;
         }
         tooltip, #tray, #window {

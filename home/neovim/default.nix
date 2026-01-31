@@ -11,10 +11,8 @@ in {
     defaultEditor = true;
 
     plugins = [me];
-    extraLuaConfig =
-      /*
-      lua
-      */
+    initLua =
+      # lua
       ''
         vim.g.vimtex_callback_progpath =
           '${lib.getExe config.programs.neovim.finalPackage}'

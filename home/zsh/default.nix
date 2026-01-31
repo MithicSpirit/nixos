@@ -24,9 +24,7 @@ in {
     "${zdotdir}/.zshrc" = {
       enable = true;
       text =
-        /*
-        sh
-        */
+        # sh
         ''
           SYSTEMPLUGINS=( # keep in sync with pkgs below
             '${pkgs.zsh-autosuggestions}/share/zsh-autosuggestions/zsh-autosuggestions.zsh'

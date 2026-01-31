@@ -14,6 +14,9 @@ undead: gitadd && standard
 update *inputs: gitadd && standard
     nix flake update {{ inputs }}
 
+lock *args: gitadd && standard
+    nix flake lock {{ args }}
+
 [confirm]
 gc: sudo && boot clean
     nix-collect-garbage -v --delete-older-than 22d --max-freed 0
