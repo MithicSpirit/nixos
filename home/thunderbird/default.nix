@@ -1,7 +1,7 @@
 {pkgs, ...}: {
   programs.thunderbird = {
     enable = true;
-    package = pkgs.thunderbird-latest;
+    package = pkgs.thunderbird;
     nativeMessagingHosts = [pkgs.external-editor-revived];
 
     profiles."mithic" = {
