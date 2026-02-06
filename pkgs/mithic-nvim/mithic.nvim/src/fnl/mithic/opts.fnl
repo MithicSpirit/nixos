@@ -32,6 +32,7 @@
 (set vim.opt.relativenumber false)
 (set vim.opt.numberwidth 4)
 (set vim.opt.signcolumn :yes:1)
+(set vim.opt.foldenable false)
 
 (set vim.opt.splitbelow true)
 (set vim.opt.splitright true)

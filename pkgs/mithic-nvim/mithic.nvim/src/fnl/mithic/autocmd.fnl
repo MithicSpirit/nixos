@@ -22,7 +22,14 @@
 ; Prose
 (vim.api.nvim_create_autocmd :FileType
   {:pattern [:text :tex :markdown :gitcommit :help :mail]
-   :command "setlocal shiftwidth=2 expandtab formatoptions+=t"
+   :command
+   "setlocal shiftwidth=2 expandtab formatoptions+=tp cpoptions+=J joinspaces"
+   :group augroup})
+
+; Plain prose.
+(vim.api.nvim_create_autocmd :FileType
+  {:pattern [:text :gitcommit :mail]
+   :command "setlocal comments=fb:*,fb:-,fb:+,n:>"
    :group augroup})
 
 ; Configs

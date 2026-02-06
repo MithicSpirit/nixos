@@ -178,6 +178,11 @@ in {
             "match:tag" = "dragging";
             opacity = 0.6;
           }
+          {
+            name = "suppress-maximize-all";
+            "match:class" = ".*"; # match all
+            suppress_event = "maximize";
+          }
         ]
         ++ builtins.concatLists (
           lib.mapAttrsToList
@@ -212,13 +217,21 @@ in {
                   "match:class" = "steam";
                   "match:initial_title" = "negative:Steam";
                 };
+                "swayimg" = {
+                  # swayimg, swayimg_123456, etc.
+                  "match:class" = "swayimg(|_.*)";
+                };
                 "librewolf-bookmarks" = {
                   "match:class" = "librewolf";
                   "match:initial_title" = "Library";
                 };
-                "swayimg" = {
-                  # swayimg, swayimg_123456, etc.
-                  "match:class" = "swayimg(|_.*)";
+                "thunderbird-events" = {
+                  "match:class" = "thunderbird";
+                  "match:initial_title" = ""; # empty at start
+                };
+                "thunderbird-spellcheck" = {
+                  "match:class" = "thunderbird";
+                  "match:initial_title" = "Check Spelling";
                 };
               };
             };
@@ -266,6 +279,9 @@ in {
                 };
                 "openttd" = {
                   "match:class" = "openttd";
+                };
+                "runelite" = {
+                  "match:class" = "net-runelite-client-RuneLite";
                 };
               };
             };
