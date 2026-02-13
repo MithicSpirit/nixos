@@ -445,7 +445,7 @@ in {
         "$mod CONTROL, l, layoutmsg, mfact +0.01"
       ];
 
-      bindl = [
+      bindli = [
         ", XF86AudioPlay, execr, playerctl play-pause"
         ", XF86AudioPause, execr, playerctl pause --all-players"
         ", XF86AudioPrev, execr, playerctl previous"
@@ -454,12 +454,14 @@ in {
         ", XF86AudioMute, execr, wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"
         ", XF86AudioMicMute, execr, wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle"
       ];
-      bindel = [
+      bindeli = [
         ", XF86AudioRaiseVolume, execr, wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%+"
         ", XF86AudioLowerVolume, execr, wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-"
         # TODO: what was the thing other than brightnessctl?
         ", XF86MonBrightnessUp, execr, brightnessctl -e set 2%+"
         ", XF86MonBrightnessDown, execr, brightnessctl -e set 2%-"
+      ];
+      bindel = [
         "SHIFT, XF86MonBrightnessUp, execr, brightnessctl -e set 10%+"
         "SHIFT, XF86MonBrightnessDown, execr, brightnessctl -e set 10%-"
       ];

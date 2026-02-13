@@ -3,6 +3,13 @@ set -euo pipefail
 
 trap '' INT HUP TERM QUIT
 
+stop() {
+	sleep 5; killall -HUP -u mithic
+	sleep 5; killall -TERM -u mithic
+	sleep 10; killall -TERM -u mithic
+	sleep 10; killall -KILL -u mithic
+}
+
 case "$(bemenu -p 'Power' -cl 9 -W 0.2 <<__EOF__
 1. Lock
 2. Screen Off
@@ -33,21 +40,15 @@ __EOF__
 	*"Log Off")
 		systemctl --user exit
 		sleep 2; hyprctl dispatch exit
-		sleep 2; killall -HUP -u mithic
-		sleep 2; killall -TERM -u mithic
-		sleep 4; killall -KILL -u mithic
+		stop
 		;;
 	*"Reboot")
 		systemctl reboot
-		sleep 2; killall -HUP -u mithic
-		sleep 2; killall -TERM -u mithic
-		sleep 6; killall -KILL -u mithic
+		stop
 		;;
 	*"Power Off")
 		systemctl poweroff
-		sleep 2; killall -HUP -u mithic
-		sleep 2; killall -TERM -u mithic
-		sleep 6; killall -KILL -u mithic
+		stop
 		;;
 	*) exit 1 ;;
 esac

@@ -200,7 +200,7 @@
       zip
       unzip
       unrar-wrapper
-      xorg.xkill
+      xkill
       fastfetch
       dotacat
       cmatrix

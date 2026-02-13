@@ -17,9 +17,12 @@ alias \
 	rmdir='rmdirtrash -p' \
 	rmrm='rm -iv' \
 	rmrmdir='rmdir -pv' \
-	cc='gcc -Wall -Wextra -Wpedantic' \
-	cxx='g++ -Wall -Wextra -Wpedantic' \
-	hs='ghc -Weverything' \
+	cc='gcc -Wall -Wextra -Wpedantic -ggdb' \
+	cxx='g++ -Wall -Wextra -Wpedantic -ggdb' \
+	hs='ghc -Weverything -g3' \
+	idr='rlwrap -N idris2' \
+	idrc='idris2 --total' \
+	ipy='ipython' \
 	l='eza -lbg --git --hyperlink' \
 	lS='eza -labgs size --color-scale --group-directories-first --hyperlink' \
 	la='eza -labg --git --hyperlink' \
@@ -34,11 +37,6 @@ alias \
 	fetch='fastfetch' \
 	ffupload='ffsend upload -vd 20 -e 7d' \
 	h='history 1' \
-	idr='rlwrap -N idris2' \
-	idrc='idris2 --total' \
-	sml='rlwrap sml' \
-	smlc='rlwrap sml -m *.cm' \
-	ipy='ipython' \
 	matrix='cmatrix -ab' \
 	md='mkdir -p' \
 	open='xdg-open' \
