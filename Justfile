@@ -25,6 +25,9 @@ gc: sudo && boot clean
 build: gitprepare
     nixos-rebuild build --flake '.#{{ host }}' |& nom
 
+diff: build
+    nvd diff /nix/var/nix/profiles/system result
+
 clean: clean-artifact
     nix store gc -v
     nix store optimise -v

@@ -29,7 +29,7 @@
 ; Plain prose.
 (vim.api.nvim_create_autocmd :FileType
   {:pattern [:text :gitcommit :mail]
-   :command "setlocal comments=fb:*,fb:-,fb:+,n:>"
+   :command "setlocal formatoptions+=qc comments=fb:*,fb:-,fb:+,n:>"
    :group augroup})
 
 ; Configs
@@ -84,6 +84,11 @@
 (vim.api.nvim_create_autocmd :FileType
   {:pattern [:mail]
    :command "setlocal textwidth=70"
+   :group augroup})
+
+(vim.api.nvim_create_autocmd :FileType
+  {:pattern [:gitcommit]
+   :command "setlocal comments+=:#"
    :group augroup})
 
 
