@@ -30,7 +30,6 @@ diff: build
 
 clean: clean-artifact
     nix store gc -v
-    nix store optimise -v
 
 package pkg *args: gitprepare
     nom build {{ args }} '.#{{ pkg }}'

@@ -42,7 +42,7 @@
 {\thetitle.}{1em}{}
 
 \titleformat{\subsection}[runin]{\FloatBarrier\normalfont\normalsize\bfseries}%
-{(\thetitle)}{0.5em}{}
+{(\thetitle)}{0.5em}{}[.]
 \titlespacing{\subsection}{0pt}{0pt}{\parindent}
 
 \titleformat{\subsubsection}[runin]{\FloatBarrier\normalfont\bfseries}%

@@ -112,7 +112,7 @@
 (hi :StatusLine {:fg :NONE :bg :lift})
 (hi :MsgSeparator :StatusLine)
 (hi :StatusLineNC {:fg :fake :bg :lift})
-(let [rev (fn [name] {:fg name :bg :NONE :reverse true})]
+(let [rev (fn [name] {:fg name :bg :NONE :reverse true :nocombine true})]
   (hi :User1 (rev :blue)) ; normal
   (hi :User2 (rev :green)) ; insert
   (hi :User3 (rev :yellow)) ; visual
@@ -192,7 +192,7 @@
 (hi :SpecialChar :Special)
 
 (hi :SpecialComment {:fg :pragma})
-(hi :Todo {:fg :pragma :bold true :underline true :nocombine true})
+(hi :Todo {}) ; clear
 
 (hi :Operator {:fg :special})
 (hi :Tag {:fg :special})

@@ -11,6 +11,10 @@
 (set vim.g.vimtex_indent_tikz_commands 1)
 (set vim.g.vimtex_indent_on_ampersands 0)
 (set vim.g.vimtex_indent_delims {:close_indented 1})
+(set vim.g.vimtex_indent_lists
+     [:itemize :enumerate :description :thebibliography])
+(set vim.g.vimtex_indent_ignored_envs
+     [:document :itemize :enumerate :description :thebibliography])
 
 (set vim.g.vimtex_syntax_enabled 1)
 (set vim.g.vimtex_syntax_conceal

@@ -3,22 +3,21 @@
 
 (local hi-ignore {:latex true})
 (local fd-ignore {})
-(local in-ignore {})
+(local in-ignore {:latex true})
 
 (vim.api.nvim_create_autocmd
   :FileType
   { ; No pattern: always trigger, then switch based on filetype in callback
-   :callback #(let [ft vim.bo.filetype]
-                (when (pcall
-                        #(vim.treesitter.language.inspect
-                           (vim.treesitter.language.get_lang ft)))
-                  (when (not (. hi-ignore ft))
+   :callback #(let [ft vim.bo.filetype
+                    lang (vim.treesitter.language.get_lang ft)]
+                (when (pcall #(vim.treesitter.language.inspect lang))
+                  (when (not (or (. hi-ignore lang) (. hi-ignore ft)))
                     (vim.treesitter.start))
-                  (when (not (. fd-ignore ft))
+                  (when (not (or (. fd-ignore lang) (. fd-ignore ft)))
                     (set vim.wo.foldexpr "v:lua.vim.treesitter.foldexpr()")
                     (set vim.wo.foldmethod :expr))
-                  (when (not (. in-ignore ft))
-                       (set vim.bo.indentexpr
-                                  "v:lua.require'nvim-treesitter'.indentexpr()")))
+                  (when (not (or (. in-ignore lang) (. in-ignore ft)))
+                    (set vim.bo.indentexpr
+                         "v:lua.require'nvim-treesitter'.indentexpr()")))
                 nil)
    :group augroup})

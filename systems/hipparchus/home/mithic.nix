@@ -147,5 +147,14 @@
     package = pkgs.bluez-mpris-proxy;
   };
 
-  home.stateVersion = "24.05"; # WARNING: do not change
+  services.podman = {
+    enable = true;
+    enableTypeChecks = true;
+    autoUpdate.enable = false;
+    settings = {
+      containers.engine.detach_keys = "ctrl-q,ctrl-z";
+    };
+  };
+
+  home.stateVersion = "24.05"; # XXX: do not change
 }
