@@ -239,6 +239,7 @@
       "wheel"
       "video"
       "gamemode"
+      "libvirtd"
     ];
     isNormalUser = true;
     shell = pkgs.zsh;

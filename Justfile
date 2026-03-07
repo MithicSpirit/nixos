@@ -11,8 +11,10 @@ check: gitprepare
 undead: gitadd && standard
     nix run .#deadnix -- {{ deadnix-args }} --edit
 
-update *inputs: gitadd && standard
+
+refresh *inputs: gitprepare && standard
     nix flake update {{ inputs }}
+update *inputs: gitadd (refresh inputs)
 
 lock *args: gitadd && standard
     nix flake lock {{ args }}

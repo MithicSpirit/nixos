@@ -7,7 +7,8 @@
 
   documentation.man = {
     enable = true;
-    generateCaches = true;
+    cache.enable = true;
+    cache.generateAtRuntime = true;
 
     man-db.enable = true;
     mandoc.enable = false;

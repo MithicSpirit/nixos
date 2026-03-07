@@ -9,10 +9,16 @@
       dockerCompat = true;
       dockerSocket.enable = true;
     };
+
+    libvirtd = {
+      enable = true;
+      qemu.runAsRoot = false;
+    };
   };
+
+  programs.virt-manager.enable = true;
 
   environment.systemPackages = with pkgs; [
     qemu
-    virt-manager
   ];
 }

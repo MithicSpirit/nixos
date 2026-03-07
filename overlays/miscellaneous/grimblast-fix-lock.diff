@@ -1,5 +1,5 @@
 diff --git a/grimblast b/grimblast
-index b1d4904..6db1f29 100755
+index dc3851c..7a25097 100755
 --- a/grimblast
 +++ b/grimblast
 @@ -18,27 +18,39 @@
@@ -98,8 +98,8 @@ index b1d4904..6db1f29 100755
      fi
  
      # disable animation for layer namespace "selection" (slurp)
-@@ -233,13 +241,13 @@ area() {
-     GEOM="$(jq -r '.[] | "\(.at[0]),\(.at[1]) \(.size[0])x\(.size[1])"' <<<"$windows" | slurp "${SLURP_ARGS[@]}")"
+@@ -241,13 +249,13 @@ area() {
+     GEOM="$(echo -n "$rects" | slurp "${SLURP_ARGS[@]}")"
  
      grimblast::wait
  
@@ -113,7 +113,7 @@ index b1d4904..6db1f29 100755
  }
  
  # Action functions.
-@@ -252,13 +260,13 @@ copy() {
+@@ -260,13 +268,13 @@ copy() {
  
  save() {
      local file title message

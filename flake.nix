@@ -27,7 +27,7 @@
     };
 
     ghostty = {
-      url = "github:ghostty-org/ghostty/c69322fb6a9e585f339f3a7efa234a33bc461290";
+      url = "github:ghostty-org/ghostty/71cb9debb9e47077a9b8d67fde35908db7ae7d85";
       inputs = {
         nixpkgs.follows = "nixpkgs";
         home-manager.follows = "home-manager";

@@ -60,7 +60,7 @@ final: prev: {
 
   grimblast = prev.grimblast.overrideAttrs (
     _finalAttrs: prevAttrs:
-      assert (prevAttrs.version == "0.1-unstable-2026-01-14"); {
+      assert (prevAttrs.version == "0.1-unstable-2026-02-19"); {
         patches =
           (prevAttrs.patches or [])
           ++ [
