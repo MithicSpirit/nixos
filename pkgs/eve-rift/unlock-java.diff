@@ -1,0 +1,12 @@
+diff --git a/build.gradle.kts b/build.gradle.kts
+index 29bad9b..1e1dd5e 100644
+--- a/build.gradle.kts
++++ b/build.gradle.kts
+@@ -179,8 +179,6 @@ kotlin {
+ java {
+     toolchain {
+         languageVersion = JavaLanguageVersion.of(25)
+-        vendor = JvmVendorSpec.JETBRAINS
+-        implementation = JvmImplementation.VENDOR_SPECIFIC
+     }
+ }

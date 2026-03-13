@@ -42,7 +42,7 @@ final: prev: {
 
   ghostty = prev.ghostty.overrideAttrs (
     _finalAttrs: prevAttrs:
-      assert (prevAttrs.version == "1.3.0-dev"); {
+      assert (prevAttrs.version == "1.3.0"); {
         patches =
           (prevAttrs.patches or [])
           ++ [
@@ -55,6 +55,7 @@ final: prev: {
             # })
             ./ghostty-fix-braille.diff
           ];
+        doCheck = false;
       }
   );
 
@@ -74,6 +75,17 @@ final: prev: {
       assert (prevAttrs.version == "4.0.0"); {
         patches = (prevAttrs.patches or []) ++ [./alejandra-adblock.diff];
         doCheck = false;
+      }
+  );
+
+  hyprland = prev.hyprland.overrideAttrs (
+    _finalAttrs: prevAttrs:
+      assert (prevAttrs.version == "0.54.2"); {
+        patches =
+          (prevAttrs.patches or [])
+          ++ [
+            ./hyprland-group-set-always.diff
+          ];
       }
   );
 }

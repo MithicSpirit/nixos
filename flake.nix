@@ -2,7 +2,7 @@
   description = "MithicSpirit's Nix Configurations";
 
   inputs = {
-    systems.url = "github:nix-systems/default";
+    systems.url = "github:nix-systems/default-linux"; # don't support macos
 
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
 
@@ -24,17 +24,6 @@
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
-    };
-
-    ghostty = {
-      url = "github:ghostty-org/ghostty/71cb9debb9e47077a9b8d67fde35908db7ae7d85";
-      inputs = {
-        nixpkgs.follows = "nixpkgs";
-        home-manager.follows = "home-manager";
-        flake-utils.inputs.systems.follows = "systems";
-        flake-compat.follows = ""; # compat not needed
-        zon2nix.follows = ""; # only for dev shell
-      };
     };
   };
 

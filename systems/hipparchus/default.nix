@@ -16,7 +16,7 @@
         "flakes"
       ];
       use-xdg-base-directories = true;
-      cores = 10; # num - 2
+      cores = builtins.ceil (16 * 0.75);
     };
 
     daemonCPUSchedPolicy = "idle";
@@ -288,10 +288,10 @@
     HandleHibernateKeyLongPress = HandleSuspendKey;
   };
 
-  systemd.sleep.extraConfig = ''
-    HibernateDelaySec=1day
-    SuspendEstimationSec=0s
-  '';
+  systemd.sleep.settings.Sleep = {
+    HibernateDelaySec = "1day";
+    SuspendEstimationSec = "0s";
+  };
 
   services.upower.enable = true;
   services.dbus.implementation = "broker";

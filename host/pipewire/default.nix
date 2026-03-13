@@ -18,6 +18,6 @@
     libpulseaudio
     pavucontrol
     pulsemixer
-    helvum
+    crosspipe
   ];
 }

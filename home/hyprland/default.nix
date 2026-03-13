@@ -233,6 +233,9 @@ in {
                   "match:class" = "thunderbird";
                   "match:initial_title" = "Check Spelling";
                 };
+                "eve-rift" = {
+                  "match:class" = "dev-nohus-rift-MainKt";
+                };
               };
             };
             pin = {
@@ -394,6 +397,9 @@ in {
 
           "$mod SHIFT, z, moveoutofgroup"
           "$mod SHIFT, z, togglefloating"
+
+          "$mod, mouse:274, alterzorder, bottom"
+          "$mod SHIFT, mouse:274, alterzorder, top"
 
           "$mod, mouse:272, moveoutofgroup"
           "$mod SHIFT, mouse:272, moveoutofgroup"
