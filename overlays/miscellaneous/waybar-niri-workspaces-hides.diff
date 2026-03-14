@@ -1,0 +1,46 @@
+diff --git a/man/waybar-niri-workspaces.5.scd b/man/waybar-niri-workspaces.5.scd
+index 4be85eb3..5dd70df4 100644
+--- a/man/waybar-niri-workspaces.5.scd
++++ b/man/waybar-niri-workspaces.5.scd
+@@ -14,12 +14,17 @@ Addressed by *niri/workspaces*
+ 
+ *all-outputs*: ++
+ 	typeof: bool ++
+ 	default: false ++
+ 	If set to false, workspaces will only be shown on the output they are on. If set to true all workspaces will be shown on every output.
+ 
++*hide-empty*: ++
++	typeof: bool ++
++	default: false ++
++	If set to true, workspaces will only be shown if they are nonempty (or focused).
++
+ *format*: ++
+ 	typeof: string ++
+ 	default: {value} ++
+ 	The format, how information should be displayed.
+ 
+ *format-icons*: ++
+diff --git a/src/modules/niri/workspaces.cpp b/src/modules/niri/workspaces.cpp
+index 3e8a432e..316c77d6 100644
+--- a/src/modules/niri/workspaces.cpp
++++ b/src/modules/niri/workspaces.cpp
+@@ -30,16 +30,19 @@ Workspaces::~Workspaces() { gIPC->unregisterForIPC(this); }
+ void Workspaces::onEvent(const Json::Value& ev) { dp.emit(); }
+ 
+ void Workspaces::doUpdate() {
+   auto ipcLock = gIPC->lockData();
+ 
+   const auto alloutputs = config_["all-outputs"].asBool();
++  const auto hide_empty = config_["hide-empty"].asBool();
+   std::vector<Json::Value> my_workspaces;
+   const auto& workspaces = gIPC->workspaces();
+   std::copy_if(workspaces.cbegin(), workspaces.cend(), std::back_inserter(my_workspaces),
+                [&](const auto& ws) {
++                 if (hide_empty && ws["active_window_id"].isNull() && !ws["is_focused"].asBool())
++                   return false;
+                  if (alloutputs) return true;
+                  return ws["output"].asString() == bar_.output->name;
+                });
+ 
+   // Remove buttons for removed workspaces.
+   for (auto it = buttons_.begin(); it != buttons_.end();) {

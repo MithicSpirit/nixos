@@ -88,4 +88,30 @@ final: prev: {
           ];
       }
   );
+
+  niri = prev.niri.overrideAttrs (
+    _finalAttrs: prevAttrs:
+      assert (prevAttrs.version == "25.11"); {
+        patches =
+          (prevAttrs.patches or [])
+          ++ [
+            (final.fetchpatch2 {
+              name = "force-render+pr=2609.patch";
+              url = "https://github.com/niri-wm/niri/compare/2a9d0e495a011a124b37532dfcfb3c780fd2eb89..36c4cc0aab659116104f59749cde3c04818afcb8.patch?full_index=1";
+              hash = "sha256-DcgnCbyRanJ7CjP/WoEHszcaRBEjqVmoeEW0lOfGqXI=";
+            })
+          ];
+      }
+  );
+
+  waybar = prev.waybar.overrideAttrs (
+    _finalAttrs: prevAttrs:
+      assert (prevAttrs.version == "0.15.0"); {
+        patches =
+          (prevAttrs.patches or [])
+          ++ [
+            ./waybar-niri-workspaces-hides.diff
+          ];
+      }
+  );
 }

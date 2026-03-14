@@ -16,7 +16,7 @@
     /mpv
     /neovim
     /newsboat
-    /hyprland # or sway
+    /niri # or hyprland, sway
     /swayimg
     /xdg
     /zathura
