@@ -1,7 +1,7 @@
 #!/usr/bin/env sh
 set -euo pipefail
 
-trap '' INT HUP TERM QUIT
+trap '' INT HUP TERM QUIT CONT TSTP
 
 case "$(bemenu -p 'Power' -cl 8 -W 0.2 <<__EOF__
 1. Lock
@@ -28,7 +28,10 @@ __EOF__
 		loginctl lock-session
 		sleep 3; systemctl hibernate
 		;;
-	*"Exit") niri msg quit --skip-confirmation ;;
+	*"Exit")
+		niri msg action quit --skip-confirmation
+		systemctl --user exit
+		;;
 	*"Reboot")
 		systemctl reboot
 		sleep 15; killall -TERM -u mithic
@@ -41,3 +44,4 @@ __EOF__
 		;;
 	*) exit 1 ;;
 esac
+while :; do; done

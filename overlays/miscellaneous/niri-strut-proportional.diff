@@ -1,0 +1,529 @@
+diff --git a/niri-config/src/layout.rs b/niri-config/src/layout.rs
+index f84528bd..102b713c 100644
+--- a/niri-config/src/layout.rs
++++ b/niri-config/src/layout.rs
+@@ -1,13 +1,15 @@
++use std::str::FromStr;
++
+ use knuffel::errors::DecodeError;
+ use niri_ipc::{ColumnDisplay, SizeChange};
+ 
+ use crate::appearance::{
+     Border, FocusRing, InsertHint, Shadow, TabIndicator, DEFAULT_BACKGROUND_COLOR,
+ };
+-use crate::utils::{expect_only_children, Flag, MergeWith};
++use crate::utils::{expect_only_children, Flag, MergeWith, Percent};
+ use crate::{BorderRule, Color, FloatOrInt, InsertHintPart, ShadowRule, TabIndicatorPart};
+ 
+ #[derive(Debug, Clone, PartialEq)]
+ pub struct Layout {
+     pub focus_ring: FocusRing,
+     pub border: Border,
+@@ -143,22 +145,30 @@ impl From<PresetSize> for SizeChange {
+     }
+ }
+ 
+ #[derive(Debug, Clone, Copy, PartialEq)]
+ pub struct DefaultPresetSize(pub Option<PresetSize>);
+ 
++#[derive(Debug, Clone, Copy, PartialEq)]
++pub enum StrutSize {
++    /// Size of strut in logical pixels.
++    Pixels(FloatOrInt<-65535, 65535>),
++    /// Size of strut as a proportion of the size of the working area.
++    Proportion(Percent),
++}
++
+ #[derive(knuffel::Decode, Debug, Default, Clone, Copy, PartialEq)]
+ pub struct Struts {
+     #[knuffel(child, unwrap(argument), default)]
+-    pub left: FloatOrInt<-65535, 65535>,
++    pub left: StrutSize,
+     #[knuffel(child, unwrap(argument), default)]
+-    pub right: FloatOrInt<-65535, 65535>,
++    pub right: StrutSize,
+     #[knuffel(child, unwrap(argument), default)]
+-    pub top: FloatOrInt<-65535, 65535>,
++    pub top: StrutSize,
+     #[knuffel(child, unwrap(argument), default)]
+-    pub bottom: FloatOrInt<-65535, 65535>,
++    pub bottom: StrutSize,
+ }
+ 
+ #[derive(knuffel::DecodeScalar, Debug, Default, PartialEq, Eq, Clone, Copy)]
+ pub enum CenterFocusedColumn {
+     /// Focusing a column will not center the column.
+     #[default]
+@@ -193,6 +203,214 @@ where
+             PresetSize::decode_node(child, ctx).map(Some).map(Self)
+         } else {
+             Ok(Self(None))
+         }
+     }
+ }
++
++impl Default for StrutSize {
++    fn default() -> Self {
++        Self::Pixels(FloatOrInt(0.))
++    }
++}
++
++impl From<FloatOrInt<-65535, 65535>> for StrutSize {
++    fn from(value: FloatOrInt<-65535, 65535>) -> Self {
++        Self::Pixels(value)
++    }
++}
++
++impl From<Percent> for StrutSize {
++    fn from(value: Percent) -> Self {
++        Self::Proportion(value)
++    }
++}
++
++impl MergeWith<FloatOrInt<-65535, 65535>> for StrutSize {
++    fn merge_with(&mut self, part: &FloatOrInt<-65535, 65535>) {
++        *self = (*part).into();
++    }
++
++    fn from_part(part: &FloatOrInt<-65535, 65535>) -> Self
++    where
++        Self: Default + Sized,
++    {
++        (*part).into()
++    }
++}
++
++impl MergeWith<Percent> for StrutSize {
++    fn merge_with(&mut self, part: &Percent) {
++        *self = (*part).into();
++    }
++
++    fn from_part(part: &Percent) -> Self
++    where
++        Self: Default + Sized,
++    {
++        (*part).into()
++    }
++}
++
++impl<S: knuffel::traits::ErrorSpan> knuffel::DecodeScalar<S> for StrutSize {
++    fn type_check(
++        type_name: &Option<knuffel::span::Spanned<knuffel::ast::TypeName, S>>,
++        ctx: &mut knuffel::decode::Context<S>,
++    ) {
++        if let Some(type_name) = &type_name {
++            ctx.emit_error(DecodeError::unexpected(
++                type_name,
++                "type name",
++                "no type name expected for this node",
++            ));
++        }
++    }
++
++    fn raw_decode(
++        val: &knuffel::span::Spanned<knuffel::ast::Literal, S>,
++        ctx: &mut knuffel::decode::Context<S>,
++    ) -> Result<Self, DecodeError<S>> {
++        const MIN: i32 = -65535;
++        const MAX: i32 = 65535;
++        match &**val {
++            knuffel::ast::Literal::Int(ref value) => match value.try_into() {
++                Ok(v) => {
++                    if (MIN..=MAX).contains(&v) {
++                        Ok(Self::Pixels(FloatOrInt(f64::from(v))))
++                    } else {
++                        ctx.emit_error(DecodeError::conversion(
++                            val,
++                            format!("value must be between {MIN} and {MAX}"),
++                        ));
++                        Ok(Self::Pixels(FloatOrInt::default()))
++                    }
++                }
++                Err(e) => {
++                    ctx.emit_error(DecodeError::conversion(val, e));
++                    Ok(Self::default())
++                }
++            },
++            knuffel::ast::Literal::Decimal(ref value) => match value.try_into() {
++                Ok(v) => {
++                    if (f64::from(MIN)..=f64::from(MAX)).contains(&v) {
++                        Ok(Self::Pixels(FloatOrInt(v)))
++                    } else {
++                        ctx.emit_error(DecodeError::conversion(
++                            val,
++                            format!("value must be between {MIN} and {MAX}"),
++                        ));
++                        Ok(Self::default())
++                    }
++                }
++                Err(e) => {
++                    ctx.emit_error(DecodeError::conversion(val, e));
++                    Ok(Self::default())
++                }
++            },
++            knuffel::ast::Literal::String(ref value) => match Percent::from_str(value) {
++                Ok(v) => Ok(Self::Proportion(v)),
++                Err(e) => {
++                    ctx.emit_error(DecodeError::conversion(val, e));
++                    Ok(Self::default())
++                }
++            },
++            _ => {
++                ctx.emit_error(DecodeError::unsupported(
++                    val,
++                    "Unsupported value, only numbers and strings are recognized",
++                ));
++                Ok(Self::default())
++            }
++        }
++    }
++}
++
++#[cfg(test)]
++mod tests {
++    use insta::assert_debug_snapshot;
++
++    use super::*;
++
++    #[track_caller]
++    fn do_parse(text: &str) -> Layout {
++        let part = knuffel::parse("test.kdl", text)
++            .map_err(miette::Report::new)
++            .unwrap();
++        Layout::from_part(&part)
++    }
++
++    #[test]
++    fn strut_pixels() {
++        let parsed = do_parse(
++            r#"
++            struts {
++                left 1
++                right 1.2
++                top 1.23
++                bottom 1.234
++            }
++            "#,
++        );
++        assert_debug_snapshot!(parsed.struts, @r"
++        Struts {
++            left: Pixels(
++                FloatOrInt(
++                    1.0,
++                ),
++            ),
++            right: Pixels(
++                FloatOrInt(
++                    1.2,
++                ),
++            ),
++            top: Pixels(
++                FloatOrInt(
++                    1.23,
++                ),
++            ),
++            bottom: Pixels(
++                FloatOrInt(
++                    1.234,
++                ),
++            ),
++        }
++        ")
++    }
++
++    #[test]
++    fn strut_percent() {
++        let parsed = do_parse(
++            r#"
++            struts {
++                left "10%"
++                right "12%"
++                top "12.3%"
++                bottom "12.34%"
++            }
++            "#,
++        );
++        assert_debug_snapshot!(parsed.struts, @r"
++        Struts {
++            left: Proportion(
++                Percent(
++                    0.1,
++                ),
++            ),
++            right: Proportion(
++                Percent(
++                    0.12,
++                ),
++            ),
++            top: Proportion(
++                Percent(
++                    0.12300000000000001,
++                ),
++            ),
++            bottom: Proportion(
++                Percent(
++                    0.1234,
++                ),
++            ),
++        }
++        ")
++    }
++}
+diff --git a/niri-config/src/lib.rs b/niri-config/src/lib.rs
+index b61fe1c1..4a60b496 100644
+--- a/niri-config/src/lib.rs
++++ b/niri-config/src/lib.rs
+@@ -834,13 +834,13 @@ mod tests {
+                     curve "ease-out-expo"
+                 }
+ 
+                 window-open { off; }
+ 
+                 window-close {
+-                    curve "cubic-bezier" 0.05 0.7 0.1 1  
++                    curve "cubic-bezier" 0.05 0.7 0.1 1
+                 }
+ 
+                 recent-windows-close {
+                     off
+                 }
+             }
+@@ -1429,23 +1429,31 @@ mod tests {
+                 center_focused_column: OnOverflow,
+                 always_center_single_column: false,
+                 empty_workspace_above_first: false,
+                 default_column_display: Tabbed,
+                 gaps: 8.0,
+                 struts: Struts {
+-                    left: FloatOrInt(
+-                        1.0,
++                    left: Pixels(
++                        FloatOrInt(
++                            1.0,
++                        ),
+                     ),
+-                    right: FloatOrInt(
+-                        2.0,
++                    right: Pixels(
++                        FloatOrInt(
++                            2.0,
++                        ),
+                     ),
+-                    top: FloatOrInt(
+-                        3.0,
++                    top: Pixels(
++                        FloatOrInt(
++                            3.0,
++                        ),
+                     ),
+-                    bottom: FloatOrInt(
+-                        0.0,
++                    bottom: Pixels(
++                        FloatOrInt(
++                            0.0,
++                        ),
+                     ),
+                 },
+                 background_color: Color {
+                     r: 0.25,
+                     g: 0.25,
+                     b: 0.25,
+diff --git a/src/layout/scrolling.rs b/src/layout/scrolling.rs
+index 69d0ed62..361e9bd0 100644
+--- a/src/layout/scrolling.rs
++++ b/src/layout/scrolling.rs
+@@ -1,13 +1,13 @@
+ use std::cmp::{max, min};
+ use std::iter::{self, zip};
+ use std::rc::Rc;
+ use std::time::Duration;
+ 
+ use niri_config::utils::MergeWith as _;
+-use niri_config::{CenterFocusedColumn, PresetSize, Struts};
++use niri_config::{CenterFocusedColumn, PresetSize, StrutSize, Struts};
+ use niri_ipc::{ColumnDisplay, SizeChange, WindowLayout};
+ use ordered_float::NotNan;
+ use smithay::backend::renderer::gles::GlesRenderer;
+ use smithay::utils::{Logical, Point, Rectangle, Scale, Serial, Size};
+ 
+ use super::closing_window::{ClosingWindow, ClosingWindowRenderElement};
+@@ -278,12 +278,20 @@ pub enum ScrollDirection {
+ #[derive(Debug)]
+ struct MoveAnimation {
+     anim: Animation,
+     from: f64,
+ }
+ 
++#[derive(Debug)]
++struct StrutsPx {
++    left: f64,
++    right: f64,
++    top: f64,
++    bottom: f64,
++}
++
+ impl<W: LayoutElement> ScrollingSpace<W> {
+     pub fn new(
+         view_size: Size<f64, Logical>,
+         parent_area: Rectangle<f64, Logical>,
+         scale: f64,
+         clock: Clock,
+@@ -5449,12 +5457,29 @@ impl<W: LayoutElement> Column<W> {
+                  (total height {total_height} > max height {max_height})"
+             );
+         }
+     }
+ }
+ 
++impl StrutsPx {
++    fn compute(area: Rectangle<f64, Logical>, struts: Struts) -> Self {
++        fn compute(total: f64, size: StrutSize) -> f64 {
++            match size {
++                StrutSize::Pixels(x) => x.0,
++                StrutSize::Proportion(p) => total * p.0,
++            }
++        }
++        Self {
++            left: compute(area.size.w, struts.left),
++            right: compute(area.size.w, struts.right),
++            top: compute(area.size.h, struts.top),
++            bottom: compute(area.size.h, struts.bottom),
++        }
++    }
++}
++
+ fn compute_new_view_offset(
+     cur_x: f64,
+     view_width: f64,
+     new_col_x: f64,
+     new_col_width: f64,
+     gaps: f64,
+@@ -5488,20 +5513,21 @@ fn compute_new_view_offset(
+ 
+ fn compute_working_area(
+     parent_area: Rectangle<f64, Logical>,
+     scale: f64,
+     struts: Struts,
+ ) -> Rectangle<f64, Logical> {
++    let struts = StrutsPx::compute(parent_area, struts);
+     let mut working_area = parent_area;
+ 
+     // Add struts.
+-    working_area.size.w = f64::max(0., working_area.size.w - struts.left.0 - struts.right.0);
+-    working_area.loc.x += struts.left.0;
++    working_area.size.w = f64::max(0., working_area.size.w - struts.left - struts.right);
++    working_area.loc.x += struts.left;
+ 
+-    working_area.size.h = f64::max(0., working_area.size.h - struts.top.0 - struts.bottom.0);
+-    working_area.loc.y += struts.top.0;
++    working_area.size.h = f64::max(0., working_area.size.h - struts.top - struts.bottom);
++    working_area.loc.y += struts.top;
+ 
+     // Round location to start at a physical pixel.
+     let loc = working_area
+         .loc
+         .to_physical_precise_ceil(scale)
+         .to_logical(scale);
+@@ -5570,32 +5596,32 @@ mod tests {
+     use super::*;
+     use crate::utils::round_logical_in_physical;
+ 
+     #[test]
+     fn working_area_starts_at_physical_pixel() {
+         let struts = Struts {
+-            left: FloatOrInt(0.5),
+-            right: FloatOrInt(1.),
+-            top: FloatOrInt(0.75),
+-            bottom: FloatOrInt(1.),
++            left: FloatOrInt(0.5).into(),
++            right: FloatOrInt(1.).into(),
++            top: FloatOrInt(0.75).into(),
++            bottom: FloatOrInt(1.).into(),
+         };
+ 
+         let parent_area = Rectangle::from_size(Size::from((1280., 720.)));
+         let area = compute_working_area(parent_area, 1., struts);
+ 
+         assert_eq!(round_logical_in_physical(1., area.loc.x), area.loc.x);
+         assert_eq!(round_logical_in_physical(1., area.loc.y), area.loc.y);
+     }
+ 
+     #[test]
+     fn large_fractional_strut() {
+         let struts = Struts {
+-            left: FloatOrInt(0.),
+-            right: FloatOrInt(0.),
+-            top: FloatOrInt(50000.5),
+-            bottom: FloatOrInt(0.),
++            left: FloatOrInt(0.).into(),
++            right: FloatOrInt(0.).into(),
++            top: FloatOrInt(50000.5).into(),
++            bottom: FloatOrInt(0.).into(),
+         };
+ 
+         let parent_area = Rectangle::from_size(Size::from((1280., 720.)));
+         compute_working_area(parent_area, 1., struts);
+     }
+ }
+diff --git a/src/layout/tests.rs b/src/layout/tests.rs
+index e22e860e..48624044 100644
+--- a/src/layout/tests.rs
++++ b/src/layout/tests.rs
+@@ -1,13 +1,13 @@
+ use std::cell::{Cell, OnceCell, RefCell};
+ 
+ use niri_config::utils::{Flag, MergeWith as _};
+ use niri_config::workspace::WorkspaceName;
+ use niri_config::{
+-    CenterFocusedColumn, FloatOrInt, OutputName, Struts, TabIndicatorLength, TabIndicatorPosition,
+-    WorkspaceReference,
++    CenterFocusedColumn, FloatOrInt, OutputName, Struts, TabIndicatorLength,
++    TabIndicatorPosition, WorkspaceReference,
+ };
+ use proptest::prelude::*;
+ use proptest_derive::Arbitrary;
+ use smithay::output::{Mode, PhysicalProperties, Subpixel};
+ use smithay::utils::Rectangle;
+ 
+@@ -3648,16 +3648,16 @@ fn tabs_with_different_border() {
+         Op::ConsumeOrExpelWindowLeft { id: None },
+     ];
+ 
+     let options = Options {
+         layout: niri_config::Layout {
+             struts: Struts {
+-                left: FloatOrInt(0.),
+-                right: FloatOrInt(0.),
+-                top: FloatOrInt(20000.),
+-                bottom: FloatOrInt(0.),
++                left: FloatOrInt(0.).into(),
++                right: FloatOrInt(0.).into(),
++                top: FloatOrInt(20000.).into(),
++                bottom: FloatOrInt(0.).into(),
+             },
+             ..Default::default()
+         },
+         ..Default::default()
+     };
+     check_ops_with_options(options, ops);
+@@ -3777,16 +3777,16 @@ fn arbitrary_struts() -> impl Strategy<Value = Struts> {
+         arbitrary_spacing_neg(),
+         arbitrary_spacing_neg(),
+         arbitrary_spacing_neg(),
+         arbitrary_spacing_neg(),
+     )
+         .prop_map(|(left, right, top, bottom)| Struts {
+-            left: FloatOrInt(left),
+-            right: FloatOrInt(right),
+-            top: FloatOrInt(top),
+-            bottom: FloatOrInt(bottom),
++            left: FloatOrInt(left).into(),
++            right: FloatOrInt(right).into(),
++            top: FloatOrInt(top).into(),
++            bottom: FloatOrInt(bottom).into(),
+         })
+ }
+ 
+ fn arbitrary_center_focused_column() -> impl Strategy<Value = CenterFocusedColumn> {
+     prop_oneof![
+         Just(CenterFocusedColumn::Never),

@@ -19,7 +19,12 @@ in {
       ''
         #!/usr/bin/env sh
         if [ -z "$WAYLAND_DISPLAY" -a -z "$DISPLAY" -a "$XDG_VTNR" -eq 1 -a -z "$LOGGED_IN"]
-        then LOGGED_IN=1 exec niri-session >>/tmp/niri.log 2>&1
+        then
+          export LOGGED_IN=1
+          niri-session >>/tmp/niri.log 2>&1
+          systemctl --user exit
+          sleep 5
+          exit
         fi
       '';
   };
@@ -100,7 +105,7 @@ in {
     events = {
       before-sleep = "loginctl lock-session";
       after-resume = "niri msg action power-on-monitors"; # TODO: force-idle
-      lock = "if ! pidof -q hyprlock; then hyprlock; fi"; # TODO: sudo -K
+      lock = "sudo -K; if ! pidof -q hyprlock; then hyprlock & fi";
       unlock = "killall -USR1 hyprlock";
     };
   };

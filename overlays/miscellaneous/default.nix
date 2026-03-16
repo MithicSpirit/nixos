@@ -100,6 +100,8 @@ final: prev: {
               url = "https://github.com/niri-wm/niri/compare/2a9d0e495a011a124b37532dfcfb3c780fd2eb89..36c4cc0aab659116104f59749cde3c04818afcb8.patch?full_index=1";
               hash = "sha256-DcgnCbyRanJ7CjP/WoEHszcaRBEjqVmoeEW0lOfGqXI=";
             })
+            ./niri-pr2609-fix.diff
+            ./niri-strut-proportional.diff
           ];
       }
   );

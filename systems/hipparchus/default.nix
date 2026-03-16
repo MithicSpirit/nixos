@@ -293,6 +293,10 @@
     SuspendEstimationSec = "0s";
   };
 
+  systemd.settings.Manager = {
+    DefaultTimeoutStopSec = "60s";
+  };
+
   services.upower.enable = true;
   services.dbus.implementation = "broker";
 

@@ -79,6 +79,10 @@
     };
   };
 
+  systemd.user.settings.Manager = {
+    DefaultTimeoutStopSec = "30s";
+  };
+
   systemd.user.sessionVariables = config.home.sessionVariables;
   home.file.".profile" = {
     enable = true;
