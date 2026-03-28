@@ -43,7 +43,7 @@
       /keyd
       /bluetooth
       /tlp # or ppd
-      # /sway (hyprland)
+      # /sway (niri)
       /amdgpu
       # /fw-fanctrl
       /zswap # or zram

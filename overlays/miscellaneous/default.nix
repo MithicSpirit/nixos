@@ -42,7 +42,7 @@ final: prev: {
 
   ghostty = prev.ghostty.overrideAttrs (
     _finalAttrs: prevAttrs:
-      assert (prevAttrs.version == "1.3.0"); {
+      assert (prevAttrs.version == "1.3.1"); {
         patches =
           (prevAttrs.patches or [])
           ++ [
@@ -78,17 +78,6 @@ final: prev: {
       }
   );
 
-  hyprland = prev.hyprland.overrideAttrs (
-    _finalAttrs: prevAttrs:
-      assert (prevAttrs.version == "0.54.2"); {
-        patches =
-          (prevAttrs.patches or [])
-          ++ [
-            ./hyprland-group-set-always.diff
-          ];
-      }
-  );
-
   niri = prev.niri.overrideAttrs (
     _finalAttrs: prevAttrs:
       assert (prevAttrs.version == "25.11"); {
@@ -97,11 +86,11 @@ final: prev: {
           ++ [
             (final.fetchpatch2 {
               name = "force-render+pr=2609.patch";
-              url = "https://github.com/niri-wm/niri/compare/2a9d0e495a011a124b37532dfcfb3c780fd2eb89..36c4cc0aab659116104f59749cde3c04818afcb8.patch?full_index=1";
-              hash = "sha256-DcgnCbyRanJ7CjP/WoEHszcaRBEjqVmoeEW0lOfGqXI=";
+              url = "https://github.com/niri-wm/niri/compare/2a9d0e495a011a124b37532dfcfb3c780fd2eb89..e32bf5ebc81137b9f5e8fffda21c0e027a0e9ab6.patch?full_index=1";
+              hash = "sha256-2xzosED7ZXnEJi3O/AQStrnVnra/OVvy9bMPSQCSbqc=";
             })
-            ./niri-pr2609-fix.diff
-            ./niri-strut-proportional.diff
+            ./niri-prevent-idle-inhibit.diff
+            ./niri-layer-priority.diff
           ];
       }
   );

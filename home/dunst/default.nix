@@ -32,7 +32,7 @@
 
         origin = "top-right";
         width = 300;
-        offset = "(17, 28)";
+        offset = "(9, 28)";
         corner_radius = 4;
         frame_color = colors.accent;
         frame_width = 2;

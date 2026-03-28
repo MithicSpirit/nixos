@@ -1,9 +1,10 @@
 (local augroup (vim.api.nvim_create_augroup :mithic-treesitter {}))
 (local nvim-ts (require :nvim-treesitter))
 
-(local hi-ignore {:latex true})
+(local hi-ignore {:latex true :gitcommit true})
 (local fd-ignore {})
-(local in-ignore {:latex true})
+
+(local in-enable {})
 
 (vim.api.nvim_create_autocmd
   :FileType
@@ -16,7 +17,7 @@
                   (when (not (or (. fd-ignore lang) (. fd-ignore ft)))
                     (set vim.wo.foldexpr "v:lua.vim.treesitter.foldexpr()")
                     (set vim.wo.foldmethod :expr))
-                  (when (not (or (. in-ignore lang) (. in-ignore ft)))
+                  (when (or (. in-enable lang) (. in-enable ft))
                     (set vim.bo.indentexpr
                          "v:lua.require'nvim-treesitter'.indentexpr()")))
                 nil)

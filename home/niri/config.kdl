@@ -24,44 +24,26 @@ input {
     }
     touch { off; }
 
-    focus-follows-mouse // TODO: max-scroll-amount?
+    focus-follows-mouse max-scroll-amount="50%"
     warp-mouse-to-focus
 }
 
 // TODO: configure output globally when nix
 output "eDP-2" {
-    mode "2560x1600@165"
+    mode "2560x1600@165.000"
     scale 1.33
     variable-refresh-rate
     focus-at-startup
 }
 
 layout {
-    // TODO: find
-    gaps 6
-    struts {
+    gaps 10
+    struts { // logical, so assume 1920x1080
         top 0
         bottom 0
-        left "2%"
-        right "2%"
-    }
-
-    center-focused-column "on-overflow"
-    always-center-single-column
-
-    default-column-display "tabbed"
-
-    preset-column-widths {
-        proportion 1.0
-        proportion 0.5
-        proportion 0.7
-        proportion 0.3
-    }
-    default-column-width { proportion 1.0; }
-
-    preset-window-heights {
-        proportion 1.0
-        proportion 0.5
+        // ~2.5%
+        left 50
+        right 50
     }
 
     focus-ring { off; }
@@ -71,6 +53,33 @@ layout {
         active-color "#88c0d0"
         inactive-color "#3b4252"
         urgent-color "#d08770"
+    }
+
+    tab-indicator {
+        width 4
+        gap 2
+        gaps-between-tabs 2
+        inactive-color "#4c566a"
+    }
+
+    background-color "#292e38"
+
+    center-focused-column "never"
+    always-center-single-column
+
+    default-column-display "tabbed"
+
+    preset-column-widths {
+        proportion 0.5
+        proportion 0.3
+        proportion 0.7
+    }
+    default-column-width { proportion 1.0; }
+
+    preset-window-heights {
+        proportion 1.0
+        proportion 0.2
+        proportion 0.5
     }
 
     shadow { off; }
@@ -141,11 +150,14 @@ animations {
 
 gestures {
     hot-corners { off; }
+    dnd-edge-workspace-switch { trigger-height 0; } // off
 }
 
 hotkey-overlay { skip-at-startup; }
 
 prefer-no-csd
+
+prevent-idle-inhibit
 
 screenshot-path "~/files/pictures/screenshots/%Y-%m-%d_%H-%M-%S.%N.png"
 
@@ -239,6 +251,11 @@ layer-rule {
     block-out-from "screencast"
     match namespace=r#"^waybar$"#
     match namespace=r#"^menu$"#
+    match namespace=r#"^notifications$"#
+}
+
+layer-rule {
+    priority -10
     match namespace=r#"^notifications$"#
 }
 
@@ -386,6 +403,24 @@ binds {
     Mod+Shift+s { move-window-to-workspace "s"; }
     Mod+Shift+d { move-window-to-workspace "d"; }
     Mod+Shift+f { move-window-to-workspace "f"; }
+    Mod+Ctrl+1 { move-window-to-workspace "1" focus=false; }
+    Mod+Ctrl+2 { move-window-to-workspace "2" focus=false; }
+    Mod+Ctrl+3 { move-window-to-workspace "3" focus=false; }
+    Mod+Ctrl+4 { move-window-to-workspace "4" focus=false; }
+    Mod+Ctrl+5 { move-window-to-workspace "5" focus=false; }
+    Mod+Ctrl+6 { move-window-to-workspace "6" focus=false; }
+    Mod+Ctrl+7 { move-window-to-workspace "7" focus=false; }
+    Mod+Ctrl+8 { move-window-to-workspace "8" focus=false; }
+    Mod+Ctrl+9 { move-window-to-workspace "9" focus=false; }
+    Mod+Ctrl+0 { move-window-to-workspace "0" focus=false; }
+    Mod+Ctrl+q { move-window-to-workspace "q" focus=false; }
+    Mod+Ctrl+w { move-window-to-workspace "w" focus=false; }
+    Mod+Ctrl+e { move-window-to-workspace "e" focus=false; }
+    Mod+Ctrl+r { move-window-to-workspace "r" focus=false; }
+    Mod+Ctrl+a { move-window-to-workspace "a" focus=false; }
+    Mod+Ctrl+s { move-window-to-workspace "s" focus=false; }
+    Mod+Ctrl+d { move-window-to-workspace "d" focus=false; }
+    Mod+Ctrl+f { move-window-to-workspace "f" focus=false; }
     Mod+Ctrl+Shift+1 { move-column-to-workspace "1"; }
     Mod+Ctrl+Shift+2 { move-column-to-workspace "2"; }
     Mod+Ctrl+Shift+3 { move-column-to-workspace "3"; }

@@ -1,0 +1,144 @@
+diff --git a/niri-config/src/layer_rule.rs b/niri-config/src/layer_rule.rs
+index c11edc13..aa33b445 100644
+--- a/niri-config/src/layer_rule.rs
++++ b/niri-config/src/layer_rule.rs
+@@ -8,12 +8,14 @@ pub struct LayerRule {
+     #[knuffel(children(name = "exclude"))]
+     pub excludes: Vec<Match>,
+ 
+     #[knuffel(child, unwrap(argument))]
+     pub opacity: Option<f32>,
+     #[knuffel(child, unwrap(argument))]
++    pub priority: Option<i32>,
++    #[knuffel(child, unwrap(argument))]
+     pub block_out_from: Option<BlockOutFrom>,
+     #[knuffel(child, default)]
+     pub shadow: ShadowRule,
+     #[knuffel(child)]
+     pub geometry_corner_radius: Option<CornerRadius>,
+     #[knuffel(child, unwrap(argument))]
+diff --git a/niri-config/src/lib.rs b/niri-config/src/lib.rs
+index 28e54e6b..a1d095bf 100644
+--- a/niri-config/src/lib.rs
++++ b/niri-config/src/lib.rs
+@@ -835,12 +835,13 @@ mod tests {
+                     active-color "#f00"
+                 }
+             }
+ 
+             layer-rule {
+                 match namespace="^notifications$"
++                priority 1
+                 block-out-from "screencast"
+             }
+ 
+             binds {
+                 Mod+Escape hotkey-overlay-title="Inhibit" { toggle-keyboard-shortcuts-inhibit; }
+                 Mod+Shift+Escape allow-inhibiting=true { toggle-keyboard-shortcuts-inhibit; }
+@@ -1810,12 +1811,15 @@ mod tests {
+                             ),
+                             at_startup: None,
+                         },
+                     ],
+                     excludes: [],
+                     opacity: None,
++                    priority: Some(
++                        1,
++                    ),
+                     block_out_from: Some(
+                         Screencast,
+                     ),
+                     shadow: ShadowRule {
+                         off: false,
+                         on: false,
+diff --git a/src/layer/mod.rs b/src/layer/mod.rs
+index 19a091c1..e3e709ec 100644
+--- a/src/layer/mod.rs
++++ b/src/layer/mod.rs
+@@ -9,12 +9,14 @@ pub use mapped::MappedLayer;
+ /// Rules fully resolved for a layer-shell surface.
+ #[derive(Debug, PartialEq)]
+ pub struct ResolvedLayerRules {
+     /// Extra opacity to draw this layer surface with.
+     pub opacity: Option<f32>,
+ 
++    pub priority: i32,
++
+     /// Whether to block out this layer surface from certain render targets.
+     pub block_out_from: Option<BlockOutFrom>,
+ 
+     /// Shadow overrides.
+     pub shadow: ShadowRule,
+ 
+@@ -29,12 +31,13 @@ pub struct ResolvedLayerRules {
+ }
+ 
+ impl ResolvedLayerRules {
+     pub const fn empty() -> Self {
+         Self {
+             opacity: None,
++            priority: 0,
+             block_out_from: None,
+             shadow: ShadowRule {
+                 off: false,
+                 on: false,
+                 offset: None,
+                 softness: None,
+@@ -73,12 +76,15 @@ impl ResolvedLayerRules {
+                 continue;
+             }
+ 
+             if let Some(x) = rule.opacity {
+                 resolved.opacity = Some(x);
+             }
++            if let Some(x) = rule.priority {
++                resolved.priority = x;
++            }
+             if let Some(x) = rule.block_out_from {
+                 resolved.block_out_from = Some(x);
+             }
+             if let Some(x) = rule.geometry_corner_radius {
+                 resolved.geometry_corner_radius = Some(x);
+             }
+diff --git a/src/niri.rs b/src/niri.rs
+index e59de48b..e7c93d2d 100644
+--- a/src/niri.rs
++++ b/src/niri.rs
+@@ -4577,23 +4577,28 @@ impl Niri {
+         layer_map: &LayerMap,
+         layer: Layer,
+         elements: &mut SplitElements<LayerSurfaceRenderElement<R>>,
+         for_backdrop: bool,
+     ) {
+         // LayerMap returns layers in reverse stacking order.
+-        let iter = layer_map.layers_on(layer).rev().filter_map(|surface| {
+-            let mapped = self.mapped_layer_surfaces.get(surface)?;
++        let mut layers: Vec<_> = layer_map
++            .layers_on(layer)
++            .rev()
++            .filter_map(|surface| {
++                let mapped = self.mapped_layer_surfaces.get(surface)?;
+ 
+-            if for_backdrop != mapped.place_within_backdrop() {
+-                return None;
+-            }
++                if for_backdrop != mapped.place_within_backdrop() {
++                    return None;
++                }
+ 
+-            let geo = layer_map.layer_geometry(surface)?;
+-            Some((mapped, geo))
+-        });
+-        for (mapped, geo) in iter {
++                let geo = layer_map.layer_geometry(surface)?;
++                Some((mapped, geo))
++            })
++            .collect();
++        layers.sort_by_key(|(mapped, _)| mapped.rules().priority);
++        for (mapped, geo) in layers {
+             elements.extend(mapped.render(renderer, geo.loc.to_f64(), target));
+         }
+     }
+ 
+     fn redraw(&mut self, backend: &mut Backend, output: &Output) {
+         let _span = tracy_client::span!("Niri::redraw");

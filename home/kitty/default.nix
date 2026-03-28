@@ -16,6 +16,7 @@
       update_check_interval = 0;
 
       disable_ligatures = "cursor";
+      text_composition_strategy = "legacy";
       cursor_blink_interval = 0;
       mouse_hide_wait = 0;
       shell_integration = "no-cursor";

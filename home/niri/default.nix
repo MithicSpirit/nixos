@@ -2,8 +2,10 @@
   pkgs,
   lib,
   root,
+  config,
   ...
 }: let
+  niri-pkg = pkgs.niri;
   wallpaper = import (root + /common/wallpaper);
   colors = import (root + /common/colorscheme.nix);
 in {
@@ -18,15 +20,30 @@ in {
       # sh
       ''
         #!/usr/bin/env sh
-        if [ -z "$WAYLAND_DISPLAY" -a -z "$DISPLAY" -a "$XDG_VTNR" -eq 1 -a -z "$LOGGED_IN"]
-        then
-          export LOGGED_IN=1
-          niri-session >>/tmp/niri.log 2>&1
-          systemctl --user exit
-          sleep 5
-          exit
+        if [ -z "$WAYLAND_DISPLAY" -a -z "$DISPLAY" -a "$XDG_VTNR" -eq 1 -a -z "$LOGGED_IN" ]
+        then LOGGED_IN=1 exec ${./startup.sh}
         fi
       '';
+  };
+
+  systemd.user.services."niri" = {
+    Service = {
+      ExecStart = "${lib.getExe niri-pkg} --session";
+      ExecReload = "${lib.getExe niri-pkg} msg action load-config-file";
+      Type = "notify";
+      Slice = "session.slice";
+    };
+    Unit = {
+      Description = "A scrollable-tiling Wayland compositor";
+      BindsTo = "graphical-session.target";
+      Before = ["graphical-session.target"];
+      Wants = ["graphical-session-pre.target"];
+      After = ["graphical-session-pre.target"];
+      X-SwitchMethod = "reload";
+      X-ReloadTriggers = [
+        config.xdg.configFile."niri/config.kdl".source
+      ];
+    };
   };
 
   xdg.portal = {
@@ -41,7 +58,7 @@ in {
   };
 
   home.packages = with pkgs; [
-    niri
+    niri-pkg
     xwayland-satellite
     brightnessctl
     playerctl
@@ -161,7 +178,6 @@ in {
       {
         layer = "top";
         position = "top";
-        mode = "dock";
         height = 24;
         modules-left = [
           "niri/workspaces"

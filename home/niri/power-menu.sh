@@ -7,7 +7,7 @@ case "$(bemenu -p 'Power' -cl 8 -W 0.2 <<__EOF__
 1. Lock
 2. Screen Off
 3. Reload
-4. Exit
+4. Log Off
 5. Suspend
 6. Hibernate
 7. Reboot
@@ -28,10 +28,7 @@ __EOF__
 		loginctl lock-session
 		sleep 3; systemctl hibernate
 		;;
-	*"Exit")
-		niri msg action quit --skip-confirmation
-		systemctl --user exit
-		;;
+	*"Log Off") niri msg action quit --skip-confirmation ;;
 	*"Reboot")
 		systemctl reboot
 		sleep 15; killall -TERM -u mithic

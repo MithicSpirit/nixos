@@ -10,7 +10,7 @@
       no-cursor = true;
 
       grab = true;
-      line-height = 28;
+      line-height = 24;
       ch = 20;
       cw = 2;
       monitor = "all";

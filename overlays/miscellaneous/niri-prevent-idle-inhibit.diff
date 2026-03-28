@@ -1,0 +1,100 @@
+diff --git a/niri-config/src/lib.rs b/niri-config/src/lib.rs
+index b61fe1c1..44ca161c 100644
+--- a/niri-config/src/lib.rs
++++ b/niri-config/src/lib.rs
+@@ -69,12 +69,13 @@ pub struct Config {
+     pub input: Input,
+     pub outputs: Outputs,
+     pub spawn_at_startup: Vec<SpawnAtStartup>,
+     pub spawn_sh_at_startup: Vec<SpawnShAtStartup>,
+     pub layout: Layout,
+     pub prefer_no_csd: bool,
++    pub prevent_idle_inhibit: bool,
+     pub cursor: Cursor,
+     pub screenshot_path: ScreenshotPath,
+     pub clipboard: Clipboard,
+     pub hotkey_overlay: HotkeyOverlay,
+     pub config_notification: ConfigNotification,
+     pub animations: Animations,
+@@ -231,12 +232,16 @@ where
+                 }
+ 
+                 "prefer-no-csd" => {
+                     config.borrow_mut().prefer_no_csd = Flag::decode_node(node, ctx)?.0
+                 }
+ 
++                "prevent-idle-inhibit" => {
++                    config.borrow_mut().prevent_idle_inhibit = Flag::decode_node(node, ctx)?.0
++                }
++
+                 "screenshot-path" => {
+                     let part = knuffel::Decode::decode_node(node, ctx)?;
+                     config.borrow_mut().screenshot_path = part;
+                 }
+ 
+                 "layout" => {
+@@ -801,12 +806,13 @@ mod tests {
+             }
+ 
+             spawn-at-startup "alacritty" "-e" "fish"
+             spawn-sh-at-startup "qs -c ~/source/qs/MyAwesomeShell"
+ 
+             prefer-no-csd
++            prevent-idle-inhibit
+ 
+             cursor {
+                 xcursor-theme "breeze_cursors"
+                 xcursor-size 16
+                 hide-when-typing
+                 hide-after-inactive-ms 3000
+@@ -834,13 +840,13 @@ mod tests {
+                     curve "ease-out-expo"
+                 }
+ 
+                 window-open { off; }
+ 
+                 window-close {
+-                    curve "cubic-bezier" 0.05 0.7 0.1 1  
++                    curve "cubic-bezier" 0.05 0.7 0.1 1
+                 }
+ 
+                 recent-windows-close {
+                     off
+                 }
+             }
+@@ -1450,12 +1456,13 @@ mod tests {
+                     g: 0.25,
+                     b: 0.25,
+                     a: 1.0,
+                 },
+             },
+             prefer_no_csd: true,
++            prevent_idle_inhibit: true,
+             cursor: Cursor {
+                 xcursor_theme: "breeze_cursors",
+                 xcursor_size: 16,
+                 hide_when_typing: true,
+                 hide_after_inactive_ms: Some(
+                     3000,
+diff --git a/src/niri.rs b/src/niri.rs
+index d84c390a..fa5fb3a9 100644
+--- a/src/niri.rs
++++ b/src/niri.rs
+@@ -3905,12 +3905,17 @@ impl Niri {
+         };
+ 
+         self.layout.refresh(layout_is_active);
+     }
+ 
+     pub fn refresh_idle_inhibit(&mut self) {
++        if self.config.borrow().prevent_idle_inhibit {
++            self.idle_notifier_state.set_is_inhibited(false);
++            return;
++        }
++
+         let _span = tracy_client::span!("Niri::refresh_idle_inhibit");
+ 
+         self.idle_inhibiting_surfaces.retain(|s| s.is_alive());
+ 
+         let is_inhibited = self.is_fdo_idle_inhibited.load(Ordering::SeqCst)
+             || self.idle_inhibiting_surfaces.iter().any(|surface| {
