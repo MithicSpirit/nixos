@@ -14,13 +14,13 @@
 }: let
   nodejs = nodejs_22; # HACK: issue with lockfiles not being in sync
   name = "awakened-poe-trade";
-  version = "3.28.102";
+  version = "3.28.103";
 
   src = fetchFromGitHub {
     owner = "SnosMe";
     repo = name;
     rev = "v${version}";
-    hash = "sha256-OiojT1j0PklHBjQee5CsVT/iOEWc/Jo1CfcGGu48idE=";
+    hash = "sha256-lJqJNMwLBYO4CYQOGkflJqg0NhYOBHSZeqUYihIU2DU=";
   };
 
   renderer = buildNpmPackage {

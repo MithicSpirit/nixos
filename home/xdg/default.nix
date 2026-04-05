@@ -18,6 +18,7 @@ in {
     stateHome = "${home}/.local/state";
     userDirs = {
       enable = true;
+      setSessionVariables = true;
       createDirectories = true;
       templates = "${xdg.dataHome}/templates";
 

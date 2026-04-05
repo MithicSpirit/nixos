@@ -1,10 +1,12 @@
 #!/usr/bin/env sh
 
 set -x
-trap "pkill -eu mithic -KILL; exit 2" INT
-trap "" HUP TERM QUIT CONT TSTP
+trap 'pkill -eu mithic -KILL; exit 2' INT
+trap '' HUP TERM QUIT CONT TSTP
 
 niri-session >>/tmp/niri.log 2>&1
+
+sleep 1
 systemctl --user exit
 
 sleep 5
@@ -18,5 +20,5 @@ timeout '10s' pidwait -u mithic --ignore-ancestors
 pgrep -u mithic --list-name --ignore-ancestors
 pstree mithic
 sleep 10
-pkill -eu mithic -KILL
+loginctl kill-session '' --signal=SIGKILL
 exit 1

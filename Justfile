@@ -1,6 +1,8 @@
+[default]
 default: gitadd standard
+standard: gitprepare format check
 
-fmt *args:
+fmt *args: gitprepare
     nix fmt -- {{ args }}
 format: (fmt '.')
 
@@ -16,7 +18,7 @@ refresh *inputs: gitprepare && standard
     nix flake update {{ inputs }}
 update *inputs: gitadd (refresh inputs)
 
-lock *args: gitadd && standard
+lock *args: gitprepare && standard
     nix flake lock {{ args }}
 
 [confirm]
@@ -36,11 +38,11 @@ clean: clean-artifact
 package pkg *args: gitprepare
     nom build {{ args }} '.#{{ pkg }}'
 
-test: (rebuild 'test') system
+test: check (rebuild 'test') system
 
-boot: gitadd (rebuild 'boot')
+boot: gitadd check (rebuild 'boot')
 
-switch: gitadd (rebuild 'switch') system
+switch: gitadd check (rebuild 'switch') system
 
 [private]
 rebuild op: build sudo
@@ -63,9 +65,6 @@ sudo:
     else
         sudo -v
     fi
-
-[private]
-standard: format check
 
 [private]
 gitadd:

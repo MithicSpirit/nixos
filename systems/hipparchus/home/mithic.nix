@@ -123,8 +123,13 @@
       pcmanfm
       dragon-drop
       xournalpp
-      libreoffice-fresh
       onlyoffice-desktopeditors
+
+      libreoffice-fresh
+      hunspell
+      hunspellDicts.en-us-large
+      hyphen
+      hyphenDicts.en-us
 
       ungoogled-chromium
       firefox

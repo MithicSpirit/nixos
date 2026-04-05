@@ -1,15 +1,15 @@
 {
-  lib,
+  # lib,
   config,
   root,
   ...
 }: {
-  home.sessionVariables."TERMINAL" = "ghostty";
-  xdg.terminal-exec.settings.default = ["com.mitchellh.ghostty.desktop"];
+  # home.sessionVariables."TERMINAL" = "ghostty";
+  # xdg.terminal-exec.settings.default = ["com.mitchellh.ghostty.desktop"];
 
   programs.ghostty = {
     enable = true;
-    systemd.enable = false; # manual
+    systemd.enable = true;
     clearDefaultKeybinds = true;
 
     settings = let
@@ -150,7 +150,10 @@
     };
   };
 
-  systemd.user.services."ghostty" = {
+  /*
+  systemd.user.services."ghostty" =
+  assert config.programs.ghostty.systemd.enable = false;
+  {
     Unit = {
       Description = "Ghostty Terminal Emulator";
       After = [
@@ -172,4 +175,5 @@
       WantedBy = ["graphical-session.target"];
     };
   };
+  */
 }

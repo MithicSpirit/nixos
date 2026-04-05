@@ -28,17 +28,17 @@ __EOF__
 		loginctl lock-session
 		sleep 3; systemctl hibernate
 		;;
-	*"Log Off") niri msg action quit --skip-confirmation ;;
+	*"Log Off")
+		systemctl --user exit
+		niri msg action quit --skip-confirmation
+		;;
 	*"Reboot")
 		systemctl reboot
-		sleep 15; killall -TERM -u mithic
-		sleep 15; killall -KILL -u mithic
+		niri msg action quit --skip-confirmation
 		;;
 	*"Power Off")
 		systemctl poweroff
-		sleep 15; killall -TERM -u mithic
-		sleep 15; killall -KILL -u mithic
+		niri msg action quit --skip-confirmation
 		;;
 	*) exit 1 ;;
 esac
-while :; do; done

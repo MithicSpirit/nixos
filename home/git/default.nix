@@ -67,8 +67,11 @@
         lab = "!glab";
       };
     };
-    signing.signByDefault = true;
-    signing.key = null;
+    signing = {
+      signByDefault = true;
+      format = "openpgp";
+      key = null;
+    };
 
     ignores = [
       "/compile_commands.json"

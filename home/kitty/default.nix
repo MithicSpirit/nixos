@@ -3,8 +3,8 @@
   root,
   ...
 }: {
-  # home.sessionVariables."TERMINAL" = "kitty";
-  # xdg.terminal-exec.settings.default = [ "kitty.desktop" ];
+  home.sessionVariables."TERMINAL" = "kitty";
+  xdg.terminal-exec.settings.default = ["kitty.desktop"];
 
   programs.kitty = {
     enable = true;

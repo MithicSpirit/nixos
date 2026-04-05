@@ -159,7 +159,7 @@ prefer-no-csd
 
 prevent-idle-inhibit
 
-screenshot-path "~/files/pictures/screenshots/%Y-%m-%d_%H-%M-%S.%N.png"
+screenshot-path "~/files/pictures/screenshots/%Y-%m-%d_%H-%M-%S.png"
 
 // TODO: (set with nix) xwayland-satellite "xwayland-satellite"
 
@@ -234,8 +234,6 @@ window-rule {
 }
 
 window-rule {
-    open-fullscreen true
-    open-floating false
     variable-refresh-rate true
     force-render true
     force-render-fps 15
