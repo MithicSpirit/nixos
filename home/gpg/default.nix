@@ -29,4 +29,10 @@
       allow-loopback-pinentry
     '';
   };
+
+  programs.ssh = {
+    matchBlocks."gpg-refresh" = {
+      match = "host * exec \"gpg-connect-agent --quiet updatestartuptty /bye\"";
+    };
+  };
 }

@@ -139,6 +139,7 @@
     config.common.default = ["gtk"];
   };
   services.gnome.gnome-keyring.enable = true; # TODO: use keepassxc (or bitwarden)
+  services.gnome.gcr-ssh-agent.enable = false;
 
   programs.dconf.enable = true;
   services.gvfs.enable = true;

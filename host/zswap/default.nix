@@ -20,7 +20,8 @@
       "zswap.compressor=lz4hc"
     ];
     initrd.kernelModules = [
-      "lz4hc" "lz4hc_compress"
+      "lz4hc"
+      "lz4hc_compress"
     ];
   };
 }

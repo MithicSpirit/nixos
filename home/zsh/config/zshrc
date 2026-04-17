@@ -105,5 +105,7 @@ command -v direnv &>/dev/null &&
 	eval "$(direnv hook zsh)"
 __escape_aliases  # See globalias
 export TTY GPG_TTY="$TTY"
+unset SSH_AGENT_PID
+export SSH_AUTH_SOCK="$(gpgconf --list-dirs agent-ssh-socket)"
 
 true  # prevent above error codes from affecting prompt
