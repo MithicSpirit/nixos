@@ -19,8 +19,8 @@
       "zswap.max_pool_percent=50"
       "zswap.compressor=lz4hc"
     ];
-    kernelModules = [
-      "lz4hc lz4hc_compress"
+    initrd.kernelModules = [
+      "lz4hc" "lz4hc_compress"
     ];
   };
 }
