@@ -40,25 +40,6 @@ final: prev: {
       }
   );
 
-  ghostty = prev.ghostty.overrideAttrs (
-    _finalAttrs: prevAttrs:
-      assert (prevAttrs.version == "1.3.1"); {
-        patches =
-          (prevAttrs.patches or [])
-          ++ [
-            # HACK: https://github.com/ghostty-org/ghostty/pull/10004
-            ./ghostty-dedupe-wheel-events.diff
-            # (final.fetchpatch2 {
-            #   name = "disinflate-wheel-events+pr=10004.patch";
-            #   url = "https://github.com/ghostty-org/ghostty/pull/10004/commits/0883553ac0a9877d19183d2659b455eb82a3c390.patch?full_index=1";
-            #   hash = "sha256-ks8xBjQmagB+w7CYMWLgJ+TTS1tH1uQ11SqvN9OQrok=";
-            # })
-            ./ghostty-fix-braille.diff
-          ];
-        doCheck = false;
-      }
-  );
-
   grimblast = prev.grimblast.overrideAttrs (
     _finalAttrs: prevAttrs:
       assert (prevAttrs.version == "0.1-unstable-2026-02-19"); {
@@ -102,6 +83,38 @@ final: prev: {
           (prevAttrs.patches or [])
           ++ [
             ./waybar-niri-workspaces-hides.diff
+            ./waybar-niri-workspaces-format-named.diff
+          ];
+      }
+  );
+
+  texlab = prev.texlab.overrideAttrs (
+    _finalAttrs: prevAttrs:
+      assert (prevAttrs.version == "5.25.1"); {
+        patches =
+          (prevAttrs.patches or [])
+          ++ [
+            (final.fetchpatch2 {
+              name = "bibitem-fix.patch";
+              url = "https://github.com/latex-lsp/texlab/commit/74461ae08fbaef54f0254ddfa40505ff6e2ee0a8.patch?full_index=1";
+              hash = "sha256-7f4RtwcokwO769mqzBuigmXUXJZCIkSdiJY3LOYyXss=";
+            })
+          ];
+        doCheck = false;
+      }
+  );
+
+  xwayland-satellite = prev.xwayland-satellite.overrideAttrs (
+    _finalAttrs: prevAttrs:
+      assert (prevAttrs.version == "0.8.1"); {
+        patches =
+          (prevAttrs.patches or [])
+          ++ [
+            (final.fetchpatch2 {
+              name = "popup-false-positive-fix.patch";
+              url = "https://github.com/Supreeeme/xwayland-satellite/commit/8da6c538a5161ad9146d16a325589f8d65774dbd.patch?full_index=1";
+              hash = "sha256-l4KwncGQtGnzW0nMgJUY03EEU75kT3ZH6Z/eM7WlT5E=";
+            })
           ];
       }
   );

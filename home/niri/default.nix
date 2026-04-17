@@ -189,7 +189,8 @@ in {
         ];
 
         "niri/workspaces" = {
-          format = "{name}";
+          format-named = "{name}";
+          format = "#{index}";
           sort-by = "id";
           hide-empty = true;
         };

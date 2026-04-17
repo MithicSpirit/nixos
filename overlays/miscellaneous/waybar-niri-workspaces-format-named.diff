@@ -1,0 +1,53 @@
+diff --git a/man/waybar-niri-workspaces.5.scd b/man/waybar-niri-workspaces.5.scd
+index 4be85eb3..908cab55 100644
+--- a/man/waybar-niri-workspaces.5.scd
++++ b/man/waybar-niri-workspaces.5.scd
+@@ -19,12 +19,16 @@ Addressed by *niri/workspaces*
+ 
+ *format*: ++
+ 	typeof: string ++
+ 	default: {value} ++
+ 	The format, how information should be displayed.
+ 
++*format-named*: ++
++	typeof: string ++
++	If set, overrides *format* for named workspaces.
++
+ *format-icons*: ++
+ 	typeof: array ++
+ 	Based on the workspace name, index and state, the corresponding icon gets selected. See *icons*.
+ 
+ *disable-click*: ++
+ 	typeof: bool ++
+diff --git a/src/modules/niri/workspaces.cpp b/src/modules/niri/workspaces.cpp
+index 97d15215..cce77d96 100644
+--- a/src/modules/niri/workspaces.cpp
++++ b/src/modules/niri/workspaces.cpp
+@@ -92,19 +92,26 @@ void Workspaces::doUpdate() {
+       name = ws["name"].asString();
+     } else {
+       name = std::to_string(ws["idx"].asUInt());
+     }
+     button.set_name("niri-workspace-" + name);
+ 
+-    if (config_["format"].isString()) {
++    if (ws["name"] && config_["format-named"].isString()) {
++      auto format = config_["format-named"].asString();
++      name = fmt::format(fmt::runtime(format), fmt::arg("icon", getIcon(name, ws)),
++                         fmt::arg("value", name), fmt::arg("name", ws["name"].asString()),
++                         fmt::arg("index", ws["idx"].asUInt()),
++                         fmt::arg("output", ws["output"].asString()));
++    } else if (config_["format"].isString()) {
+       auto format = config_["format"].asString();
+       name = fmt::format(fmt::runtime(format), fmt::arg("icon", getIcon(name, ws)),
+                          fmt::arg("value", name), fmt::arg("name", ws["name"].asString()),
+                          fmt::arg("index", ws["idx"].asUInt()),
+                          fmt::arg("output", ws["output"].asString()));
+     }
++
+     if (!config_["disable-markup"].asBool()) {
+       static_cast<Gtk::Label*>(button.get_children()[0])->set_markup(name);
+     } else {
+       button.set_label(name);
+     }
+ 

@@ -7,6 +7,7 @@
   imports = [
     ./rust.nix
     ./python.nix
+    ./idris.nix
     ./tex
   ];
 
@@ -28,10 +29,6 @@
     ghc
     stack
 
-    # idris2
-    idris2
-    idris2Packages.pack
-
     # tooling
     gnumake
     just
@@ -41,7 +38,6 @@
     hexyl
     scc
     tokei # TODO: decide between scc and tokei
-    rlwrap # idris2 repl improvement
   ];
 
   home.sessionVariables = {

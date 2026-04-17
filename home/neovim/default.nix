@@ -19,5 +19,8 @@ in {
         require 'mithic'
       '';
     extraPackages = me.propagatedBuildInputs;
+
+    withPython3 = true;
+    withRuby = true;
   };
 }
