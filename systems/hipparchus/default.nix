@@ -174,7 +174,6 @@
       (lib.lowPrio plan9port)
       comma
       nvd
-      nh
       nix-tree
       which
       dash
@@ -300,6 +299,10 @@
 
   services.upower.enable = true;
   services.dbus.implementation = "broker";
+
+  security.pam.services."hyprlock" = {
+    fprintAuth = false;
+  };
 
   programs.gamemode.settings.gpu.gpu_device = 1;
 

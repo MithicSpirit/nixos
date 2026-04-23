@@ -101,7 +101,7 @@ in {
     extraArgs = [
       "-w"
       "idlehint"
-      "${toString (lock-time - alert-time)}"
+      "${toString (lock-time + 5)}"
     ];
     timeouts = [
       {
