@@ -1,19 +1,4 @@
 final: prev: {
-  vimPlugins =
-    prev.vimPlugins
-    // {
-      nvim-lspconfig = final.vimUtils.buildVimPlugin {
-        inherit (prev.vimPlugins.nvim-lspconfig) pname meta;
-        version = "2025-09-14";
-        src = final.fetchFromGitHub {
-          owner = "neovim";
-          repo = "nvim-lspconfig";
-          rev = "78174f395e705de97d1329c18394831737d9a4b4";
-          hash = "sha256-GpA7tCY/Fqd50sGa7SP7+LVCSHg4NmJVsSoKrdkFVeY=";
-        };
-      };
-    };
-
   tzupdate = assert prev.tzupdate.version == "3.1.0";
     final.rustPlatform.buildRustPackage {
       inherit (prev.tzupdate) pname meta;
@@ -43,11 +28,7 @@ final: prev: {
   grimblast = prev.grimblast.overrideAttrs (
     _finalAttrs: prevAttrs:
       assert (prevAttrs.version == "0.1-unstable-2026-02-19"); {
-        patches =
-          (prevAttrs.patches or [])
-          ++ [
-            ./grimblast-fix-lock.diff
-          ];
+        patches = (prevAttrs.patches or []) ++ [./grimblast-fix-lock.diff];
       }
   );
 
@@ -61,15 +42,11 @@ final: prev: {
 
   niri = prev.niri.overrideAttrs (
     _finalAttrs: prevAttrs:
-      assert (prevAttrs.version == "25.11"); {
+      assert (prevAttrs.version == "26.04"); {
         patches =
           (prevAttrs.patches or [])
           ++ [
-            (final.fetchpatch2 {
-              name = "force-render+pr=2609.patch";
-              url = "https://github.com/niri-wm/niri/compare/2a9d0e495a011a124b37532dfcfb3c780fd2eb89..e32bf5ebc81137b9f5e8fffda21c0e027a0e9ab6.patch?full_index=1";
-              hash = "sha256-2xzosED7ZXnEJi3O/AQStrnVnra/OVvy9bMPSQCSbqc=";
-            })
+            ./${"niri-force-render+pr=2609.diff"}
             ./niri-prevent-idle-inhibit.diff
             ./niri-layer-priority.diff
           ];
@@ -111,9 +88,9 @@ final: prev: {
           (prevAttrs.patches or [])
           ++ [
             (final.fetchpatch2 {
-              name = "popup-false-positive-fix.patch";
-              url = "https://github.com/Supreeeme/xwayland-satellite/commit/8da6c538a5161ad9146d16a325589f8d65774dbd.patch?full_index=1";
-              hash = "sha256-l4KwncGQtGnzW0nMgJUY03EEU75kT3ZH6Z/eM7WlT5E=";
+              name = "popup-fix+pr=424.patch";
+              url = "https://github.com/Supreeeme/xwayland-satellite/compare/a879e5e0896a326adc79c474bf457b8b99011027..cae1b1157931a978315f0b1815005def8132d6d1.patch?full_index=1";
+              hash = "sha256-meBh85SWI1RvhI1K96rtIaL3XxOoiAFAmjOfapQ+Gqc=";
             })
           ];
       }

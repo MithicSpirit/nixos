@@ -16,7 +16,7 @@
     kernelParams = [
       "zswap.enabled=1"
       "zswap.shrinker_enabled=1"
-      "zswap.max_pool_percent=50"
+      "zswap.max_pool_percent=100"
       "zswap.compressor=lz4hc"
     ];
     initrd.kernelModules = [

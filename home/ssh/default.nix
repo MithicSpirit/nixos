@@ -11,12 +11,6 @@
       "github.com" = {
         user = "git";
       };
-
-      "terminal.shop" = {
-        extraOptions = {
-          PreferredAuthentications = "keyboard-interactive";
-        };
-      };
     };
   };
 }

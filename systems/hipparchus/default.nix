@@ -16,7 +16,7 @@
         "flakes"
       ];
       use-xdg-base-directories = true;
-      cores = builtins.ceil (16 * 0.75);
+      cores = builtins.ceil (16 * 0.5);
     };
 
     daemonCPUSchedPolicy = "idle";

@@ -1,8 +1,8 @@
 diff --git a/niri-config/src/lib.rs b/niri-config/src/lib.rs
-index b61fe1c1..44ca161c 100644
+index 329b7669..d653398a 100644
 --- a/niri-config/src/lib.rs
 +++ b/niri-config/src/lib.rs
-@@ -69,12 +69,13 @@ pub struct Config {
+@@ -71,12 +71,13 @@ pub struct Config {
      pub input: Input,
      pub outputs: Outputs,
      pub spawn_at_startup: Vec<SpawnAtStartup>,
@@ -16,7 +16,7 @@ index b61fe1c1..44ca161c 100644
      pub hotkey_overlay: HotkeyOverlay,
      pub config_notification: ConfigNotification,
      pub animations: Animations,
-@@ -231,12 +232,16 @@ where
+@@ -235,12 +236,16 @@ where
                  }
  
                  "prefer-no-csd" => {
@@ -33,7 +33,7 @@ index b61fe1c1..44ca161c 100644
                  }
  
                  "layout" => {
-@@ -801,12 +806,13 @@ mod tests {
+@@ -820,12 +825,13 @@ mod tests {
              }
  
              spawn-at-startup "alacritty" "-e" "fish"
@@ -47,22 +47,7 @@ index b61fe1c1..44ca161c 100644
                  xcursor-size 16
                  hide-when-typing
                  hide-after-inactive-ms 3000
-@@ -834,13 +840,13 @@ mod tests {
-                     curve "ease-out-expo"
-                 }
- 
-                 window-open { off; }
- 
-                 window-close {
--                    curve "cubic-bezier" 0.05 0.7 0.1 1  
-+                    curve "cubic-bezier" 0.05 0.7 0.1 1
-                 }
- 
-                 recent-windows-close {
-                     off
-                 }
-             }
-@@ -1450,12 +1456,13 @@ mod tests {
+@@ -1470,12 +1476,13 @@ mod tests {
                      g: 0.25,
                      b: 0.25,
                      a: 1.0,
@@ -77,24 +62,24 @@ index b61fe1c1..44ca161c 100644
                  hide_after_inactive_ms: Some(
                      3000,
 diff --git a/src/niri.rs b/src/niri.rs
-index d84c390a..fa5fb3a9 100644
+index ec40e01c..cc79c31f 100644
 --- a/src/niri.rs
 +++ b/src/niri.rs
-@@ -3905,12 +3905,17 @@ impl Niri {
-         };
- 
+@@ -3990,12 +3990,17 @@ impl Niri {
          self.layout.refresh(layout_is_active);
      }
  
      pub fn refresh_idle_inhibit(&mut self) {
+         let _span = tracy_client::span!("Niri::refresh_idle_inhibit");
+ 
 +        if self.config.borrow().prevent_idle_inhibit {
 +            self.idle_notifier_state.set_is_inhibited(false);
 +            return;
 +        }
 +
-         let _span = tracy_client::span!("Niri::refresh_idle_inhibit");
- 
          self.idle_inhibiting_surfaces.retain(|s| s.is_alive());
  
          let is_inhibited = self.is_fdo_idle_inhibited.load(Ordering::SeqCst)
              || self.idle_inhibiting_surfaces.iter().any(|surface| {
+                 with_states(surface, |states| {
+                     surface_primary_scanout_output(surface, states).is_some()
