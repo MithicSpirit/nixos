@@ -24,8 +24,9 @@ input {
     }
     touch { off; }
 
-    focus-follows-mouse max-scroll-amount="50%"
+    focus-follows-mouse max-scroll-amount="0%"
     warp-mouse-to-focus
+    only-focus-on-click
 }
 
 // TODO: configure output globally when nix

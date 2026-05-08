@@ -1,0 +1,196 @@
+diff --git a/niri-config/src/input.rs b/niri-config/src/input.rs
+index 5a2eb136..346c591c 100644
+--- a/niri-config/src/input.rs
++++ b/niri-config/src/input.rs
+@@ -17,12 +17,13 @@ pub struct Input {
+     pub trackball: Trackball,
+     pub tablet: Tablet,
+     pub touch: Touch,
+     pub disable_power_key_handling: bool,
+     pub warp_mouse_to_focus: Option<WarpMouseToFocus>,
+     pub focus_follows_mouse: Option<FocusFollowsMouse>,
++    pub only_focus_on_click: bool,
+     pub workspace_auto_back_and_forth: bool,
+     pub mod_key: Option<ModKey>,
+     pub mod_key_nested: Option<ModKey>,
+ }
+ 
+ #[derive(knuffel::Decode, Debug, Default, PartialEq)]
+@@ -45,12 +46,14 @@ pub struct InputPart {
+     pub disable_power_key_handling: Option<Flag>,
+     #[knuffel(child)]
+     pub warp_mouse_to_focus: Option<WarpMouseToFocus>,
+     #[knuffel(child)]
+     pub focus_follows_mouse: Option<FocusFollowsMouse>,
+     #[knuffel(child)]
++    pub only_focus_on_click: Option<Flag>,
++    #[knuffel(child)]
+     pub workspace_auto_back_and_forth: Option<Flag>,
+     #[knuffel(child, unwrap(argument, str))]
+     pub mod_key: Option<ModKey>,
+     #[knuffel(child, unwrap(argument, str))]
+     pub mod_key_nested: Option<ModKey>,
+ }
+@@ -58,12 +61,13 @@ pub struct InputPart {
+ impl MergeWith<InputPart> for Input {
+     fn merge_with(&mut self, part: &InputPart) {
+         merge!(
+             (self, part),
+             keyboard,
+             disable_power_key_handling,
++            only_focus_on_click,
+             workspace_auto_back_and_forth,
+         );
+ 
+         merge_clone!(
+             (self, part),
+             touchpad,
+diff --git a/niri-config/src/lib.rs b/niri-config/src/lib.rs
+index 909aeb80..349e93a3 100644
+--- a/niri-config/src/lib.rs
++++ b/niri-config/src/lib.rs
+@@ -730,12 +730,13 @@ mod tests {
+                 }
+ 
+                 disable-power-key-handling
+ 
+                 warp-mouse-to-focus
+                 focus-follows-mouse
++                only-focus-on-click
+                 workspace-auto-back-and-forth
+ 
+                 mod-key "Mod5"
+                 mod-key-nested "Super"
+             }
+ 
+@@ -854,13 +855,13 @@ mod tests {
+                     curve "ease-out-expo"
+                 }
+ 
+                 window-open { off; }
+ 
+                 window-close {
+-                    curve "cubic-bezier" 0.05 0.7 0.1 1  
++                    curve "cubic-bezier" 0.05 0.7 0.1 1
+                 }
+ 
+                 recent-windows-close {
+                     off
+                 }
+             }
+@@ -1132,12 +1133,13 @@ mod tests {
+                 ),
+                 focus_follows_mouse: Some(
+                     FocusFollowsMouse {
+                         max_scroll_amount: None,
+                     },
+                 ),
++                only_focus_on_click: true,
+                 workspace_auto_back_and_forth: true,
+                 mod_key: Some(
+                     IsoLevel3Shift,
+                 ),
+                 mod_key_nested: Some(
+                     Super,
+diff --git a/src/input/mod.rs b/src/input/mod.rs
+index 3e673bdb..8f9af638 100644
+--- a/src/input/mod.rs
++++ b/src/input/mod.rs
+@@ -2990,14 +2990,17 @@ impl State {
+                                 .cursor_manager
+                                 .set_cursor_image(CursorImageStatus::Named(edges.cursor_icon()));
+                         }
+                     }
+                 }
+ 
+-                if !is_overview_open {
+-                    self.niri.layout.activate_window(&window);
++                if !is_overview_open && self.niri.layout.activate_window(&window) {
++                    let config = self.niri.config.borrow();
++                    if config.input.only_focus_on_click {
++                        return;
++                    }
+                 }
+ 
+                 // FIXME: granular.
+                 self.niri.queue_redraw_all();
+             } else if let Some((output, ws)) = is_overview_open
+                 .then(|| self.niri.workspace_under_cursor(false))
+diff --git a/src/layout/mod.rs b/src/layout/mod.rs
+index 5c4dd639..4b64f045 100644
+--- a/src/layout/mod.rs
++++ b/src/layout/mod.rs
+@@ -1508,46 +1508,48 @@ impl<W: LayoutElement> Layout<W> {
+             return true;
+         }
+ 
+         ws_idx == mon.active_workspace_idx
+     }
+ 
+-    pub fn activate_window(&mut self, window: &W::Id) {
++    pub fn activate_window(&mut self, window: &W::Id) -> bool {
+         if let Some(InteractiveMoveState::Moving(move_)) = &self.interactive_move {
+             if move_.tile.window().id() == window {
+-                return;
++                return false;
+             }
+         }
+ 
+         let MonitorSet::Normal {
+             monitors,
+             active_monitor_idx,
+             ..
+         } = &mut self.monitor_set
+         else {
+-            return;
++            return false;
+         };
+ 
+         for (monitor_idx, mon) in monitors.iter_mut().enumerate() {
+             for (workspace_idx, ws) in mon.workspaces.iter_mut().enumerate() {
++                let ret = !ws.active_window().is_some_and(|w| w.id() == window);
+                 if ws.activate_window(window) {
+                     *active_monitor_idx = monitor_idx;
+ 
+                     // If currently in the middle of a vertical swipe between the target workspace
+                     // and some other, don't switch the workspace.
+                     match &mon.workspace_switch {
+                         Some(WorkspaceSwitch::Gesture(gesture))
+                             if gesture.current_idx.floor() == workspace_idx as f64
+                                 || gesture.current_idx.ceil() == workspace_idx as f64 => {}
+                         _ => mon.switch_workspace(workspace_idx),
+                     }
+ 
+-                    return;
++                    return ret;
+                 }
+             }
+         }
++        false
+     }
+ 
+     pub fn activate_window_without_raising(&mut self, window: &W::Id) {
+         if let Some(InteractiveMoveState::Moving(move_)) = &self.interactive_move {
+             if move_.tile.window().id() == window {
+                 return;
+diff --git a/src/layout/tests.rs b/src/layout/tests.rs
+index 31265dd9..dd95e908 100644
+--- a/src/layout/tests.rs
++++ b/src/layout/tests.rs
+@@ -1126,13 +1126,15 @@ impl Op {
+             Op::FocusWindowDownOrColumnLeft => layout.focus_down_or_left(),
+             Op::FocusWindowDownOrColumnRight => layout.focus_down_or_right(),
+             Op::FocusWindowUpOrColumnLeft => layout.focus_up_or_left(),
+             Op::FocusWindowUpOrColumnRight => layout.focus_up_or_right(),
+             Op::FocusWindowOrWorkspaceDown => layout.focus_window_or_workspace_down(),
+             Op::FocusWindowOrWorkspaceUp => layout.focus_window_or_workspace_up(),
+-            Op::FocusWindow(id) => layout.activate_window(&id),
++            Op::FocusWindow(id) => {
++                layout.activate_window(&id);
++            }
+             Op::FocusWindowInColumn(index) => layout.focus_window_in_column(index),
+             Op::FocusWindowTop => layout.focus_window_top(),
+             Op::FocusWindowBottom => layout.focus_window_bottom(),
+             Op::FocusWindowDownOrTop => layout.focus_window_down_or_top(),
+             Op::FocusWindowUpOrBottom => layout.focus_window_up_or_bottom(),
+             Op::MoveColumnLeft => layout.move_left(),

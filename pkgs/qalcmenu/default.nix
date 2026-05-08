@@ -11,13 +11,13 @@
 }:
 stdenvNoCC.mkDerivation rec {
   pname = "qalcmenu";
-  version = "2023.11.27";
+  version = "v1.4.2";
 
   src = fetchFromGitHub {
     owner = "MithicSpirit";
     repo = pname;
-    rev = "8cef8a6348a9e88e3ff32529a5a4be3979729f2d";
-    sha256 = "sha256-14/wB7x6VBVr6I4WxcwCBICCaIwL7FfNQBTUS490sqI=";
+    rev = "8d778983d7938941b52327fa230c67e1b50e19fd";
+    sha256 = "sha256-77mhGKUHMtf/1rO/ibBezyG+XR0wxRXJ733tF3bD5uk=";
   };
 
   nativeBuildInputs = [
