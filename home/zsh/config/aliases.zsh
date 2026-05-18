@@ -88,6 +88,8 @@ alias \
 	gpd='git diff @{u}..HEAD' \
 	gpf='git push --force-with-lease' \
 	gr='git remote -v' \
+	grb='git rebase -i' \
+	grbc='git rebase --continue' \
 	grm='git restore --staged' \
 	gst='git stash push -u' \
 	gsta='git stash apply --index' \

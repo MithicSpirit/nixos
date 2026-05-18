@@ -47,7 +47,7 @@ int main(int argc, char **argv) {
 	char *target;
 	if (battery > 70)
 		target = "performance";
-	else if (battery > 30)
+	else if (battery > 50)
 		target = "balanced";
 	else
 		target = "power-saver";
