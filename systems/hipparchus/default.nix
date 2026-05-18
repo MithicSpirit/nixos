@@ -42,7 +42,7 @@
       /gaming
       /keyd
       /bluetooth
-      /tlp # or ppd
+      /tuned # or tlp, ppd
       # /sway (niri)
       /amdgpu
       # /fw-fanctrl
