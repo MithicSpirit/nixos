@@ -9,7 +9,7 @@
   wallpaper = import (root + /common/wallpaper);
   colors = import (root + /common/colorscheme.nix);
 in {
-  xdg.configFile."niri/config.kdl".source = ./config.kdl;
+  xdg.configFile."niri/config.kdl".text = builtins.readFile ./config.kdl; # readfile makes the X-ReloadTriggers below work correctly
 
   home.file."niri-power-menu.sh".source = ./power-menu.sh;
 

@@ -7,18 +7,19 @@
 #include <unistd.h>
 
 const char *const ppc = "powerprofilesctl";
+const int arg_bat = 1;
+const int arg_current = 2;
 
 int main(int argc, char **argv) {
-	char *bat;
-	if (argc > 1) {
-		bat = argv[1];
-	} else {
+	if (!(argc > arg_bat)) {
 		fprintf(stderr, "no battery specified\n");
+		return 4;
 	}
+	char *bat = argv[arg_bat];
 
 	char *current = NULL;
-	if (argc > 2) {
-		current = argv[2];
+	if (argc > arg_current) {
+		current = argv[arg_current];
 		fprintf(stderr, "current profile %s\n", current);
 	}
 
@@ -44,13 +45,7 @@ int main(int argc, char **argv) {
 		return 3;
 	}
 
-	char *target;
-	if (battery > 70)
-		target = "performance";
-	else if (battery > 50)
-		target = "balanced";
-	else
-		target = "power-saver";
+	char *target = battery > 50 ? "balanced" : "power-saver";
 
 	if (current != NULL && strcmp(current, target) == 0) {
 		fprintf(stderr, "profile already set to %s\n", target);

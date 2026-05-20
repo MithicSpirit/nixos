@@ -5,6 +5,7 @@
     systems.url = "github:nix-systems/default-linux"; # don't support macos
 
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    nixpkgs-edge.url = "github:NixOS/nixpkgs/d233902339c02a9c334e7e593de68855ad26c4cb";
 
     hardware.url = "github:NixOS/nixos-hardware";
 

@@ -151,12 +151,14 @@ in {
     restartTriggers = [conf];
   };
 
-  environment.etc."systemd/system-sleep/fw-fanctrl-suspend".source = pkgs.writeShellScript "fw-fanctrl-suspend" ''
-    case "$1" in
-      pre) '${fw-fanctrl}' pause ;;
-      post) '${fw-fanctrl}' resume ;;
-    esac
-  '';
+  environment.etc."systemd/system-sleep/fw-fanctrl-suspend".source =
+    pkgs.writeShellScript "fw-fanctrl-suspend"
+    ''
+      case "$1" in
+        pre) '${fw-fanctrl}' pause ;;
+        post) '${fw-fanctrl}' resume ;;
+      esac
+    '';
 
   programs.gamemode.settings.custom = {
     start = ["'${fw-fanctrl}' use agile"];

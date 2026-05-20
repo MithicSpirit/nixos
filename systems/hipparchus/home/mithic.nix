@@ -109,6 +109,7 @@
       fd
       fselect
       mediainfo
+      qpdf
       nix-output-monitor
       procs
       ripgrep

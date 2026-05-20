@@ -31,7 +31,7 @@
       ./hardware-configuration.nix
       ./disko.nix
     ]
-    ++ builtins.map (path: root + /host + path) [
+    ++ map (path: root + /host + path) [
       /secure-boot
       /man
       /sshd
@@ -48,13 +48,10 @@
       # /fw-fanctrl
       /zswap # or zram
       /timezone
+      /printing
     ];
 
-  nixpkgs.overlays =
-    overlays
-    ++ [
-      (final: _prev: {nix = final.nixVersions.latest;})
-    ];
+  nixpkgs.overlays = overlays ++ [(final: _prev: {nix = final.nixVersions.latest;})];
 
   nixpkgs.config = {
     allowUnfree = false; # TODO: make global?
@@ -74,7 +71,18 @@
     theme = "breeze";
   };
 
-  boot.kernelPackages = pkgs.linuxPackages_latest;
+  boot.kernelPackages = assert (pkgs.linuxPackages_latest.kernel.version == "7.0.3");
+    inputs.nixpkgs-edge.legacyPackages.${config.nixpkgs.hostPlatform.system}.linuxPackages_latest;
+  boot.kernelPatches = assert (config.boot.kernelPackages.kernel.version == "7.0.8"); [
+    rec {
+      name = "bluetooth-accept-short-events";
+      patch = pkgs.fetchpatch {
+        name = name + ".patch";
+        url = "https://git.kernel.org/pub/scm/linux/kernel/git/bluetooth/bluetooth.git/patch/?id=e3ac0d9f1a205f33a43fba3b79ef74d2f604c78b";
+        hash = "sha256-DE6im1PmLWFYRk2QtfCWXfBzBCMT4fyUgufDhUn0wL8=";
+      };
+    }
+  ];
   boot.kernel.sysctl = {
     "kernel.sysrq" = 244;
     "net.ipv4.tcp_keepalive_time" = 120;
@@ -147,11 +155,6 @@
   programs.kdeconnect = {
     enable = true; # open firewall
     package = pkgs.kdePackages.kdeconnect-kde;
-  };
-
-  services.printing = {
-    enable = true;
-    drivers = with pkgs; [hplip];
   };
 
   services.locate = {

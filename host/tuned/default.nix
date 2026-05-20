@@ -52,7 +52,10 @@ in {
         bat="''${bat[0]}"
         while :; do
           current="$(powerprofilesctl get)"
-          [[ "$current" != "unknown" ]] && set-ppd "$bat" "$current"
+          case "$current" in
+            'unknown'|'performance') ;;  # skip
+            *) set-ppd "$bat" "$current" ;;
+          esac
           inotifywait -e modify -t 20 "$bat"
         done
       '';
