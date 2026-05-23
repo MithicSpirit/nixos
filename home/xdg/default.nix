@@ -22,13 +22,14 @@ in {
       createDirectories = true;
       templates = "${xdg.dataHome}/templates";
 
+      desktop = "${files}/desktop";
       documents = "${files}/documents";
       download = "${files}/downloads";
-      pictures = "${files}/pictures";
-      videos = "${files}/videos";
       music = "${files}/music";
-      desktop = "${files}/desktop";
+      pictures = "${files}/pictures";
+      projects = "${files}/projects";
       publicShare = "${files}/public";
+      videos = "${files}/videos";
     };
 
     mime.enable = true;

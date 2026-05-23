@@ -30,9 +30,7 @@
     '';
   };
 
-  programs.ssh = {
-    matchBlocks."gpg-refresh" = {
-      match = "host * exec \"gpg-connect-agent --quiet updatestartuptty /bye\"";
-    };
+  programs.ssh.settings."gpg-refresh" = {
+    header = "Match host * exec \"gpg-connect-agent --quiet updatestartuptty /bye\"";
   };
 }

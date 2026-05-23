@@ -52,8 +52,8 @@
 
 ; Misc
 (vim.api.nvim_create_autocmd :FileType
-  {:pattern :gitcommit
-   :command "setlocal tabstop=8"
+  {:pattern [:gitcommit]
+   :command "setlocal tabstop=8 comments+=:#"
    :group augroup})
 
 (vim.api.nvim_create_autocmd :FileType
@@ -84,11 +84,6 @@
 (vim.api.nvim_create_autocmd :FileType
   {:pattern [:mail]
    :command "setlocal textwidth=70"
-   :group augroup})
-
-(vim.api.nvim_create_autocmd :FileType
-  {:pattern [:gitcommit]
-   :command "setlocal comments+=:#"
    :group augroup})
 
 

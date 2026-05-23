@@ -71,13 +71,12 @@
     theme = "breeze";
   };
 
-  boot.kernelPackages = assert (pkgs.linuxPackages_latest.kernel.version == "7.0.3");
-    inputs.nixpkgs-edge.legacyPackages.${config.nixpkgs.hostPlatform.system}.linuxPackages_latest;
-  boot.kernelPatches = assert (config.boot.kernelPackages.kernel.version == "7.0.8"); [
-    rec {
-      name = "bluetooth-accept-short-events";
+  boot.kernelPackages = pkgs.linuxPackages_latest;
+  boot.kernelPatches = assert (config.boot.kernelPackages.kernel.version == "7.0.9"); [
+    {
+      name = "Bluetooth: btmtk: accept too short WMT FUNC_CTRL events";
       patch = pkgs.fetchpatch {
-        name = name + ".patch";
+        name = "bluetooth-btmtk-accept-too-short-wmt-func_ctrl-events.patch";
         url = "https://git.kernel.org/pub/scm/linux/kernel/git/bluetooth/bluetooth.git/patch/?id=e3ac0d9f1a205f33a43fba3b79ef74d2f604c78b";
         hash = "sha256-DE6im1PmLWFYRk2QtfCWXfBzBCMT4fyUgufDhUn0wL8=";
       };

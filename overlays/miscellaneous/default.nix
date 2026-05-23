@@ -96,4 +96,6 @@ final: prev: {
           ];
       }
   );
+
+  termite = assert (prev ? termite); final.kitty; # broken, removed upstream #522784
 }

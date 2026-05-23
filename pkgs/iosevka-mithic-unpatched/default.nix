@@ -9,16 +9,16 @@
 buildNpmPackage (finalAttrs: {
   pname = "iosevka-mithic";
 
-  version = "34.3.0";
+  version = "34.6.0";
 
   src = fetchFromGitHub {
     owner = "be5invis";
     repo = "iosevka";
     tag = "v${finalAttrs.version}";
-    hash = "sha256-Se+GIx+Uea/lMOdTDhbt/H+F0yeyMHclpSp52U+pmtA=";
+    hash = "sha256-fkTXZtuIMm6N4KeBjjs2DM5V/1hbJ2GGLraNzO8mhQE=";
   };
 
-  npmDepsHash = "sha256-LSfVuNP2Ck0PUbrjHsCXmoiZfT3x/Mk+CpC9cAj96bE=";
+  npmDepsHash = "sha256-+YolL7ZtmisgQ5ZI5X8YGvPAYU9iEseRLDTOz8QIkvk=";
 
   nativeBuildInputs =
     [
@@ -30,7 +30,7 @@ buildNpmPackage (finalAttrs: {
 
   configurePhase = ''
     runHook preConfigure
-    cp "${./build-plans.toml}" "./private-build-plans.toml" #" #
+    cp '${./build-plans.toml}' './private-build-plans.toml'
     runHook postConfigure
   '';
 

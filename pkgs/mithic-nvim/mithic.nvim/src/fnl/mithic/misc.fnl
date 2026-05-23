@@ -45,15 +45,23 @@
 
 
 ;; Whitespace cleanup
-(vim.api.nvim_create_autocmd :BufWritePre
-  {:callback
-   #(when (not (and (~= vim.b.editorconfig nil)
-                    (~= vim.b.editorconfig.trim_trailing_whitespace nil)))
-      (let [v (vim.fn.winsaveview)]
-        (vim.cmd "silent keepjumps keeppatterns %substitute/[ \\t\\n]\\+\\%$\\|\\s\\+$//e")
-        (vim.fn.winrestview v)
-        nil))
-   :group (vim.api.nvim_create_augroup :mithic-whitespace {})})
+(let [augroup (vim.api.nvim_create_augroup :mithic-whitespace {})]
+  (vim.api.nvim_create_autocmd :BufWritePre
+      {:callback
+       #(when (or vim.b.trim_trailing_whitespace
+                  (and (= vim.b.trim_trailing_whitespace nil)
+                       (= (?. vim.b.editorconfig :trim_trailing_whitespace) nil)))
+          (let [v (vim.fn.winsaveview)]
+            (vim.cmd "silent keepjumps keeppatterns %substitute/[ \\t\\n]\\+\\%$\\|\\s\\+$//e")
+            (vim.fn.winrestview v)
+            nil))
+       :group augroup})
+
+  (vim.api.nvim_create_autocmd :FileType
+    {:pattern [:diff :gitcommit]
+     :callback #(when (= vim.b.trim_trailing_whitespace nil)
+                  (set vim.b.trim_trailing_whitespace false))
+     :group augroup}))
 
 
 ;; Jump to last position
