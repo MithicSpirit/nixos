@@ -56,7 +56,7 @@ in {
             'unknown'|'performance') ;;  # skip
             *) set-ppd "$bat" "$current" ;;
           esac
-          inotifywait -e modify -t 20 "$bat"
+          inotifywait -qe modify -t 20 "$bat" || :
         done
       '';
     in "${auto-ppd}";

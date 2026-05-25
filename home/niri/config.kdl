@@ -42,9 +42,9 @@ layout {
     struts { // logical, so assume 1920x1080
         top 0
         bottom 0
-        // ~2.5%
-        left 50
-        right 50
+        // ~3%
+        left 60
+        right 60
     }
 
     focus-ring { off; }

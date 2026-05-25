@@ -3,6 +3,7 @@
     # utils
     bitwarden-desktop
     gimp3
+    graphite
     inkscape
     gnome-characters
     vlc

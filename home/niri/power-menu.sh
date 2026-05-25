@@ -3,15 +3,16 @@ set -euo pipefail
 
 trap '' INT HUP TERM QUIT CONT TSTP
 
-case "$(bemenu -p 'Power' -cl 8 -W 0.2 <<__EOF__
+case "$(bemenu -p 'Power' -cl 9 -W 0.2 <<__EOF__
 1. Lock
 2. Screen Off
 3. Reload
 4. Log Off
 5. Suspend
 6. Hibernate
-7. Reboot
-8. Power Off
+7. Soft reboot
+8. Reboot
+9. Power Off
 __EOF__
 )" in
 	*"Lock") loginctl lock-session ;;
@@ -30,6 +31,10 @@ __EOF__
 		;;
 	*"Log Off")
 		systemctl --user exit
+		niri msg action quit --skip-confirmation
+		;;
+	*"Soft reboot")
+		systemctl soft-reboot
 		niri msg action quit --skip-confirmation
 		;;
 	*"Reboot")

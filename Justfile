@@ -27,7 +27,7 @@ gc: sudo && boot clean
     sudo nix-collect-garbage -v --delete-older-than 22d --max-freed 0
 
 build *args: gitprepare
-    nom build {{ args }} '.#nixosConfigurations.{{ host }}.config.system.build.toplevel'
+    nom build '.#nixosConfigurations.{{ host }}.config.system.build.toplevel' {{ args }}
 
 diff: build
     nvd diff /nix/var/nix/profiles/system result
@@ -36,7 +36,7 @@ clean: clean-artifact
     nix store gc -v
 
 package pkg *args: gitprepare
-    nom build {{ args }} '.#{{ pkg }}'
+    nom build '.#{{ pkg }}' {{ args }}
 
 test: check (rebuild 'test') system
 

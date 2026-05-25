@@ -9,16 +9,16 @@
 buildNpmPackage (finalAttrs: {
   pname = "iosevka-mithic";
 
-  version = "34.6.0";
+  version = "34.6.1";
 
   src = fetchFromGitHub {
     owner = "be5invis";
     repo = "iosevka";
     tag = "v${finalAttrs.version}";
-    hash = "sha256-fkTXZtuIMm6N4KeBjjs2DM5V/1hbJ2GGLraNzO8mhQE=";
+    hash = "sha256-kTWeSNn/GaEM60KJI9v9TVaj6GlJH/NSLsYQHs3aFiQ=";
   };
 
-  npmDepsHash = "sha256-+YolL7ZtmisgQ5ZI5X8YGvPAYU9iEseRLDTOz8QIkvk=";
+  npmDepsHash = "sha256-9bcF/HbfN5rwUYNX76hSeXHTmHn0vDkdag8EUUTCeHE=";
 
   nativeBuildInputs =
     [
