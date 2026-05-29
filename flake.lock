@@ -95,6 +95,28 @@
         "type": "github"
       }
     },
+    "niri": {
+      "inputs": {
+        "niri-unstable": [],
+        "nixpkgs": [
+          "nixpkgs"
+        ],
+        "xwayland-satellite-unstable": []
+      },
+      "locked": {
+        "lastModified": 1779900676,
+        "narHash": "sha256-M/YavMRFQKjRz6reoZ6Xy2Smy4PvqqwHALP5Jp37Ke4=",
+        "ref": "refs/heads/main",
+        "rev": "49e0960cfb6925b25a3ca11698c2a6680e429596",
+        "revCount": 127,
+        "type": "git",
+        "url": "https://codeberg.org/MithicSpirit/niri-nix"
+      },
+      "original": {
+        "type": "git",
+        "url": "https://codeberg.org/MithicSpirit/niri-nix"
+      }
+    },
     "nixpkgs": {
       "locked": {
         "lastModified": 1779560665,
@@ -117,6 +139,7 @@
         "hardware": "hardware",
         "home-manager": "home-manager",
         "lanzaboote": "lanzaboote",
+        "niri": "niri",
         "nixpkgs": "nixpkgs",
         "systems": "systems"
       }

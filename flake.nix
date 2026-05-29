@@ -25,6 +25,15 @@
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    niri = {
+      url = "git+https://codeberg.org/MithicSpirit/niri-nix";
+      inputs = {
+        nixpkgs.follows = "nixpkgs";
+        niri-unstable.follows = ""; # unused
+        xwayland-satellite-unstable.follows = ""; # unused
+      };
+    };
   };
 
   outputs = inputs: let

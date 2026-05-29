@@ -38,15 +38,15 @@ clean: clean-artifact
 package pkg *args: gitprepare
     nom build '.#{{ pkg }}' {{ args }}
 
-test: check (rebuild 'test') system
+test: check (activate 'test') system
 
-boot: gitadd check (rebuild 'boot')
+boot: gitadd check (activate 'boot')
 
-switch: gitadd check (rebuild 'switch') system
+switch: gitadd check (activate 'switch') system
 
 [private]
-rebuild op: build sudo
-    sudo nixos-rebuild '{{ op }}' --flake '.#{{ host }}' |& nom
+activate op: build sudo
+    sudo nixos-rebuild '{{ op }}' --flake '.#{{ host }}'
 
 [private]
 clean-artifact:

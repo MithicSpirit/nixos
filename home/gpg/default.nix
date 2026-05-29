@@ -23,7 +23,7 @@
     maxCacheTtl = hours 3;
     maxCacheTtlSsh = hours 3;
     extraConfig = ''
-      pinentry-timeout ${builtins.toString (hours 24)}
+      pinentry-timeout ${toString (hours 24)}
       no-allow-external-cache
       allow-emacs-pinentry
       allow-loopback-pinentry

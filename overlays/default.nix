@@ -5,6 +5,7 @@ inputs: [
   (import ./miscellaneous)
 
   (import ./bluez)
+  (import ./niri)
   (import ./sway)
   (import ./zathura)
 ]

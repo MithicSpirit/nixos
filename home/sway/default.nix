@@ -147,7 +147,7 @@ in {
     extraArgs = [
       "-w"
       "idlehint"
-      "${builtins.toString (lock-time / 2)}"
+      "${toString (lock-time / 2)}"
     ];
     timeouts = [
       {

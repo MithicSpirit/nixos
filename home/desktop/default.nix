@@ -9,8 +9,9 @@
     vlc
 
     # communication
-    # armcord
-    # element-desktop
     # signal-desktop
+    vesktop
+    zulip
+    element-desktop
   ];
 }

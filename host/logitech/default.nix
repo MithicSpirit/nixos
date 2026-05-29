@@ -32,7 +32,7 @@ in {
 
       smartshift: { on: true; threshold: 20; default_threshold: 20};
       hiresscroll: { hires: false; invert: false; target: false; };
-      thumbwheel: { divert: false; invert: true; };
+      thumbwheel: { divert: false; invert: false; };
 
 
       buttons: ();

@@ -1,0 +1,444 @@
+diff --git a/niri-config/src/binds.rs b/niri-config/src/binds.rs
+index 0be7596f..0f883588 100644
+--- a/niri-config/src/binds.rs
++++ b/niri-config/src/binds.rs
+@@ -200,13 +200,17 @@ pub enum Action {
+     #[knuffel(skip)]
+     ConsumeOrExpelWindowLeftById(u64),
+     ConsumeOrExpelWindowRight,
+     #[knuffel(skip)]
+     ConsumeOrExpelWindowRightById(u64),
+     ConsumeWindowIntoColumn,
++    ConsumeWindowIntoColumnLeft,
+     ExpelWindowFromColumn,
++    ExpelWindowFromColumnLeft,
++    ExpelFocusedWindowFromColumn,
++    ExpelFocusedWindowFromColumnLeft,
+     SwapWindowLeft,
+     SwapWindowRight,
+     ToggleColumnTabbedDisplay,
+     SetColumnDisplay(#[knuffel(argument, str)] ColumnDisplay),
+     CenterColumn,
+     CenterWindow,
+@@ -492,13 +496,19 @@ impl From<niri_ipc::Action> for Action {
+                 Self::ConsumeOrExpelWindowRight
+             }
+             niri_ipc::Action::ConsumeOrExpelWindowRight { id: Some(id) } => {
+                 Self::ConsumeOrExpelWindowRightById(id)
+             }
+             niri_ipc::Action::ConsumeWindowIntoColumn {} => Self::ConsumeWindowIntoColumn,
++            niri_ipc::Action::ConsumeWindowIntoColumnLeft {} => Self::ConsumeWindowIntoColumnLeft,
+             niri_ipc::Action::ExpelWindowFromColumn {} => Self::ExpelWindowFromColumn,
++            niri_ipc::Action::ExpelWindowFromColumnLeft {} => Self::ExpelWindowFromColumnLeft,
++            niri_ipc::Action::ExpelFocusedWindowFromColumn {} => Self::ExpelFocusedWindowFromColumn,
++            niri_ipc::Action::ExpelFocusedWindowFromColumnLeft {} => {
++                Self::ExpelFocusedWindowFromColumnLeft
++            }
+             niri_ipc::Action::SwapWindowRight {} => Self::SwapWindowRight,
+             niri_ipc::Action::SwapWindowLeft {} => Self::SwapWindowLeft,
+             niri_ipc::Action::ToggleColumnTabbedDisplay {} => Self::ToggleColumnTabbedDisplay,
+             niri_ipc::Action::SetColumnDisplay { display } => Self::SetColumnDisplay(display),
+             niri_ipc::Action::CenterColumn {} => Self::CenterColumn,
+             niri_ipc::Action::CenterWindow { id: None } => Self::CenterWindow,
+diff --git a/niri-ipc/src/lib.rs b/niri-ipc/src/lib.rs
+index 0aa3cb4f..05aebe50 100644
+--- a/niri-ipc/src/lib.rs
++++ b/niri-ipc/src/lib.rs
+@@ -437,14 +437,22 @@ pub enum Action {
+         /// If `None`, uses the focused window.
+         #[cfg_attr(feature = "clap", arg(long))]
+         id: Option<u64>,
+     },
+     /// Consume the window to the right into the focused column.
+     ConsumeWindowIntoColumn {},
+-    /// Expel the bottom window from the focused column.
++    /// Consume the window to the right into the focused column.
++    ConsumeWindowIntoColumnLeft {},
++    /// Expel the bottom window from the focused column to the right.
+     ExpelWindowFromColumn {},
++    /// Expel the bottom window from the focused column to the left.
++    ExpelWindowFromColumnLeft {},
++    /// Expel the focused window from the focused column to the right.
++    ExpelFocusedWindowFromColumn {},
++    /// Expel the focused window from the focused column to the left.
++    ExpelFocusedWindowFromColumnLeft {},
+     /// Swap focused window with one to the right.
+     SwapWindowRight {},
+     /// Swap focused window with one to the left.
+     SwapWindowLeft {},
+     /// Toggle the focused column between normal and tabbed display.
+     ToggleColumnTabbedDisplay {},
+diff --git a/src/input/mod.rs b/src/input/mod.rs
+index 3e673bdb..72a5c54b 100644
+--- a/src/input/mod.rs
++++ b/src/input/mod.rs
+@@ -1560,18 +1560,43 @@ impl State {
+                 self.niri.layout.consume_into_column();
+                 // This does not cause immediate focus or window size change, so warping mouse to
+                 // focus won't do anything here.
+                 // FIXME: granular
+                 self.niri.queue_redraw_all();
+             }
++            Action::ConsumeWindowIntoColumnLeft => {
++                self.niri.layout.consume_into_column_left();
++                // This does not cause immediate focus or window size change, so warping mouse to
++                // focus won't do anything here.
++                // FIXME: granular
++                self.niri.queue_redraw_all();
++            }
+             Action::ExpelWindowFromColumn => {
+                 self.niri.layout.expel_from_column();
+                 self.maybe_warp_cursor_to_focus();
+                 // FIXME: granular
+                 self.niri.queue_redraw_all();
+             }
++            Action::ExpelWindowFromColumnLeft => {
++                self.niri.layout.expel_from_column_left();
++                self.maybe_warp_cursor_to_focus();
++                // FIXME: granular
++                self.niri.queue_redraw_all();
++            }
++            Action::ExpelFocusedWindowFromColumn => {
++                self.niri.layout.expel_focused_from_column();
++                self.maybe_warp_cursor_to_focus();
++                // FIXME: granular
++                self.niri.queue_redraw_all();
++            }
++            Action::ExpelFocusedWindowFromColumnLeft => {
++                self.niri.layout.expel_focused_from_column_left();
++                self.maybe_warp_cursor_to_focus();
++                // FIXME: granular
++                self.niri.queue_redraw_all();
++            }
+             Action::SwapWindowRight => {
+                 self.niri
+                     .layout
+                     .swap_window_in_direction(ScrollDirection::Right);
+                 self.maybe_warp_cursor_to_focus();
+                 // FIXME: granular
+diff --git a/src/layout/mod.rs b/src/layout/mod.rs
+index 5c4dd639..29fc527d 100644
+--- a/src/layout/mod.rs
++++ b/src/layout/mod.rs
+@@ -2208,19 +2208,47 @@ impl<W: LayoutElement> Layout<W> {
+         let Some(workspace) = self.active_workspace_mut() else {
+             return;
+         };
+         workspace.consume_into_column();
+     }
+ 
++    pub fn consume_into_column_left(&mut self) {
++        let Some(workspace) = self.active_workspace_mut() else {
++            return;
++        };
++        workspace.consume_into_column_left();
++    }
++
+     pub fn expel_from_column(&mut self) {
+         let Some(workspace) = self.active_workspace_mut() else {
+             return;
+         };
+         workspace.expel_from_column();
+     }
+ 
++    pub fn expel_from_column_left(&mut self) {
++        let Some(workspace) = self.active_workspace_mut() else {
++            return;
++        };
++        workspace.expel_from_column_left();
++    }
++
++    pub fn expel_focused_from_column(&mut self) {
++        let Some(workspace) = self.active_workspace_mut() else {
++            return;
++        };
++        workspace.expel_focused_from_column();
++    }
++
++    pub fn expel_focused_from_column_left(&mut self) {
++        let Some(workspace) = self.active_workspace_mut() else {
++            return;
++        };
++        workspace.expel_focused_from_column_left();
++    }
++
+     pub fn swap_window_in_direction(&mut self, direction: ScrollDirection) {
+         let Some(workspace) = self.active_workspace_mut() else {
+             return;
+         };
+         workspace.swap_window_in_direction(direction);
+     }
+diff --git a/src/layout/scrolling.rs b/src/layout/scrolling.rs
+index 9739abdf..d01b942b 100644
+--- a/src/layout/scrolling.rs
++++ b/src/layout/scrolling.rs
+@@ -1959,48 +1959,59 @@ impl<W: LayoutElement> ScrollingSpace<W> {
+             let new_col = &mut self.columns[target_column_idx];
+             offset += prev_off - new_col.tile_offset(0);
+             new_col.tiles[0].animate_move_from(offset);
+         }
+     }
+ 
+-    pub fn consume_into_column(&mut self) {
++    pub fn consume_into_column(&mut self, direction: ScrollDirection) {
+         if self.columns.len() < 2 {
+             return;
+         }
+ 
+-        if self.active_column_idx == self.columns.len() - 1 {
+-            return;
++        match direction {
++            ScrollDirection::Right if self.active_column_idx == self.columns.len() - 1 => return,
++            ScrollDirection::Left if self.active_column_idx == 0 => return,
++            _ => {}
+         }
+ 
+-        let target_column_idx = self.active_column_idx;
+-        let source_column_idx = self.active_column_idx + 1;
++        let mut target_column_idx = self.active_column_idx;
++        let source_column_idx = match direction {
++            ScrollDirection::Right => self.active_column_idx + 1,
++            ScrollDirection::Left => self.active_column_idx - 1,
++        };
+ 
+         let offset = self.column_x(source_column_idx)
+             + self.columns[source_column_idx].render_offset().x
+             - self.column_x(target_column_idx);
+         let mut offset = Point::from((offset, 0.));
+         let prev_off = self.columns[source_column_idx].tile_offset(0);
+ 
++        if direction == ScrollDirection::Left && self.columns[source_column_idx].tiles.len() == 1 {
++            target_column_idx -= 1;
++        }
+         let removed = self.remove_tile_by_idx(source_column_idx, 0, Transaction::new(), None);
+         self.add_tile_to_column(target_column_idx, None, removed.tile, false);
+ 
+         let target_column = &mut self.columns[target_column_idx];
+         offset += prev_off - target_column.tile_offset(target_column.tiles.len() - 1);
+         offset.x -= target_column.render_offset().x;
+ 
+         let new_tile = target_column.tiles.last_mut().unwrap();
+         new_tile.animate_move_from(offset);
+     }
+ 
+-    pub fn expel_from_column(&mut self) {
++    pub fn expel_from_column(&mut self, direction: ScrollDirection) {
+         if self.columns.is_empty() {
+             return;
+         }
+ 
+         let source_col_idx = self.active_column_idx;
+-        let target_col_idx = self.active_column_idx + 1;
++        let target_col_idx = match direction {
++            ScrollDirection::Right => self.active_column_idx + 1,
++            ScrollDirection::Left => self.active_column_idx,
++        };
+         let cur_x = self.column_x(source_col_idx);
+ 
+         let source_column = &self.columns[self.active_column_idx];
+         if source_column.tiles.len() == 1 {
+             return;
+         }
+@@ -2019,13 +2030,68 @@ impl<W: LayoutElement> ScrollingSpace<W> {
+             false,
+             removed.width,
+             removed.is_full_width,
+             Some(self.options.animations.window_movement.0),
+         );
+ 
+-        offset.x += cur_x - self.column_x(target_col_idx);
++        match direction {
++            ScrollDirection::Right => {
++                offset.x += cur_x - self.column_x(target_col_idx);
++            }
++            ScrollDirection::Left => {
++                offset.x += self.column_x(source_col_idx + 1) - self.column_x(target_col_idx);
++            }
++        }
++
++        let new_col = &mut self.columns[target_col_idx];
++        offset += prev_off - new_col.tile_offset(0);
++        new_col.tiles[0].animate_move_from(offset);
++    }
++
++    pub fn expel_focused_from_column(&mut self, direction: ScrollDirection) {
++        if self.columns.is_empty() {
++            return;
++        }
++
++        let source_col_idx = self.active_column_idx;
++        let target_col_idx = match direction {
++            ScrollDirection::Right => self.active_column_idx + 1,
++            ScrollDirection::Left => self.active_column_idx,
++        };
++        let cur_x = self.column_x(source_col_idx);
++
++        let source_column = &self.columns[self.active_column_idx];
++        if source_column.tiles.len() == 1 {
++            return;
++        }
++
++        let source_tile_idx = source_column.active_tile_idx;
++
++        let mut offset = Point::from((source_column.render_offset().x, 0.));
++        let prev_off = source_column.tile_offset(source_tile_idx);
++
++        let removed =
++            self.remove_tile_by_idx(source_col_idx, source_tile_idx, Transaction::new(), None);
++
++        self.add_tile(
++            Some(target_col_idx),
++            removed.tile,
++            true,
++            removed.width,
++            removed.is_full_width,
++            Some(self.options.animations.window_movement.0),
++        );
++
++        match direction {
++            ScrollDirection::Right => {
++                offset.x += cur_x - self.column_x(target_col_idx);
++            }
++            ScrollDirection::Left => {
++                offset.x += self.column_x(source_col_idx + 1) - self.column_x(target_col_idx);
++            }
++        }
+ 
+         let new_col = &mut self.columns[target_col_idx];
+         offset += prev_off - new_col.tile_offset(0);
+         new_col.tiles[0].animate_move_from(offset);
+     }
+ 
+diff --git a/src/layout/tests.rs b/src/layout/tests.rs
+index 31265dd9..7683acf6 100644
+--- a/src/layout/tests.rs
++++ b/src/layout/tests.rs
+@@ -504,13 +504,17 @@ enum Op {
+     },
+     ConsumeOrExpelWindowRight {
+         #[proptest(strategy = "proptest::option::of(1..=5usize)")]
+         id: Option<usize>,
+     },
+     ConsumeWindowIntoColumn,
++    ConsumeWindowIntoColumnLeft,
+     ExpelWindowFromColumn,
++    ExpelWindowFromColumnLeft,
++    ExpelFocusedWindowFromColumn,
++    ExpelFocusedWindowFromColumnLeft,
+     SwapWindowInDirection(#[proptest(strategy = "arbitrary_scroll_direction()")] ScrollDirection),
+     ToggleColumnTabbedDisplay,
+     SetColumnDisplay(#[proptest(strategy = "arbitrary_column_display()")] ColumnDisplay),
+     CenterColumn,
+     CenterWindow {
+         #[proptest(strategy = "proptest::option::of(1..=5usize)")]
+@@ -1166,13 +1170,17 @@ impl Op {
+             }
+             Op::ConsumeOrExpelWindowRight { id } => {
+                 let id = id.filter(|id| layout.has_window(id));
+                 layout.consume_or_expel_window_right(id.as_ref());
+             }
+             Op::ConsumeWindowIntoColumn => layout.consume_into_column(),
++            Op::ConsumeWindowIntoColumnLeft => layout.consume_into_column_left(),
+             Op::ExpelWindowFromColumn => layout.expel_from_column(),
++            Op::ExpelWindowFromColumnLeft => layout.expel_from_column_left(),
++            Op::ExpelFocusedWindowFromColumn => layout.expel_focused_from_column(),
++            Op::ExpelFocusedWindowFromColumnLeft => layout.expel_focused_from_column_left(),
+             Op::SwapWindowInDirection(direction) => layout.swap_window_in_direction(direction),
+             Op::ToggleColumnTabbedDisplay => layout.toggle_column_tabbed_display(),
+             Op::SetColumnDisplay(display) => layout.set_column_display(display),
+             Op::CenterColumn => layout.center_column(),
+             Op::CenterWindow { id } => {
+                 let id = id.filter(|id| layout.has_window(id));
+@@ -1718,13 +1726,17 @@ fn operations_dont_panic() {
+         Op::FocusWindowOrWorkspaceDown,
+         Op::MoveColumnLeft,
+         Op::MoveColumnRight,
+         Op::MoveColumnLeftOrToMonitorLeft(0),
+         Op::MoveColumnRightOrToMonitorRight(1),
+         Op::ConsumeWindowIntoColumn,
++        Op::ConsumeWindowIntoColumnLeft,
+         Op::ExpelWindowFromColumn,
++        Op::ExpelWindowFromColumnLeft,
++        Op::ExpelFocusedWindowFromColumn,
++        Op::ExpelFocusedWindowFromColumnLeft,
+         Op::CenterColumn,
+         Op::FocusWorkspaceDown,
+         Op::FocusWorkspaceUp,
+         Op::FocusWorkspace(1),
+         Op::FocusWorkspace(2),
+         Op::MoveWindowToWorkspaceDown(true),
+@@ -1892,13 +1904,17 @@ fn operations_from_starting_state_dont_panic() {
+         Op::FocusWindowOrWorkspaceDown,
+         Op::MoveColumnLeft,
+         Op::MoveColumnRight,
+         Op::MoveColumnLeftOrToMonitorLeft(0),
+         Op::MoveColumnRightOrToMonitorRight(1),
+         Op::ConsumeWindowIntoColumn,
++        Op::ConsumeWindowIntoColumnLeft,
+         Op::ExpelWindowFromColumn,
++        Op::ExpelWindowFromColumnLeft,
++        Op::ExpelFocusedWindowFromColumn,
++        Op::ExpelFocusedWindowFromColumnLeft,
+         Op::CenterColumn,
+         Op::FocusWorkspaceDown,
+         Op::FocusWorkspaceUp,
+         Op::FocusWorkspace(1),
+         Op::FocusWorkspace(2),
+         Op::FocusWorkspace(3),
+diff --git a/src/layout/workspace.rs b/src/layout/workspace.rs
+index 74487797..839d7a68 100644
+--- a/src/layout/workspace.rs
++++ b/src/layout/workspace.rs
+@@ -1115,20 +1115,50 @@ impl<W: LayoutElement> Workspace<W> {
+     }
+ 
+     pub fn consume_into_column(&mut self) {
+         if self.floating_is_active.get() {
+             return;
+         }
+-        self.scrolling.consume_into_column();
++        self.scrolling.consume_into_column(ScrollDirection::Right);
++    }
++
++    pub fn consume_into_column_left(&mut self) {
++        if self.floating_is_active.get() {
++            return;
++        }
++        self.scrolling.consume_into_column(ScrollDirection::Left);
+     }
+ 
+     pub fn expel_from_column(&mut self) {
+         if self.floating_is_active.get() {
+             return;
+         }
+-        self.scrolling.expel_from_column();
++        self.scrolling.expel_from_column(ScrollDirection::Right);
++    }
++
++    pub fn expel_from_column_left(&mut self) {
++        if self.floating_is_active.get() {
++            return;
++        }
++        self.scrolling.expel_from_column(ScrollDirection::Left);
++    }
++
++    pub fn expel_focused_from_column(&mut self) {
++        if self.floating_is_active.get() {
++            return;
++        }
++        self.scrolling
++            .expel_focused_from_column(ScrollDirection::Right);
++    }
++
++    pub fn expel_focused_from_column_left(&mut self) {
++        if self.floating_is_active.get() {
++            return;
++        }
++        self.scrolling
++            .expel_focused_from_column(ScrollDirection::Left);
+     }
+ 
+     pub fn swap_window_in_direction(&mut self, direction: ScrollDirection) {
+         if self.floating_is_active.get() {
+             return;
+         }

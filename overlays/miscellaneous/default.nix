@@ -25,32 +25,11 @@ final: prev: {
       }
   );
 
-  grimblast = prev.grimblast.overrideAttrs (
-    _finalAttrs: prevAttrs:
-      assert (prevAttrs.version == "0.1-unstable-2026-02-19"); {
-        patches = (prevAttrs.patches or []) ++ [./grimblast-fix-lock.diff];
-      }
-  );
-
   alejandra = prev.alejandra.overrideAttrs (
     _finalAttrs: prevAttrs:
       assert (prevAttrs.version == "4.0.0"); {
         patches = (prevAttrs.patches or []) ++ [./alejandra-adblock.diff];
         doCheck = false;
-      }
-  );
-
-  niri = prev.niri.overrideAttrs (
-    _finalAttrs: prevAttrs:
-      assert (prevAttrs.version == "26.04"); {
-        patches =
-          (prevAttrs.patches or [])
-          ++ [
-            ./${"niri-force-render+pr=2609.diff"}
-            ./niri-prevent-idle-inhibit.diff
-            ./niri-layer-priority.diff
-            ./niri-click-inhibit.diff
-          ];
       }
   );
 
