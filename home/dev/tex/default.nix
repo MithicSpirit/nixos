@@ -6,7 +6,7 @@
   texmf = "${config.xdg.dataHome}/texmf";
 in {
   home.packages = with pkgs; [
-    (texliveFull.__overrideTeXConfig {withDocs = true;})
+    texliveFullWithDocs
     tectonic
     python3Packages.pygments # minted
     kdePackages.okular

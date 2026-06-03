@@ -284,11 +284,6 @@ in {
             "Mod+Ctrl+O" = {expel-window-from-column = [];};
             "Mod+Ctrl+I" = {expel-window-from-column-left = [];};
 
-            "Mod+Minus" = {set-column-width = "-5%";};
-            "Mod+Equal" = {set-column-width = "+5%";};
-            "Mod+Ctrl+Minus" = {set-window-height = "-5%";};
-            "Mod+Ctrl+Equal" = {set-window-height = "+5%";};
-
             "Mod+M" = {switch-preset-column-width = [];};
             "Mod+Shift+M" = {switch-preset-column-width-back = [];};
             "Mod+Ctrl+M" = {expand-column-to-available-width = [];};
@@ -348,6 +343,10 @@ in {
             "XF86AudioNext" = {spawn = ["playerctl" "next"];};
           })
           {
+            "Mod+Minus" = {set-column-width = "-5%";};
+            "Mod+Equal" = {set-column-width = "+5%";};
+            "Mod+Ctrl+Minus" = {set-window-height = "-5%";};
+            "Mod+Ctrl+Equal" = {set-window-height = "+5%";};
             "Mod+Escape" = {
               _props = {
                 repeat = false;

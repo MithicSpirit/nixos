@@ -6,7 +6,10 @@
 
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
 
-    hardware.url = "github:NixOS/nixos-hardware";
+    hardware = {
+      url = "github:NixOS/nixos-hardware";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
     lanzaboote = {
       url = "github:nix-community/lanzaboote/v1.0.0";

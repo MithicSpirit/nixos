@@ -54,8 +54,9 @@
   nixpkgs.overlays = overlays ++ [(final: _prev: {nix = final.nixVersions.latest;})];
 
   nixpkgs.config = {
+    rocmSupport = true;
     allowUnfree = false; # TODO: make global?
-    allowlistedLicenses = with lib.licenses; [
+    allowlistedLicenses = [
       {
         fullName = "Graphite Branding License";
         url = "https://graphite.art/license/#branding";
@@ -63,7 +64,9 @@
         redistributable = true;
       }
     ];
-    rocmSupport = true;
+    permittedInsecurePackages = assert pkgs.electron_39.version == "39.8.10";
+    assert lib.functionArgs pkgs.zulip.override ? electron_39;
+    assert lib.functionArgs pkgs.bitwarden-desktop.override ? electron_39; ["electron-39.8.10"];
   };
 
   boot.loader.systemd-boot = {

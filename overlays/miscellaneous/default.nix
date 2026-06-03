@@ -52,6 +52,4 @@ final: prev: {
         doCheck = false;
       }
   );
-
-  termite = assert prev ? termite; final.kitty; # broken, removed upstream #522784
 }

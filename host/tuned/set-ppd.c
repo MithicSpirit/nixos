@@ -20,7 +20,7 @@ int main(int argc, char **argv) {
 	char *current = NULL;
 	if (argc > arg_current) {
 		current = argv[arg_current];
-		fprintf(stderr, "current profile %s\n", current);
+		// fprintf(stderr, "current profile %s\n", current);
 	}
 
 	char buf[16] = {0};
@@ -52,7 +52,7 @@ int main(int argc, char **argv) {
 		return 1;
 	}
 
-	fprintf(stderr, "setting profile to %s\n", target);
+	// fprintf(stderr, "setting profile to %s\n", target);
 	execlp(ppc, ppc, "set", target, NULL);
 
 	int err = errno;
