@@ -10,7 +10,7 @@ case "$(bemenu -p 'Power' -cl 9 -W 0.2 <<__EOF__
 4. Log Off
 5. Suspend
 6. Hibernate
-7. Soft reboot
+7. Soft restart
 8. Reboot
 9. Power Off
 __EOF__
@@ -33,7 +33,7 @@ __EOF__
 		systemctl --user exit
 		niri msg action quit --skip-confirmation
 		;;
-	*"Soft reboot")
+	*"Soft restart")
 		systemctl soft-reboot
 		niri msg action quit --skip-confirmation
 		;;

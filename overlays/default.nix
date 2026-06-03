@@ -4,6 +4,7 @@ inputs: [
 
   (import ./miscellaneous)
 
+  (import ./alejandra)
   (import ./bluez)
   (import ./niri)
   (import ./sway)

@@ -26,8 +26,9 @@
       close_on_child_death = true;
       allow_remote_control = "socket";
       listen_on = "unix:@kitty";
-      notify_on_cmd_finish = "invisible 0 notify";
+      notify_on_cmd_finish = "unfocused 0 notify";
       clear_all_shortcuts = true;
+      wayland_enable_ime = false;
 
       scrollback_lines = 32768;
       scrollback_pager_history_size = 131072;

@@ -5,14 +5,13 @@ standard: gitprepare format check
 fmt *args: gitprepare
     nix fmt -- {{ args }}
 format: (fmt '.')
+    just --fmt
 
 check: gitprepare
     nix flake check --all-systems
-    nix run .#deadnix -- {{ deadnix-args }} --fail
 
 undead: gitadd && standard
-    nix run .#deadnix -- {{ deadnix-args }} --edit
-
+    nix run '.#deadnix' -- --edit
 
 refresh *inputs: gitprepare && standard
     nix flake update {{ inputs }}
@@ -22,44 +21,56 @@ lock *args: gitprepare && standard
     nix flake lock {{ args }}
 
 [confirm]
-gc: sudo && boot clean
+[no-cd]
+gc: (sudo 'Garbage collection') && boot clean
     nix-collect-garbage -v --delete-older-than 22d --max-freed 0
     sudo nix-collect-garbage -v --delete-older-than 22d --max-freed 0
 
-build *args: gitprepare
-    nom build '.#nixosConfigurations.{{ host }}.config.system.build.toplevel' {{ args }}
-
-diff: build
-    nvd diff /nix/var/nix/profiles/system result
-
+[no-cd]
 clean: clean-artifact
     nix store gc -v
 
 package pkg *args: gitprepare
     nom build '.#{{ pkg }}' {{ args }}
 
+[group('nixos')]
+build *args: gitprepare
+    nom build '.#nixosConfigurations.{{ host }}.config.system.build.toplevel' {{ args }}
+
+[group('nixos')]
+diff: build
+    nvd diff /nix/var/nix/profiles/system ./result
+
+[group('nixos')]
 test: check (activate 'test') system
 
+[group('nixos')]
 boot: gitadd check (activate 'boot')
 
+[group('nixos')]
 switch: gitadd check (activate 'switch') system
 
+[group('nixos')]
 [private]
-activate op: build sudo
+activate op: build (sudo op)
     sudo nixos-rebuild '{{ op }}' --flake '.#{{ host }}'
+
+# helpers
 
 [private]
 clean-artifact:
     rm -f result result-* repl-result-*
 
-[private, script]
-sudo:
+[no-cd]
+[private]
+[script]
+sudo reason:
     if [ -n "${WAYLAND_DISPLAY:-}" -o -n "${DISPLAY:-}" ]; then
-        id="$(notify-send -t 600000 -pea 'NixOS Rebuild' 'Sudo prompt' 'Waiting')"
+        id="$(notify-send -t 600000 -pea 'just' 'Sudo prompt' 'Waiting ({{ reason }})')"
         if sudo -v; then
-            notify-send -r "$id" -t 2000 -u low -ea 'NixOS Rebuild' 'Sudo prompt' 'Done'
+            notify-send -r "$id" -t 2000 -u low -ea 'just' 'Sudo prompt' 'Done ({{ reason }})'
         else
-            notify-send -r "$id" -t 2000 -u low -ea 'NixOS Rebuild' 'Sudo prompt' 'Cancelled'
+            notify-send -r "$id" -t 2000 -u low -ea 'just' 'Sudo prompt' 'Cancelled ({{ reason }})'
             exit 1
         fi
     else
@@ -74,13 +85,40 @@ gitadd:
 gitprepare:
     git add --intent-to-add .
 
+[no-cd]
 [private]
 system:
     -@fastfetch
 
-deadnix-args := "--exclude ./overlays/temporary"
 host := `hostname`
 
 set shell := ['bash', '-euo', 'pipefail', '-c']
 set script-interpreter := ['bash', '-euxo', 'pipefail']
 set unstable
+
+# nonnix
+
+alias flatpak := flatpak-check
+
+[group('non-nix')]
+[no-cd]
+flatpak-check:
+    flatpak update --no-deploy -yu
+
+[group('non-nix')]
+[no-cd]
+flatpak-update:
+    flatpak update
+
+alias fwupd := fwupd-check
+
+[group('non-nix')]
+[no-cd]
+fwupd-check: (sudo 'fwupdmgr checking')
+    sudo fwupdmgr refresh --force --no-unreported-check
+    -sudo fwupdmgr get-updates --no-unreported-check
+
+[group('non-nix')]
+[no-cd]
+fwupd-update: (sudo 'fwupdmgr update')
+    sudo fwupdmgr update --no-unreported-check

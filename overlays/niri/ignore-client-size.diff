@@ -1,0 +1,136 @@
+diff --git a/niri-config/src/lib.rs b/niri-config/src/lib.rs
+index 77f07967..e9639aa4 100644
+--- a/niri-config/src/lib.rs
++++ b/niri-config/src/lib.rs
+@@ -1801,12 +1801,13 @@ mod tests {
+                         true,
+                     ),
+                     min_width: None,
+                     min_height: None,
+                     max_width: None,
+                     max_height: None,
++                    ignore_client_size: None,
+                     focus_ring: BorderRule {
+                         off: true,
+                         on: false,
+                         width: Some(
+                             FloatOrInt(
+                                 3.0,
+diff --git a/niri-config/src/window_rule.rs b/niri-config/src/window_rule.rs
+index f2bc2ad1..dfa6e906 100644
+--- a/niri-config/src/window_rule.rs
++++ b/niri-config/src/window_rule.rs
+@@ -41,12 +41,14 @@ pub struct WindowRule {
+     #[knuffel(child, unwrap(argument))]
+     pub min_height: Option<u16>,
+     #[knuffel(child, unwrap(argument))]
+     pub max_width: Option<u16>,
+     #[knuffel(child, unwrap(argument))]
+     pub max_height: Option<u16>,
++    #[knuffel(child, unwrap(argument))]
++    pub ignore_client_size: Option<bool>,
+ 
+     #[knuffel(child, default)]
+     pub focus_ring: BorderRule,
+     #[knuffel(child, default)]
+     pub border: BorderRule,
+     #[knuffel(child, default)]
+diff --git a/src/window/mapped.rs b/src/window/mapped.rs
+index 3db1f66c..68547aee 100644
+--- a/src/window/mapped.rs
++++ b/src/window/mapped.rs
+@@ -1216,13 +1216,17 @@ impl LayoutElement for Mapped {
+ 
+     fn is_ignoring_opacity_window_rule(&self) -> bool {
+         self.ignore_opacity_window_rule
+     }
+ 
+     fn requested_size(&self) -> Option<Size<i32, Logical>> {
+-        self.toplevel().with_pending_state(|state| state.size)
++        if self.rules.ignore_client_size {
++            None
++        } else {
++            self.toplevel().with_pending_state(|state| state.size)
++        }
+     }
+ 
+     fn expected_size(&self) -> Option<Size<i32, Logical>> {
+         // We can only use current size if it's not maximized or fullscreen.
+         let current_size = (self.sizing_mode().is_normal()).then(|| self.window.geometry().size);
+ 
+diff --git a/src/window/mod.rs b/src/window/mod.rs
+index 14527cd2..a5cd1e9b 100644
+--- a/src/window/mod.rs
++++ b/src/window/mod.rs
+@@ -79,12 +79,15 @@ pub struct ResolvedWindowRules {
+     pub min_height: Option<u16>,
+     /// Extra bound on the maximum window width.
+     pub max_width: Option<u16>,
+     /// Extra bound on the maximum window height.
+     pub max_height: Option<u16>,
+ 
++    /// Ignore client-provided size limits
++    pub ignore_client_size: bool,
++
+     /// Focus ring overrides.
+     pub focus_ring: BorderRule,
+     /// Window border overrides.
+     pub border: BorderRule,
+     /// Shadow overrides.
+     pub shadow: ShadowRule,
+@@ -266,12 +269,15 @@ impl ResolvedWindowRules {
+                 if let Some(x) = rule.max_width {
+                     resolved.max_width = Some(x);
+                 }
+                 if let Some(x) = rule.max_height {
+                     resolved.max_height = Some(x);
+                 }
++                if let Some(x) = rule.ignore_client_size {
++                    resolved.ignore_client_size = x;
++                }
+ 
+                 resolved.focus_ring.merge_with(&rule.focus_ring);
+                 resolved.border.merge_with(&rule.border);
+                 resolved.shadow.merge_with(&rule.shadow);
+                 resolved.tab_indicator.merge_with(&rule.tab_indicator);
+ 
+@@ -315,12 +321,19 @@ impl ResolvedWindowRules {
+         });
+ 
+         resolved
+     }
+ 
+     pub fn apply_min_size(&self, min_size: Size<i32, Logical>) -> Size<i32, Logical> {
++        if self.ignore_client_size {
++            return Size::new(
++                self.min_width.unwrap_or(0).into(),
++                self.min_height.unwrap_or(0).into(),
++            );
++        }
++
+         let mut size = min_size;
+ 
+         if let Some(x) = self.min_width {
+             size.w = max(size.w, i32::from(x));
+         }
+         if let Some(x) = self.min_height {
+@@ -328,12 +341,19 @@ impl ResolvedWindowRules {
+         }
+ 
+         size
+     }
+ 
+     pub fn apply_max_size(&self, max_size: Size<i32, Logical>) -> Size<i32, Logical> {
++        if self.ignore_client_size {
++            return Size::new(
++                self.max_width.unwrap_or(0).into(),
++                self.max_height.unwrap_or(0).into(),
++            );
++        }
++
+         let mut size = max_size;
+ 
+         if let Some(x) = self.max_width {
+             if size.w == 0 {
+                 size.w = i32::from(x);
+             } else if x > 0 {

@@ -1,0 +1,432 @@
+diff --git a/Cargo.lock b/Cargo.lock
+index b03ba15c..c627cb6c 100644
+--- a/Cargo.lock
++++ b/Cargo.lock
+@@ -3495,13 +3495,13 @@ version = "0.3.2"
+ source = "registry+https://github.com/rust-lang/crates.io-index"
+ checksum = "b7c388c1b5e93756d0c740965c41e8822f866621d41acbdf6336a6a168f8840c"
+ 
+ [[package]]
+ name = "smithay"
+ version = "0.7.0"
+-source = "git+https://github.com/Smithay/smithay.git?rev=ff5fa7df392cecfba049ffed55cdaa4e98a8e7ef#ff5fa7df392cecfba049ffed55cdaa4e98a8e7ef"
++source = "git+https://github.com/MithicSpirit/smithay.git?rev=3aa06c55bc0f3ec97b441d41add221b2aac86109#3aa06c55bc0f3ec97b441d41add221b2aac86109"
+ dependencies = [
+  "aliasable",
+  "appendlist",
+  "atomic_float",
+  "bitflags 2.11.1",
+  "calloop 0.14.4",
+diff --git a/Cargo.toml b/Cargo.toml
+index fa7164e9..08ccd15b 100644
+--- a/Cargo.toml
++++ b/Cargo.toml
+@@ -24,14 +24,14 @@ serde_json = "1.0.149"
+ tracing = { version = "0.1.44", features = ["max_level_trace", "release_max_level_debug"] }
+ tracing-subscriber = { version = "0.3.23", features = ["env-filter"] }
+ tracy-client = { version = "0.18.4", default-features = false }
+ 
+ [workspace.dependencies.smithay]
+ # version = "0.4.1"
+-git = "https://github.com/Smithay/smithay.git"
+-rev = "ff5fa7df392cecfba049ffed55cdaa4e98a8e7ef"
++git = "https://github.com/MithicSpirit/smithay.git"
++rev = "3aa06c55bc0f3ec97b441d41add221b2aac86109"
+ default-features = false
+ 
+ [workspace.dependencies.smithay-drm-extras]
+ # version = "0.1.0"
+ git = "https://github.com/Smithay/smithay.git"
+ rev = "ff5fa7df392cecfba049ffed55cdaa4e98a8e7ef"
+diff --git a/niri-config/src/lib.rs b/niri-config/src/lib.rs
+index 77f07967..98337d09 100644
+--- a/niri-config/src/lib.rs
++++ b/niri-config/src/lib.rs
+@@ -1734,12 +1734,13 @@ mod tests {
+                             is_focused: None,
+                             is_active_in_column: None,
+                             is_floating: None,
+                             is_window_cast_target: None,
+                             is_urgent: None,
+                             at_startup: None,
++                            xdg_tag: None,
+                         },
+                     ],
+                     excludes: [
+                         Match {
+                             app_id: None,
+                             title: Some(
+@@ -1753,12 +1754,13 @@ mod tests {
+                             is_focused: None,
+                             is_active_in_column: None,
+                             is_floating: None,
+                             is_window_cast_target: None,
+                             is_urgent: None,
+                             at_startup: None,
++                            xdg_tag: None,
+                         },
+                         Match {
+                             app_id: None,
+                             title: None,
+                             is_active: Some(
+                                 true,
+@@ -1768,12 +1770,13 @@ mod tests {
+                             ),
+                             is_active_in_column: None,
+                             is_floating: None,
+                             is_window_cast_target: None,
+                             is_urgent: None,
+                             at_startup: None,
++                            xdg_tag: None,
+                         },
+                     ],
+                     default_column_width: None,
+                     default_window_height: Some(
+                         DefaultPresetSize(
+                             Some(
+diff --git a/niri-config/src/window_rule.rs b/niri-config/src/window_rule.rs
+index f2bc2ad1..4be5ad3c 100644
+--- a/niri-config/src/window_rule.rs
++++ b/niri-config/src/window_rule.rs
+@@ -134,12 +134,14 @@ pub struct Match {
+     #[knuffel(property)]
+     pub is_window_cast_target: Option<bool>,
+     #[knuffel(property)]
+     pub is_urgent: Option<bool>,
+     #[knuffel(property)]
+     pub at_startup: Option<bool>,
++    #[knuffel(property, str)]
++    pub xdg_tag: Option<RegexEq>,
+ }
+ 
+ #[derive(knuffel::Decode, Debug, Clone, Copy, PartialEq)]
+ pub struct FloatingPosition {
+     #[knuffel(property)]
+     pub x: FloatOrInt<-65535, 65535>,
+diff --git a/niri-ipc/src/lib.rs b/niri-ipc/src/lib.rs
+index 218e532c..89a82bdc 100644
+--- a/niri-ipc/src/lib.rs
++++ b/niri-ipc/src/lib.rs
+@@ -1365,12 +1365,14 @@ pub struct Window {
+     /// This timestamp is intended for most-recently-used window switchers, i.e. Alt-Tab. It only
+     /// updates after some debounce time so that quick window switching doesn't mark intermediate
+     /// windows as recently focused.
+     ///
+     /// The timestamp comes from the monotonic clock.
+     pub focus_timestamp: Option<Timestamp>,
++    /// xdg-toplevel-tag tag and description, if set.
++    pub xdg_tag: (Option<String>, Option<String>),
+ }
+ 
+ /// A moment in time.
+ #[derive(Serialize, Deserialize, Debug, Clone, Copy, PartialEq, Eq)]
+ #[cfg_attr(feature = "json-schema", derive(schemars::JsonSchema))]
+ pub struct Timestamp {
+diff --git a/src/handlers/mod.rs b/src/handlers/mod.rs
+index 3532078b..7dba0b19 100644
+--- a/src/handlers/mod.rs
++++ b/src/handlers/mod.rs
+@@ -58,21 +58,23 @@ use smithay::wayland::session_lock::{
+     LockSurface, SessionLockHandler, SessionLockManagerState, SessionLocker,
+ };
+ use smithay::wayland::tablet_manager::TabletSeatHandler;
+ use smithay::wayland::xdg_activation::{
+     XdgActivationHandler, XdgActivationState, XdgActivationToken, XdgActivationTokenData,
+ };
++use smithay::wayland::xdg_toplevel_tag::XdgToplevelTagHandler;
+ use smithay::{
+     delegate_cursor_shape, delegate_data_control, delegate_data_device, delegate_dmabuf,
+     delegate_drm_lease, delegate_ext_data_control, delegate_fractional_scale,
+     delegate_idle_inhibit, delegate_idle_notify, delegate_input_method_manager,
+     delegate_keyboard_shortcuts_inhibit, delegate_output, delegate_pointer_constraints,
+     delegate_pointer_gestures, delegate_presentation, delegate_primary_selection,
+     delegate_relative_pointer, delegate_seat, delegate_security_context, delegate_session_lock,
+     delegate_single_pixel_buffer, delegate_tablet_manager, delegate_text_input_manager,
+     delegate_viewporter, delegate_virtual_keyboard_manager, delegate_xdg_activation,
++    delegate_xdg_toplevel_tag,
+ };
+ 
+ pub use crate::handlers::xdg_shell::KdeDecorationsModeState;
+ use crate::layout::workspace::WorkspaceId;
+ use crate::layout::ActivateWindow;
+ use crate::niri::{DndIcon, NewClient, State};
+@@ -858,6 +860,9 @@ impl OutputManagementHandler for State {
+ delegate_output_management!(State);
+ 
+ impl MutterX11InteropHandler for State {}
+ delegate_mutter_x11_interop!(State);
+ 
+ delegate_single_pixel_buffer!(State);
++
++impl XdgToplevelTagHandler for State {}
++delegate_xdg_toplevel_tag!(State);
+diff --git a/src/ipc/client.rs b/src/ipc/client.rs
+index 1ec51c44..704ca661 100644
+--- a/src/ipc/client.rs
++++ b/src/ipc/client.rs
+@@ -688,12 +688,19 @@ fn print_window(window: &Window) {
+     if let Some(app_id) = &window.app_id {
+         println!("  App ID: \"{app_id}\"");
+     } else {
+         println!("  App ID: (unset)");
+     }
+ 
++    match &window.xdg_tag {
++        (Some(tag), Some(description)) => println!("  XDG Tag: {description} [{tag}]"),
++        (None, Some(description)) => println!("  XDG Tag: {description}"),
++        (Some(tag), None) => println!("  XDG Tag: [{tag}]"),
++        (None, None) => println!("  XDG Tag: (unset)"),
++    }
++
+     println!(
+         "  Is floating: {}",
+         if window.is_floating { "yes" } else { "no" }
+     );
+ 
+     if let Some(pid) = window.pid {
+diff --git a/src/ipc/server.rs b/src/ipc/server.rs
+index db71da6d..ccf05efe 100644
+--- a/src/ipc/server.rs
++++ b/src/ipc/server.rs
+@@ -31,13 +31,13 @@ use smithay::utils::SERIAL_COUNTER;
+ use smithay::wayland::shell::wlr_layer::{KeyboardInteractivity, Layer};
+ 
+ use crate::backend::IpcOutputMap;
+ use crate::input::pick_window_grab::PickWindowGrab;
+ use crate::layout::workspace::WorkspaceId;
+ use crate::niri::State;
+-use crate::utils::{version, with_toplevel_role};
++use crate::utils::{version, with_toplevel_role, with_toplevel_role_and_tag};
+ use crate::window::Mapped;
+ 
+ // If an event stream client fails to read events fast enough that we accumulate more than this
+ // number in our buffer, we drop that event stream client.
+ const EVENT_STREAM_BUFFER_SIZE: usize = 64;
+ 
+@@ -514,16 +514,23 @@ async fn handle_event_stream_client(client: EventStreamClient) -> anyhow::Result
+ 
+ fn make_ipc_window(
+     mapped: &Mapped,
+     workspace_id: Option<WorkspaceId>,
+     layout: WindowLayout,
+ ) -> niri_ipc::Window {
+-    with_toplevel_role(mapped.toplevel(), |role| niri_ipc::Window {
++    with_toplevel_role_and_tag(mapped.toplevel(), |role, tag| niri_ipc::Window {
+         id: mapped.id().get(),
+         title: role.title.clone(),
+         app_id: role.app_id.clone(),
++        xdg_tag: match tag {
++            Some(tag) => (
++                tag.tag().map(|x| x.as_ref().to_owned()),
++                tag.description().map(|x| x.as_ref().to_owned()),
++            ),
++            None => (None, None),
++        },
+         pid: mapped.credentials().map(|c| c.pid),
+         workspace_id: workspace_id.map(|id| id.get()),
+         is_focused: mapped.is_focused(),
+         is_floating: mapped.is_floating(),
+         is_urgent: mapped.is_urgent(),
+         layout,
+diff --git a/src/niri.rs b/src/niri.rs
+index a4150893..9478e14c 100644
+--- a/src/niri.rs
++++ b/src/niri.rs
+@@ -108,12 +108,13 @@ use smithay::wayland::socket::ListeningSocketSource;
+ use smithay::wayland::tablet_manager::TabletManagerState;
+ use smithay::wayland::text_input::TextInputManagerState;
+ use smithay::wayland::viewporter::ViewporterState;
+ use smithay::wayland::virtual_keyboard::VirtualKeyboardManagerState;
+ use smithay::wayland::xdg_activation::XdgActivationState;
+ use smithay::wayland::xdg_foreign::XdgForeignState;
++use smithay::wayland::xdg_toplevel_tag::XdgToplevelTagManager;
+ use wayland_server::protocol::wl_output::WlOutput;
+ 
+ #[cfg(feature = "dbus")]
+ use crate::a11y::A11y;
+ use crate::animation::Clock;
+ use crate::backend::tty::SurfaceDmabufFeedback;
+@@ -309,12 +310,13 @@ pub struct Niri {
+     pub popup_grab: Option<PopupGrabState>,
+     pub presentation_state: PresentationState,
+     pub security_context_state: SecurityContextState,
+     pub gamma_control_manager_state: GammaControlManagerState,
+     pub activation_state: XdgActivationState,
+     pub mutter_x11_interop_state: MutterX11InteropManagerState,
++    pub xdg_toplevel_tag_manager: XdgToplevelTagManager,
+ 
+     // This will not work as is outside of tests, so it is gated with #[cfg(test)] for now. In
+     // particular, shaders will need to learn about the single pixel buffer. Also, it must be
+     // verified that a black single-pixel-buffer background lets the foreground surface to be
+     // unredirected.
+     //
+@@ -2364,12 +2366,13 @@ impl Niri {
+                 },
+             )
+             .unwrap();
+ 
+         let mutter_x11_interop_state =
+             MutterX11InteropManagerState::new::<State, _>(&display_handle, move |_| true);
++        let xdg_toplevel_tag_manager = XdgToplevelTagManager::new::<State>(&display_handle);
+ 
+         #[cfg(test)]
+         let single_pixel_buffer_state = SinglePixelBufferState::new::<State>(&display_handle);
+ 
+         let mut seat: Seat<State> = seat_state.new_wl_seat(&display_handle, backend.seat_name());
+         let keyboard = match seat.add_keyboard(
+@@ -2558,12 +2561,13 @@ impl Niri {
+             bind_repeat_timer: Option::default(),
+             presentation_state,
+             security_context_state,
+             gamma_control_manager_state,
+             activation_state,
+             mutter_x11_interop_state,
++            xdg_toplevel_tag_manager,
+             #[cfg(test)]
+             single_pixel_buffer_state,
+ 
+             seat,
+             keyboard_focus: KeyboardFocus::Layout { surface: None },
+             layer_shell_on_demand_focus: None,
+diff --git a/src/utils/mod.rs b/src/utils/mod.rs
+index bbeac5bc..a2caed1d 100644
+--- a/src/utils/mod.rs
++++ b/src/utils/mod.rs
+@@ -28,12 +28,13 @@ use smithay::utils::{Coordinate, Logical, Point, Rectangle, Size, Transform};
+ use smithay::wayland::compositor::{send_surface_state, with_states, SurfaceData};
+ use smithay::wayland::fractional_scale::with_fractional_scale;
+ use smithay::wayland::shell::xdg::{
+     ToplevelCachedState, ToplevelConfigure, ToplevelState, ToplevelSurface, XdgToplevelSurfaceData,
+     XdgToplevelSurfaceRoleAttributes,
+ };
++use smithay::wayland::xdg_toplevel_tag::XdgToplevelTagSurfaceData;
+ use wayland_backend::server::Credentials;
+ 
+ use crate::handlers::KdeDecorationsModeState;
+ use crate::niri::ClientState;
+ 
+ pub mod id;
+@@ -353,12 +354,30 @@ pub fn with_toplevel_role<T>(
+             .unwrap();
+ 
+         f(&mut role)
+     })
+ }
+ 
++pub fn with_toplevel_role_and_tag<T>(
++    toplevel: &ToplevelSurface,
++    f: impl FnOnce(&mut XdgToplevelSurfaceRoleAttributes, Option<&XdgToplevelTagSurfaceData>) -> T,
++) -> T {
++    with_states(toplevel.wl_surface(), |states| {
++        let mut role = states
++            .data_map
++            .get::<XdgToplevelSurfaceData>()
++            .unwrap()
++            .lock()
++            .unwrap();
++
++        let tag = states.data_map.get::<XdgToplevelTagSurfaceData>();
++
++        f(&mut role, tag)
++    })
++}
++
+ pub fn with_toplevel_role_and_current<T>(
+     toplevel: &ToplevelSurface,
+     f: impl FnOnce(&mut XdgToplevelSurfaceRoleAttributes, Option<&ToplevelState>) -> T,
+ ) -> T {
+     with_states(toplevel.wl_surface(), |states| {
+         let mut role = states
+diff --git a/src/window/mod.rs b/src/window/mod.rs
+index 14527cd2..7cc0baf1 100644
+--- a/src/window/mod.rs
++++ b/src/window/mod.rs
+@@ -10,14 +10,15 @@ use niri_ipc::ColumnDisplay;
+ use smithay::reexports::wayland_protocols::xdg::shell::server::xdg_toplevel;
+ use smithay::utils::{Logical, Size};
+ use smithay::wayland::compositor::with_states;
+ use smithay::wayland::shell::xdg::{
+     SurfaceCachedState, ToplevelSurface, XdgToplevelSurfaceRoleAttributes,
+ };
++use smithay::wayland::xdg_toplevel_tag::XdgToplevelTagSurfaceData;
+ 
+-use crate::utils::with_toplevel_role;
++use crate::utils::with_toplevel_role_and_tag;
+ 
+ pub mod mapped;
+ pub use mapped::Mapped;
+ 
+ pub mod unmapped;
+ pub use unmapped::{InitialConfigureState, Unmapped};
+@@ -182,13 +183,13 @@ impl<'a> WindowRef<'a> {
+ impl ResolvedWindowRules {
+     pub fn compute(rules: &[WindowRule], window: WindowRef, is_at_startup: bool) -> Self {
+         let _span = tracy_client::span!("ResolvedWindowRules::compute");
+ 
+         let mut resolved = ResolvedWindowRules::default();
+ 
+-        with_toplevel_role(window.toplevel(), |role| {
++        with_toplevel_role_and_tag(window.toplevel(), |role, tag| {
+             // Ensure server_pending like in Smithay's with_pending_state().
+             if role.server_pending.is_none() {
+                 role.server_pending = Some(role.current_server_state().clone());
+             }
+ 
+             let mut open_on_output = None;
+@@ -199,13 +200,13 @@ impl ResolvedWindowRules {
+                     if let Some(at_startup) = m.at_startup {
+                         if at_startup != is_at_startup {
+                             return false;
+                         }
+                     }
+ 
+-                    window_matches(window, role, m)
++                    window_matches(window, role, tag, m)
+                 };
+ 
+                 if !(rule.matches.is_empty() || rule.matches.iter().any(matches)) {
+                     continue;
+                 }
+ 
+@@ -380,13 +381,18 @@ impl ResolvedWindowRules {
+ 
+         // We open fixed-height windows as floating.
+         min_size.h > 0 && min_size.h == max_size.h
+     }
+ }
+ 
+-fn window_matches(window: WindowRef, role: &XdgToplevelSurfaceRoleAttributes, m: &Match) -> bool {
++fn window_matches(
++    window: WindowRef,
++    role: &XdgToplevelSurfaceRoleAttributes,
++    tag_data: Option<&XdgToplevelTagSurfaceData>,
++    m: &Match,
++) -> bool {
+     // Must be ensured by the caller.
+     let server_pending = role.server_pending.as_ref().unwrap();
+ 
+     if let Some(is_focused) = m.is_focused {
+         if window.is_focused() != is_focused {
+             return false;
+@@ -424,12 +430,21 @@ fn window_matches(window: WindowRef, role: &XdgToplevelSurfaceRoleAttributes, m:
+         };
+         if !title_re.0.is_match(title) {
+             return false;
+         }
+     }
+ 
++    if let Some(tag_re) = &m.xdg_tag {
++        let Some(tag) = &tag_data.and_then(|x| x.tag()) else {
++            return false;
++        };
++        if !tag_re.0.is_match(tag.as_ref()) {
++            return false;
++        }
++    }
++
+     if let Some(is_active_in_column) = m.is_active_in_column {
+         if window.is_active_in_column() != is_active_in_column {
+             return false;
+         }
+     }
+ 

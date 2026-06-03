@@ -25,17 +25,9 @@ final: prev: {
       }
   );
 
-  alejandra = prev.alejandra.overrideAttrs (
-    _finalAttrs: prevAttrs:
-      assert (prevAttrs.version == "4.0.0"); {
-        patches = (prevAttrs.patches or []) ++ [./alejandra-adblock.diff];
-        doCheck = false;
-      }
-  );
-
   waybar = prev.waybar.overrideAttrs (
     _finalAttrs: prevAttrs:
-      assert (prevAttrs.version == "0.15.0"); {
+      assert prevAttrs.version == "0.15.0"; {
         patches =
           (prevAttrs.patches or [])
           ++ [
@@ -47,7 +39,7 @@ final: prev: {
 
   texlab = prev.texlab.overrideAttrs (
     _finalAttrs: prevAttrs:
-      assert (prevAttrs.version == "5.25.1"); {
+      assert prevAttrs.version == "5.25.1"; {
         patches =
           (prevAttrs.patches or [])
           ++ [
@@ -61,20 +53,5 @@ final: prev: {
       }
   );
 
-  xwayland-satellite = prev.xwayland-satellite.overrideAttrs (
-    _finalAttrs: prevAttrs:
-      assert (prevAttrs.version == "0.8.1"); {
-        patches =
-          (prevAttrs.patches or [])
-          ++ [
-            (final.fetchpatch2 {
-              name = "popup-fix+pr=424.patch";
-              url = "https://github.com/Supreeeme/xwayland-satellite/compare/a879e5e0896a326adc79c474bf457b8b99011027..cae1b1157931a978315f0b1815005def8132d6d1.patch?full_index=1";
-              hash = "sha256-meBh85SWI1RvhI1K96rtIaL3XxOoiAFAmjOfapQ+Gqc=";
-            })
-          ];
-      }
-  );
-
-  termite = assert (prev ? termite); final.kitty; # broken, removed upstream #522784
+  termite = assert prev ? termite; final.kitty; # broken, removed upstream #522784
 }

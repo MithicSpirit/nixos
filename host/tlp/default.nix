@@ -42,8 +42,8 @@ in {
 
   security.wrappers = let
     cmd-pkg =
-      pkgs.writeCBin start-name # C
-      
+      pkgs.writeCBin start-name
+      # C
       ''
         #include <unistd.h>
         static char *argv[] = {"${tlp}", "start"};

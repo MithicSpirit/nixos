@@ -38,6 +38,7 @@
     hexyl
     scc
     tokei # TODO: decide between scc and tokei
+    kondo
   ];
 
   home.sessionVariables = {

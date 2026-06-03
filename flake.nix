@@ -37,16 +37,16 @@
   };
 
   outputs = inputs: let
-    inherit (inputs) nixpkgs;
+    inherit (inputs.nixpkgs) lib;
 
-    eachSystem = nixpkgs.lib.genAttrs (import inputs.systems);
+    eachSystem = lib.genAttrs (import inputs.systems);
 
     root = ./.;
     overlays = (import ./overlays) inputs;
-    mergedOverlays = nixpkgs.lib.composeManyExtensions overlays;
+    mergedOverlays = lib.composeManyExtensions overlays;
 
     packages = eachSystem (
-      sys: nixpkgs.legacyPackages.${sys}.extend mergedOverlays
+      sys: inputs.nixpkgs.legacyPackages.${sys}.extend mergedOverlays
     );
 
     args = {inherit inputs root overlays;};
@@ -55,7 +55,7 @@
     legacyPackages = packages;
 
     nixosConfigurations = {
-      hipparchus = nixpkgs.lib.nixosSystem {
+      hipparchus = lib.nixosSystem {
         system = "x86_64-linux";
         specialArgs = args;
         modules = [./systems/hipparchus];
@@ -64,12 +64,22 @@
 
     homeConfigurations = {
       hipparchus."mithic" = inputs.home-manager.lib.homeManagerConfiguration {
-        pkgs = nixpkgs;
+        pkgs = inputs.nixpkgs;
         extraSpecialArgs = args;
         modules = [./systems/hipparchus/home/mithic.nix];
       };
     };
 
     formatter = eachSystem (sys: packages.${sys}.alejandra);
+    checks = eachSystem (sys: {
+      deadnix =
+        packages.${sys}.runCommandLocal "deadnix-check" {
+          nativeBuildInputs = [packages.${sys}.deadnix];
+        }
+        # bash
+        ''
+          deadnix --fail '${./.}' | tee -a "$out"
+        '';
+    });
   };
 }

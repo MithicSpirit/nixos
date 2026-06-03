@@ -45,17 +45,6 @@ in {
           only-focus-on-click = [];
         };
 
-        # TODO: make user-specific
-        output = [
-          {
-            _args = ["eDP-2"];
-            mode = "2560x1600@165.000";
-            scale = 1.33;
-            variable-refresh-rate = [];
-            focus-at-startup = [];
-          }
-        ];
-
         layout = {
           gaps = 6;
           # logical, so assume 1920x1080
@@ -67,12 +56,11 @@ in {
             bottom = 0;
           };
 
-          # TODO: use colors
           border = {
             width = 2;
-            active-color = "#88c0d0";
-            inactive-color = "#3b4252";
-            urgent-color = "#d08770";
+            active-color = colors.hash.accent;
+            inactive-color = colors.hash.bg;
+            urgent-color = colors.hash.advanced;
           };
           focus-ring.off = [];
           shadow.off = [];
@@ -83,10 +71,10 @@ in {
             gaps-between-tabs = 2;
             hide-when-single-tab = [];
             place-within-column = [];
-            inactive-color = "#4c566a";
+            inactive-color = colors.hash.fake;
           };
 
-          background-color = "#292e38";
+          background-color = colors.hash.floor;
 
           center-focused-column = "never";
           always-center-single-column = [];
@@ -94,7 +82,6 @@ in {
           default-column-display = "tabbed";
 
           preset-column-widths._children = [
-            {proportion = 1.0;}
             {proportion = 0.7;}
             {proportion = 0.5;}
             {proportion = 0.3;}
@@ -105,7 +92,6 @@ in {
           };
 
           preset-window-heights._children = [
-            {proportion = 1.0;}
             {proportion = 0.8;}
             {proportion = 0.5;}
             {proportion = 0.2;}
@@ -128,11 +114,8 @@ in {
 
         gestures = {
           hot-corners.off = [];
-          dnd-edge-workspace-switch.trigger-height = 0;
         };
         animations = {
-          workspace-switch.off = [];
-
           window-open = {
             duration-ms = 150;
             curve = "ease-out-expo";
@@ -144,6 +127,11 @@ in {
           screenshot-ui-open = {
             duration-ms = 200;
             curve = "ease-out-quad";
+          };
+          workspace-switch.spring._props = {
+            damping-ratio = 1.1;
+            stiffness = 3000;
+            epsilon = 0.001;
           };
           horizontal-view-movement.spring._props = {
             damping-ratio = 1.0;
@@ -227,14 +215,19 @@ in {
             variable-refresh-rate = true;
             force-render = true;
             force-render-fps = 15;
-            match = map (x: {_props.app-id = "^${x}$";}) [
-              "^steam_app_.*$"
-              "^dota2$"
-              "^Terraria\\.bin\\.x86_64$"
-              "^factorio$"
-              "^openttd$"
-              "^net-runelite-client-RuneLite$"
-            ];
+            ignore-client-size = true;
+            match =
+              [
+                {_props.xdg-tag = "^proton-game$";}
+              ]
+              ++ map (x: {_props.app-id = "^${x}$";}) [
+                "^steam_app_.*$"
+                "^dota2$"
+                "^Terraria\\.bin\\.x86_64$"
+                "^factorio$"
+                "^openttd$"
+                "^net-runelite-client-RuneLite$"
+              ];
           }
         ];
         layer-rule = [
@@ -274,10 +267,15 @@ in {
             "Mod+Shift+H" = {move-column-left = [];};
             "Mod+Shift+L" = {move-column-right = [];};
 
-            "Mod+Ctrl+H" = {focus-column-first = [];};
-            "Mod+Ctrl+L" = {focus-column-last = [];};
-            "Mod+Ctrl+Shift+H" = {move-column-to-first = [];};
-            "Mod+Ctrl+Shift+L" = {move-column-to-last = [];};
+            "Mod+Ctrl+J" = {focus-workspace-down = [];};
+            "Mod+Ctrl+K" = {focus-workspace-up = [];};
+            "Mod+Ctrl+H" = {focus-monitor-left = [];};
+            "Mod+Ctrl+L" = {focus-monitor-right = [];};
+
+            "Mod+Ctrl+Shift+J" = {move-window-to-workspace-down = [];};
+            "Mod+Ctrl+Shift+K" = {move-window-to-workspace-up = [];};
+            "Mod+Ctrl+Shift+H" = {move-window-to-monitor-left = [];};
+            "Mod+Ctrl+Shift+L" = {move-window-to-monitor-right = [];};
 
             "Mod+O" = {consume-window-into-column = [];};
             "Mod+I" = {consume-window-into-column-left = [];};
@@ -301,8 +299,8 @@ in {
             "Mod+Ctrl+N" = {reset-window-height = [];};
             "Mod+Ctrl+Shift+N" = {set-window-height = "100%";};
 
-            "Mod+Z" = {fullscreen-window = [];};
-            "Mod+Shift+Z" = {maximize-window-to-edges = [];};
+            "Mod+Z" = {maximize-window-to-edges = [];};
+            "Mod+Shift+Z" = {fullscreen-window = [];};
             "Mod+Ctrl+Z" = {toggle-window-floating = [];};
             "Mod+Ctrl+Shift+Z" = {switch-focus-between-floating-and-tiling = [];};
 
@@ -331,7 +329,7 @@ in {
             "XF86MonBrightnessUp" = {spawn = ["brightnessctl" "-e" "set" "2%+"];};
             "XF86MonBrightnessDown" = {spawn = ["brightnessctl" "-e" "set" "2%-"];};
             "XF86AudioRaiseVolume" = {spawn = ["wpctl" "set-volume" "@DEFAULT_AUDIO_SINK@" "5%+"];};
-            "XF86AudioLowerVolume" = {spawn = ["wpctl" "set-volume" "@DEFAULT_AUDIO_SINK@" "5%+"];};
+            "XF86AudioLowerVolume" = {spawn = ["wpctl" "set-volume" "@DEFAULT_AUDIO_SINK@" "5%-"];};
           })
           (builtins.mapAttrs (_: x:
             x
