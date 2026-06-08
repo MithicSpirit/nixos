@@ -335,6 +335,6 @@
   ];
 
   boot.kernelParams = [
-    "video=eDP-1:2560x1600"
+    "video=2560x1600@165"
   ];
 }

@@ -52,7 +52,7 @@ switch: gitadd check (activate 'switch') system
 
 [group('nixos')]
 [private]
-activate op: build (sudo op)
+activate op: build (sudo "nixos " + op)
     sudo nixos-rebuild '{{ op }}' --flake '.#{{ host }}'
 
 # helpers
@@ -64,13 +64,13 @@ clean-artifact:
 [no-cd]
 [private]
 [script]
-sudo reason:
+sudo $reason:
     if [ -n "${WAYLAND_DISPLAY:-}" -o -n "${DISPLAY:-}" ]; then
-        id="$(notify-send -t 600000 -pea 'just' 'Sudo prompt' 'Waiting ({{ reason }})')"
+        id="$(notify-send -t 600000 -pea 'just' 'Sudo prompt' "Waiting (${reason})")"
         if sudo -v; then
-            notify-send -r "$id" -t 2000 -u low -ea 'just' 'Sudo prompt' 'Done ({{ reason }})'
+            notify-send -r "$id" -t 2000 -u low -ea 'just' 'Sudo prompt' "Done (${reason})"
         else
-            notify-send -r "$id" -t 2000 -u low -ea 'just' 'Sudo prompt' 'Cancelled ({{ reason }})'
+            notify-send -r "$id" -t 2000 -u low -ea 'just' 'Sudo prompt' "Cancelled (${reason})"
             exit 1
         fi
     else
@@ -114,7 +114,7 @@ alias fwupd := fwupd-check
 
 [group('non-nix')]
 [no-cd]
-fwupd-check: (sudo 'fwupdmgr checking')
+fwupd-check: (sudo 'fwupdmgr check')
     sudo fwupdmgr refresh --force --no-unreported-check
     -sudo fwupdmgr get-updates --no-unreported-check
 

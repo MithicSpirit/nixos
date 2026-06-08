@@ -48,11 +48,11 @@ int main(int argc, char **argv) {
 	char *target = battery > 50 ? "balanced" : "power-saver";
 
 	if (current != NULL && strcmp(current, target) == 0) {
-		fprintf(stderr, "profile already set to %s\n", target);
+		// fprintf(stderr, "profile already set to %s\n", target);
 		return 1;
 	}
 
-	// fprintf(stderr, "setting profile to %s\n", target);
+	fprintf(stderr, "setting profile to %s\n", target);
 	execlp(ppc, ppc, "set", target, NULL);
 
 	int err = errno;

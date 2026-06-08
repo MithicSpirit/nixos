@@ -175,7 +175,12 @@ in {
         prevent-idle-inhibit = [];
         screenshot-path = "${config.xdg.userDirs.pictures}/screenshots/%Y-%m-%d_%H-%M-%S.png";
         xwayland-satellite.path = "${lib.getExe pkgs.xwayland-satellite}";
+
         window-rule = [
+          {
+            ignore-client-size = true;
+            match._props.is-floating = false;
+          }
           {
             open-floating = true;
             match =
@@ -186,6 +191,7 @@ in {
                 "swayimg(|_.*)"
                 "dev-nohus-rift-MainKt"
                 "dragon-drop"
+                "org.gnupg.pinentry-qt"
               ])
               ++ (map (x: {_props = x;}) [
                 {
@@ -215,7 +221,6 @@ in {
             variable-refresh-rate = true;
             force-render = true;
             force-render-fps = 15;
-            ignore-client-size = true;
             match =
               [
                 {_props.xdg-tag = "^proton-game$";}
@@ -250,7 +255,7 @@ in {
             "Mod+Shift+Return" = {spawn-sh = "$TERMINAL </dev/null >>/tmp/exec.log 2>&1";};
             "Mod+Ctrl+Return" = {spawn-sh = "$BROWSER </dev/null >>/tmp/exec.log 2>&1";};
             "Mod+Ctrl+Shift+Return" = {
-              spawn-sh = "bemenu-run -p 'niri msg' </dev/null 2>>/tmp/exec.log | xargs niri msg >>/tmp/exec.log 2>&1";
+              spawn-sh = "bemenu -p 'niri msg' </dev/null 2>>/tmp/exec.log | xargs niri msg >>/tmp/exec.log 2>&1";
             };
 
             "Mod+Shift+X" = {close-window = [];};

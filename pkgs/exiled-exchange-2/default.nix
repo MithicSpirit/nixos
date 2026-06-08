@@ -14,13 +14,13 @@
 }: let
   name = "exiled-exchange-2";
   pname = "exiled-exchange2";
-  version = "0.15.3";
+  version = "0.15.4";
 
   src = fetchFromGitHub {
     owner = "Kvan7";
     repo = name;
     rev = "v${version}";
-    hash = "sha256-r4V/AhcE42waeN0jT7g+UKey58lwBL/Qwo+IjZJUNlI=";
+    hash = "sha256-c0598C7VzXWa7uYr1aw8h4+tTQI0sGJBdUeTqPPdtYk=";
   };
 
   renderer = buildNpmPackage {
@@ -46,7 +46,7 @@ in
       renderer
       ;
 
-    npmDepsHash = "sha256-HC5fMIlsbmYwiv+vSK/YNAbVJh1Z2AffjOcMUjgleBk=";
+    npmDepsHash = "sha256-yJqOn9mFvWoZNTsd5HhbytK7Ur4iLAInwod+0sb2cTY=";
     makeCacheWritable = true;
 
     nativeBuildInputs = [

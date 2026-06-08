@@ -1,19 +1,17 @@
 final: prev: {
   niri = prev.niri.overrideAttrs (
     finalAttrs: prevAttrs:
-      assert prevAttrs.version == "26.04"; {
-        patches =
-          (prevAttrs.patches or [])
-          ++ [
-            ./${"force-render+pr=2609.diff"}
-            ./prevent-idle-inhibit.diff
-            ./layer-priority.diff
-            ./click-inhibit.diff
-            ./default-column-maximize.diff
-            ./directional-column-operations.diff
-            ./xdg-toplevel-tag.diff
-            ./ignore-client-size.diff
-          ];
+      assert prevAttrs.version == "26.04"; let
+        git = "cba857622fb76ee3e4e2d78c76d6848eb0595d35";
+      in {
+        version = "26.04-r30-mithic-g${builtins.substring 0 7 git}";
+        dontVersionCheck = true;
+        src = final.fetchFromGitHub {
+          owner = "MithicSpirit";
+          repo = "niri";
+          rev = git;
+          hash = "sha256-Yw4VqHRUyLYKncSAvXnFEEbDBXlhoRcuLQoxGQtlT3w=";
+        };
         cargoDeps = final.rustPlatform.fetchCargoVendor {
           inherit (finalAttrs) pname version src patches;
           hash = "sha256-Bf05zLPdtPTyXJW9AgcnCgGSmyIfuL7tfzMmmSJJqW8=";

@@ -52,4 +52,23 @@ final: prev: {
         doCheck = false;
       }
   );
+
+  kitty = prev.kitty.overrideAttrs (
+    finalAttrs: prevAttrs:
+      assert prevAttrs.version == "0.47.1"; {
+        version = "0.47.0";
+        src = final.fetchFromGitHub {
+          owner = "kovidgoyal";
+          repo = "kitty";
+          tag = "v${finalAttrs.version}";
+          hash = "sha256-QI+h7LSpJ5VYae3XdwDhKmpLqEGpmSulXP/mTop3gio=";
+        };
+        goModules =
+          (final.buildGo126Module {
+            pname = "kitty-go-modules";
+            inherit (finalAttrs) src version;
+            vendorHash = "sha256-ZEiIGHj30h3l7mfJkOrPDTMI/GBtf/QDiG/lrqceggg=";
+          }).goModules;
+      }
+  );
 }

@@ -30,7 +30,7 @@
     };
 
     niri = {
-      url = "git+https://codeberg.org/MithicSpirit/niri-nix";
+      url = "git+https://codeberg.org/BANanaD3V/niri-nix";
       inputs = {
         nixpkgs.follows = "nixpkgs";
         niri-unstable.follows = ""; # unused
