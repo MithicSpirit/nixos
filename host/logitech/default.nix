@@ -30,7 +30,7 @@
         };
         thumbwheel = {
           divert = false;
-          invert = false;
+          invert = true;
         };
         buttons = [
           {

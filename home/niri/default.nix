@@ -190,8 +190,6 @@ in {
                 "Matplotlib"
                 "swayimg(|_.*)"
                 "dev-nohus-rift-MainKt"
-                "dragon-drop"
-                "org.gnupg.pinentry-qt"
               ])
               ++ (map (x: {_props = x;}) [
                 {

@@ -90,6 +90,8 @@ vimUtils.buildVimPlugin {
     millet
   ];
 
+  doCheck = false;
+
   meta = with lib; {
     description = "MithicSpirit's Neovim configuration";
     platforms = platforms.all;

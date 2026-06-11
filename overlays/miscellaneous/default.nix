@@ -25,18 +25,6 @@ final: prev: {
       }
   );
 
-  waybar = prev.waybar.overrideAttrs (
-    _finalAttrs: prevAttrs:
-      assert prevAttrs.version == "0.15.0"; {
-        patches =
-          (prevAttrs.patches or [])
-          ++ [
-            ./waybar-niri-workspaces-hides.diff
-            ./waybar-niri-workspaces-format-named.diff
-          ];
-      }
-  );
-
   texlab = prev.texlab.overrideAttrs (
     _finalAttrs: prevAttrs:
       assert prevAttrs.version == "5.25.1"; {

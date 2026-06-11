@@ -92,6 +92,7 @@
   i18n.extraLocales = "all";
 
   services.fwupd.enable = true;
+  systemd.services.fwupd-refresh.enable = false;
 
   services.smartd.enable = true;
   services.btrfs.autoScrub.enable = true;
@@ -332,9 +333,5 @@
     "-h1600"
     "-r165"
     "--adaptive-sync"
-  ];
-
-  boot.kernelParams = [
-    "video=2560x1600@165"
   ];
 }

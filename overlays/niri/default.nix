@@ -33,4 +33,17 @@ final: prev: {
           ];
       }
   );
+
+  waybar = prev.waybar.overrideAttrs (
+    _finalAttrs: prevAttrs:
+      assert prevAttrs.version == "0.15.0"; {
+        patches =
+          (prevAttrs.patches or [])
+          ++ [
+            ./waybar-workspaces-hides.diff
+            ./waybar-workspaces-format-named.diff
+            ./waybar-graceful-disconnect.diff
+          ];
+      }
+  );
 }
