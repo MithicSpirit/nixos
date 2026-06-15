@@ -82,7 +82,8 @@
     theme = "breeze";
   };
 
-  boot.kernelPackages = pkgs.linuxPackages_latest;
+  boot.kernelPackages = assert pkgs.linuxPackages_latest.kernel.version == "7.0.11";
+    pkgs.linuxPackages_6_18;
   boot.kernel.sysctl = {
     "kernel.sysrq" = 244;
     "net.ipv4.tcp_keepalive_time" = 120;
@@ -93,6 +94,7 @@
 
   services.fwupd.enable = true;
   systemd.services.fwupd-refresh.enable = false;
+  systemd.timers.fwupd-refresh.enable = false;
 
   services.smartd.enable = true;
   services.btrfs.autoScrub.enable = true;

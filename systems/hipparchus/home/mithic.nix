@@ -98,6 +98,10 @@
       ];
     };
   };
+  services.dunst.settings.global = {
+    monitor = "eDP-2";
+    follow = "none";
+  };
 
   systemd.user.settings.Manager = {
     DefaultTimeoutStopSec = "30s";
@@ -187,6 +191,10 @@
       containers.engine.detach_keys = "ctrl-q,ctrl-z";
     };
   };
+
+  services.network-manager-applet.enable = true;
+  services.pasystray.enable = true;
+  services.playerctld.enable = true;
 
   home.stateVersion = "24.05"; # XXX: do not change
 }

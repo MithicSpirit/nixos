@@ -13,7 +13,7 @@
     in {
       # TODO: maybe customize more
       global = {
-        follow = "keyboard";
+        follow = lib.mkDefault "keyboard";
         sort = "urgency_descending";
         notification_limit = 3;
         indicate_hidden = true;
@@ -42,34 +42,42 @@
       urgency_low = {
         background = colors.floor;
         foreground = colors.middle;
-        timeout = 5;
+        timeout = 20;
       };
       urgency_normal = {
         background = colors.bg;
         foreground = colors.fg;
-        timeout = 15;
+        timeout = 0;
       };
       urgency_critical = {
         background = colors.bg;
         foreground = colors.highlight;
         timeout = 0;
-        override_pause_level = 60;
+        override_pause_level = 100;
       };
 
+      signal = {
+        appname = "Signal*";
+        urgency = "critical";
+      };
       notify-send = {
         appname = "notify-send";
         urgency = "normal";
         format = "%p<b>%s</b>\\n%b";
       };
-      signal = {
-        appname = "Signal*";
-        urgency = "critical";
-      };
       gamemode = {
-        summary = "GameMode *";
-        appname = "notify-send";
+        appname = "GameMode";
         urgency = "low";
-        format = "%s";
+        format = "%s (%a)";
+      };
+      blueman = {
+        appname = "blueman";
+        urgency = "low";
+      };
+      niri-screenshot = {
+        appname = "niri";
+        summary = "Screenshot captured";
+        urgency = "low";
       };
     };
   };

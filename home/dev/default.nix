@@ -24,6 +24,7 @@
     (lib.setPrio (gcc.meta.priority + 1) clang)
     clang-tools
     binutils
+    bear
 
     # haskell
     ghc

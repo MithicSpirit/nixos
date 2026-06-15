@@ -66,7 +66,7 @@ clean-artifact:
 [script]
 sudo $reason:
     if [ -n "${WAYLAND_DISPLAY:-}" -o -n "${DISPLAY:-}" ]; then
-        id="$(notify-send -t 600000 -pea 'just' 'Sudo prompt' "Waiting (${reason})")"
+        id="$(notify-send -pea 'just' 'Sudo prompt' "Waiting (${reason})")"
         if sudo -v; then
             notify-send -r "$id" -t 2000 -u low -ea 'just' 'Sudo prompt' "Done (${reason})"
         else

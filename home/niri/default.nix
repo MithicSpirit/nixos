@@ -26,7 +26,7 @@ in {
           touchpad = {
             accel-speed = -0.3;
             accel-profile = "adaptive";
-            scroll-factor = 0.4;
+            scroll-factor = 0.5;
             natural-scroll = [];
             tap = [];
             dwt = [];
@@ -36,7 +36,7 @@ in {
           mouse = {
             accel-speed = -0.22;
             accel-profile = "flat";
-            scroll-factor = 0.8;
+            scroll-factor = 1.0; # NOTE: I like 0.8, but changing this breaks wine
           };
           touch.off = [];
 
