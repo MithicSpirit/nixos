@@ -1,5 +1,4 @@
 {nixpkgs}: {
-  eve-rift = nixpkgs.callPackage ./eve-rift {};
   firefox-ui-fix = nixpkgs.callPackage ./firefox-ui-fix {};
   fw-fanctrl = nixpkgs.callPackage ./fw-fanctrl {};
   mithic-nvim = nixpkgs.callPackage ./mithic-nvim {};

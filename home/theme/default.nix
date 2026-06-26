@@ -64,6 +64,8 @@
 
   fonts.fontconfig = {
     enable = true;
+    antialiasing = true;
+    subpixelRendering = "none";
     defaultFonts = let
       standard = "Iosevka Mithic";
     in {

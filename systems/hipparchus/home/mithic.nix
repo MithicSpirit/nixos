@@ -193,8 +193,17 @@
   };
 
   services.network-manager-applet.enable = true;
-  services.pasystray.enable = true;
+  services.pasystray = {
+    enable = true;
+    extraOptions = [
+      "--volume-inc=5"
+      "--notify=sink"
+      "--notify=source"
+    ];
+  };
   services.playerctld.enable = true;
+
+  programs.imv.enable = true;
 
   home.stateVersion = "24.05"; # XXX: do not change
 }

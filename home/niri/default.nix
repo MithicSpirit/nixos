@@ -243,7 +243,7 @@ in {
             ];
           }
           {
-            priority = -10;
+            priority = 10;
             match._props.namespace = "^notifications$";
           }
         ];

@@ -1,5 +1,6 @@
 {pkgs, ...}: {
-  environment.systemPackages = [
-    pkgs.radeontop
+  environment.systemPackages = with pkgs; [
+    radeontop
+    nvtopPackages.amd
   ];
 }

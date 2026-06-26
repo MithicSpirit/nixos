@@ -9,6 +9,8 @@
 }: {
   nix = {
     package = pkgs.nixVersions.latest;
+    daemonCPUSchedPolicy = "idle";
+    daemonIOSchedClass = "idle";
 
     settings = {
       experimental-features = [
@@ -18,9 +20,9 @@
       use-xdg-base-directories = true;
       cores = builtins.ceil (16 * 0.5);
     };
-
-    daemonCPUSchedPolicy = "idle";
-    daemonIOSchedClass = "idle";
+    extraOptions = ''
+      warn-dirty = false
+    '';
   };
 
   imports =
@@ -82,7 +84,7 @@
     theme = "breeze";
   };
 
-  boot.kernelPackages = assert pkgs.linuxPackages_latest.kernel.version == "7.0.11";
+  boot.kernelPackages = assert pkgs.linuxPackages_latest.kernel.version == "7.1.1";
     pkgs.linuxPackages_6_18;
   boot.kernel.sysctl = {
     "kernel.sysrq" = 244;
@@ -143,7 +145,10 @@
   hardware.enableRedistributableFirmware = true;
 
   services.flatpak.enable = true;
-  fonts.fontDir.enable = true;
+  fonts = {
+    enableDefaultPackages = true;
+    fontDir.enable = true;
+  };
   xdg.portal = {
     enable = true;
     extraPortals = [pkgs.xdg-desktop-portal-gtk];

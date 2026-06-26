@@ -32,7 +32,6 @@ in {
 
     # eve online
     pyfa
-    eve-rift
   ];
 
   programs.mangohud = {
