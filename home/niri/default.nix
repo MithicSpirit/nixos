@@ -396,7 +396,7 @@ in {
               "thunderbird"
               "org\\.signal\\.Signal"
               "vesktop"
-              "Zulip"
+              "zulip"
               "element"
             ]);
       }

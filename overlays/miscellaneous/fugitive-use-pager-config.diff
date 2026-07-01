@@ -1,0 +1,35 @@
+diff --git a/autoload/fugitive.vim b/autoload/fugitive.vim
+index d0748c1..0c5126c 100644
+--- a/autoload/fugitive.vim
++++ b/autoload/fugitive.vim
+@@ -3769,20 +3769,22 @@ function! fugitive#PagerFor(argv, ...) abort
+         \ args[0] =~# '^\%(tag\|branch\)$' && (
+         \    s:HasOpt(args, '--edit-description', '--unset-upstream', '-m', '-M', '--move', '-c', '-C', '--copy', '-d', '-D', '--delete') ||
+         \   len(filter(args[1:-1], 'v:val =~# "^[^-]\\|^--set-upstream-to="')) &&
+         \   !s:HasOpt(args, '--contains', '--no-contains', '--merged', '--no-merged', '--points-at'))
+     return 0
+   endif
+-  let config = a:0 ? a:1 : fugitive#Config()
+-  let value = get(fugitive#ConfigGetAll('pager.' . args[0], config), 0, -1)
+-  if value =~# '^\%(true\|yes\|on\|1\)$'
+-    return 1
+-  elseif value =~# '^\%(false\|no|off\|0\|\)$'
+-    return 0
+-  elseif type(value) == type('')
+-    return value
++  if get(g:, 'fugitive_use_pager_config', 1)
++    let config = a:0 ? a:1 : fugitive#Config()
++    let value = get(fugitive#ConfigGetAll('pager.' . args[0], config), 0, -1)
++    if value =~# '^\%(true\|yes\|on\|1\)$'
++      return 1
++    elseif value =~# '^\%(false\|no|off\|0\|\)$'
++      return 0
++    elseif type(value) == type('')
++      return value
++  endif
+   elseif args[0] =~# '^\%(branch\|config\|diff\|grep\|log\|range-diff\|shortlog\|show\|tag\|whatchanged\)$' ||
+         \ (args[0] ==# 'stash' && get(args, 1, '') ==# 'show') ||
+         \ (args[0] ==# 'reflog' && get(args, 1, '') !~# '^\%(expire\|delete\|exists\)$') ||
+         \ (args[0] ==# 'am' && s:HasOpt(args, '--show-current-patch'))
+     return 1
+   else

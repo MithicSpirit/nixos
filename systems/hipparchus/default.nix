@@ -67,7 +67,6 @@
       }
     ];
     permittedInsecurePackages = assert pkgs.electron_39.version == "39.8.10";
-    assert lib.functionArgs pkgs.zulip.override ? electron_39;
     assert lib.functionArgs pkgs.bitwarden-desktop.override ? electron_39; ["electron-39.8.10"];
   };
 
@@ -84,7 +83,7 @@
     theme = "breeze";
   };
 
-  boot.kernelPackages = assert pkgs.linuxPackages_latest.kernel.version == "7.1.1";
+  boot.kernelPackages = assert pkgs.linuxPackages_latest.kernel.version == "7.1.2";
     pkgs.linuxPackages_6_18;
   boot.kernel.sysctl = {
     "kernel.sysrq" = 244;

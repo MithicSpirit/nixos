@@ -29,6 +29,7 @@
         default = "simple";
         followTags = true;
       };
+      tag.sort = "version:refname";
       transfer.fsckObjects = true;
       receive.fsckObjects = true;
 

@@ -25,19 +25,16 @@ final: prev: {
       }
   );
 
-  texlab = prev.texlab.overrideAttrs (
-    _finalAttrs: prevAttrs:
-      assert prevAttrs.version == "5.25.1"; {
+  vimPlugins = prev.vimPlugins.extend (_self: super: {
+    vim-fugitive = super.vim-fugitive.overrideAttrs (_finalAttrs: prevAttrs:
+      assert prevAttrs.version == "3.7-unstable-2026-03-07"; {
         patches =
           (prevAttrs.patches or [])
-          ++ [
-            (final.fetchpatch2 {
-              name = "bibitem-fix.patch";
-              url = "https://github.com/latex-lsp/texlab/commit/74461ae08fbaef54f0254ddfa40505ff6e2ee0a8.patch?full_index=1";
-              hash = "sha256-7f4RtwcokwO769mqzBuigmXUXJZCIkSdiJY3LOYyXss=";
-            })
-          ];
-        doCheck = false;
-      }
-  );
+          ++ [./fugitive-use-pager-config.diff];
+      });
+  });
+
+  vesktop = prev.vesktop.override {
+    pnpm_10_29_2 = final.pnpm_10;
+  };
 }
