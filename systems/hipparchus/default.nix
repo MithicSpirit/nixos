@@ -83,8 +83,7 @@
     theme = "breeze";
   };
 
-  boot.kernelPackages = assert pkgs.linuxPackages_latest.kernel.version == "7.1.2";
-    pkgs.linuxPackages_6_18;
+  boot.kernelPackages = pkgs.linuxPackages_6_18; # TODO: bump to latest.  waiting due to eve crash
   boot.kernel.sysctl = {
     "kernel.sysrq" = 244;
     "net.ipv4.tcp_keepalive_time" = 120;

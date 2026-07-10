@@ -7,6 +7,7 @@
   # TODO: check whether names are correct
 
   home.pointerCursor = {
+    enable = true;
     package = pkgs.kdePackages.breeze;
     name = "breeze_cursors";
     size = 24;
