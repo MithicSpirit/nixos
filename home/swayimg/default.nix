@@ -7,37 +7,35 @@
 in {
   programs.swayimg = {
     enable = true;
-    settings = {
-      general = {
-        size = "image";
-        overlay = "yes";
-        decoration = "no";
-        app_id = "swayimg";
-      };
+    initLua =
+      # lua
+      ''
+        -- TODO: see if necessary
+        -- local initial_image = swayimg.viewer.current_image()
+        -- swayimg.set_window_size(image["width"], image["height"])
+        swayimg.enable_overlay(true)
+        swayimg.enable_decoration(false)
 
-      viewer = rec {
-        window = "#00000000";
-        transparency = window;
-        history = 2;
-        preload = 3;
-      };
+        local background = 0
+        swayimg.viewer.set_window_background(background)
+        swayimg.viewer.set_image_background(background)
 
-      gallery = {
-        preload = "yes";
-        pstore = "no";
-      };
+        local hist = 3
+        swayimg.viewer.limit_history(hist)
+        swayimg.viewer.limit_preload(hist)
 
-      list = {
-        all = "no";
-        fsmon = "yes";
-      };
+        swayimg.gallery.enable_preload(true)
+        swayimg.gallery.enable_pstore(false)
 
-      font = {
-        name = builtins.head config.fonts.fontconfig.defaultFonts.monospace;
-        size = 12;
-        color = colors.fg + "dd";
-      };
-    };
+        swayimg.text.set_font("${builtins.head config.fonts.fontconfig.defaultFonts.monospace}")
+        swayimg.text.set_size(12)
+        swayimg.text.set_foreground()
+        font = {
+          name = builtins.head config.fonts.fontconfig.defaultFonts.monospace;
+          size = 12;
+          color = ${colors.fg} + 0xdd000000; -- TODO: use bitwise when available in luajit
+        };
+      '';
   };
 
   xdg.mimeApps.defaultApplicationPackages = [config.programs.swayimg.package];

@@ -1,70 +1,176 @@
 {
-  stdenv,
   lib,
-  buildNpmPackage,
-  fetchFromGitHub,
-  darwin,
-  ttfautohint-nox,
+  iosevka,
 }:
-buildNpmPackage (finalAttrs: {
-  pname = "iosevka-mithic";
-
-  version = "34.7.0";
-
-  src = fetchFromGitHub {
-    owner = "be5invis";
-    repo = "iosevka";
-    tag = "v${finalAttrs.version}";
-    hash = "sha256-OwCtp/WufMCzuaPTDCr2siorUC52zgM2e80DyshzsZw=";
-  };
-
-  npmDepsHash = "sha256-tlBxO9K0itXO6Mac4jcygZ6+9kj1gTdmu+rtbL2qdcE=";
-
-  nativeBuildInputs =
-    [
-      ttfautohint-nox
-    ]
-    ++ lib.optionals stdenv.isDarwin [
-      darwin.cctools # libtool
-    ];
-
-  configurePhase = ''
-    runHook preConfigure
-    cp '${./build-plans.toml}' './private-build-plans.toml'
-    runHook postConfigure
-  '';
-
-  buildPhase = ''
-    export HOME=$TMPDIR
-    runHook preBuild
-    npm run build --no-update-notifier --targets ttf::IosevkaMithic \
-      -- --jCmd=$NIX_BUILD_CORES --verbose=9 \
-      | cat  # clean up output
-    runHook postBuild
-  '';
-
-  installPhase = ''
-    runHook preInstall
-    install -Dt "$out/share/fonts/truetype" -m644 dist/IosevkaMithic/TTF/*.ttf
-    runHook postInstall
-  '';
-
-  enableParallelBuilding = true;
-
-  meta = with lib; {
-    homepage = "https://typeof.net/Iosevka/";
-    downloadPage = "https://github.com/be5invis/Iosevka/releases";
-    description = "A custom configuration of the Iosevka monospace font";
-    longDescription = ''
-      This font is a mostly sans-serif and monospace build of Iosevka, patched
-      for nerd symbols. It includes many ligatures.
-
-      Iosevka is an open-source, sans-serif + slab-serif, monospace +
-      quasi‑proportional typeface family, designed for writing code, using in
-      terminals, and preparing technical documents.
-    '';
-    license = licenses.ofl;
-    platforms = platforms.all;
-    maintainers = [maintainers.mithicspirit];
-  };
-})
+assert iosevka.version == "34.7.0";
+  (iosevka.override {
+    set = "Mithic";
+    privateBuildPlan = {
+      family = "Iosevka Mithic";
+      spacing = "fontconfig-mono";
+      serifs = "sans";
+      buildTextureFeature = true;
+      noCvSs = false;
+      noLigation = false;
+      exportGlyphNames = true;
+      variants = {
+        inherits = "ss05";
+        design = {
+          apl-form = "enable";
+          capital-d = "standard-serifless";
+          capital-g = "toothed-serifless-hooked";
+          capital-k = "straight-serifless";
+          capital-m = "hanging-serifless";
+          capital-q = "crossing";
+          a = "double-storey-serifless";
+          f = "flat-hook-serifless-crossbar-at-x-height";
+          g = "double-storey";
+          k = "straight-serifless";
+          r = "serifed";
+          t = "flat-hook";
+          long-s = "flat-hook-tailed-middle-serifed";
+          eszet = "sulzbacher-tailed-middle-serifed";
+          lower-delta = "flat-top";
+          capital-gamma = "top-right-serifed";
+          lower-iota = "tailed";
+          lower-lambda = "straight";
+          lower-mu = "toothed-serifless";
+          lower-chi = "semi-chancery-straight-serifless";
+          zero = "slashed-split";
+          four = "closed-serifless";
+          five = "upright-flat-serifless";
+          tilde = "low";
+          asterisk = "penta-low";
+          underscore = "high";
+          pilcrow = "high";
+          caret = "low";
+          brace = "straight";
+          number-sign = "upright";
+          ampersand = "closed";
+          at = "fourfold";
+          dollar = "open";
+          cent = "open";
+          tittle = "square";
+          diacritic-dot = "square";
+          punctuation-dot = "square";
+          braille-dot = "square";
+          partial-derivative = "curly-bar";
+          micro-sign = "toothed-serifless";
+          lig-ltgteq = "flat";
+          lig-neq = "slightly-slanted";
+          lig-equal-chain = "with-notch";
+          lig-hyphen-chain = "with-notch";
+          lig-plus-chain = "with-notch";
+          lig-double-arrow-bar = "with-notch";
+          lig-single-arrow-bar = "with-notch";
+        };
+        italic = {
+          a = "single-storey-earless-corner-serifless";
+          b = "toothless-corner-serifless";
+          d = "toothless-corner-serifless";
+          e = "rounded";
+          f = "flat-hook-extended-crossbar-at-x-height";
+          g = "single-storey-earless-corner";
+          i = "serifed-flat-tailed";
+          k = "cursive-serifless";
+          l = "serifed-flat-tailed";
+          m = "earless-corner-double-arch-serifless";
+          n = "earless-corner-straight-serifless";
+          p = "earless-corner-serifless";
+          q = "earless-corner-straight-serifless";
+          r = "serifless";
+          t = "bent-hook";
+          u = "toothless-corner-serifless";
+          v = "cursive-serifless";
+          y = "cursive-serifless";
+          lower-delta = "rounded";
+          lower-iota = "tailed-serifed";
+          lower-lambda = "straight-turn";
+          lower-mu = "toothless-corner-serifless";
+          lower-xi = "rounded";
+          zero = "dotted";
+          one = "no-base";
+          six = "straight-bar";
+          nine = "straight-bar";
+          underscore = "above-baseline";
+          ampersand = "upper-open";
+          at = "threefold";
+          percent = "dots";
+          tittle = "round";
+          diacritic-dot = "round";
+          punctuation-dot = "round";
+          braille-dot = "round";
+          micro-sign = "toothless-corner-serifless";
+        };
+      };
+      ligations.enables = [
+        "center-ops"
+        "center-op-trigger-plus-minus-l"
+        "center-op-trigger-plus-minus-r"
+        "center-op-trigger-equal-l"
+        "center-op-trigger-equal-r"
+        "center-op-trigger-bar-l"
+        "center-op-trigger-bar-r"
+        "center-op-trigger-angle-inside"
+        "center-op-trigger-angle-outside"
+        "center-op-influence-colon"
+        "arrow-l"
+        "arrow-r"
+        "arrow-lr"
+        "counter-arrow-l"
+        "counter-arrow-r"
+        "trig"
+        "eqeq"
+        "lteq"
+        "gteq"
+        "exeq"
+        "ltgt-diamond-tag"
+        "brst"
+        "kern-dotty"
+        "kern-bars"
+        "llgg"
+        "html-comment"
+        "tilde-tilde-tilde"
+        "minus-minus"
+        "minus-minus-minus"
+        "plus-plus"
+        "plus-plus-plus"
+        "underscore-underscore"
+        "underscore-underscore-underscore"
+        "hash-hash"
+        "hash-hash-hash"
+      ];
+      weights =
+        builtins.mapAttrs (_: x: {
+          shape = x;
+          menu = x;
+          css = x;
+        }) {
+          thin = 100;
+          extralight = 200;
+          light = 300;
+          regular = 400;
+          book = 450;
+          medium = 500;
+          semibold = 600;
+          bold = 700;
+          extrabold = 800;
+          heavy = 900;
+        };
+      widths.normal = {
+        shape = 576;
+        menu = 5;
+        css = "normal";
+      };
+    };
+  }).overrideAttrs (_finalAttrs: prevAttrs: {
+    meta =
+      prevAttrs.meta
+      // {
+        maintainers =
+          (prevAttrs.maintainers or [])
+          ++ (with lib.maintainers; [
+            mithicspirit
+          ]);
+      };
+  })

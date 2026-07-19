@@ -108,4 +108,8 @@ export TTY GPG_TTY="$TTY"
 unset SSH_AGENT_PID
 export SSH_AUTH_SOCK="$(gpgconf --list-dirs agent-ssh-socket)"
 
+eza () {
+	command eza -bg --git --classify=auto --hyperlink=auto "$@"
+}
+
 true  # prevent above error codes from affecting prompt

@@ -30,7 +30,7 @@
     };
 
     niri = {
-      url = "git+https://codeberg.org/BANanaD3V/niri-nix";
+      url = "git+https://codeberg.org/bananad3v/niri-nix?rev=cbe96f11c01b3a0947dd1958eeb64db887e63b9d";
       inputs = {
         nixpkgs.follows = "nixpkgs";
         niri-unstable.follows = ""; # unused

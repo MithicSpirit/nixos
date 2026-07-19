@@ -33,4 +33,21 @@ final: prev: {
           ++ [./fugitive-use-pager-config.diff];
       });
   });
+
+  # https://github.com/NixOS/nixpkgs/pull/508732
+  nerd-font-patcher = prev.nerd-font-patcher.overrideAttrs (
+    _finalAttrs: prevAttrs:
+      assert !(prevAttrs ? postPatch); {
+        postPatch = ''
+          substituteInPlace font-patcher \
+            --replace-fail "'glyphnames.json'" "'../share/glyphnames.json'"
+        '';
+        installPhase =
+          prevAttrs.installPhase
+          + # bash
+          ''
+            install -Dm644 glyphnames.json $out/share/glyphnames.json
+          '';
+      }
+  );
 }

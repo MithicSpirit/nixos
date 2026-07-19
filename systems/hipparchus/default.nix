@@ -184,6 +184,7 @@
       comma
       nvd
       nix-tree
+      nix-diff
       which
       dash
       curl
