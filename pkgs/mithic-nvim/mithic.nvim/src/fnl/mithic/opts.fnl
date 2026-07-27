@@ -4,6 +4,8 @@
 (set vim.opt.mousescroll "ver:2,hor:4")
 
 (set vim.opt.conceallevel (if _G.unicode 2 0))
+(set vim.opt.winborder _G.border)
+(set vim.opt.pumborder _G.border)
 (set vim.opt.linespace 0)
 (set vim.opt.timeout false)
 (set vim.opt.cursorline true)

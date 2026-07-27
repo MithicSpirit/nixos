@@ -26,8 +26,6 @@
 
 ;; Popup border
 (vim.diagnostic.config {:float {:border _G.border}})
-(each [name handler (pairs vim.lsp.handlers)]
-  (tset vim.lsp.handlers name (vim.lsp.with handler {:border _G.border})))
 
 
 ;; Adjust lc-lms by sw

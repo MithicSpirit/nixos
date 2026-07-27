@@ -14,11 +14,10 @@ in {
     initLua =
       # lua
       ''
-        vim.g.vimtex_callback_progpath =
-          '${lib.getExe config.programs.neovim.finalPackage}'
+        vim.g.vimtex_callback_progpath = '${lib.getExe config.programs.neovim.finalPackage}'
         require 'mithic'
       '';
-    extraPackages = me.propagatedBuildInputs;
+    extraPackages = me.passthru.runtime-dependencies;
 
     withPython3 = true;
     withRuby = true;

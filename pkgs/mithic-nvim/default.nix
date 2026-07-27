@@ -1,7 +1,7 @@
 {
   lib,
   vimUtils,
-  luaPackages,
+  luajitPackages,
   python3,
   vimPlugins,
   # dependencies
@@ -23,8 +23,7 @@
   millet,
 }:
 vimUtils.buildVimPlugin {
-  pname = "mithic-nvim"; # mithic.nvim
-  version = "0.0.0";
+  name = "mithic-nvim";
 
   src = ./mithic.nvim;
 
@@ -34,7 +33,7 @@ vimUtils.buildVimPlugin {
   '';
 
   nativeBuildInputs = [
-    luaPackages.fennel
+    luajitPackages.fennel
     python3
   ];
 
@@ -71,7 +70,7 @@ vimUtils.buildVimPlugin {
     telescope-file-browser-nvim
   ];
 
-  propagatedBuildInputs = [
+  passthru.runtime-dependencies = [
     fd
     elan
     coq

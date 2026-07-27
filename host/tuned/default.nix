@@ -75,9 +75,9 @@ in {
   };
 
   programs.gamemode.settings.custom = let
-    tuned-adm = lib.getExe' pkgs.tuned "tuned-adm";
+    powerprofilesctl = lib.getExe pkgs.power-profiles-daemon;
   in {
-    start = ["${tuned-adm} profile accelerator-performance"];
+    start = ["${powerprofilesctl} set performance"];
     end = let
       reset-ppd = pkgs.writeShellScript "reset-ppd" ''
         set -euo pipefail

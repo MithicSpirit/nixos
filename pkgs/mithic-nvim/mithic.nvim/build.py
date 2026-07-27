@@ -6,6 +6,8 @@ import sys
 from enum import Enum, member
 from pathlib import Path
 
+IGNORE = frozenset({"flsproject.fnl"})
+
 
 class Installer(Enum):
     @member
@@ -42,6 +44,11 @@ class Installer(Enum):
         mode = src.lstat().st_mode
         dst.mkdir(mode, exist_ok=True)
 
+    @member
+    @staticmethod
+    def ignore(src: Path, dst: Path) -> None:
+        _ = src, dst
+
     def __call__(self, src: Path, dst: Path) -> None:
         return self.value(src, dst)
 
@@ -51,14 +58,15 @@ def run(src: Path, dst: Path) -> None:
     while stack:
         source = stack.pop()
         path = source.relative_to(src)
-        print(path)
 
-        target = dst
+        target = Path()
         for parent in path.parts:
             target /= parent if str(parent) != "fnl" else "lua"
 
         install: Installer
-        if source.is_dir():
+        if str(path) in IGNORE:
+            install = Installer.ignore
+        elif source.is_dir():
             stack += source.iterdir()
             install = Installer.directory
         elif target.suffix == ".fnl":
@@ -67,7 +75,9 @@ def run(src: Path, dst: Path) -> None:
         else:
             install = Installer.default
 
-        install(source, target)
+        print(f"{path} -> {target} ({install.name})")
+
+        install(source, dst / target)
 
 
 def main() -> None:
