@@ -22,6 +22,7 @@
     };
     extraOptions = ''
       warn-dirty = false
+      max-substitution-jobs = 2
     '';
   };
 
@@ -66,8 +67,6 @@
         redistributable = true;
       }
     ];
-    permittedInsecurePackages = assert pkgs.electron_39.version == "39.8.10";
-    assert lib.functionArgs pkgs.bitwarden-desktop.override ? electron_39; ["electron-39.8.10"];
   };
 
   boot.loader.systemd-boot = {

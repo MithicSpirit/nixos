@@ -1,6 +1,7 @@
 {pkgs, ...}: {
   services.printing = {
     enable = true;
+    startWhenNeeded = true;
     drivers = with pkgs; [gutenprint gutenprintBin hplip];
   };
 

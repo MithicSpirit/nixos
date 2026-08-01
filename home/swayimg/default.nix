@@ -3,38 +3,30 @@
   root,
   ...
 }: let
-  colors = (import (root + /common/colorscheme.nix)).hash;
+  colors = (import (root + /common/colorscheme.nix)).raw;
 in {
   programs.swayimg = {
     enable = true;
     initLua =
       # lua
       ''
-        -- TODO: see if necessary
-        -- local initial_image = swayimg.viewer.current_image()
-        -- swayimg.set_window_size(image["width"], image["height"])
-        swayimg.enable_overlay(true)
-        swayimg.enable_decoration(false)
+        swayimg.overlay = true
+        swayimg.decoration = true
 
-        local background = 0
+        local background = 0x00000000 -- black
         swayimg.viewer.set_window_background(background)
         swayimg.viewer.set_image_background(background)
 
         local hist = 3
-        swayimg.viewer.limit_history(hist)
-        swayimg.viewer.limit_preload(hist)
+        swayimg.viewer.history = hist
+        swayimg.viewer.preload = hist
 
-        swayimg.gallery.enable_preload(true)
-        swayimg.gallery.enable_pstore(false)
+        swayimg.gallery.preload = true
+        swayimg.gallery.pstore = true
 
-        swayimg.text.set_font("${builtins.head config.fonts.fontconfig.defaultFonts.monospace}")
-        swayimg.text.set_size(12)
-        swayimg.text.set_foreground()
-        font = {
-          name = builtins.head config.fonts.fontconfig.defaultFonts.monospace;
-          size = 12;
-          color = ${colors.fg} + 0xdd000000; -- TODO: use bitwise when available in luajit
-        };
+        swayimg.text.font = "${builtins.head config.fonts.fontconfig.defaultFonts.monospace}"
+        swayimg.text.size = 12
+        swayimg.text.color = 0xdd${colors.fg}
       '';
   };
 

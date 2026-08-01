@@ -28,61 +28,69 @@
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-
-    niri = {
-      url = "git+https://codeberg.org/bananad3v/niri-nix?rev=cbe96f11c01b3a0947dd1958eeb64db887e63b9d";
-      inputs = {
-        nixpkgs.follows = "nixpkgs";
-        niri-unstable.follows = ""; # unused
-        xwayland-satellite-unstable.follows = ""; # unused
-      };
-    };
   };
 
-  outputs = inputs: let
-    inherit (inputs.nixpkgs) lib;
+  outputs = inputs:
+    inputs.nixpkgs.lib.fix (self: let
+      inherit (inputs.nixpkgs) lib;
 
-    eachSystem = lib.genAttrs (import inputs.systems);
+      eachSystem = lib.genAttrs (import inputs.systems);
 
-    root = ./.;
-    overlays = (import ./overlays) inputs;
-    mergedOverlays = lib.composeManyExtensions overlays;
+      root = ./.;
+      overlays = (import ./overlays) inputs;
+      args = {inherit inputs root overlays;};
 
-    packages = eachSystem (
-      sys: inputs.nixpkgs.legacyPackages.${sys}.extend mergedOverlays
-    );
+      mergedOverlays = self.overlays.default;
+      packages = self.legacyPackages;
+    in {
+      overlays.default = lib.composeManyExtensions overlays;
+      legacyPackages = eachSystem (
+        sys: inputs.nixpkgs.legacyPackages.${sys}.extend mergedOverlays
+      );
 
-    args = {inherit inputs root overlays;};
-  in {
-    overlays.default = mergedOverlays;
-    legacyPackages = packages;
-
-    nixosConfigurations = {
-      hipparchus = lib.nixosSystem {
-        system = "x86_64-linux";
-        specialArgs = args;
-        modules = [./systems/hipparchus];
+      nixosConfigurations = {
+        hipparchus = lib.nixosSystem {
+          system = "x86_64-linux";
+          specialArgs = args;
+          modules = [./systems/hipparchus];
+        };
       };
-    };
 
-    homeConfigurations = {
-      hipparchus."mithic" = inputs.home-manager.lib.homeManagerConfiguration {
-        pkgs = inputs.nixpkgs;
-        extraSpecialArgs = args;
-        modules = [./systems/hipparchus/home/mithic.nix];
+      homeConfigurations = {
+        hipparchus."mithic" = inputs.home-manager.lib.homeManagerConfiguration {
+          pkgs = inputs.nixpkgs;
+          extraSpecialArgs = args;
+          modules = [./systems/hipparchus/home/mithic.nix];
+        };
       };
-    };
 
-    formatter = eachSystem (sys: packages.${sys}.alejandra);
-    checks = eachSystem (sys: {
-      deadnix =
-        packages.${sys}.runCommandLocal "deadnix-check" {
-          nativeBuildInputs = [packages.${sys}.deadnix];
-        }
-        # bash
-        ''
-          deadnix --fail '${./.}' | tee -a "$out"
-        '';
+      formatter = eachSystem (sys: packages.${sys}.alejandra);
+      devShells = eachSystem (sys: let
+        pkgs = packages.${sys};
+      in {
+        default = pkgs.mkShell {
+          packages = [
+            self.formatter.${sys}
+            pkgs.deadnix
+            pkgs.just
+            pkgs.nix-output-monitor
+            pkgs.nvd
+            pkgs.libnotify
+            pkgs.fastfetch
+            pkgs.git
+          ];
+        };
+      });
+
+      checks = eachSystem (sys: {
+        deadnix =
+          packages.${sys}.runCommandLocal "deadnix-check" {
+            nativeBuildInputs = [packages.${sys}.deadnix];
+          }
+          # bash
+          ''deadnix --fail '${./.}' | tee -a "$out"'';
+        formatter = self.formatter.${sys};
+        devShell = self.devShells.${sys}.default;
+      });
     });
-  };
 }

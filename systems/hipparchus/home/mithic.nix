@@ -78,22 +78,26 @@
       ];
     };
     niri.settings = {
-      output = let
+      _children = let
         pos = x: y: {_props = {inherit x y;};};
       in [
         {
-          _args = ["eDP-2"];
-          mode = "2560x1600@165.000";
-          scale = 1.33;
-          variable-refresh-rate = [];
-          focus-at-startup = [];
-          position = pos 0 0;
+          output = {
+            _args = ["eDP-2"];
+            mode = "2560x1600@165.000";
+            scale = 1.33;
+            variable-refresh-rate = [];
+            focus-at-startup = [];
+            position = pos 0 0;
+          };
         }
         {
-          _args = ["LG Electronics LG FULL HD 0x0006B85D"];
-          mode = "1920x1080@74.973";
-          scale = 1;
-          position = pos (-(1920 + 40)) 0;
+          output = {
+            _args = ["LG Electronics LG FULL HD 0x0006B85D"];
+            mode = "1920x1080@74.973";
+            scale = 1;
+            position = pos (-(1920 + 40)) 0;
+          };
         }
       ];
     };

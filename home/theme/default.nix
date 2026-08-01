@@ -1,7 +1,6 @@
 {
   pkgs,
   config,
-  lib,
   ...
 }: {
   # TODO: check whether names are correct
@@ -42,16 +41,21 @@
       configLocation = "${config.xdg.configHome}/gtk-2.0/gtkrc";
     };
 
-    gtk4.theme = config.gtk.theme;
+    gtk4 = {
+      theme =
+        config.gtk.theme
+        // {
+          name = "${config.gtk.theme.name}-Dark";
+        };
+      extraCss =
+        # css
+        ''
+          button:checked {
+            background: alpha(@theme_button_foreground_normal_breeze,0.25);
+          }
+        '';
+    };
   };
-
-  # use dark theme for gtk4
-  xdg.configFile."gtk-4.0/gtk.css".text = let
-    cfg = config.gtk;
-  in
-    lib.mkForce ''
-      @import url("file://${cfg.theme.package}/share/themes/${cfg.theme.name}-Dark/gtk-4.0/gtk.css");
-      ${cfg.gtk4.extraCss}'';
 
   dconf.settings."org/gnome/desktop/interface" = {
     color-scheme = "prefer-dark";
