@@ -22,7 +22,7 @@
     };
     extraOptions = ''
       warn-dirty = false
-      max-substitution-jobs = 2
+      max-substitution-jobs = 4
     '';
   };
 
@@ -82,7 +82,7 @@
     theme = "breeze";
   };
 
-  boot.kernelPackages = pkgs.linuxPackages_6_18; # TODO: bump to latest.  waiting due to eve crash
+  boot.kernelPackages = pkgs.linuxPackages_latest;
   boot.kernel.sysctl = {
     "kernel.sysrq" = 244;
     "net.ipv4.tcp_keepalive_time" = 120;

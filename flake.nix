@@ -68,7 +68,7 @@
       devShells = eachSystem (sys: let
         pkgs = packages.${sys};
       in {
-        default = pkgs.mkShell {
+        default = pkgs.mkShellNoCC {
           packages = [
             self.formatter.${sys}
             pkgs.deadnix

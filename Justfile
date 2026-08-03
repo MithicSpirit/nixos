@@ -8,7 +8,7 @@ format: (fmt '.')
     just --fmt
 
 check: gitprepare
-    nix flake check --all-systems
+    nom flake check --all-systems
 
 undead: gitadd && standard
     nix run '.#deadnix' -- --edit
@@ -38,7 +38,7 @@ build *args: gitprepare
     nom build '.#nixosConfigurations.{{ host }}.config.system.build.toplevel' {{ args }}
 
 [group('nixos')]
-diff: build
+diff: check build
     nvd diff /nix/var/nix/profiles/system ./result
 
 [group('nixos')]
