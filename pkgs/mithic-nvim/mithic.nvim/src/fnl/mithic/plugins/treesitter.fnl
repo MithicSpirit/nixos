@@ -4,7 +4,7 @@
 (local hi-ignore {:latex true :gitcommit true})
 (local fd-ignore {})
 
-(local in-enable {})
+(local in-enable {:python true})
 
 (vim.api.nvim_create_autocmd
   :FileType

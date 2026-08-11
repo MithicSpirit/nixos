@@ -11,14 +11,14 @@ check: gitprepare
     nom flake check --all-systems
 
 undead: gitadd && standard
-    nix run '.#deadnix' -- --edit
+    deadnix --edit
 
 refresh *inputs: gitprepare && standard
-    nix flake update {{ inputs }}
+    nom flake update {{ inputs }}
 update *inputs: gitadd (refresh inputs)
 
 lock *args: gitprepare && standard
-    nix flake lock {{ args }}
+    nom flake lock {{ args }}
 
 [confirm]
 [no-cd]

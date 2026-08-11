@@ -219,20 +219,19 @@ in {
               }
               {
                 variable-refresh-rate = true;
-                force-render = true;
-                force-render-fps = 15;
+                force-render = 15;
                 _children =
                   toChildren "match"
                   ([
                       {_props.xdg-tag = "^proton-game$";}
                     ]
                     ++ map (x: {_props.app-id = "^${x}$";}) [
-                      "^steam_app_.*$"
-                      "^dota2$"
-                      "^Terraria\\.bin\\.x86_64$"
-                      "^factorio$"
-                      "^openttd$"
-                      "^net-runelite-client-RuneLite$"
+                      "steam_app_.*"
+                      "dota2"
+                      "Terraria\\.bin\\.x86_64"
+                      "factorio"
+                      "openttd"
+                      "net-runelite-client-RuneLite"
                     ]);
               }
             ]

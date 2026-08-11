@@ -278,9 +278,18 @@
 
   services.geoclue2 = {
     enable = true;
-    geoProviderUrl = "https://beacondb.net/v1/geolocate";
-    submitData = true;
-    submissionUrl = "https://beacondb.net/v2/geosubmit";
+    settings = {
+      wifi = {
+        enable = true;
+        url = "https://beacondb.net/v1/geolocate";
+        submit-data = true;
+        submission-url = "https://beacondb.net/v2/geosubmit";
+      };
+      ip = {
+        enable = true;
+        method = "ichnaea";
+      };
+    };
   };
 
   programs.nano.enable = false;

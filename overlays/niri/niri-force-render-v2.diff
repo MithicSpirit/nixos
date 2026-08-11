@@ -1,0 +1,283 @@
+diff --git a/niri-config/src/lib.rs b/niri-config/src/lib.rs
+index cff16966..fcd94991 100644
+--- a/niri-config/src/lib.rs
++++ b/niri-config/src/lib.rs
+@@ -1896,12 +1896,13 @@ mod tests {
+                             ),
+                             relative_to: BottomLeft,
+                         },
+                     ),
+                     scroll_factor: None,
+                     tiled_state: None,
++                    force_render: None,
+                     background_effect: BackgroundEffectRule {
+                         xray: None,
+                         blur: None,
+                         noise: None,
+                         saturation: None,
+                     },
+diff --git a/niri-config/src/window_rule.rs b/niri-config/src/window_rule.rs
+index 39089a7a..e79cd4f4 100644
+--- a/niri-config/src/window_rule.rs
++++ b/niri-config/src/window_rule.rs
+@@ -74,12 +74,14 @@ pub struct WindowRule {
+     #[knuffel(child)]
+     pub default_floating_position: Option<FloatingPosition>,
+     #[knuffel(child, unwrap(argument))]
+     pub scroll_factor: Option<FloatOrInt<0, 100>>,
+     #[knuffel(child, unwrap(argument))]
+     pub tiled_state: Option<bool>,
++    #[knuffel(child, unwrap(argument))]
++    pub force_render: Option<u16>,
+     #[knuffel(child, default)]
+     pub background_effect: BackgroundEffectRule,
+     #[knuffel(child, default)]
+     pub popups: PopupsRule,
+ }
+ 
+diff --git a/src/niri.rs b/src/niri.rs
+index bf5c7afe..652292e1 100644
+--- a/src/niri.rs
++++ b/src/niri.rs
+@@ -176,15 +176,15 @@ use crate::ui::screenshot_ui::{OutputScreenshot, ScreenshotUi, ScreenshotUiRende
+ use crate::utils::scale::{closest_representable_scale, guess_monitor_scale};
+ use crate::utils::spawning::{CHILD_DISPLAY, CHILD_ENV};
+ use crate::utils::vblank_throttle::VBlankThrottle;
+ use crate::utils::watcher::Watcher;
+ use crate::utils::xwayland::satellite::Satellite;
+ use crate::utils::{
+-    center, center_f64, expand_home, get_monotonic_time, ipc_transform_to_smithay, is_mapped,
+-    logical_output, make_screenshot_path, output_matches_name, output_size, panel_orientation,
+-    send_scale_transform, write_png_rgba8, xwayland,
++    center, center_f64, expand_home, frequency_to_period, get_monotonic_time,
++    ipc_transform_to_smithay, is_mapped, logical_output, make_screenshot_path, output_matches_name,
++    output_size, panel_orientation, send_scale_transform, write_png_rgba8, xwayland,
+ };
+ use crate::window::mapped::MappedId;
+ use crate::window::{InitialConfigureState, Mapped, ResolvedWindowRules, Unmapped, WindowRef};
+ 
+ const CLEAR_COLOR_LOCKED: [f32; 4] = [0.3, 0.1, 0.1, 1.];
+ 
+@@ -568,12 +568,17 @@ pub enum LockRenderState {
+ // This state keeps track of when a surface last received a frame callback.
+ struct SurfaceFrameThrottlingState {
+     /// Output and sequence that the frame callback was last sent at.
+     last_sent_at: RefCell<Option<(Output, u32)>>,
+ }
+ 
++struct SurfaceForceRenderState {
++    /// Whether a forced render is scheduled in the event loop.
++    scheduled: Cell<bool>,
++}
++
+ pub enum CenterCoords {
+     Separately,
+     Both,
+     // Force centering even if the cursor is already in the rectangle.
+     BothAlways,
+ }
+@@ -659,12 +664,100 @@ impl Default for SurfaceFrameThrottlingState {
+     fn default() -> Self {
+         Self {
+             last_sent_at: RefCell::new(None),
+         }
+     }
+ }
++impl Default for SurfaceForceRenderState {
++    fn default() -> Self {
++        Self {
++            scheduled: Cell::new(false),
++        }
++    }
++}
++
++pub fn setup_force_render(event_loop: &mut LoopHandle<'static, State>, mapped: &Mapped) -> bool {
++    if mapped.force_render().is_none() {
++        return false;
++    }
++
++    let already_scheduled = with_states(mapped.toplevel().wl_surface(), |states| {
++        let force_render_state = states
++            .data_map
++            .get_or_insert(SurfaceForceRenderState::default);
++        force_render_state.scheduled.replace(true)
++    });
++    if already_scheduled {
++        return false;
++    }
++
++    let mapped_id = mapped.id();
++    let res = event_loop.insert_source(Timer::immediate(), move |_, _, state| {
++        force_render_callback(state, mapped_id)
++    });
++    match res {
++        Ok(_) => true,
++        Err(e) => {
++            warn!("error scheduling forced render: {e}");
++            false
++        }
++    }
++}
++
++fn force_render_callback(state: &mut State, mapped_id: MappedId) -> TimeoutAction {
++    let Some((output_rate, mapped)) = state
++        .niri
++        .layout
++        .workspaces_mut()
++        .flat_map(|ws| {
++            let rate = ws
++                .current_output()
++                .and_then(|out| out.current_mode())
++                .map(|mode| mode.refresh)
++                .unwrap_or(0);
++            ws.windows_mut().map(move |win| (rate, win))
++        })
++        .find(|(_, win)| win.id() == mapped_id)
++    else {
++        return TimeoutAction::Drop;
++    };
++
++    let Some(period) = with_states(mapped.toplevel().wl_surface(), |states| {
++        let Some(rate) = mapped.force_render() else {
++            let force_render_state = states
++                .data_map
++                .get_or_insert(SurfaceForceRenderState::default);
++            force_render_state.scheduled.set(false);
++            return None;
++        };
++
++        let period = std::cmp::max(
++            frequency_to_period(rate),
++            frequency_to_period(output_rate as u32),
++        );
++        Some(period)
++    }) else {
++        return TimeoutAction::Drop;
++    };
++
++    let output = &Output::new(
++        String::new(),
++        PhysicalProperties {
++            size: Size::from((0, 0)),
++            subpixel: Subpixel::Unknown,
++            make: String::new(),
++            model: String::new(),
++            serial_number: String::new(),
++        },
++    );
++    let frame_callback_time = get_monotonic_time();
++
++    mapped.send_frame(output, frame_callback_time, Some(period), |_, _| None);
++
++    TimeoutAction::ToDuration(period)
++}
+ 
+ impl KeyboardFocus {
+     pub fn surface(&self) -> Option<&WlSurface> {
+         match self {
+             KeyboardFocus::Layout { surface } => surface.as_ref(),
+             KeyboardFocus::LayerShell { surface } => Some(surface),
+@@ -5078,12 +5171,13 @@ impl Niri {
+             }
+         };
+ 
+         let frame_callback_time = get_monotonic_time();
+ 
+         for mapped in self.layout.windows_for_output_mut(output) {
++            setup_force_render(&mut self.event_loop, mapped);
+             mapped.send_frame(
+                 output,
+                 frame_callback_time,
+                 FRAME_CALLBACK_THROTTLE,
+                 should_send,
+             );
+diff --git a/src/utils/mod.rs b/src/utils/mod.rs
+index a2caed1d..93792409 100644
+--- a/src/utils/mod.rs
++++ b/src/utils/mod.rs
+@@ -162,12 +162,22 @@ pub fn version() -> String {
+ 
+ pub fn get_monotonic_time() -> Duration {
+     let ts = clock_gettime(ClockId::Monotonic);
+     Duration::new(ts.tv_sec as u64, ts.tv_nsec as u32)
+ }
+ 
++/// Converts a frequency in millihertz to the corresponding period, clamping to
++/// `Duration::ZERO` for nonpositive rates and `Duration::MAX` on overflow.
++pub fn frequency_to_period(rate: u32) -> Duration {
++    if rate > 0 {
++        Duration::try_from_secs_f64(1000.0 / rate as f64).unwrap_or(Duration::MAX)
++    } else {
++        Duration::ZERO
++    }
++}
++
+ pub fn center(rect: Rectangle<i32, Logical>) -> Point<i32, Logical> {
+     rect.loc + rect.size.downscale(2).to_point()
+ }
+ 
+ pub fn center_f64(rect: Rectangle<f64, Logical>) -> Point<f64, Logical> {
+     rect.loc + rect.size.downscale(2.0).to_point()
+diff --git a/src/window/mapped.rs b/src/window/mapped.rs
+index 3db1f66c..da2d114c 100644
+--- a/src/window/mapped.rs
++++ b/src/window/mapped.rs
+@@ -608,12 +608,22 @@ impl Mapped {
+         self.need_to_recompute_rules |= changed;
+     }
+ 
+     pub fn is_urgent(&self) -> bool {
+         self.is_urgent
+     }
++
++    /// The forced rendering frame rate in millihertz if enabled (either due to
++    /// the window rule or due to being a cast target), or `None` if disabled.
++    pub fn force_render(&self) -> Option<u32> {
++        if self.is_window_cast_target {
++            Some(0) // use last output's refresh rate
++        } else {
++            self.rules.force_render.map(|fps| fps as u32 * 1000)
++        }
++    }
+ }
+ 
+ impl Drop for Mapped {
+     fn drop(&mut self) {
+         remove_pre_commit_hook(self.toplevel().wl_surface(), &self.pre_commit_hook);
+     }
+diff --git a/src/window/mod.rs b/src/window/mod.rs
+index f0536e65..d7996c85 100644
+--- a/src/window/mod.rs
++++ b/src/window/mod.rs
+@@ -121,12 +121,15 @@ pub struct ResolvedWindowRules {
+     /// Multiplier for all scroll events sent to this window.
+     pub scroll_factor: Option<f64>,
+ 
+     /// Override whether to set the Tiled xdg-toplevel state on the window.
+     pub tiled_state: Option<bool>,
+ 
++    /// What FPS to force renders for this window.
++    pub force_render: Option<u16>,
++
+     /// Background effect configuration.
+     pub background_effect: BackgroundEffect,
+ 
+     /// Rules for this window's popups.
+     pub popups: ResolvedPopupsRules,
+ }
+@@ -306,12 +309,15 @@ impl ResolvedWindowRules {
+                 if let Some(x) = rule.scroll_factor {
+                     resolved.scroll_factor = Some(x.0);
+                 }
+                 if let Some(x) = rule.tiled_state {
+                     resolved.tiled_state = Some(x);
+                 }
++                if let Some(x) = rule.force_render {
++                    resolved.force_render = Some(x);
++                }
+ 
+                 resolved
+                     .background_effect
+                     .merge_with(&rule.background_effect);
+ 
+                 resolved.popups.merge_with(&rule.popups);

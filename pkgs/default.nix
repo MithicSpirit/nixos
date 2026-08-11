@@ -1,4 +1,5 @@
 {nixpkgs}: {
+  auto-ppd = nixpkgs.callPackage ./auto-ppd {};
   firefox-ui-fix = nixpkgs.callPackage ./firefox-ui-fix {};
   fw-fanctrl = nixpkgs.callPackage ./fw-fanctrl {};
   mithic-nvim = nixpkgs.callPackage ./mithic-nvim {};
