@@ -19,21 +19,6 @@ final: prev: {
       }
   );
 
-  xwayland-satellite = prev.xwayland-satellite.overrideAttrs (
-    _finalAttrs: prevAttrs:
-      assert prevAttrs.version == "0.8.1"; {
-        patches =
-          (prevAttrs.patches or [])
-          ++ [
-            (final.fetchpatch2 {
-              name = "popup-fix+pr=424.patch";
-              url = "https://github.com/Supreeeme/xwayland-satellite/compare/a879e5e0896a326adc79c474bf457b8b99011027..cae1b1157931a978315f0b1815005def8132d6d1.patch?full_index=1";
-              hash = "sha256-exZXFLLlSx44ZOlLqdFY4Qp63U2E01Gm664XcvBh1Yo=";
-            })
-          ];
-      }
-  );
-
   waybar = prev.waybar.overrideAttrs (
     _finalAttrs: prevAttrs:
       assert prevAttrs.version == "0.15.0"; {
