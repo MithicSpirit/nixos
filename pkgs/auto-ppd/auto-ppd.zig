@@ -51,6 +51,7 @@ var envp: [*:null]const ?[*:0]const u8 = undefined;
 var battery: linux.fd_t = undefined;
 var socket: linux.fd_t = undefined;
 var state: ?Profile = null;
+var idle: bool = false;
 var stop: bool = false;
 
 pub fn main(init: std.process.Init.Minimal) u8 {
@@ -84,7 +85,7 @@ pub fn entrypoint(
             }
         };
         const action: linux.Sigaction = .{
-            .handler = .{.handler = StopHandler.handler},
+            .handler = .{ .handler = StopHandler.handler },
             .mask = std.os.linux.sigemptyset(),
             .flags = 0,
         };
@@ -159,7 +160,7 @@ fn loop() !void {
             };
         }
 
-        const new_profile = state orelse autoState() catch new_profile: {
+        const new_profile = if (idle) .PowerSaver else state orelse autoState() catch new_profile: {
             _ = writeAll(
                 2,
                 "reading battery failed\n",
@@ -231,6 +232,16 @@ fn handleConnection() !void {
             };
             break :data data;
         };
+
+        if (std.mem.eql(u8, data, "idle")) {
+            idle = true;
+            continue;
+        }
+
+        if (std.mem.eql(u8, data, "unidle")) {
+            idle = false;
+            continue;
+        }
 
         const profile = if (std.mem.eql(u8, data, "auto"))
             null

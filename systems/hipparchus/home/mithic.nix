@@ -154,7 +154,7 @@
       xournalpp
       onlyoffice-desktopeditors
 
-      libreoffice-fresh
+      libreoffice
       hunspell
       hunspellDicts.en-us-large
       hyphen

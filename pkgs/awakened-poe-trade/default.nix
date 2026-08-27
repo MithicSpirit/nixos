@@ -17,13 +17,13 @@ buildNpmPackage (finalAttrs: {
   inherit nodejs;
 
   pname = "awakened-poe-trade";
-  version = "3.29.103";
+  version = "3.29.107";
 
   src = fetchFromGitHub {
     owner = "SnosMe";
     repo = "awakened-poe-trade";
     rev = "v${finalAttrs.version}";
-    hash = "sha256-0NEv5S28jgnFDctsxDuybotrcJnr7UZOS0blwf0GsHQ=";
+    hash = "sha256-VEv07fuyRxTGXRI1QK8t89ugXMdlTcTdMp1tpc6Mavw=";
   };
 
   renderer = buildNpmPackage {

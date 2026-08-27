@@ -4,7 +4,8 @@
               "h" :typehierarchy
               "i" :implementation
               "r" :rename
-              "a" :code_action})]
+              "a" :code_action
+              "f" :references})]
   (vim.keymap.set :n (.. "<leader>l" k) (. vim.lsp.buf v)))
 (vim.keymap.set :n "<leader>lc" vim.lsp.codelens.run)
 

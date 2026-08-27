@@ -526,12 +526,13 @@ in {
     lock-time = 600;
     alert-time = 30;
     off-time = 60;
+    idle-time = 300;
   in {
     enable = true;
     extraArgs = [
       "-w"
       "idlehint"
-      "${toString (lock-time + 5)}"
+      "${toString (lock-time + idle-time)}"
     ];
     timeouts = [
       {
@@ -548,9 +549,14 @@ in {
         command = "niri msg action power-off-monitors";
         resumeCommand = "niri msg action power-on-monitors";
       }
+      {
+        timeout = lock-time + idle-time;
+        command = "${pkgs.auto-ppd.set-profile} idle";
+        resumeCommand = "${pkgs.auto-ppd.set-profile} unidle";
+      }
     ];
     events = {
-      before-sleep = "loginctl lock-session";
+      before-sleep = "loginctl lock-session && sleep 1";
       after-resume = "niri msg action power-on-monitors"; # TODO: force-idle
       lock = "sudo -K; if ! pidof -q hyprlock; then hyprlock & fi";
       unlock = "killall -USR1 hyprlock";

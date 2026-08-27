@@ -22,9 +22,7 @@ stdenvNoCC.mkDerivation {
 
   buildPhase = ''
     runHook preBuild
-
     TERM=dumb zig build-exe -j1 -O ReleaseSafe -femit-bin="$out" "$src"
-
     runHook postBuild
   '';
 
