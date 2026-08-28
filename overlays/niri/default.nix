@@ -7,14 +7,13 @@ final: prev: {
         src = final.fetchFromGitHub {
           owner = "MithicSpirit";
           repo = "niri";
-          rev = "28d6a25783800ab9b6df6452711b04337d98f0db";
-          hash = "sha256-xUTQ+epNww/Lm6mX6O4Y5dciKT5ND2QzpgqmJK4YZFY=";
+          rev = "41c371bca62d683a9caa5024da56f787c0549428";
+          hash = "sha256-5EgyffKL+eftKIzwKVGJ/rWRTkaiKkUKILVKyg3k0/c=";
         };
-        patches = [./niri-force-render-v2.diff];
         doCheck = false;
         cargoDeps = final.rustPlatform.fetchCargoVendor {
           inherit (finalAttrs) pname version src patches;
-          hash = "sha256-Bf05zLPdtPTyXJW9AgcnCgGSmyIfuL7tfzMmmSJJqW8=";
+          hash = "sha256-CKDrLgPo5efuiv2eGiAPhcbEMeOJiDyfGfGtq4wEuPE=";
         };
       }
   );

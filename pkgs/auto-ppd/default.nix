@@ -34,7 +34,7 @@ stdenvNoCC.mkDerivation {
       exec '${auto-ppd}' '${lib.getExe' power-profiles-daemon "powerprofilesctl"}' "$bat" '${socket}'
     '';
     set-profile = writeShellScript "auto-ppd-override" ''
-      printf '%s\n' "$1" | '${lib.getExe netcat}' -U '${socket}'
+      printf '%s\n' "$1" | '${lib.getExe netcat}' -NU '${socket}'
     '';
   };
 

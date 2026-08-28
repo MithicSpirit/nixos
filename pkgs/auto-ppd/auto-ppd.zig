@@ -9,30 +9,30 @@ const Profile = enum {
 
     fn parse(value: []const u8) @This() {
         return if (std.mem.eql(u8, value, "performance"))
-            @This().Performance
+            .Performance
         else if (std.mem.eql(u8, value, "power-saver"))
-            @This().PowerSaver
+            .PowerSaver
         else if (std.mem.eql(u8, value, "balanced"))
-            @This().Balanced
+            .Balanced
         else
-            @This().Unknown;
+            .Unknown;
     }
 
     fn print(profile: @This()) ?[:0]const u8 {
         return switch (profile) {
-            @This().Performance => "performance",
-            @This().PowerSaver => "power-saver",
-            @This().Balanced => "balanced",
-            @This().Unknown => null,
+            .Performance => "performance",
+            .PowerSaver => "power-saver",
+            .Balanced => "balanced",
+            .Unknown => null,
         };
     }
 
     fn repr(profile: @This()) [:0]const u8 {
         return switch (profile) {
-            @This().Performance => "performance",
-            @This().PowerSaver => "power-saver",
-            @This().Balanced => "balanced",
-            @This().Unknown => "unknown",
+            .Performance => "performance",
+            .PowerSaver => "power-saver",
+            .Balanced => "balanced",
+            .Unknown => "unknown",
         };
     }
 
@@ -208,7 +208,11 @@ fn handleConnection() !void {
         });
         defer _ = errno(linux.close(fd)) catch {};
 
-        var buf: [Profile.MAX_LEN + 1]u8 = undefined;
+        const AUTO: *const [4]u8 = comptime "auto";
+        const IDLE: *const [4]u8 = comptime "idle";
+        const UNIDLE: *const [6]u8 = comptime "unidle";
+
+        var buf: [@max(Profile.MAX_LEN, AUTO.len, IDLE.len, UNIDLE.len) + 1]u8 = undefined;
         const data = data: {
             var iovec: [1]std.posix.iovec = .{
                 .{ .base = &buf, .len = buf.len },
@@ -233,17 +237,25 @@ fn handleConnection() !void {
             break :data data;
         };
 
-        if (std.mem.eql(u8, data, "idle")) {
+        if (std.mem.eql(u8, data, IDLE)) {
+            _ = writeAll(
+                2,
+                if (idle) "idle unchanged (enabled)\n" else "idle enabled\n",
+            ) catch {};
             idle = true;
             continue;
         }
 
-        if (std.mem.eql(u8, data, "unidle")) {
+        if (std.mem.eql(u8, data, UNIDLE)) {
+            _ = writeAll(
+                2,
+                if (idle) "idle disabled\n" else "idle unchanged (disabled)\n",
+            ) catch {};
             idle = false;
             continue;
         }
 
-        const profile = if (std.mem.eql(u8, data, "auto"))
+        const profile = if (std.mem.eql(u8, data, AUTO))
             null
         else
             Profile.parse(data);

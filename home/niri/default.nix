@@ -522,47 +522,51 @@ in {
     };
   };
 
-  services.swayidle = let
+  services.hypridle = let
     lock-time = 600;
     alert-time = 30;
     off-time = 60;
     idle-time = 300;
   in {
     enable = true;
-    extraArgs = [
-      "-w"
-      "idlehint"
-      "${toString (lock-time + idle-time)}"
-    ];
-    timeouts = [
-      {
-        timeout = lock-time - alert-time;
-        command = "brightnessctl -s set 0";
-        resumeCommand = "brightnessctl -r";
-      }
-      {
-        timeout = lock-time;
-        command = "loginctl lock-session";
-      }
-      {
-        timeout = lock-time + off-time;
-        command = "niri msg action power-off-monitors";
-        resumeCommand = "niri msg action power-on-monitors";
-      }
-      {
-        timeout = lock-time + idle-time;
-        command = "${pkgs.auto-ppd.set-profile} idle";
-        resumeCommand = "${pkgs.auto-ppd.set-profile} unidle";
-      }
-    ];
-    events = {
-      before-sleep = "loginctl lock-session && sleep 1";
-      after-resume = "niri msg action power-on-monitors"; # TODO: force-idle
-      lock = "sudo -K; if ! pidof -q hyprlock; then hyprlock & fi";
-      unlock = "killall -USR1 hyprlock";
+    settings = {
+      general = {
+        lock_cmd = "sudo -K; if ! pidof -q hyprlock; then hyprlock; fi";
+        on_lock_cmd = "dunstctl set-paused true";
+        before_sleep_cmd = "loginctl lock-session && sleep 1";
+
+        after_sleep_cmd = "niri msg action force-idle 0";
+        on_unlock_cmd = "niri msg action force-idle 0; dunstctl set-paused false";
+        unlock_cmd = "killall -USR1 hyprlock";
+
+        inhibit_sleep = 1;
+        ignore_dbus_inhibit = true;
+        ignore_systemd_inhibit = true;
+        ignore_wayland_inhibit = true;
+      };
+      listener = [
+        {
+          timeout = lock-time - alert-time;
+          on-timeout = "brightnessctl -s set 0";
+          on-resume = "sleep 0.3; brightnessctl -r";
+        }
+        {
+          timeout = lock-time;
+          on-timeout = "loginctl lock-session";
+        }
+        {
+          timeout = lock-time + off-time;
+          on-timeout = "sleep 3; niri msg action power-off-monitors";
+          on-resume = "sleep 0.1; niri msg action power-on-monitors";
+        }
+        {
+          timeout = lock-time + idle-time;
+          on-timeout = "sleep 5; ${pkgs.auto-ppd.set-profile} idle";
+          on-resume = "${pkgs.auto-ppd.set-profile} unidle";
+        }
+      ];
     };
   };
-  systemd.user.services."swayidle".Service.Environment = lib.mkForce [];
 
   programs.hyprlock = {
     enable = true;

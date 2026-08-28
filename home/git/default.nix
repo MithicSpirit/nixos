@@ -48,6 +48,7 @@
       rebase = {
         autoSquash = true;
         missingCommitsCheck = "warn";
+        rebaseMerges = "rebase-cousins";
       };
       rerere.enabled = true;
 
