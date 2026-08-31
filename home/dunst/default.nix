@@ -15,7 +15,7 @@
       global = {
         follow = lib.mkDefault "keyboard";
         sort = "urgency_descending";
-        notification_limit = 3;
+        notification_limit = 5;
         indicate_hidden = true;
         idle_threshold = 4;
         title = "Dunst";

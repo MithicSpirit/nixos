@@ -74,7 +74,8 @@
             pkgs.deadnix
             pkgs.just
             pkgs.nix-output-monitor
-            pkgs.nvd
+            pkgs.dix
+            pkgs.nix-sweep
             pkgs.libnotify
             pkgs.fastfetch
             pkgs.git

@@ -181,9 +181,10 @@
       psmisc
       (lib.lowPrio plan9port)
       comma
-      nvd
+      dix
       nix-tree
       nix-diff
+      nix-sweep
       which
       dash
       curl

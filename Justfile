@@ -20,11 +20,9 @@ update *inputs: gitadd (refresh inputs)
 lock *args: gitprepare && standard
     nom flake lock {{ args }}
 
-[confirm]
 [no-cd]
-gc: (sudo 'Garbage collection') && boot clean
-    nix-collect-garbage -v --delete-older-than 22d --max-freed 0
-    sudo nix-collect-garbage -v --delete-older-than 22d --max-freed 0
+gc: && run-gc
+    nix-sweep cleanout system --dry-run --non-interactive --keep-min 3 --remove-older 22d --no-size
 
 [no-cd]
 clean: clean-artifact
@@ -39,7 +37,7 @@ build *args: gitprepare
 
 [group('nixos')]
 diff: check build
-    nvd diff /nix/var/nix/profiles/system ./result
+    dix /nix/var/nix/profiles/system ./result
 
 [group('nixos')]
 test: check (activate 'test') system
@@ -60,6 +58,12 @@ activate op: build (sudo "nixos " + op)
 [private]
 clean-artifact:
     rm -f result result-* repl-result-*
+
+[confirm]
+[no-cd]
+[private]
+run-gc: (sudo 'Garbage collection') && boot clean
+    sudo nix-sweep cleanout system --interactive --keep-min 3 --remove-older 22d --no-size
 
 [no-cd]
 [private]
