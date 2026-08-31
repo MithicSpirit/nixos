@@ -22,7 +22,7 @@ lock *args: gitprepare && standard
 
 [no-cd]
 gc: && run-gc
-    nix-sweep cleanout system --dry-run --non-interactive --keep-min 3 --remove-older 22d --no-size
+    nix-sweep cleanout system --dry-run --non-interactive --keep-min 3 --remove-older 14d --no-size
 
 [no-cd]
 clean: clean-artifact
@@ -63,7 +63,7 @@ clean-artifact:
 [no-cd]
 [private]
 run-gc: (sudo 'Garbage collection') && boot clean
-    sudo nix-sweep cleanout system --interactive --keep-min 3 --remove-older 22d --no-size
+    sudo nix-sweep cleanout system --interactive --keep-min 3 --remove-older 14d --no-size
 
 [no-cd]
 [private]
