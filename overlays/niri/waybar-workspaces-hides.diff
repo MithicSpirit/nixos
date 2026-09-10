@@ -1,5 +1,5 @@
 diff --git a/man/waybar-niri-workspaces.5.scd b/man/waybar-niri-workspaces.5.scd
-index 4be85eb3..5dd70df4 100644
+index 4be85eb3..7e52973b 100644
 --- a/man/waybar-niri-workspaces.5.scd
 +++ b/man/waybar-niri-workspaces.5.scd
 @@ -14,12 +14,17 @@ Addressed by *niri/workspaces*
@@ -12,7 +12,7 @@ index 4be85eb3..5dd70df4 100644
 +*hide-empty*: ++
 +	typeof: bool ++
 +	default: false ++
-+	If set to true, workspaces will only be shown if they are nonempty (or focused).
++	If set to true, workspaces will only be shown if they are nonempty (or active).
 +
  *format*: ++
  	typeof: string ++
@@ -21,7 +21,7 @@ index 4be85eb3..5dd70df4 100644
  
  *format-icons*: ++
 diff --git a/src/modules/niri/workspaces.cpp b/src/modules/niri/workspaces.cpp
-index 3e8a432e..316c77d6 100644
+index 3e8a432e..2f5ecbac 100644
 --- a/src/modules/niri/workspaces.cpp
 +++ b/src/modules/niri/workspaces.cpp
 @@ -30,16 +30,19 @@ Workspaces::~Workspaces() { gIPC->unregisterForIPC(this); }
@@ -36,7 +36,7 @@ index 3e8a432e..316c77d6 100644
    const auto& workspaces = gIPC->workspaces();
    std::copy_if(workspaces.cbegin(), workspaces.cend(), std::back_inserter(my_workspaces),
                 [&](const auto& ws) {
-+                 if (hide_empty && ws["active_window_id"].isNull() && !ws["is_focused"].asBool())
++                 if (hide_empty && ws["active_window_id"].isNull() && !ws["is_active"].asBool())
 +                   return false;
                   if (alloutputs) return true;
                   return ws["output"].asString() == bar_.output->name;

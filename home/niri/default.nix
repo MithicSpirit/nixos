@@ -7,12 +7,14 @@
 }: let
   wallpaper = import (root + /common/wallpaper);
   colors = import (root + /common/colorscheme.nix);
+  scripts = lib.getExe' config.wayland.windowManager.niri.package "niri-scripts";
 in {
   wayland.windowManager.niri = {
     enable = true;
     portalPackage = null;
     settings = let
       toChildren = name: map (x: {${name} = x;});
+      spawn-script = args: {spawn = ["${scripts}"] ++ args;};
     in
       lib.mkMerge [
         {
@@ -272,15 +274,15 @@ in {
               "Mod+Shift+H" = {move-column-left = {};};
               "Mod+Shift+L" = {move-column-right = {};};
 
-              "Mod+Ctrl+J" = {focus-workspace-down = {};};
-              "Mod+Ctrl+K" = {focus-workspace-up = {};};
+              "Mod+Ctrl+J" = {focus-monitor-down = {};};
+              "Mod+Ctrl+K" = {focus-monitor-up = {};};
               "Mod+Ctrl+H" = {focus-monitor-left = {};};
               "Mod+Ctrl+L" = {focus-monitor-right = {};};
 
-              "Mod+Ctrl+Shift+J" = {move-window-to-workspace-down = {};};
-              "Mod+Ctrl+Shift+K" = {move-window-to-workspace-up = {};};
-              "Mod+Ctrl+Shift+H" = {move-window-to-monitor-left = {};};
-              "Mod+Ctrl+Shift+L" = {move-window-to-monitor-right = {};};
+              "Mod+Ctrl+Shift+J" = spawn-script ["move-workspace" "down"];
+              "Mod+Ctrl+Shift+K" = spawn-script ["move-workspace" "up"];
+              "Mod+Ctrl+Shift+H" = spawn-script ["move-workspace" "left"];
+              "Mod+Ctrl+Shift+L" = spawn-script ["move-workspace" "right"];
 
               "Mod+O" = {consume-window-into-column = {};};
               "Mod+I" = {consume-window-into-column-left = {};};
@@ -429,15 +431,10 @@ in {
           in {
             _children = map (x: {workspace._args = [x];}) workspaces;
             binds = lib.mergeAttrsList (map (x: {
-                "Mod+${x}" = {focus-workspace = x;};
-                "Mod+Shift+${x}" = {move-window-to-workspace = x;};
-                "Mod+Ctrl+${x}" = {
-                  move-window-to-workspace = {
-                    _args = [x];
-                    _props.focus = false;
-                  };
-                };
-                "Mod+Ctrl+Shift+${x}" = {move-column-to-workspace = x;};
+                "Mod+${x}" = spawn-script ["workspace" "focus" x];
+                "Mod+Shift+${x}" = spawn-script ["workspace" "move" x];
+                "Mod+Ctrl+${x}" = spawn-script ["workspace" "move-silent" x];
+                "Mod+Ctrl+Shift+${x}" = spawn-script ["workspace" "move-column" x];
               })
               workspaces);
           }
@@ -684,11 +681,11 @@ in {
           color: ${colors.hash.fg};
           background: ${colors.hash.bg};
         }
-        #workspaces button.active {
-          color: ${colors.hash.colored};
-        }
         #workspaces button.empty {
           color: ${colors.hash.fake};
+        }
+        #workspaces button.active {
+          color: ${colors.hash.colored};
         }
         #workspaces button.focused {
           color: ${colors.hash.accent};

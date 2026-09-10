@@ -18,5 +18,6 @@
               "t" :telescope
               "s" :symbols})]
   (vim.keymap.set :n (.. "<leader>x" k) #(trouble.toggle v)))
+(vim.keymap.set :n "<leader>lx" #(trouble.toggle "lsp"))
 (vim.keymap.set "" "]x" #(trouble.next {:skip_groups true :jump true}))
 (vim.keymap.set "" "[x" #(trouble.previous {:skip_groups true :jump true}))

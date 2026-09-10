@@ -21,6 +21,9 @@
     '';
 in {
   home.packages = with pkgs; [
+    # games
+    airshipper # veloren
+
     # compatibility tool version management
     protonup-qt
     protonplus

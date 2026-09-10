@@ -1,0 +1,243 @@
+diff --git a/src/bin/niri-scripts.rs b/src/bin/niri-scripts.rs
+new file mode 100644
+index 00000000..e4d4bff6
+--- /dev/null
++++ b/src/bin/niri-scripts.rs
+@@ -0,0 +1,237 @@
++use std::env::Args;
++
++use niri_ipc::socket::Socket;
++use niri_ipc::{Action, Request as Rq, Response as Rs, WorkspaceReferenceArg as WRef};
++
++pub fn main() {
++    let mut args = std::env::args();
++    let socket = Socket::connect().expect("could not connect to niri");
++    let _ = args.next().expect("no argv[0]");
++    match args.next().expect("no command argv[1]").as_ref() {
++        "workspace" => workspace(args, socket),
++        "move-workspace" => move_workspace(args, socket),
++        x => panic!("unknown command: {x}"),
++    };
++}
++
++fn workspace(mut args: Args, mut socket: Socket) {
++    enum Op {
++        Focus,
++        Move,
++        MoveSilent,
++        MoveColumn,
++    }
++
++    let op = match args
++        .next()
++        .expect("no workspace operation argv[2]")
++        .as_ref()
++    {
++        "focus" => Op::Focus,
++        "move" => Op::Move,
++        "move-silent" => Op::MoveSilent,
++        "move-column" => Op::MoveColumn,
++        x => panic!("unknown workspace command: {x}"),
++    };
++
++    let w_name = args.next().expect("no workspace name");
++
++    let Rs::Workspaces(ws) = socket
++        .send(Rq::Workspaces)
++        .expect("failed to send request")
++        .expect("niri response error")
++    else {
++        panic!("invalid niri response");
++    };
++
++    let (w, m) = {
++        let mut w = None;
++        let mut m = None;
++
++        for wk in &ws {
++            if wk.name.as_ref() == Some(&w_name) {
++                w = Some(wk);
++            }
++            if wk.is_focused {
++                m = wk.output.as_ref();
++            }
++        }
++
++        let Some(w) = w else {
++            panic!("workspace not found: {w_name}");
++        };
++        let Some(m) = m else {
++            panic!("no currently focused monitor");
++        };
++        (w, m)
++    };
++
++    if w.is_focused {
++        print!("Workspace is already focused");
++        return;
++    }
++
++    let reference = WRef::Id(w.id);
++    let action = {
++        match op {
++            Op::Focus => Action::FocusWorkspace {
++                reference: reference.clone(),
++            },
++            Op::Move => Action::MoveWindowToWorkspace {
++                window_id: None,
++                reference: reference.clone(),
++                focus: true,
++            },
++            Op::MoveSilent => Action::MoveWindowToWorkspace {
++                window_id: None,
++                reference: reference.clone(),
++                focus: false,
++            },
++            Op::MoveColumn => Action::MoveColumnToWorkspace {
++                reference: reference.clone(),
++                focus: true,
++            },
++        }
++    };
++
++    if w.is_active || w.active_window_id.is_some() || w.output.as_ref() == Some(m) {
++        // regular branch
++        let Rs::Handled = socket
++            .send(Rq::Action(action))
++            .expect("failed to send request")
++            .expect("niri response error")
++        else {
++            panic!("invalid niri response");
++        };
++        return;
++    }
++
++    // move to this output branch
++    let wx = name_to_x(Some(&w_name)).expect("invalid workspace name");
++
++    let i = {
++        let mut i = 0;
++        for wk in &ws {
++            if wk.output.as_ref() != Some(m) {
++                continue;
++            }
++            let wkx = name_to_x(wk.name.as_ref()).unwrap_or(usize::MAX);
++            if wkx <= wx {
++                i = std::cmp::max(i, wk.idx);
++            }
++        }
++        i + 1
++    };
++
++    let move_to_monitor = Action::MoveWorkspaceToMonitor {
++        output: m.clone(),
++        reference: Some(reference.clone()),
++    };
++    let move_to_index = Action::MoveWorkspaceToIndex {
++        index: i as usize,
++        reference: Some(reference),
++    };
++
++    let Rs::Handled = socket
++        .send(Rq::Action(move_to_monitor))
++        .expect("failed to send request")
++        .expect("niri response error")
++    else {
++        panic!("invalid niri response");
++    };
++    let Rs::Handled = socket
++        .send(Rq::Action(move_to_index))
++        .expect("failed to send request")
++        .expect("niri response error")
++    else {
++        panic!("invalid niri response");
++    };
++    let Rs::Handled = socket
++        .send(Rq::Action(action))
++        .expect("failed to send request")
++        .expect("niri response error")
++    else {
++        panic!("invalid niri response");
++    };
++}
++
++fn move_workspace(mut args: Args, mut socket: Socket) {
++    let action = match args.next().expect("no direction argv[2]").as_ref() {
++        "down" => Action::MoveWorkspaceToMonitorDown {},
++        "up" => Action::MoveWorkspaceToMonitorUp {},
++        "left" => Action::MoveWorkspaceToMonitorLeft {},
++        "right" => Action::MoveWorkspaceToMonitorRight {},
++        x => panic!("unknown direction: {x}"),
++    };
++
++    let Rs::Handled = socket
++        .send(Rq::Action(action))
++        .expect("failed to send request")
++        .expect("niri response error")
++    else {
++        panic!("invalid niri response");
++    };
++
++    let Rs::Workspaces(ws) = socket
++        .send(Rq::Workspaces)
++        .expect("failed to send request")
++        .expect("niri response error")
++    else {
++        panic!("invalid niri response");
++    };
++
++    let w = 'w: {
++        for wk in &ws {
++            if wk.is_focused {
++                break 'w wk;
++            }
++        }
++        panic!("no currently focused workspace");
++    };
++    let wx = name_to_x(w.name.as_ref()).unwrap_or(usize::MAX);
++
++    let i = {
++        let mut i = 0;
++        for wk in &ws {
++            if wk.output.as_ref() != w.output.as_ref() || wk.id == w.id {
++                continue;
++            }
++            let wkx = name_to_x(wk.name.as_ref()).unwrap_or(usize::MAX);
++            if wkx <= wx {
++                i = std::cmp::max(i, wk.idx);
++            }
++        }
++        if i < w.idx {
++            i + 1
++        } else {
++            i
++        }
++    };
++
++    if i == w.idx {
++        return;
++    }
++
++    let action = Action::MoveWorkspaceToIndex {
++        index: i as usize,
++        reference: Some(WRef::Id(w.id)),
++    };
++    let Rs::Handled = socket
++        .send(Rq::Action(action))
++        .expect("failed to send request")
++        .expect("niri response error")
++    else {
++        panic!("invalid niri response");
++    };
++}
++
++fn name_to_x(name: Option<&String>) -> Option<usize> {
++    let name = name?.as_bytes();
++    let char = if name.len() == 1 {
++        name[0]
++    } else {
++        return None;
++    };
++    const ALPH: [u8; 18] = *b"1234567890qwerasdf";
++    ALPH.iter().position(|x| *x == char)
++}
