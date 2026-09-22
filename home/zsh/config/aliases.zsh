@@ -1,5 +1,5 @@
 alias -g \
-	C='| tee >(wl-copy) | bat -pp' \
+	C='| tee >(bat -pp) | wl-copy' \
 	G='| rg' \
 	P="|& $PAGER" \
 	B='&>/dev/null &!' \

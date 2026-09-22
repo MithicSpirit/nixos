@@ -18,7 +18,7 @@ __EOF__
 	*"Lock") loginctl lock-session ;;
 	*"Screen Off")
 		loginctl lock-session
-		sleep 3; niri msg action force-idle 3600
+		sleep 3; niri msg action force-idle 658
 		;;
 	*"Reload") niri msg action load-config-file ;;
 	*"Suspend")

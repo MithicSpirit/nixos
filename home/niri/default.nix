@@ -236,6 +236,13 @@ in {
                       "net-runelite-client-RuneLite"
                     ]);
               }
+              {
+                open-focused = false;
+                match._props = {
+                  title = "^pyfa$";
+                  app-id = "^pyfa$";
+                };
+              }
             ]
             ++ toChildren "layer-rule" [
               {
@@ -523,7 +530,6 @@ in {
     lock-time = 600;
     alert-time = 30;
     off-time = 60;
-    idle-time = 300;
   in {
     enable = true;
     settings = {
@@ -553,13 +559,13 @@ in {
         }
         {
           timeout = lock-time + off-time;
-          on-timeout = "sleep 3; niri msg action power-off-monitors";
+          on-timeout = "niri msg action power-off-monitors";
           on-resume = "sleep 0.1; niri msg action power-on-monitors";
         }
         {
-          timeout = lock-time + idle-time;
-          on-timeout = "sleep 5; ${pkgs.auto-ppd.set-profile} idle";
-          on-resume = "${pkgs.auto-ppd.set-profile} unidle";
+          timeout = lock-time + off-time;
+          on-timeout = "${pkgs.auto-ppd.set-profile} idle";
+          on-resume = "sleep 0.1; ${pkgs.auto-ppd.set-profile} unidle";
         }
       ];
     };

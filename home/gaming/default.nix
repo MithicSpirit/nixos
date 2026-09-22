@@ -35,6 +35,9 @@ in {
 
     # eve online
     pyfa
+
+    # warframe
+    wfhelper
   ];
 
   programs.mangohud = {

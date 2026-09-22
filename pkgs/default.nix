@@ -5,6 +5,7 @@
   mithic-nvim = nixpkgs.callPackage ./mithic-nvim {};
   qalcmenu = nixpkgs.callPackage ./qalcmenu {};
   wait-for-internet = nixpkgs.callPackage ./wait-for-internet {};
+  wfhelper = nixpkgs.callPackage ./wfhelper {};
 
   awakened-poe-trade = nixpkgs.callPackage ./awakened-poe-trade {};
   exiled-exchange-2 = nixpkgs.callPackage ./exiled-exchange-2 {};
