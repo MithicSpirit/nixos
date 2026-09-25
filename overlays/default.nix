@@ -1,5 +1,5 @@
 inputs: [
-  ((import ./inputs.nix) inputs)
+  (import ./inputs.nix inputs)
   (import ./pkgs.nix)
 
   (import ./miscellaneous)

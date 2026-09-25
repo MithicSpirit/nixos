@@ -76,6 +76,9 @@
     };
 
     ignores = [
+      "*.orig"
+      "/.envrc"
+      "/.direnv/"
       "/compile_commands.json"
       "/venv/**"
       "/.venv/**"
