@@ -1,0 +1,82 @@
+diff --git a/user.js b/user.js
+index 7a47f7d..0537806 100644
+--- a/user.js
++++ b/user.js
+@@ -21,14 +21,14 @@ user_pref("layout.css.has-selector.enabled", true);
+ // == Theme Distribution Settings ==============================================
+ // The rows that are located continuously must be changed `true`/`false` explicitly because there is a collision.
+ // https://github.com/black7375/Firefox-UI-Fix/wiki/Options#important
+ user_pref("userChrome.tab.connect_to_window",          true); // Original, Photon
+ user_pref("userChrome.tab.color_like_toolbar",         true); // Original, Photon
+ 
+-user_pref("userChrome.tab.lepton_like_padding",        true); // Original
+-user_pref("userChrome.tab.photon_like_padding",       false); // Photon
++user_pref("userChrome.tab.lepton_like_padding",       false); // Original
++user_pref("userChrome.tab.photon_like_padding",        true); // Photon
+ 
+ user_pref("userChrome.tab.dynamic_separator",          true); // Original, Proton
+ user_pref("userChrome.tab.static_separator",          false); // Photon
+ user_pref("userChrome.tab.static_separator.selected_accent", false); // Just option
+ user_pref("userChrome.tab.bar_separator",             false); // Just option
+ 
+@@ -292,29 +292,29 @@ user_pref("browser.tabs.hoverPreview.enabled", true);
+ user_pref("browser.urlbar.clipboard.featureGate", true);
+ 
+ // Integrated calculator at urlbar
+ user_pref("browser.urlbar.suggest.calculator", true);
+ 
+ // Integrated unit convertor at urlbar
+-// user_pref("browser.urlbar.unitConversion.enabled", true);
++user_pref("browser.urlbar.unitConversion.enabled", true);
+ 
+ // Draw in Titlebar
+ // user_pref("browser.tabs.drawInTitlebar", true);
+ // user_pref("browser.tabs.inTitlebar",        1); // Nightly, 96 Above
+ 
+ // Searchbar, Removed from settings starting with FF v122
+ // user_pref("browser.search.widget.inNavBar",    true);
+ 
+ // Firefox view search
+ // https://blog.nightly.mozilla.org/2023/12/14/better-searching-in-firefox-to-close-out-2023-these-weeks-in-firefox-issue-151/
+-// user_pref("browser.firefox-view.search.enabled",       true);
+-// user_pref("browser.firefox-view.virtual-list.enabled", true);
++user_pref("browser.firefox-view.search.enabled",       true);
++user_pref("browser.firefox-view.virtual-list.enabled", true);
+ 
+ // Firefox screenshot
+ // https://blog.nightly.mozilla.org/2024/01/22/happy-new-year-these-weeks-in-firefox-issue-152/
+-// user_pref("screenshots.browser.component.enabled", true);
++user_pref("screenshots.browser.component.enabled", true);
+ 
+ // ** Scrolling Settings *******************************************************
+ // == Only Sharpen Scrolling ===================================================
+ //         Pref                                             Value      Original
+ /*
+ user_pref("mousewheel.min_line_scroll_amount",                 10); //        5
+diff --git a/userChrome.css b/userChrome.css
+index c084b35..388f43c 100644
+--- a/userChrome.css
++++ b/userChrome.css
+@@ -2,22 +2,18 @@
+ @import url("css/leptonChrome.css");
+ 
+ 
+ /** Add your custom styles below **********************************************/
+ 
+ /* Enable option to edit bookmark URLs under Add Bookmark (blue star) menu */
+-/*
+ .editBMPanel_locationRow {
+   display: initial !important;
+ }
+-*/
+ 
+ /* Disable Email Image/Audio/Video and Set as Desktop Background context menu items */
+-/*
+ #context-sendimage,
+ #context-sendvideo,
+ #context-sendaudio,
+ #context-sep-setbackground,
+ #context-setDesktopBackground {
+   display: none !important;
+ }
+-*/

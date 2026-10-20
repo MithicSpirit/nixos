@@ -22,7 +22,7 @@
 in
   stdenv.mkDerivation (finalAttrs: {
     pname = "wfhelper";
-    version = "2.1.0";
+    version = "2.1.1";
 
     __structuredAttrs = true;
     strictDeps = true;
@@ -31,14 +31,14 @@ in
       owner = "WFHelper";
       repo = "wfhelper";
       tag = "v${finalAttrs.version}";
-      hash = "sha256-7epz9TbZJ9Y+Mo1dfggwxbQ/GagHVAxH4+FAglXoEc0=";
+      hash = "sha256-h7xlGJ7LruXpLZ1khxgAaiJBJUMxQkie737ZSjGy4To=";
     };
 
     pnpmDeps = fetchPnpmDeps {
       inherit (finalAttrs) pname version src;
       inherit pnpm;
       fetcherVersion = 4;
-      hash = "sha256-Hmbc0/Q1wDKysP6FvP1RnMdfMHG8yfDQLHGwCh9sdQI=";
+      hash = "sha256-NL2BPdPhjazs6vatPmxrYKDYN9QU/jhuZzCB+Pan2rQ=";
     };
 
     nativeBuildInputs = [

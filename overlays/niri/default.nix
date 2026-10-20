@@ -7,14 +7,14 @@ final: prev: {
         src = final.fetchFromGitHub {
           owner = "MithicSpirit";
           repo = "niri";
-          rev = "e0974cd847956f7403471c97fb6987faf03d69a5";
-          hash = "sha256-LKq5q/MRi8yxEx8RpQwAkpz/QU4RWExnsTTB7YDIBXw=";
+          rev = "fbe1e9b4def318afd4d827937f7a8232ef6f75eb";
+          hash = "sha256-K+nzVdwsXjpMih9fMtCJ9rOono5Ufek1W0CSa9ZaMYQ=";
         };
         doCheck = false;
         patches = [./niri-scripts.diff];
         cargoDeps = final.rustPlatform.fetchCargoVendor {
           inherit (finalAttrs) pname version src patches;
-          hash = "sha256-j3WOhsLx2OB8AvEme1BFpsLaBN+q5cFRoyrXMsQqwJ0=";
+          hash = "sha256-D6jMOI5Y4JeTiHeRQT71G5gCQJXu6rF2a4lZ4f3AfYI=";
         };
       }
   );
@@ -28,22 +28,6 @@ final: prev: {
             ./waybar-workspaces-hides.diff
             ./waybar-workspaces-format-named.diff
             ./waybar-graceful-disconnect.diff
-          ];
-      }
-  );
-
-  xwayland-satellite = prev.xwayland-satellite.overrideAttrs (
-    _finalAttrs: prevAttrs:
-      assert prevAttrs.version == "0.8.2"; {
-        patches =
-          (prevAttrs.patches or [])
-          ++ [
-            (final.fetchpatch2 {
-              # https://github.com/Supreeeme/xwayland-satellite/pull/494
-              name = "xwayland-satellite-override-redirect-fix.diff";
-              url = "https://github.com/Supreeeme/xwayland-satellite/commit/add2795134593faafce60e404a0a75df68e9ee0c.diff?full_index=1";
-              hash = "sha256-6QOZsE4/OoYjzNlzkzMmx6d9rcuh66AHjTBUqHnAWxU=";
-            })
           ];
       }
   );

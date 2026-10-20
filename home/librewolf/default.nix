@@ -29,7 +29,7 @@
       )
       + self.profiles."mithic".path;
     ui-fix = pkgs.firefox-ui-fix.overrideAttrs {
-      patchPhase = "patch -Np1 <${./chrome.patch}";
+      patchPhase = "patch -Np1 <${./firefox-ui-fix-customization.diff}";
     };
     chrome = ui-fix + "/chrome";
   in {

@@ -37,7 +37,7 @@ build *args: gitprepare
 
 [group('nixos')]
 diff: check build
-    dix /nix/var/nix/profiles/system ./result
+    nvd diff /nix/var/nix/profiles/system ./result
 
 [group('nixos')]
 test: check (activate 'test') system

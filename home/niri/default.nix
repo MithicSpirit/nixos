@@ -76,7 +76,7 @@ in {
               inactive-color = colors.hash.fake;
             };
 
-            background-color = colors.hash.floor;
+            background-color = "#00000000";
 
             center-focused-column = "never";
             always-center-single-column = {};
@@ -99,6 +99,7 @@ in {
               {proportion = 0.2;}
             ];
           };
+
           environment = {
             CLUTTER_BACKEND = "wayland";
             NIXOS_OZONE_WL = "1";
@@ -111,12 +112,16 @@ in {
             QT_WAYLAND_DISABLE_WINDOWDECORATION = "1";
           };
 
-          # TODO: overview?
+          overview = {
+            backdrop-color = colors.hash.floor;
+          };
+
           recent-windows.off = {};
 
           gestures = {
             hot-corners.off = {};
           };
+
           animations = {
             window-open = {
               duration-ms = 150;
@@ -256,6 +261,10 @@ in {
               {
                 priority = 10;
                 match._props.namespace = "^notifications$";
+              }
+              {
+                place-within-backdrop = true;
+                match._props.namespace = "^hyprpaper$";
               }
             ];
           binds = lib.mergeAttrsList [
@@ -410,7 +419,7 @@ in {
                   "org\\.signal\\.Signal"
                   "vesktop"
                   "zulip"
-                  "element"
+                  "element-desktop"
                 ]));
         }
         (
@@ -538,8 +547,8 @@ in {
         on_lock_cmd = "dunstctl set-paused true";
         before_sleep_cmd = "loginctl lock-session && sleep 1";
 
-        after_sleep_cmd = "niri msg action force-idle 0";
-        on_unlock_cmd = "niri msg action force-idle 0; dunstctl set-paused false";
+        after_sleep_cmd = "niri msg action force-idle 0; sleep 3; niri msg action force-idle 0";
+        on_unlock_cmd = "niri msg action force-idle 0; dunstctl set-paused false; sleep 3; niri msg action force-idle 0";
         unlock_cmd = "killall -USR1 hyprlock";
 
         inhibit_sleep = 1;

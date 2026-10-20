@@ -59,14 +59,6 @@
   nixpkgs.config = {
     rocmSupport = true;
     allowUnfree = false; # TODO: make global?
-    allowlistedLicenses = [
-      {
-        fullName = "Graphite Branding License";
-        url = "https://graphite.art/license/#branding";
-        free = false;
-        redistributable = true;
-      }
-    ];
   };
 
   boot.loader.systemd-boot = {
@@ -324,20 +316,6 @@
   };
 
   programs.gamemode.settings.gpu.gpu_device = 1;
-
-  services.languagetool = {
-    enable = true;
-    jvmOptions = ["-Xmx512m"];
-    allowOrigin = "*";
-    settings = {
-      fasttextModel = pkgs.fetchurl {
-        url = "https://dl.fbaipublicfiles.com/fasttext/supervised-models/lid.176.bin";
-        hash = "sha256-fmnsVFG8JhzHhE5J5HkqhdfwnAZ4nsgA/EpErsNidk4=";
-      };
-      fasttextBinary = "${lib.getExe pkgs.fasttext}";
-      maxCheckThreads = 1;
-    };
-  };
 
   # weird framework 16 stuff. see arch and nixos wikis
   services.udev.extraRules =

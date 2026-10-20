@@ -2,7 +2,7 @@
   lib,
   iosevka,
 }:
-assert iosevka.version == "34.7.0";
+assert iosevka.version == "34.9.0";
   (iosevka.override {
     set = "Mithic";
     privateBuildPlan = {
