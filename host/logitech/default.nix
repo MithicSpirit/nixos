@@ -20,7 +20,7 @@
         dpi = 500;
         smartshift = {
           on = true;
-          threshold = 20;
+          threshold = 255; # 20; (weird disconnect issue)
           default_threshold = 20;
         };
         hiresscroll = {

@@ -22,6 +22,7 @@
       shell_integration = "no-cursor";
       paste_actions = "confirm,confirm-if-large";
       focus_follows_mouse = true;
+      remember_window_size = false;
       window_alert_on_bell = false;
       close_on_child_death = true;
       allow_remote_control = "socket";
