@@ -7,7 +7,7 @@
   # dependencies
   fd,
   elan,
-  coq,
+  rocq-core,
   idris2Packages,
   lua-language-server,
   fennel-ls,
@@ -73,7 +73,7 @@ vimUtils.buildVimPlugin {
   passthru.runtime-dependencies = [
     fd
     elan
-    coq
+    rocq-core
     idris2Packages.idris2Lsp
     lua-language-server
     fennel-ls

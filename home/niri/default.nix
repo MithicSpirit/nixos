@@ -217,6 +217,10 @@ in {
                         app-id = "^thunderbird$";
                         title = "^Check Spelling$";
                       }
+                      {
+                        app-id = "^gimp$";
+                        title = "^GIMP Text Editor$";
+                      }
                     ]));
               }
               {
@@ -447,10 +451,15 @@ in {
           in {
             _children = map (x: {workspace._args = [x];}) workspaces;
             binds = lib.mergeAttrsList (map (x: {
-                "Mod+${x}" = spawn-script ["workspace" "focus" x];
-                "Mod+Shift+${x}" = spawn-script ["workspace" "move" x];
-                "Mod+Ctrl+${x}" = spawn-script ["workspace" "move-silent" x];
-                "Mod+Ctrl+Shift+${x}" = spawn-script ["workspace" "move-column" x];
+                "Mod+${x}" = {focus-workspace = x;};
+                "Mod+Shift+${x}" = {move-window-to-workspace = x;};
+                "Mod+Ctrl+${x}" = {
+                  move-window-to-workspace = {
+                    _args = [x];
+                    _props.focus = false;
+                  };
+                };
+                "Mod+Ctrl+Shift+${x}" = {move-column-to-workspace = x;};
               })
               workspaces);
           }

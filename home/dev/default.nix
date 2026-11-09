@@ -15,7 +15,7 @@
     zig
     elan
     agda
-    coq
+    rocqPackages.coq
     smlnj
     typst
 

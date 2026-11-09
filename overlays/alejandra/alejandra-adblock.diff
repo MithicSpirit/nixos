@@ -1,5 +1,5 @@
 diff --git a/src/alejandra_cli/src/cli.rs b/src/alejandra_cli/src/cli.rs
-index 0ef0496..97860bc 100644
+index a978bb2..561af79 100644
 --- a/src/alejandra_cli/src/cli.rs
 +++ b/src/alejandra_cli/src/cli.rs
 @@ -6,13 +6,12 @@ use clap::value_parser;
@@ -71,9 +71,9 @@ index 0ef0496..97860bc 100644
      std::process::exit(0);
  }
  
- fn resolve_config(path: Option<&str>, verbosity: Verbosity) -> Config {
-     let default_config_path = "alejandra.toml";
- 
+ fn try_resolve_config(path: Option<&str>) -> Result<Config, String> {
+     if let Some(path) = path {
+         let contents = read_to_string(path)
 diff --git a/src/alejandra_cli/src/lib.rs b/src/alejandra_cli/src/lib.rs
 index fd49ce8..258f656 100644
 --- a/src/alejandra_cli/src/lib.rs

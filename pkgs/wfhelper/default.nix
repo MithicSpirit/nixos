@@ -4,7 +4,7 @@
   fetchFromGitHub,
   nodejs_22,
   pnpm_11,
-  electron_42,
+  electron_43,
   pnpmConfigHook,
   fetchPnpmDeps,
   makeBinaryWrapper,
@@ -18,7 +18,7 @@
 }: let
   nodejs = nodejs_22;
   pnpm = pnpm_11;
-  electron = electron_42; # upstream is on electron 41, but that's EOL
+  electron = electron_43; # upstream is on electron 41, but that's EOL
 in
   stdenv.mkDerivation (finalAttrs: {
     pname = "wfhelper";

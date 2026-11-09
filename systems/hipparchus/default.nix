@@ -67,10 +67,9 @@
     memtest86.enable = true;
   };
   boot.loader.efi.canTouchEfiVariables = true;
-  boot.initrd.systemd.enable = true;
   boot.plymouth = {
     enable = false; # TODO?
-    font = pkgs.iosevka-mithic + /share/fonts/truetype/iosevka-mithic.ttc;
+    font = "${pkgs.iosevka-mithic}/share/fonts/truetype/iosevka-mithic.ttc";
     theme = "breeze";
   };
 
@@ -340,16 +339,5 @@
     "-h1600"
     "-r165"
     "--adaptive-sync"
-  ];
-
-  # FIXME: remove when updating (added upstream)
-  security.pki.caCertificateBlacklist = [
-    # CVE-2026-111943
-    "Comodo AAA Services root"
-    # https://hg-edge.mozilla.org/projects/nss/rev/26d38a0c3fb81e7fb2acedbaf4c42dd21dce0517
-    "emSign ECC Root CA - G3"
-    # https://hg-edge.mozilla.org/projects/nss/rev/8159223c48ceeb1273a1915bca95a517294ab0e0
-    "emSign Root CA - C1"
-    "emSign ECC Root CA - C3"
   ];
 }

@@ -1,5 +1,5 @@
 [default]
-default: gitadd standard
+default: add standard
 standard: gitprepare format check
 
 fmt *args: gitprepare
@@ -10,12 +10,11 @@ format: (fmt '.')
 check: gitprepare
     nom flake check --all-systems
 
-undead: gitadd && standard
+undead: && standard
     deadnix --edit
 
-refresh *inputs: gitprepare && standard
+update *inputs: gitprepare && standard
     nom flake update {{ inputs }}
-update *inputs: gitadd (refresh inputs)
 
 lock *args: gitprepare && standard
     nom flake lock {{ args }}
@@ -36,17 +35,17 @@ build *args: gitprepare
     nom build '.#nixosConfigurations.{{ host }}.config.system.build.toplevel' {{ args }}
 
 [group('nixos')]
-diff: check build
-    nvd diff /nix/var/nix/profiles/system ./result
+diff system='/run/booted-system': check build
+    dix diff --min-size-delta=16MiB '{{ system }}' ./result
 
 [group('nixos')]
 test: check (activate 'test') system
 
 [group('nixos')]
-boot: gitadd check (activate 'boot')
+boot: add check (activate 'boot')
 
 [group('nixos')]
-switch: gitadd check (activate 'switch') system
+switch: add check (activate 'switch') system
 
 [group('nixos')]
 [private]
@@ -81,8 +80,7 @@ sudo $reason:
         sudo -v
     fi
 
-[private]
-gitadd:
+add:
     git add .
 
 [private]
